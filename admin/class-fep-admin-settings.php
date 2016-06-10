@@ -23,7 +23,9 @@ class Fep_Admin_Settings
 
     function addAdminPage()
     {
-		add_submenu_page('edit.php?post_type=fep_message', 'Front End PM - ' .__('Settings','front-end-pm'), __('Settings','front-end-pm'), 'manage_options', 'fep_settings', array($this, "settings_page"));
+		$admin_cap = apply_filters( 'fep_admin_cap', 'manage_options' );
+		
+		add_submenu_page('edit.php?post_type=fep_message', 'Front End PM - ' .__('Settings','front-end-pm'), __('Settings','front-end-pm'), $admin_cap, 'fep_settings', array($this, "settings_page"));
 	
     }
 	function recalculate_user_message_count( $settings ){

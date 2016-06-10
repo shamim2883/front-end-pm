@@ -15,7 +15,7 @@ class Fep_Cpt {
 	function actions_filters()
     {
 		add_action ('init', array($this, 'create_cpt') );
-		add_action ('contextual_help', array($this, 'contextual_help'), 10, 3 );
+		//add_action ('contextual_help', array($this, 'contextual_help'), 10, 3 );
 		add_action ('save_post_fep_message', array($this, 'save_message'), 10, 3 );
 		add_action ('save_post_fep_announcement', array($this, 'save_announcement'), 10, 3 );
 		
@@ -65,10 +65,10 @@ class Fep_Cpt {
 			'rewrite' 			=> false,
 			'show_ui' 			=> true,
 			//'show_in_menu' 		=> true,
-			'capability_type' 	=> 'post',
+			'capability_type' 	=> 'page',
 			'capabilities' => array(
 				'create_posts' => 'do_not_allow', //will be changed in next version to send message from BACK END
-				'edit_published_posts' => 'fep_cap_edit_published_posts' ), //Should not give permission to edit Sent Message/ Published announcements
+				'edit_published_posts' => 'fep_cap_edit_published_messages' ), //Should not give permission to edit Sent Message
 			'map_meta_cap'      => true,
 			'menu_icon'   		=> 'dashicons-email-alt',
 			'supports' 			=> apply_filters( 'fep_message_cpt_supports', array( 'title', 'editor' ) ),
@@ -102,8 +102,8 @@ class Fep_Cpt {
 			'show_in_menu' 		=> 'edit.php?post_type=fep_message',
 			'capability_type' 	=> 'page',
 			'capabilities' => array(
-				'edit_published_posts' => 'fep_cap_edit_published_posts' 
-				), //Should not give permission to edit Sent Message/ Published announcements
+				'edit_published_posts' => 'fep_cap_edit_published_announcements'  //Should not give permission to edit Published announcements
+				),
 			'map_meta_cap'      => true,
 			'supports' 			=> apply_filters( 'fep_announcement_cpt_supports', array( 'title', 'editor' ) ),
 			'can_export'		=> true
@@ -159,7 +159,7 @@ function announcement_to( $post ) {
 		
 			foreach( get_editable_roles() as $key => $role ) {
 			
-				?><label><input id="" class="" name="participant_roles[]" type="checkbox" value="<?php echo $key; ?>" <?php if( in_array( $key, $participants ) ) echo'checked="checked"'; ?> /> <?php esc_attr_e( $role['name'] ); ?></label><br /><?php
+				?><label><input id="" class="" name="participant_roles[]" type="checkbox" value="<?php echo $key; ?>" <?php if( in_array( $key, $participants ) ) echo'checked="checked"'; ?> /> <?php echo translate_user_role( $role['name'] ); ?></label><br /><?php
 			}
 
 	}
@@ -299,10 +299,12 @@ function post_submitbox_start_info()
 
 function view_link($actions, $post)
 {
-    if ($post->post_type=='fep_message')
+    if ( $post->post_type=='fep_message' )
     {
-        $actions['fep_view'] = '<a href="'.fep_query_url('viewmessage', array( 'id' => $post->ID ) ).'" title="" target="_blank">View</a>';
-    }
+        $actions['fep_view'] = '<a href="'.fep_query_url('viewmessage', array( 'id' => $post->ID ) ).'" title="" target="_blank">' . __("View", "front-end-pm") . '</a>';
+    } elseif( $post->post_type=='fep_announcement' ) {
+		$actions['fep_view'] = '<a href="'.fep_query_url('view_announcement', array( 'id' => $post->ID ) ).'" title="" target="_blank">' . __("View", "front-end-pm") . '</a>';
+	}
     return $actions;
 }
 

@@ -22,7 +22,7 @@ function fep_translation()
 	
 function fep_enqueue_scripts()
     {
-	if ( !wp_style_is ( 'fep-style' ) )
+	
 	wp_enqueue_style( 'fep-style', FEP_PLUGIN_URL . 'style/style.css' );
 	$custom_css = trim(fep_get_option('custom_css'));
 	wp_add_inline_style( 'fep-style', $custom_css );
@@ -370,19 +370,24 @@ function fep_download_file()
 		if ( !isset($_GET['fepaction']) || $_GET['fepaction'] != 'download')
 		return;
 		
-			global $user_ID;
 	$id = absint($_GET['id']);
 
 	if ( !fep_verify_nonce($_GET['token'], 'download') )
 	wp_die(__('Invalid token', 'front-end-pm'));
 
-	if ( !$user_ID || 'attachment' != get_post_type($id) )
+	if ( ! get_current_user_id() || 'attachment' != get_post_type($id) )
 	wp_die(__('No attachments found', 'front-end-pm'));
 
 	$message_id = fep_get_parent_id($id);
+	$post_type = get_post_type($message_id);
 	
-	if ( 'fep_message' == get_post_type($message_id) && ! fep_current_user_can('view_message', $message_id ))
-	wp_die(__('You have no permission to download this attachment.', 'front-end-pm'));
+	if( ! in_array( $post_type, array( 'fep_message', 'fep_announcement' ) ) ) {
+		wp_die(__('You have no permission to download this attachment.', 'front-end-pm'));
+	} elseif( 'fep_message' == $post_type && ! fep_current_user_can('view_message', $message_id ) ) {
+		wp_die(__('You have no permission to download this attachment.', 'front-end-pm'));
+	} elseif( 'fep_announcement' == $post_type && ! fep_current_user_can('view_announcement', $message_id ) ) {
+		wp_die(__('You have no permission to download this attachment.', 'front-end-pm'));
+	}
 		  
 
 		$attachment_type = get_post_mime_type( $id );
@@ -390,7 +395,7 @@ function fep_download_file()
 		$attachment_path = get_attached_file( $id );
 		$attachment_name = basename($attachment_url);
 
-	if(!file_exists($attachment_path)){
+	if( !file_exists($attachment_path) ){
 		wp_delete_attachment( $id );
 		wp_die(__('Attachment already deleted', 'front-end-pm'));
 	}
@@ -421,7 +426,7 @@ function fep_sort_by_priority( $a, $b ) {
 	}
 
 	
-function fep_pagination( $total = null, $per_page = null, $list_class = 'fep-pagination fep-pagination-sm' ) {
+function fep_pagination( $total = null, $per_page = null, $list_class = 'fep-pagination' ) {
 
 	$filter = ! empty( $_GET['fep-filter'] ) ? $_GET['fep-filter'] : 'total';
 	
@@ -479,6 +484,8 @@ function fep_current_user_can( $cap, $id = false ) {
 		return apply_filters( 'fep_current_user_can', $can, $cap, $id );
 	}
 	
+	$admin_cap = apply_filters( 'fep_admin_cap', 'manage_options' );
+	
 	switch( $cap ) {
 		case 'access_message':
 			if( fep_is_user_whitelisted() || array_intersect( fep_get_option('userrole_access', array() ), wp_get_current_user()->roles )){
@@ -498,7 +505,7 @@ function fep_current_user_can( $cap, $id = false ) {
 			}
 		break;
 		case 'view_message' :
-			if( $id && ( ( in_array( get_current_user_id(), get_post_meta( $id, '_participants' ) ) && get_post_status ( $id ) == 'publish' ) || current_user_can( 'manage_options' ) )) {
+			if( $id && ( ( in_array( get_current_user_id(), get_post_meta( $id, '_participants' ) ) && get_post_status ( $id ) == 'publish' ) || current_user_can( $admin_cap ) )) {
 				$can = true;
 			}
 		break;
@@ -508,12 +515,12 @@ function fep_current_user_can( $cap, $id = false ) {
 			}
 		break;
 		case 'access_directory' :
-			if( current_user_can('manage_options') || ! fep_get_option('hide_directory', 0 ) ) {
+			if( current_user_can( $admin_cap ) || ! fep_get_option('hide_directory', 0 ) ) {
 				$can = true;
 			}
 		break;
 		case 'view_announcement' :
-			if( $id && array_intersect( get_post_meta( $id, '_participant_roles' ), wp_get_current_user()->roles ) && get_post_status ( $id ) == 'publish' ) {
+			if( $id && ( ( array_intersect( get_post_meta( $id, '_participant_roles' ), wp_get_current_user()->roles ) && get_post_status ( $id ) == 'publish') || current_user_can( $admin_cap ) ) ) {
 				$can = true;
 			}
 		break;
@@ -773,7 +780,9 @@ add_filter( 'fep_filter_message_before_send', 'fep_backticker_code_input_filter'
 function fep_autosuggestion_ajax() {
 global $user_ID;
 
-if(fep_get_option('hide_autosuggest') == '1' && !current_user_can('manage_options'))
+$admin_cap = apply_filters( 'fep_admin_cap', 'manage_options' );
+
+if(fep_get_option('hide_autosuggest') == '1' && !current_user_can( $admin_cap ))
 die();
 
 if ( check_ajax_referer( 'fep-autosuggestion', 'token', false )) {

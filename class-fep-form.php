@@ -22,10 +22,12 @@ if (!class_exists('Fep_Form'))
 	
 	public function form_fields( $where = 'new_message' )
 {
+	$admin_cap = apply_filters( 'fep_admin_cap', 'manage_options' );
+	
 	$fields = array(
 				'message_to' => array(
 					'label'       => __( 'To', 'front-end-pm' ),
-					'description' => __( 'Name of the receipent you want to send message.', 'front-end-pm' ),
+					//'description' => __( 'Name of the receipent you want to send message.', 'front-end-pm' ),
 					'type'        => 'message_to',
 					'required'    => true,
 					'placeholder' => __( 'Name of the receipent.', 'front-end-pm' ),
@@ -34,12 +36,12 @@ if (!class_exists('Fep_Form'))
 					'id' => 'fep-message-to',
 					'name' => 'message_to',
 					'class' => 'input-text',
-					'suggestion' => (fep_get_option('hide_autosuggest') != '1' || current_user_can('manage_options')),
+					'suggestion' => (fep_get_option('hide_autosuggest') != '1' || current_user_can( $admin_cap )),
 					'priority'    => 5
 				),
 				'subject' => array(
 					'label'       => __( 'Subject', 'front-end-pm' ),
-					'description' => __( 'Enter your message subject here', 'front-end-pm' ),
+					//'description' => __( 'Enter your message subject here', 'front-end-pm' ),
 					'type'        => 'text',
 					'required'    => true,
 					'placeholder' => __( 'Subject', 'front-end-pm' ),
@@ -54,7 +56,7 @@ if (!class_exists('Fep_Form'))
 				),
 				'message' => array(
 					'label'       => __( 'Message', 'front-end-pm' ),
-					'type'        => current_user_can('manage_options') ? 'wp_editor' : fep_get_option('editor_type','wp_editor'),
+					'type'        => current_user_can( $admin_cap ) ? 'wp_editor' : fep_get_option('editor_type','wp_editor'),
 					'required'    => true,
 					'minlength'	=> 50,
 					'maxlength' => 5000,
@@ -492,7 +494,7 @@ public function form_field_output( $where = 'new_message', $errors= '', $value =
 		echo fep_error($errors);
 		
 		$button_val = ("settings" == $where ) ? __("Save Changes", "front-end-pm") : __("Send Message", "front-end-pm");
-		echo apply_filters( 'fep_form_submit_button', '<button type="submit" name="fep_action" value="'. $where .'">'.$button_val.'</button>' );
+		echo apply_filters( 'fep_form_submit_button', '<button type="submit" class="fep-button" name="fep_action" value="'. $where .'">'.$button_val.'</button>' );
 		
         echo '</form>';
 		echo '</div>';
