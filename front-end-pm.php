@@ -21,16 +21,16 @@ function fep_include_require_files()
 	{
 
 	$fep_files = array(
-			'announcement' 	=> FEP_PLUGIN_DIR. 'class-fep-announcement.php',
-			'attachment' 	=> FEP_PLUGIN_DIR. 'class-fep-attachment.php',
-			'cpt' 			=> FEP_PLUGIN_DIR. 'class-fep-cpt.php',
-			'directory' 	=> FEP_PLUGIN_DIR. 'class-fep-directory.php',
-			'email' 		=> FEP_PLUGIN_DIR. 'class-fep-emails.php',
-			'form' 			=> FEP_PLUGIN_DIR. 'class-fep-form.php',
-			'menu' 			=> FEP_PLUGIN_DIR. 'class-fep-menu.php',
-			'message' 		=> FEP_PLUGIN_DIR. 'class-fep-message.php',
-			'main' 			=> FEP_PLUGIN_DIR. 'fep-class.php',
-			'widgets' 		=> FEP_PLUGIN_DIR. 'fep-widgets.php'
+			'announcement' 	=> FEP_PLUGIN_DIR. 'includes/class-fep-announcement.php',
+			'attachment' 	=> FEP_PLUGIN_DIR. 'includes/class-fep-attachment.php',
+			'cpt' 			=> FEP_PLUGIN_DIR. 'includes/class-fep-cpt.php',
+			'directory' 	=> FEP_PLUGIN_DIR. 'includes/class-fep-directory.php',
+			'email' 		=> FEP_PLUGIN_DIR. 'includes/class-fep-emails.php',
+			'form' 			=> FEP_PLUGIN_DIR. 'includes/class-fep-form.php',
+			'menu' 			=> FEP_PLUGIN_DIR. 'includes/class-fep-menu.php',
+			'message' 		=> FEP_PLUGIN_DIR. 'includes/class-fep-message.php',
+			'main' 			=> FEP_PLUGIN_DIR. 'includes/fep-class.php',
+			'widgets' 		=> FEP_PLUGIN_DIR. 'includes/fep-widgets.php'
 			);
 	
 	if( is_admin() ) {

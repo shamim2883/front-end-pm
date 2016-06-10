@@ -23,11 +23,13 @@ function fep_translation()
 function fep_enqueue_scripts()
     {
 	
-	wp_enqueue_style( 'fep-style', FEP_PLUGIN_URL . 'style/style.css' );
+	wp_enqueue_style( 'fep-style', FEP_PLUGIN_URL . 'assets/css/style.css' );
 	$custom_css = trim(fep_get_option('custom_css'));
-	wp_add_inline_style( 'fep-style', $custom_css );
+	if( $custom_css ) {
+		wp_add_inline_style( 'fep-style', $custom_css );
+	}
 	
-	wp_register_script( 'fep-script', FEP_PLUGIN_URL . 'js/script.js', array( 'jquery' ), '3.1', true );
+	wp_register_script( 'fep-script', FEP_PLUGIN_URL . 'assets/js/script.js', array( 'jquery' ), '3.1', true );
 	wp_localize_script( 'fep-script', 'fep_script', 
 			array( 
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
@@ -35,7 +37,7 @@ function fep_enqueue_scripts()
 			) 
 		);
 		
-	wp_register_script( 'fep-notification-script', FEP_PLUGIN_URL . 'js/notification.js', array( 'jquery' ), '3.1', true );
+	wp_register_script( 'fep-notification-script', FEP_PLUGIN_URL . 'assets/js/notification.js', array( 'jquery' ), '3.1', true );
 	wp_localize_script( 'fep-notification-script', 'fep_notification_script', 
 			array( 
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
@@ -44,9 +46,9 @@ function fep_enqueue_scripts()
 		);
 	
 	
-	wp_register_script( 'fep-replies-show-hide', FEP_PLUGIN_URL . 'js/replies-show-hide.js', array( 'jquery' ), '3.1', true );
+	wp_register_script( 'fep-replies-show-hide', FEP_PLUGIN_URL . 'assets/js/replies-show-hide.js', array( 'jquery' ), '3.1', true );
 	
-	wp_register_script( 'fep-attachment-script', FEP_PLUGIN_URL . 'js/attachment.js', array( 'jquery' ), '3.1', true );
+	wp_register_script( 'fep-attachment-script', FEP_PLUGIN_URL . 'assets/js/attachment.js', array( 'jquery' ), '3.1', true );
 	wp_localize_script( 'fep-attachment-script', 'fep_attachment_script', 
 			array( 
 				'remove' => esc_js(__('Remove', 'front-end-pm')),
@@ -370,12 +372,16 @@ function fep_download_file()
 		if ( !isset($_GET['fepaction']) || $_GET['fepaction'] != 'download')
 		return;
 		
-	$id = absint($_GET['id']);
+	$id = ! empty( $_GET['id'] ) ? absint($_GET['id']) : 0;
+	$token = ! empty( $_GET['token'] ) ? $_GET['token'] : '';
 
-	if ( !fep_verify_nonce($_GET['token'], 'download') )
+	if ( ! $id || !fep_verify_nonce( $token, 'download') )
 	wp_die(__('Invalid token', 'front-end-pm'));
+	
+	if ( !fep_current_user_can( 'access_message' ) )
+	wp_die(__('No attachments found', 'front-end-pm'));
 
-	if ( ! get_current_user_id() || 'attachment' != get_post_type($id) )
+	if ( 'attachment' != get_post_type($id) )
 	wp_die(__('No attachments found', 'front-end-pm'));
 
 	$message_id = fep_get_parent_id($id);
@@ -626,7 +632,7 @@ function fep_wp_mail_from( $from_email ) {
 	
 	$email = fep_get_option('from_email', get_bloginfo('admin_email'));
 	
-	if( $email ) {
+	if( is_email( $email ) ) {
 		return $email;
 	}
 	return $from_email;	
@@ -659,16 +665,16 @@ function fep_wp_mail_content_type( $content_type ) {
 
 function fep_add_email_filters(){
 	
-	add_filter( 'wp_mail_from', 'fep_wp_mail_from');
-	add_filter( 'wp_mail_from_name', 'fep_wp_mail_from_name');
-	add_filter( 'wp_mail_content_type', 'fep_wp_mail_content_type');
+	add_filter( 'wp_mail_from', 'fep_wp_mail_from', 10, 1 );
+	add_filter( 'wp_mail_from_name', 'fep_wp_mail_from_name', 10, 1 );
+	add_filter( 'wp_mail_content_type', 'fep_wp_mail_content_type', 10, 1 );
 }
 
 function fep_remove_email_filters(){
 	
-	remove_filter( 'wp_mail_from', 'fep_wp_mail_from');
-	remove_filter( 'wp_mail_from_name', 'fep_wp_mail_from_name');
-	remove_filter( 'wp_mail_content_type', 'fep_wp_mail_content_type');
+	remove_filter( 'wp_mail_from', 'fep_wp_mail_from', 10, 1 );
+	remove_filter( 'wp_mail_from_name', 'fep_wp_mail_from_name', 10, 1 );
+	remove_filter( 'wp_mail_content_type', 'fep_wp_mail_content_type', 10, 1 );
 }
 
 function fep_send_message( $message = null)

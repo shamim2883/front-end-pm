@@ -71,7 +71,7 @@ class FEP_menu_widget extends WP_Widget {
 
 // register FEP_menu_widget widget
 function register_fep_menu_widget() {
-if ( is_user_logged_in() )
+if ( fep_current_user_can( 'access_message' ) )
     register_widget( 'FEP_menu_widget' );
 }
 add_action( 'widgets_init', 'register_fep_menu_widget' );
@@ -185,7 +185,7 @@ class FEP_text_widget extends WP_Widget {
 
 // register FEP_menu_widget widget
 function register_fep_text_widget() {
-if ( is_user_logged_in() )
+if ( fep_current_user_can( 'access_message' ) )
     register_widget( 'FEP_text_widget' );
 }
 add_action( 'widgets_init', 'register_fep_text_widget' );
@@ -221,8 +221,8 @@ class FEP_empty_widget extends WP_Widget {
 		
 		if ( $show_help )
 			{
-				echo "Use <code>add_action('fep_empty_widget_{$this->number}', 'your_function' );</code> to hook to only this widget where 'your_function' is your defined function.";
-				echo "<br />Use <code>add_action('fep_empty_widget', 'your_function' );</code> to hook to all FEP Empty widget where 'your_function' is your defined function";
+				echo "Use <code>add_action('fep_empty_widget_{$this->number}', 'your_function' );</code> to hook to ONLY this widget where 'your_function' is your callback function.";
+				echo "<br />Use <code>add_action('fep_empty_widget', 'your_function' );</code> to hook to all FEP Empty widget where 'your_function' is your callback function";
 			}
 		
 		do_action('fep_empty_widget_' . $this->number);
@@ -276,7 +276,7 @@ class FEP_empty_widget extends WP_Widget {
 
 // register FEP_menu_widget widget
 function register_fep_empty_widget() {
-if ( is_user_logged_in() )
+if ( fep_current_user_can( 'access_message' ) )
     register_widget( 'FEP_empty_widget' );
 }
 add_action( 'widgets_init', 'register_fep_empty_widget' );

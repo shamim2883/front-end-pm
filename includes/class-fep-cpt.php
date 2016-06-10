@@ -193,7 +193,7 @@ function fep_message_to_box_content( $post ) {
 							
 			<input type="hidden" name="message_to" id="fep-message-to" autocomplete="off" value="<?php echo fep_get_userdata( $to, 'user_login' ); ?>" />		
 			<input type="text" name="message_top" id="fep-message-top" autocomplete="off" value="<?php echo fep_get_userdata($to, 'display_name'); ?>" />
-			<img src="<?php echo FEP_PLUGIN_URL; ?>images/loading.gif" class="fep-ajax-img" style="display:none;"/>
+			<img src="<?php echo FEP_PLUGIN_URL; ?>assets/images/loading.gif" class="fep-ajax-img" style="display:none;"/>
 			<div id="fep-result"></div><?php
 		} 
 	}
