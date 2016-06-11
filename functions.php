@@ -24,7 +24,7 @@ function fep_enqueue_scripts()
     {
 	
 	wp_enqueue_style( 'fep-style', FEP_PLUGIN_URL . 'assets/css/style.css' );
-	$custom_css = trim(fep_get_option('custom_css'));
+	$custom_css = trim( fep_get_option('custom_css') );
 	if( $custom_css ) {
 		wp_add_inline_style( 'fep-style', $custom_css );
 	}
