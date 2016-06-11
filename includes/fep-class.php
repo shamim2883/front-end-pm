@@ -323,7 +323,7 @@ if (!class_exists("fep_main_class"))
 				</div>
 				<div>
 					<input type="hidden" name="token"  value="<?php echo fep_create_nonce('bulk_action'); ?>"/>
-					<button type="submit" name="fep_action" value="bulk_action"><?php _e('Apply', 'front-end-pm'); ?></button>
+					<button type="submit" class="fep-button" name="fep_action" value="bulk_action"><?php _e('Apply', 'front-end-pm'); ?></button>
 				</div>
 				<div class="fep-loading-gif-div">
 				</div>

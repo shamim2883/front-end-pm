@@ -337,7 +337,7 @@ function get_column_content($column)
 				</div>
 				<div>
 					<input type="hidden" name="token"  value="<?php echo fep_create_nonce('announcement_bulk_action'); ?>"/>
-					<button type="submit" name="fep_action" value="announcement_bulk_action"><?php _e('Apply', 'front-end-pm'); ?></button>
+					<button type="submit" class="fep-button" name="fep_action" value="announcement_bulk_action"><?php _e('Apply', 'front-end-pm'); ?></button>
 				</div>
 				<div class="fep-loading-gif-div">
 				</div>
