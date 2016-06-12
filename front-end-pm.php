@@ -10,9 +10,17 @@ Text Domain: front-end-pm
 License: GPLv2 or later
 */
 //DEFINE
+
+define('FEP_PLUGIN_DIR',plugin_dir_path( __FILE__ ) );
+define('FEP_PLUGIN_URL',plugins_url( '/', __FILE__ ) );
+
 global $wpdb;
-define('FEP_PLUGIN_DIR',plugin_dir_path( __FILE__ ));
-define('FEP_PLUGIN_URL',plugins_url().'/front-end-pm/');
+
+if ( !defined ('FEP_MESSAGES_TABLE' ) )
+define('FEP_MESSAGES_TABLE',$wpdb->prefix.'fep_messages');
+
+if ( !defined ('FEP_META_TABLE' ) )
+define('FEP_META_TABLE',$wpdb->prefix.'fep_meta');
 
 require_once( FEP_PLUGIN_DIR. 'functions.php');
 

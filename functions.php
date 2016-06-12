@@ -677,7 +677,7 @@ function fep_remove_email_filters(){
 	remove_filter( 'wp_mail_content_type', 'fep_wp_mail_content_type', 10, 1 );
 }
 
-function fep_send_message( $message = null)
+function fep_send_message( $message = null, $override = array() )
 {
 	if( null === $message ) {
 		$message = $_POST;
@@ -685,7 +685,7 @@ function fep_send_message( $message = null)
 	
 	if( ! empty($message['fep_parent_id'] ) ) {
 		$message['post_status'] = fep_get_option('reply_post_status','publish');
-		$message['subject'] = __('RE:', 'front-end-pm'). ' ' . get_the_title( $message['fep_parent_id'] );
+		$message['message_title'] = __('RE:', 'front-end-pm'). ' ' . get_the_title( $message['fep_parent_id'] );
 		$message['message_to_id'] = get_post_meta( $message['fep_parent_id'], '_participants' );
 		$message['post_parent'] = absint( $message['fep_parent_id'] );
 	} else {
@@ -695,25 +695,32 @@ function fep_send_message( $message = null)
 	
 	$message = apply_filters('fep_filter_message_before_send', $message );
 	
-	if( empty($message['subject']) || empty($message['message']) || empty($message['message_from']) ) {
+	if( empty($message['message_title']) || empty($message['message_content']) ) {
 		return false;
 	}
 	// Create post array
 	$post = array(
-		'post_author'   => $message['message_from'],
-	  	'post_title'    => $message['subject'],
-	  	'post_content'  => $message['message'],
+	  	'post_title'    => $message['message_title'],
+	  	'post_content'  => $message['message_content'],
 	  	'post_status'   => $message['post_status'],
 	  	'post_parent'   => $message['post_parent'],
 	  	'post_type'   	=> 'fep_message'
 	);
+	
+	if( $override ) {
+		$post = wp_parse_args( $override, $post );
+	}
 	 
+	$post = apply_filters('fep_filter_message_after_override', $post );
+	
 	// Insert the message into the database
 	$message_id = wp_insert_post( $post );
 	
 	if( ! $message_id || is_wp_error( $message_id ) ) {
 		return false;
 	}
+	$inserted_message = get_post( $message_id );
+	
 	if( ! empty($message['message_to_id'] ) ) { //FRONT END message_to return id of participants
 		if( is_array( $message['message_to_id'] ) ) {
 			foreach( $message['message_to_id'] as $participant ) {
@@ -722,21 +729,21 @@ function fep_send_message( $message = null)
 		} else {
 			add_post_meta( $message_id, '_participants', $message['message_to_id'] );
 		}
-		add_post_meta( $message_id, '_participants', $message['message_from'] );
+		add_post_meta( $message_id, '_participants', $inserted_message->post_author );
 	}
-	if( $message['post_parent'] ) {
+	if( $inserted_message->post_parent ) {
 		
-		$participants = get_post_meta( $message['post_parent'], '_participants' );
+		$participants = get_post_meta( $inserted_message->post_parent, '_participants' );
 	
 		if( $participants && is_array( $participants ) )
 		{
 			foreach( $participants as $participant ) 
 			{
-				delete_post_meta( $message['post_parent'], '_fep_parent_read_by_'. $participant );
+				delete_post_meta( $inserted_message->post_parent, '_fep_parent_read_by_'. $participant );
 				delete_user_meta( $participant, '_fep_user_message_count' );
 			}
 		}
-		fep_make_read( true, $message['post_parent'], $message['message_from'] );
+		fep_make_read( true, $inserted_message->post_parent, $inserted_message->post_author );
 		
 	} elseif( 'threaded' != fep_get_option('message_view','threaded') ) {
 		$participants = get_post_meta( $message_id, '_participants' );
@@ -750,9 +757,9 @@ function fep_send_message( $message = null)
 		}
 	}
 	
-	fep_make_read( true, $message_id, $message['message_from'] );
+	fep_make_read( true, $message_id, $inserted_message->post_author );
 	
-	 do_action('fep_action_message_after_send', $message_id, $message);
+	 do_action('fep_action_message_after_send', $message_id, $message, $inserted_message );
 	
 	return $message_id;
 }
@@ -781,7 +788,7 @@ function fep_backticker_display_code($text) {
 
 function fep_backticker_code_input_filter( $message ) {
 
-	$message['message'] = fep_backticker_display_code($message['message']);
+	$message['message_content'] = fep_backticker_display_code($message['message_content']);
 	
 	return $message;
 	}

@@ -39,7 +39,7 @@ if (!class_exists('Fep_Form'))
 					'suggestion' => (fep_get_option('hide_autosuggest') != '1' || current_user_can( $admin_cap )),
 					'priority'    => 5
 				),
-				'subject' => array(
+				'message_title' => array(
 					'label'       => __( 'Subject', 'front-end-pm' ),
 					//'description' => __( 'Enter your message subject here', 'front-end-pm' ),
 					'type'        => 'text',
@@ -49,26 +49,21 @@ if (!class_exists('Fep_Form'))
 					'maxlength' => 100,
 					'disabled' => false,
 					'value' => '',
-					'id' => 'subject',
-					'name' => 'subject',
+					'id' => 'message_title',
+					'name' => 'message_title',
 					'class' => 'input-text',
 					'priority'    => 10
 				),
-				'message' => array(
+				'message_content' => array(
 					'label'       => __( 'Message', 'front-end-pm' ),
 					'type'        => current_user_can( $admin_cap ) ? 'wp_editor' : fep_get_option('editor_type','wp_editor'),
 					'required'    => true,
-					'minlength'	=> 50,
+					'minlength'	=> 10,
 					'maxlength' => 5000,
 					'placeholder' => '',
 					'priority'    => 15,
 					'value'     => '',
 					'where'	=> array( 'new_message', 'reply' )
-				),
-				'message_from' => array(
-					'type'        => 'message_from',
-					'value'    => get_current_user_id(),
-					'where'    => array( 'new_message', 'reply' )
 				),
 				'token' => array(
 					'type'        => 'token',
@@ -249,10 +244,6 @@ function field_output( $field, $errors )
 					?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php esc_attr_e( $field['class'] ); ?>" type="hidden" name="<?php esc_attr_e( $field['name'] ); ?>" value="<?php esc_attr_e( $field['value' ] ); ?>" <?php echo $attrib; ?> /><?php
 
 					break;
-				case 'message_from' :
-					?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php esc_attr_e( $field['class'] ); ?>" type="hidden" name="<?php esc_attr_e( $field['name'] ); ?>" value="<?php esc_attr_e( $field['posted-value' ] ); ?>" <?php echo $attrib; ?> /><?php
-
-					break;
 				case 'fep_parent_id' :
 					?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php esc_attr_e( $field['class'] ); ?>" type="hidden" name="<?php esc_attr_e( $field['name'] ); ?>" value="<?php esc_attr_e( $field['posted-value' ] ); ?>" <?php echo $attrib; ?> /><?php
 
@@ -387,14 +378,6 @@ function field_output( $field, $errors )
 						}
 
 					break;
-				case 'message_from' :
-					 if ( empty($field['posted-value']) || $field['posted-value'] != absint($field['posted-value']) ) {
-					 		$errors->add( $field['id'] , __("Invalid message from!", 'front-end-pm'));
-					 } elseif ( $field['posted-value']  != get_current_user_id() ) {
-						  	$errors->add( $field['id'] , __("You do not have permission to send this message!", 'front-end-pm'));
-						}
-		
-					break;
 				case 'fep_parent_id' :
 					 if ( empty($field['posted-value']) || $field['posted-value'] != absint($field['posted-value']) || fep_get_parent_id( $field['posted-value'] ) != $field['posted-value'] ) {
 					 		$errors->add( $field['id'] , __("Invalid parent ID!", 'front-end-pm'));
@@ -474,11 +457,26 @@ public function form_field_output( $where = 'new_message', $errors= '', $value =
 	if( ! is_wp_error($errors) )
 		$errors = new WP_Error();
 		
+		$form_attr = array(
+			'action' => esc_url( add_query_arg( false, false ) ),
+			'method' => 'post'
+			);
+		if( in_array( $where, array( 'new_message', 'reply' ) ) && fep_get_option('allow_attachment', 0 ) ) {
+			$form_attr['enctype'] = 'multipart/form-data';
+		}
+		
+		$form_attr = apply_filters( 'fep_form_attribute', $form_attr );
+		
+		$attr = array();
+		foreach ( $form_attr as $k => $v ) {
+			$attr[] = $k . '="' . $v . '"';
+		}
+		
 	ob_start();
 
 		echo '<div class="front-end-pm-form">';
 		echo '<form ';
-		echo apply_filters( 'fep_form_attribute', 'action="'.esc_url( add_query_arg( false, false ) ).'" method="post" enctype="multipart/form-data"');
+		echo implode( ' ', $attr );
 		echo '>';
 
 		do_action( 'fep_before_form_fields', $where, $errors );
@@ -510,7 +508,13 @@ public function form_field_output( $where = 'new_message', $errors= '', $value =
 		
 		echo fep_error($errors);
 		
-		$button_val = ("settings" == $where ) ? __("Save Changes", "front-end-pm") : __("Send Message", "front-end-pm");
+		if( 'settings' == $where ) {
+			$button_val = __('Save Changes', 'front-end-pm');
+		} elseif( 'reply' == $where ) {
+			$button_val = __('Reply', 'front-end-pm');
+		} else {
+			$button_val = __('Send Message', 'front-end-pm');
+		}
 		echo apply_filters( 'fep_form_submit_button', '<button type="submit" class="fep-button" name="fep_action" value="'. $where .'">'.$button_val.'</button>' );
 		
         echo '</form>';
