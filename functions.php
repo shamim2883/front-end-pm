@@ -680,7 +680,7 @@ function fep_remove_email_filters(){
 function fep_send_message( $message = null)
 {
 	if( null === $message ) {
-		$message = apply_filters('fep_filter_message_before_send', $_POST );
+		$message = $_POST;
 	}
 	
 	if( ! empty($message['fep_parent_id'] ) ) {
@@ -692,16 +692,20 @@ function fep_send_message( $message = null)
 		$message['post_status'] = fep_get_option('parent_post_status','publish');
 		$message['post_parent'] = 0;
 	}
-	if( empty($message['subject']) || empty($message['message']) ) {
+	
+	$message = apply_filters('fep_filter_message_before_send', $message );
+	
+	if( empty($message['subject']) || empty($message['message']) || empty($message['message_from']) ) {
 		return false;
 	}
-	// Create post object
+	// Create post array
 	$post = array(
-	  'post_title'    	=> wp_kses_post( $message['subject'] ),
-	  'post_content'  	=> wp_kses_post( $message['message'] ),
-	  'post_status'   	=> $message['post_status'],
-	  'post_parent'   	=> $message['post_parent'],
-	  'post_type'   	=> 'fep_message'
+		'post_author'   => $message['message_from'],
+	  	'post_title'    => $message['subject'],
+	  	'post_content'  => $message['message'],
+	  	'post_status'   => $message['post_status'],
+	  	'post_parent'   => $message['post_parent'],
+	  	'post_type'   	=> 'fep_message'
 	);
 	 
 	// Insert the message into the database
@@ -718,7 +722,7 @@ function fep_send_message( $message = null)
 		} else {
 			add_post_meta( $message_id, '_participants', $message['message_to_id'] );
 		}
-		add_post_meta( $message_id, '_participants', get_current_user_id() );
+		add_post_meta( $message_id, '_participants', $message['message_from'] );
 	}
 	if( $message['post_parent'] ) {
 		
@@ -732,7 +736,7 @@ function fep_send_message( $message = null)
 				delete_user_meta( $participant, '_fep_user_message_count' );
 			}
 		}
-		fep_make_read( true, $message['post_parent'] );
+		fep_make_read( true, $message['post_parent'], $message['message_from'] );
 		
 	} elseif( 'threaded' != fep_get_option('message_view','threaded') ) {
 		$participants = get_post_meta( $message_id, '_participants' );
@@ -746,7 +750,7 @@ function fep_send_message( $message = null)
 		}
 	}
 	
-	fep_make_read( true, $message_id );
+	fep_make_read( true, $message_id, $message['message_from'] );
 	
 	 do_action('fep_action_message_after_send', $message_id, $message);
 	

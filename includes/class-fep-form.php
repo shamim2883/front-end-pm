@@ -65,6 +65,11 @@ if (!class_exists('Fep_Form'))
 					'value'     => '',
 					'where'	=> array( 'new_message', 'reply' )
 				),
+				'message_from' => array(
+					'type'        => 'message_from',
+					'value'    => get_current_user_id(),
+					'where'    => array( 'new_message', 'reply' )
+				),
 				'token' => array(
 					'type'        => 'token',
 					'value'    => fep_create_nonce('fep_message'),
@@ -244,6 +249,10 @@ function field_output( $field, $errors )
 					?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php esc_attr_e( $field['class'] ); ?>" type="hidden" name="<?php esc_attr_e( $field['name'] ); ?>" value="<?php esc_attr_e( $field['value' ] ); ?>" <?php echo $attrib; ?> /><?php
 
 					break;
+				case 'message_from' :
+					?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php esc_attr_e( $field['class'] ); ?>" type="hidden" name="<?php esc_attr_e( $field['name'] ); ?>" value="<?php esc_attr_e( $field['posted-value' ] ); ?>" <?php echo $attrib; ?> /><?php
+
+					break;
 				case 'fep_parent_id' :
 					?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php esc_attr_e( $field['class'] ); ?>" type="hidden" name="<?php esc_attr_e( $field['name'] ); ?>" value="<?php esc_attr_e( $field['posted-value' ] ); ?>" <?php echo $attrib; ?> /><?php
 
@@ -377,6 +386,14 @@ function field_output( $field, $errors )
 							$errors->add( $field['id'] , __('You must enter a valid recipient!', 'front-end-pm'));
 						}
 
+					break;
+				case 'message_from' :
+					 if ( empty($field['posted-value']) || $field['posted-value'] != absint($field['posted-value']) ) {
+					 		$errors->add( $field['id'] , __("Invalid message from!", 'front-end-pm'));
+					 } elseif ( $field['posted-value']  != get_current_user_id() ) {
+						  	$errors->add( $field['id'] , __("You do not have permission to send this message!", 'front-end-pm'));
+						}
+		
 					break;
 				case 'fep_parent_id' :
 					 if ( empty($field['posted-value']) || $field['posted-value'] != absint($field['posted-value']) || fep_get_parent_id( $field['posted-value'] ) != $field['posted-value'] ) {
