@@ -66,7 +66,7 @@ class Fep_Emails
 			$message .= __('Please Click the following link to view full Message.', 'front-end-pm')."\r\n";
 			$message .= fep_query_url('messagebox')."\r\n";
 			
-			if( 'html' == fep_get_option('email_content_type','html') ) {
+			if( 'html' == fep_get_option( 'email_content_type', 'plain_text' ) ) {
 				$message = nl2br( $message );
 			}
 			
@@ -147,7 +147,7 @@ class Fep_Emails
 		$message .= __('Please Click the following link to view full Announcement.', 'front-end-pm'). "\r\n";
 		$message .= fep_query_url('announcements'). "\r\n";
 		
-		if( 'html' == fep_get_option('email_content_type','html') ) {
+		if( 'html' == fep_get_option( 'email_content_type', 'plain_text' ) ) {
 			$message = nl2br( $message );
 		}
 			

@@ -652,7 +652,7 @@ function fep_wp_mail_from_name( $from_name ) {
 
 function fep_wp_mail_content_type( $content_type ) {
 	
-	$type = fep_get_option('email_content_type','html');
+	$type = fep_get_option( 'email_content_type', 'plain_text' );
 	
 	if( 'html' == $type ) {
 		return 'text/html';
