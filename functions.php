@@ -760,7 +760,6 @@ function fep_send_message( $message = null)
 
 function fep_backticker_encode($text) {
 	$text = $text[1];
-    //$text = stripslashes($text); //already done
     $text = str_replace('&amp;lt;', '&lt;', $text);
     $text = str_replace('&amp;gt;', '&gt;', $text);
 	$text = htmlspecialchars($text, ENT_QUOTES);
@@ -774,7 +773,8 @@ function fep_backticker_encode($text) {
 }
 
 function fep_backticker_display_code($text) {
-    $text = preg_replace_callback("|`(.*?)`|", "fep_backticker_encode", $text);
+    //$text = preg_replace_callback("|`(.*?)`|", "fep_backticker_encode", $text);
+	$text = preg_replace_callback('!`(?:\r\n|\n|\r|)(.*?)(?:\r\n|\n|\r|)`!ims', "fep_backticker_encode", $text);
     $text = str_replace('<code></code>', '`', $text);
     return $text;
 }
