@@ -215,6 +215,7 @@ function field_output( $field, $errors )
 					break;
 					
 				case "wp_editor" :
+				case "teeny" :
 				
 							wp_editor( wp_kses_post( $field['posted-value' ] ), $field['id'], array( 'textarea_name' => $field['name'], 'editor_class' => $field['class'], 'teeny' => true, 'media_buttons' => false) );
 
