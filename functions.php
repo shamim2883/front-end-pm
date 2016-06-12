@@ -2,13 +2,17 @@
 
 function fep_plugin_activate(){
 
+	global $wpdb;
 	
 		$roles = array_keys( get_editable_roles() );
+		$id = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE post_content LIKE '%[front-end-pm]%' AND post_status = 'publish' AND post_type = 'page' LIMIT 1");
+		
 		$options = array();
 		
 		$options['userrole_access'] = $roles;
 		$options['userrole_new_message'] = $roles;
 		$options['userrole_reply'] = $roles;
+		$options['page_id'] = $id;
 		
 		update_option( 'FEP_admin_options', wp_parse_args( get_option('FEP_admin_options'), $options) );
 
