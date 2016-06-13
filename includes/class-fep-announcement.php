@@ -25,11 +25,11 @@ function recalculate_user_stats(){
 	delete_metadata( 'user', 0, '_fep_user_announcement_count', '', true );
 }
 
-function get_user_announcements( $user_id = false )
+function get_user_announcements()
 {
-	if( false === $user_id ) {
-		$user_id = get_current_user_id();
-	}
+
+	$user_id = get_current_user_id();
+
 	
 	if( ! $user_id )
 		return array();
