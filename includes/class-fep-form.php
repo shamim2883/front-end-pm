@@ -166,6 +166,8 @@ function field_output( $field, $errors )
 		 if ( ! empty( $field['required'] ) ) $attrib .= 'required = "required" ';
 		 if ( ! empty( $field['readonly'] ) ) $attrib .= 'readonly = "readonly" ';
 		 if ( ! empty( $field['disabled'] ) ) $attrib .= 'disabled = "disabled" ';
+		 if ( ! empty( $field['minlength'] ) ) $attrib .= 'minlength = "' . absint( $field['minlength'] ) . '" ';
+		 if ( ! empty( $field['maxlength'] ) ) $attrib .= 'maxlength = "' . absint( $field['maxlength'] ) . '" ';
 		
 		?><div class="fep-form-field"><?php if ( !empty($field['label']) ) { ?>
 			<div class="fep-label"><label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['label'] ) ; ?>: <?php if ( ! empty( $field['required'] ) ) : ?><span class="required">*</span><?php endif; ?></label></div>
