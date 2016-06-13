@@ -411,4 +411,5 @@ display:none;
 .fep-table .fep-message-excerpt { display:none;}
 .fep-action-table, .fep-action-table > div,.fep-action-table > div > div {display:block;}
 #fep-menu .fep-button,.fep-button,.fep-button-active { width:100% }
+#fep-content input[type=text]{ width:100%}
 }
