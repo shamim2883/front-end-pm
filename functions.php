@@ -92,6 +92,9 @@ function fep_page_id() {
 }
 
 function fep_action_url( $action = '' ) {
+
+	_doing_it_wrong( __FUNCTION__, sprintf(__('use %s', 'front-end-pm'), 'fep_query_url()'), '3.3.1');
+	
       global $wp_rewrite;
       if($wp_rewrite->using_permalinks())
         $delim = '?';
@@ -385,7 +388,7 @@ function fep_download_file()
 	if ( !fep_current_user_can( 'access_message' ) )
 	wp_die(__('No attachments found', 'front-end-pm'));
 
-	if ( 'attachment' != get_post_type($id) )
+	if ( 'attachment' != get_post_type( $id ) || 'publish' != get_post_status ( $id ) )
 	wp_die(__('No attachments found', 'front-end-pm'));
 
 	$message_id = fep_get_parent_id($id);
