@@ -371,6 +371,16 @@ display:none;
 }
 
 .fep-font-red { color: #FF0000; }
+.fep-message .fep-message-title-heading {
+	border: 1px solid #E7E7E7;
+	width: 100%;
+	font-size: 20px;
+	font-weight:bold;
+	background-color:#F2F7FC;
+	border-radius: 10px;
+	padding-left:10px;
+	padding-right:10px;
+}
 .fep-per-message {
 	margin: 5px;
 	padding:5px;
@@ -380,7 +390,7 @@ display:none;
 {
 	border: 1px solid #E7E7E7;
 	width: 100%;
-	font-size: 20px;
+	font-size: 16px;
 	font-weight:bold;
 	cursor:pointer;
 	background-color:#F2F7FC;

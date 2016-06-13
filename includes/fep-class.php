@@ -424,8 +424,10 @@ function view_message()
 	  fep_make_read( true );
 	  ?>
 	  <div class="fep-message">
+	  	<div class="fep-message-title-heading"><?php the_title(); ?></div>
 	  	<div class="fep-per-message">
-			<div class="fep-message-title"><?php the_title(); ?>
+			<div class="fep-message-title">
+				<span class="author"><?php the_author_meta('display_name'); ?></span>
 				<span class="date"><?php the_time(); ?></span>
 			</div>
 			<div class="fep-message-content">
