@@ -926,4 +926,23 @@ function fep_notification_ajax() {
 add_action('wp_ajax_fep_notification_ajax','fep_notification_ajax');
 add_action('wp_ajax_nopriv_fep_notification_ajax','fep_notification_ajax');
 
+function fep_auth_redirect(){
+	if( !fep_page_id() || ! is_page( fep_page_id() ) ) {
+		return;
+	}
+	if( apply_filters( 'fep_using_auth_redirect', true ) ) {
+		auth_redirect();
+	}
+}
+add_action('template_redirect','fep_auth_redirect');
+
+add_filter( 'auth_redirect_scheme', 'fep_auth_redirect_scheme' );
+function fep_auth_redirect_scheme( $scheme ){
+
+	if( is_admin() || ! fep_page_id() || ! is_page( fep_page_id() ) ) {
+		return $scheme;
+	}
+	
+    return 'logged_in';
+}
 

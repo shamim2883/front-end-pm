@@ -85,11 +85,7 @@ if (!class_exists("fep_main_class"))
         $out .= $this->Footer();
       }
       else
-      {
-		  if( apply_filters( 'fep_using_auth_redirect', true ) ) {
-			auth_redirect();
-		  }
-		  
+      { 
         $out = "<div id='fep-error'>".__("You must be logged-in to view your message.", 'front-end-pm')."</div>";
       }
       return apply_filters('fep_main_shortcode_output', $out);
