@@ -14,6 +14,12 @@ class Fep_Emails
 		
     function actions_filters()
     {
+		if( isset( $_POST['action'] ) && 'fep_update_ajax' == $_POST['action'] )
+			return;
+			
+		if( true != apply_filters( 'fep_enable_email_send', true ) )
+			return;
+
 		//add_action ('publish_fep_message', array($this, 'publish_send_email'), 10, 2);
 		add_action ('transition_post_status', array($this, 'publish_send_email'), 10, 3);
 		add_action( 'fep_save_message', array($this, 'save_send_email'), 20, 2 ); //after '_participants' meta saved, if from Back End
