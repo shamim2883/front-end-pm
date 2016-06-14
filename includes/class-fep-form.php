@@ -192,6 +192,15 @@ function field_output( $field, $errors )
 					break;
 				case 'message_to' :
 							$to = (isset($_REQUEST['to']))? $_REQUEST['to']:'';
+							
+							if( is_numeric( $to ) && $user = fep_get_userdata( $to, 'user_nicename', 'id' ) ) {
+								$to = $user;
+							} elseif ( is_email( $to ) && $user = fep_get_userdata( $to, 'user_nicename', 'email' ) ) {
+								$to = $user;
+							} elseif ( $user = fep_get_userdata( $to, 'user_nicename', 'login' ) ) {
+								$to = $user;
+							}
+							
 							$message_to = ( isset( $_POST['message_to'] ) ) ? esc_attr( $_POST['message_to'] ): fep_get_userdata( $to, 'user_nicename' );
 							$message_top = ( isset( $_POST['message_top'] ) ) ? esc_attr( $_POST['message_top'] ): fep_get_userdata($to, 'display_name');
 
