@@ -930,11 +930,14 @@ function fep_auth_redirect(){
 	if( !fep_page_id() || ! is_page( fep_page_id() ) ) {
 		return;
 	}
+	
+	do_action( 'fep_template_redirect' );
+	
 	if( apply_filters( 'fep_using_auth_redirect', true ) ) {
 		auth_redirect();
 	}
 }
-add_action('template_redirect','fep_auth_redirect');
+add_action('template_redirect','fep_auth_redirect', 99 );
 
 add_filter( 'auth_redirect_scheme', 'fep_auth_redirect_scheme' );
 function fep_auth_redirect_scheme( $scheme ){
