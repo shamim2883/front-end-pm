@@ -236,7 +236,7 @@ function fep_is_user_blocked( $login = '' ){
 	
 	if ($login){
 	$wpusers = explode(',', str_replace(' ', '', fep_get_option('have_permission')));
-	//var_dump($wpusers);
+
 		if(in_array( $login, $wpusers))
 		return true;
 		} //User not logged in
@@ -250,7 +250,7 @@ function fep_is_user_whitelisted( $login = '' ){
 	
 	if ($login){
 	$wpusers = explode(',', str_replace(' ', '', fep_get_option('whitelist_username')));
-	//var_dump($wpusers);
+
 		if(in_array( $login, $wpusers))
 		return true;
 		} //User not logged in

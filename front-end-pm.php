@@ -43,6 +43,7 @@ function fep_include_require_files()
 	
 	if( is_admin() ) {
 		$fep_files['settings'] 	= FEP_PLUGIN_DIR. 'admin/class-fep-admin-settings.php';
+		$fep_files['update'] 	= FEP_PLUGIN_DIR. 'admin/class-fep-update.php';
 	}			
 					
 	$fep_files = apply_filters('fep_include_files', $fep_files );
