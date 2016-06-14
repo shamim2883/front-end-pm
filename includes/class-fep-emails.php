@@ -56,7 +56,6 @@ class Fep_Emails
 		
 		if( $participants && is_array( $participants ) )
 		{
-			fep_add_email_filters();
 			
 			$subject =  get_bloginfo("name").': '.__('New Message', 'front-end-pm');
 			$message = __('You have received a new message in', 'front-end-pm'). "\r\n";
@@ -69,6 +68,12 @@ class Fep_Emails
 			if( 'html' == fep_get_option( 'email_content_type', 'plain_text' ) ) {
 				$message = nl2br( $message );
 			}
+			$content = apply_filters( 'fep_filter_before_email_send', compact( 'subject', 'message' ) );
+
+			if( empty( $content['subject'] ) || empty( $content['message'] ) )
+			return;
+			
+			fep_add_email_filters();
 			
 			foreach( $participants as $participant ) 
 			{
@@ -83,7 +88,7 @@ class Fep_Emails
 				if( ! $to )
 					continue;
 						
-				wp_mail( $to, $subject, $message );
+				wp_mail( $to, $content['subject'], $content['message'] );
 			} //End foreach
 			
 			fep_remove_email_filters();
@@ -150,14 +155,18 @@ class Fep_Emails
 		if( 'html' == fep_get_option( 'email_content_type', 'plain_text' ) ) {
 			$message = nl2br( $message );
 		}
-			
+		$content = apply_filters( 'fep_filter_before_announcement_email_send', compact( 'subject', 'message' ) );
+		
+		if( empty( $content['subject'] ) || empty( $content['message'] ) )
+			return;
+		
 	fep_add_email_filters();
 	
 	foreach($chunked_bcc as $bcc_chunk){
 			$headers = array();
 			$headers['Bcc'] = 'Bcc: '.implode(',', $bcc_chunk);
 			
-			wp_mail($to , $subject, $message, $headers);
+			wp_mail($to , $content['subject'], $content['message'], $headers);
 		}
 		
 	fep_remove_email_filters();
