@@ -323,12 +323,18 @@ function fep_get_parent_id( $id ) {
 
 	if( ! $id )
 		return 0;
-		
-	if( $parent = wp_get_post_parent_id( $id )){
-		return fep_get_parent_id( $parent ); //recursive
-	} else {
-		return $id;
-	}
+	
+	$parent = wp_get_post_parent_id( $id );
+	
+	// climb up the hierarchy until we reach parent = '0'
+    while ( $parent != '0'){
+        $id = $parent;
+
+        $parent = wp_get_post_parent_id( $id );
+    }
+	
+	return $id;
+
 }
 
 add_filter( 'the_time', 'fep_format_date', 10, 2  ) ;
