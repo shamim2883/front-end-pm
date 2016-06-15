@@ -53,8 +53,7 @@
 	color: black;
 	background-color: #FFEBE8;
 	border-color: #C00;
-	height: 100%;
-	width: 96%;
+	width: 100%;
 	text-align: center;
 	font-size: 12px;
 	font-weight: bold;
@@ -278,7 +277,6 @@ display:none;
 	color: black;
 	background-color: #FFEBE8;
 	border-color: #C00;
-	height: 100%;
 	width: 100%;
 	text-align: center;
 	font-size: 12px;
@@ -299,6 +297,8 @@ display:none;
 .fep-table .fep-table-caption {display: table-caption; text-align:center; font-weight:bold;}
 
 .fep-action-table{ margin-bottom: 10px; }
+.fep-action-table > div > div {display: table-cell; width:45%}
+.fep-action-table select { margin-top:10px;}
 
 .fep-table .fep-column-avatar, .fep-table .fep-column-fep-cb { vertical-align:middle; padding-right:10px;}
 .fep-table .fep-column-author, .fep-table .fep-column-date { min-width:150px;}
@@ -380,6 +380,9 @@ display:none;
 	border-radius: 10px;
 	padding-left:10px;
 	padding-right:10px;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 .fep-per-message {
 	margin: 5px;
@@ -397,6 +400,9 @@ display:none;
 	border-radius: 10px;
 	padding-left:10px;
 	padding-right:10px;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 .fep-per-message .fep-message-title .date
 {
@@ -410,6 +416,7 @@ display:none;
 @media screen and (max-width: 480px) {
 .fep-table .fep-message-excerpt { display:none;}
 .fep-action-table, .fep-action-table > div,.fep-action-table > div > div {display:block;}
+.fep-action-table > div > div {width:100%}
 #fep-menu .fep-button,.fep-button,.fep-button-active { width:100% }
 #fep-content input[type=text]{ width:100%}
 }
