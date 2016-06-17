@@ -752,8 +752,9 @@ function fep_send_message( $message = null, $override = array() )
 		} else {
 			add_post_meta( $message_id, '_participants', $message['message_to_id'] );
 		}
-		add_post_meta( $message_id, '_participants', $inserted_message->post_author );
 	}
+	add_post_meta( $message_id, '_participants', $inserted_message->post_author );
+	
 	if( $inserted_message->post_parent ) {
 		
 		$participants = get_post_meta( $inserted_message->post_parent, '_participants' );
@@ -768,7 +769,7 @@ function fep_send_message( $message = null, $override = array() )
 		}
 		fep_make_read( true, $inserted_message->post_parent, $inserted_message->post_author );
 		
-	} elseif( 'threaded' != fep_get_option('message_view','threaded') ) {
+	} else {
 		$participants = get_post_meta( $message_id, '_participants' );
 	
 		if( $participants && is_array( $participants ) )
