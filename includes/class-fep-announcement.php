@@ -199,7 +199,7 @@ function bulk_action( $action, $ids = null ) {
 	$token = ! empty($_POST['token']) ? $_POST['token'] : '';
 				
 	if ( !fep_verify_nonce( $token, 'announcement_bulk_action') ) {
-		return '<div id="fep-error">' .__("Invalid Token. Please try again!", 'front-end-pm'). ' </div>';
+		return '<div class="fep-error">' .__("Invalid Token. Please try again!", 'front-end-pm'). ' </div>';
 	}
 					
 	$count = 0;
@@ -218,7 +218,7 @@ function bulk_action( $action, $ids = null ) {
 			$message .= ' ';
 			$message .= __('successfully deleted.', 'front-end-pm');
 		} 
-		$message = '<div id="fep-success">'.$message.'</div>';
+		$message = '<div class="fep-success">'.$message.'</div>';
 	}
 	return apply_filters( 'fep_bulk_action_message', $message, $count);
 }
@@ -316,7 +316,7 @@ function get_column_content($column)
 	  $announcements = $this->get_user_announcements();
 	  
 	  if( ! $total_announcements ) {
-	  	return "<div id='fep-error'>".apply_filters('fep_filter_announcement_empty', __("No announcements found.", 'front-end-pm') )."</div>";
+	  	return "<div class='fep-error'>".apply_filters('fep_filter_announcement_empty', __("No announcements found.", 'front-end-pm') )."</div>";
 	  }
 	  ob_start();
 	  
@@ -365,7 +365,7 @@ function get_column_content($column)
 			?></div><?php
 			echo fep_pagination( $this->get_user_announcement_count($g_filter) );
 		} else {
-			?><div id="fep-error"><?php _e('No announcements found. Try different filter.', 'front-end-pm'); ?></div><?php 
+			?><div class="fep-error"><?php _e('No announcements found. Try different filter.', 'front-end-pm'); ?></div><?php 
 		}
 		?></form><?php 
 		wp_reset_postdata();
@@ -379,13 +379,13 @@ function view_announcement()
       $pID = !empty($_GET['id']) ? absint($_GET['id']) : 0;
 	  
 	  if ( ! $pID || ! fep_current_user_can( 'view_announcement', $pID ) ) {
-	  	return "<div id='fep-error'>".__("You do not have permission to view this announcement!", 'front-end-pm')."</div>";
+	  	return "<div class='fep-error'>".__("You do not have permission to view this announcement!", 'front-end-pm')."</div>";
 	  }
 
       $announcement = fep_get_message( $pID );
 
 	  if ( ! $announcement ) {
-	  	return "<div id='fep-error'>".__("You do not have permission to view this announcement!", 'front-end-pm')."</div>";
+	  	return "<div class='fep-error'>".__("You do not have permission to view this announcement!", 'front-end-pm')."</div>";
 	  }
 	  
 	  $post = $announcement; //setup_postdata does not work properly if variable name is NOT $post !!!!!

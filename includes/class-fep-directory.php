@@ -34,7 +34,7 @@ class Fep_Directory
 	function directory()
     {
 	if ( ! fep_current_user_can( 'access_directory') ) {
-	  	echo "<div id='fep-error'>".__("You do not have permission to access directory!", 'front-end-pm')."</div>";
+	  	echo "<div class='fep-error'>".__("You do not have permission to access directory!", 'front-end-pm')."</div>";
 		return;
 	  }
 	  
@@ -79,7 +79,7 @@ class Fep_Directory
       }
       else
       {
-        $directory = "<div id='fep-error'>".__("No users found.", 'front-end-pm')."</div>";;
+        $directory = "<div class='fep-error'>".__("No users found.", 'front-end-pm')."</div>";;
       }
 	  echo apply_filters( 'fep_directory_output', $directory );
     }

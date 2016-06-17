@@ -7,13 +7,13 @@ if (!class_exists("fep_main_class"))
     
 	private static $instance;
 	
-	private $posted_new_message = false;
-	private $posted_reply_message = false;
-	private $posted_bulk_actions = false;
-	private $posted_user_settings = false;
-	private $have_error = false;
-	private $errors;
-	private $message;
+	public $posted_new_message = false;
+	public $posted_reply_message = false;
+	public $posted_bulk_actions = false;
+	public $posted_user_settings = false;
+	public $have_error = false;
+	public $errors;
+	public $message;
 	
 	public static function init()
         {
@@ -36,7 +36,7 @@ if (!class_exists("fep_main_class"))
 	  
 	  if ( ! fep_current_user_can('access_message') ){
 	  
-	  	return "<div id='fep-error'>".__("You do not have permission to access message system", 'front-end-pm')."</div>";
+	  	return "<div class='fep-error'>".__("You do not have permission to access message system", 'front-end-pm')."</div>";
 	  }
 		
 		$this->Posted();
@@ -86,7 +86,7 @@ if (!class_exists("fep_main_class"))
       }
       else
       { 
-        $out = "<div id='fep-error'>".__("You must be logged-in to view your message.", 'front-end-pm')."</div>";
+        $out = "<div class='fep-error'>".__("You must be logged-in to view your message.", 'front-end-pm')."</div>";
       }
       return apply_filters('fep_main_shortcode_output', $out);
     }
@@ -113,12 +113,12 @@ if (!class_exists("fep_main_class"))
 						$message = get_post( $message_id );
 						
 						if( 'publish' == $message->post_status ) {
-							$this->message = '<div id="fep-success">' .__("Message successfully sent.", 'front-end-pm'). ' </div>';
+							$this->message = '<div class="fep-success">' .__("Message successfully sent.", 'front-end-pm'). ' </div>';
 						} else {
-							$this->message = '<div id="fep-success">' .__("Message successfully sent and waiting for admin moderation.", 'front-end-pm'). ' </div>';
+							$this->message = '<div class="fep-success">' .__("Message successfully sent and waiting for admin moderation.", 'front-end-pm'). ' </div>';
 						}
 					} else {
-					$this->message = '<div id="fep-error">' .__("Something wrong. Please try again.", 'front-end-pm'). ' </div>';
+					$this->message = '<div class="fep-error">' .__("Something wrong. Please try again.", 'front-end-pm'). ' </div>';
 					}
 				}
 				
@@ -140,12 +140,12 @@ if (!class_exists("fep_main_class"))
 						$message = get_post( $message_id );
 						
 						if( 'publish' == $message->post_status ) {
-							$this->message = '<div id="fep-success">' .__("Message successfully sent.", 'front-end-pm'). ' </div>';
+							$this->message = '<div class="fep-success">' .__("Message successfully sent.", 'front-end-pm'). ' </div>';
 						} else {
-							$this->message = '<div id="fep-success">' .__("Message successfully sent and waiting for admin moderation.", 'front-end-pm'). ' </div>';
+							$this->message = '<div class="fep-success">' .__("Message successfully sent and waiting for admin moderation.", 'front-end-pm'). ' </div>';
 						}
 					} else {
-					$this->message = '<div id="fep-error">' .__("Something wrong. Please try again.", 'front-end-pm'). ' </div>';
+					$this->message = '<div class="fep-error">' .__("Something wrong. Please try again.", 'front-end-pm'). ' </div>';
 					}
 				}
 				
@@ -161,7 +161,7 @@ if (!class_exists("fep_main_class"))
 				$token = ! empty($_POST['token']) ? $_POST['token'] : '';
 				
 				if ( !fep_verify_nonce( $token, 'bulk_action') ) {
-						$this->message = '<div id="fep-error">' .__("Invalid Token. Please try again!", 'front-end-pm'). ' </div>';
+						$this->message = '<div class="fep-error">' .__("Invalid Token. Please try again!", 'front-end-pm'). ' </div>';
 						return;
 					}
 				
@@ -178,7 +178,7 @@ if (!class_exists("fep_main_class"))
 				if( count($this->errors->get_error_messages())>0 ){
 					$this->message = fep_error( $this->errors ) ;
 				} else {
-					$this->message = '<div id="fep-success">' .__("Settings successfully saved.", 'front-end-pm'). ' </div>';		
+					$this->message = '<div class="fep-success">' .__("Settings successfully saved.", 'front-end-pm'). ' </div>';		
 				}
 				
 			break;
@@ -230,11 +230,11 @@ if (!class_exists("fep_main_class"))
 	  $header .= "</div>";
 	  
       if ( $max_total && (( $max_total * 90 )/ 100 ) <= $total_count  ) {
-	   		$class = "fep-font-red";
+	   		$class = " class='fep-font-red'";
 	   } else {
 	   		$class = "";
 	   }
-      $header .= "<div class='$class'>" . __("Message box size", 'front-end-pm').": ".sprintf(__("%s of %s", 'front-end-pm'), number_format_i18n($total_count), $max_text ). "</div>";
+      $header .= "<div{$class}>" . __("Message box size", 'front-end-pm').": ".sprintf(__("%s of %s", 'front-end-pm'), number_format_i18n($total_count), $max_text ). "</div>";
       $header .= "</div></div></div>";
 	  
       return $header;
@@ -298,7 +298,7 @@ if (!class_exists("fep_main_class"))
 	  }
 	  
 	  if( ! $total_message ) {
-	  	return "<div id='fep-error'>".apply_filters('fep_filter_messagebox_empty', __("No messages found.", 'front-end-pm'), $action)."</div>";
+	  	return "<div class='fep-error'>".apply_filters('fep_filter_messagebox_empty', __("No messages found.", 'front-end-pm'), $action)."</div>";
 	  }
 	  ob_start();
 	  
@@ -347,7 +347,7 @@ if (!class_exists("fep_main_class"))
 			?></div><?php
 			echo fep_pagination();
 		} else {
-			?><div id="fep-error"><?php _e('No messages found. Try different filter.', 'front-end-pm'); ?></div><?php 
+			?><div class="fep-error"><?php _e('No messages found. Try different filter.', 'front-end-pm'); ?></div><?php 
 		}
 		?></form><?php 
 		wp_reset_postdata();
@@ -369,7 +369,7 @@ function user_settings()
 function new_message(){
 
 	if ( ! fep_current_user_can( 'send_new_message') ) {
-	  	return "<div id='fep-error'>".__("You do not have permission to send new message!", 'front-end-pm')."</div>";
+	  	return "<div class='fep-error'>".__("You do not have permission to send new message!", 'front-end-pm')."</div>";
 	  }
 	  
 	$html = '<h2>' . __('Send Message', 'front-end-pm') . '</h2>';
@@ -394,7 +394,7 @@ function view_message()
       $pID = !empty($_GET['id']) ? absint($_GET['id']) : 0;
 	  
 	  if ( ! $pID || ! fep_current_user_can( 'view_message', $pID ) ) {
-	  	return "<div id='fep-error'>".__("You do not have permission to view this message!", 'front-end-pm')."</div>";
+	  	return "<div class='fep-error'>".__("You do not have permission to view this message!", 'front-end-pm')."</div>";
 	  }
 	  
 	  	$parent_id = fep_get_parent_id( $pID );
@@ -408,7 +408,7 @@ function view_message()
 			}
 
 	  if ( ! $message ) {
-	  	return "<div id='fep-error'>".__("You do not have permission to view this message!", 'front-end-pm')."</div>";
+	  	return "<div class='fep-error'>".__("You do not have permission to view this message!", 'front-end-pm')."</div>";
 	  }
 	  
 	  $post = $message; //setup_postdata does not work properly if variable name is NOT $post !!!!!
@@ -458,7 +458,7 @@ function view_message()
 		wp_reset_postdata();
 		
 		if ( ! fep_current_user_can( 'send_reply', $parent_id ) ) {
-	  		echo "<div id='fep-error'>".__("You do not have permission to send reply to this message!", 'front-end-pm')."</div>";
+	  		echo "<div class='fep-error'>".__("You do not have permission to send reply to this message!", 'front-end-pm')."</div>";
 	  	} elseif( $this->posted_reply_message ) {
 			if( $this->have_error ) {
 				echo Fep_Form::init()->form_field_output('reply', $this->errors, array( 'fep_parent_id' => $parent_id ));

@@ -27,10 +27,20 @@ function fep_translation()
 function fep_enqueue_scripts()
     {
 	
-	wp_enqueue_style( 'fep-style', FEP_PLUGIN_URL . 'assets/css/style.css' );
+	wp_register_style( 'fep-common-style', FEP_PLUGIN_URL . 'assets/css/common-style.css' );
+	wp_register_style( 'fep-style', FEP_PLUGIN_URL . 'assets/css/style.css' );
+
+	if( fep_page_id() ) {
+		if( is_page( fep_page_id() ) ) {
+			wp_enqueue_style( 'fep-style' );
+		}
+	} else {
+		wp_enqueue_style( 'fep-style' );
+	}
+	wp_enqueue_style( 'fep-common-style' );
 	$custom_css = trim( fep_get_option('custom_css') );
 	if( $custom_css ) {
-		wp_add_inline_style( 'fep-style', $custom_css );
+		wp_add_inline_style( 'fep-common-style', $custom_css );
 	}
 	
 	wp_register_script( 'fep-script', FEP_PLUGIN_URL . 'assets/js/script.js', array( 'jquery' ), '3.1', true );
@@ -191,7 +201,7 @@ function fep_error($wp_error){
 	if (is_admin())
 	$html = '<div id="message" class="error">';
 	else
-	$html = '<div id="fep-wp-error">';
+	$html = '<div class="fep-wp-error">';
 	foreach($errors as $error){
 		$html .= '<strong>' . __('Error', 'front-end-pm') . ': </strong>'.esc_html($error).'<br />';
 	}

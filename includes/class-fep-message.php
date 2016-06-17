@@ -333,7 +333,7 @@ function bulk_action( $action, $ids = null ) {
 			$message .= ' ';
 			$message .= __('successfully restored.', 'front-end-pm');
 		}
-		$message = '<div id="fep-success">'.$message.'</div>';
+		$message = '<div class="fep-success">'.$message.'</div>';
 	}
 	return apply_filters( 'fep_message_bulk_action_message', $message, $count);
 }

@@ -1,0 +1,53 @@
+/*Menu Styling*/
+#fep-menu
+{
+	color: #333;
+	width: 100%;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+#fep-menu .fep-button,.fep-button,.fep-button-active {
+	display: inline-block;
+	color:#000000 !important;
+	font-size:13px;
+	background:#F0FCFF;
+	border: 1px solid #8FBFC9;
+	padding:10px 20px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	margin-right:10px;
+	margin-top:10px;
+	font-weight:bold;
+	text-decoration:none !important;
+}
+
+#fep-menu .fep-button:hover,.fep-button-active {
+	background:#D3EEF5;
+	color: #333;
+	font-size: 14px;
+}
+
+#fep-notification-bar
+{
+	color: black;
+	background-color: #FFEBE8;
+	border-color: #C00;
+	width: 100%;
+	text-align: center;
+	font-size: 12px;
+	font-weight: bold;
+	border-width: 1px;
+	border-style: solid;
+	padding: 0.6em;
+	margin: 15px 0;
+	-moz-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
