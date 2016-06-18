@@ -484,18 +484,18 @@ function fep_pagination( $total = null, $per_page = null, $list_class = 'fep-pag
     $html       .= '<li class="' . $class . '"><a href="' . esc_url( add_query_arg( 'feppage', ( $page - 1 ) ) ) . '">&laquo;</a></li>';
  
     if ( $start > 1 ) {
-        $html   .= '<li><a href="' . esc_url( add_query_arg( 'feppage',  1 ) ) . '">1</a></li>';
+        $html   .= '<li><a href="' . esc_url( add_query_arg( 'feppage',  1 ) ) . '">' . number_format_i18n( 1 ) . '</a></li>';
         $html   .= '<li class="disabled"><span>...</span></li>';
     }
  
     for ( $i = $start ; $i <= $end; $i++ ) {
         $class  = ( $page == $i ) ? "active" : "";
-        $html   .= '<li class="' . $class . '"><a href="' . esc_url( add_query_arg( 'feppage', $i ) ) . '">' . $i . '</a></li>';
+        $html   .= '<li class="' . $class . '"><a href="' . esc_url( add_query_arg( 'feppage', $i ) ) . '">' . number_format_i18n( $i ) . '</a></li>';
     }
  
     if ( $end < $last ) {
         $html   .= '<li class="disabled"><span>...</span></li>';
-        $html   .= '<li><a href="' . esc_url( add_query_arg( 'feppage', $last ) ) . '">' . $last . '</a></li>';
+        $html   .= '<li><a href="' . esc_url( add_query_arg( 'feppage', $last ) ) . '">' . number_format_i18n( $last ) . '</a></li>';
     }
  
     $class      = ( $page == $last ) ? "disabled" : "";
@@ -730,7 +730,7 @@ function fep_send_message( $message = null, $override = array() )
 	  	'post_type'   	=> 'fep_message'
 	);
 	
-	if( $override ) {
+	if( $override && is_array( $override ) ) {
 		$post = wp_parse_args( $override, $post );
 	}
 	 
@@ -832,7 +832,7 @@ $searchq = $_POST['searchBy'];
 
 
 $args = array(
-					'search' => "*$searchq*",
+					'search' => "*{$searchq}*",
 					'search_columns' => array( 'display_name' ),
 					'exclude' => array( $user_ID ),
 					'number' => 5,
