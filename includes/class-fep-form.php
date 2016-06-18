@@ -193,16 +193,34 @@ function field_output( $field, $errors )
 				case 'message_to' :
 							$to = (isset($_REQUEST['to']))? $_REQUEST['to']:'';
 							
-							if( is_numeric( $to ) && $user = fep_get_userdata( $to, 'user_nicename', 'id' ) ) {
-								$to = $user;
-							} elseif ( is_email( $to ) && $user = fep_get_userdata( $to, 'user_nicename', 'email' ) ) {
-								$to = $user;
-							} elseif ( $user = fep_get_userdata( $to, 'user_nicename', 'login' ) ) {
-								$to = $user;
+							$support = array(
+								'nicename' 	=> true,
+								'id' 		=> true,
+								'email' 	=> true,
+								'login' 	=> true
+								);
+							
+							$support = apply_filters( 'fep_message_to_support', $support );
+								
+							if ( !empty( $support['nicename'] ) && $user = fep_get_userdata( $to, 'user_nicename' ) ) {
+								$m_to = fep_get_userdata( $user, 'user_nicename' );
+								$m_top = fep_get_userdata( $user, 'display_name');
+							} elseif( is_numeric( $to ) && !empty( $support['id'] ) && $user = fep_get_userdata( $to, 'user_nicename', 'id' ) ) {
+								$m_to = fep_get_userdata( $user, 'user_nicename' );
+								$m_top = fep_get_userdata( $user, 'display_name');
+							} elseif ( is_email( $to ) && !empty( $support['email'] ) && $user = fep_get_userdata( $to, 'user_nicename', 'email' ) ) {
+								$m_to = fep_get_userdata( $user, 'user_nicename' );
+								$m_top = fep_get_userdata( $user, 'display_name');
+							} elseif ( !empty( $support['login'] ) && $user = fep_get_userdata( $to, 'user_nicename', 'login' ) ) {
+								$m_to = fep_get_userdata( $user, 'user_nicename' );
+								$m_top = fep_get_userdata( $user, 'display_name');
+							} else {
+								$m_to = '';
+								$m_top = '';
 							}
 							
-							$message_to = ( isset( $_POST['message_to'] ) ) ? esc_attr( $_POST['message_to'] ): fep_get_userdata( $to, 'user_nicename' );
-							$message_top = ( isset( $_POST['message_top'] ) ) ? esc_attr( $_POST['message_top'] ): fep_get_userdata($to, 'display_name');
+							$message_to = ( isset( $_POST['message_to'] ) ) ? esc_attr( $_POST['message_to'] ): $m_to;
+							$message_top = ( isset( $_POST['message_top'] ) ) ? esc_attr( $_POST['message_top'] ): $m_top;
 
 								 if( ! empty($field['suggestion'])) : ?>
 							<?php wp_enqueue_script( 'fep-script' ); ?>
@@ -303,7 +321,7 @@ function field_output( $field, $errors )
 				}
 			
 		if ( ! empty($field['description']) ) {
-			?><div class="description"><?php echo $field['description']; ?></div><?php
+			?><div class="description"><?php echo  wp_kses_post( $field['description'] ); ?></div><?php
 		}
 
 				?></div></div><?php 
