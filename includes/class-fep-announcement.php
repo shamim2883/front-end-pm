@@ -288,7 +288,7 @@ function get_column_content($column)
 					$span = '';
 					$class = '';
 				} 
-			?><span class="fep-message-titleq<?php echo $class; ?>"><a href="<?php echo fep_query_url('view_announcement', array('id'=> get_the_ID())); ?>"><?php the_title(); ?></a></span><?php echo $span; ?><span class="fep-message-excerpt"><?php echo fep_get_the_excerpt(100); ?></span><?php
+			?><span class="<?php echo $class; ?>"><a href="<?php echo fep_query_url('view_announcement', array('id'=> get_the_ID())); ?>"><?php the_title(); ?></a></span><?php echo $span; ?><div class="fep-message-excerpt"><?php echo fep_get_the_excerpt(100); ?></div><?php
 		break;
 		default:
 			do_action( 'fep_get_announcement_column_content', $column );

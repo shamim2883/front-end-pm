@@ -21,11 +21,11 @@ class Fep_Menu
 		$menu = '';
 		
 		  foreach( $this->get_menu() as $menu_array ) {
-			$class = $menu_array['class'];
+			$class = esc_attr( $menu_array['class'] );
 			 if ( isset($_GET['fepaction']) && $_GET['fepaction'] == $menu_array['action'])
-			 $class = $menu_array['active-class'];
+			 $class = esc_attr( $menu_array['active-class'] );
 			 
-			 $menu .= "<a class='$class' href='".fep_query_url( $menu_array['action'] )."'>".$menu_array['title'].'</a>';
+			 $menu .= "<a class='$class' href='".fep_query_url( $menu_array['action'] )."'>".strip_tags( $menu_array['title'], '<span>' )."</a>";
 		  }
 		  echo $menu;
 	 }
@@ -39,7 +39,7 @@ class Fep_Menu
 					'priority'			=> 5
 					),
 				'message_box'	=> array(
-					'title'			=> __('Message Box', 'front-end-pm'),
+					'title'			=> sprintf(__('Message Box%s', 'front-end-pm'), fep_get_new_message_button() ),
 					'action'			=> 'messagebox',
 					'priority'			=> 10
 					),
@@ -49,7 +49,7 @@ class Fep_Menu
 					'priority'			=> 15
 					),
 				'announcements'	=> array(
-					'title'			=> __('Announcement', 'front-end-pm'),
+					'title'			=> sprintf(__('Announcement%s', 'front-end-pm'), fep_get_new_announcement_button() ),
 					'action'			=> 'announcements',
 					'priority'			=> 20
 					)

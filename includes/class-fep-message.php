@@ -434,7 +434,7 @@ function get_column_content($column)
 			?><input type="checkbox" name="fep-message-cb[]" value="<?php echo get_the_ID(); ?>" /><?php
 		break;
 		case 'avatar' :
-			?><span class="fep-message-avatar"><?php echo get_avatar( get_the_author_meta('ID'), 55 ); ?></span><?php
+			 echo get_avatar( get_the_author_meta('ID'), 55 );
 		break;
 		case 'author' :
 			?><span class="fep-message-author"><?php the_author_meta('display_name'); ?></span><span class="fep-message-date"><?php the_time(); ?></span><?php
@@ -447,7 +447,7 @@ function get_column_content($column)
 					$span = '';
 					$class = '';
 				} 
-			?><span class="fep-message-titleq<?php echo $class; ?>"><a href="<?php echo fep_query_url('viewmessage', array('id'=> get_the_ID())); ?>"><?php the_title(); ?></a></span><?php echo $span; ?><span class="fep-message-excerpt"><?php echo fep_get_the_excerpt(100); ?></span><?php
+			?><span class="<?php echo $class; ?>"><a href="<?php echo fep_query_url('viewmessage', array('id'=> get_the_ID())); ?>"><?php the_title(); ?></a></span><?php echo $span; ?><div class="fep-message-excerpt"><?php echo fep_get_the_excerpt(100); ?></div><?php
 		break;
 		default:
 			do_action( 'fep_message_table_column_content', $column );
