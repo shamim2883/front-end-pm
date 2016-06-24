@@ -393,17 +393,23 @@ class Fep_Admin_Settings
 	function field_output( $field )
 	{
 		switch( $field['type'] ) {
+				
+				case has_action( 'fep_admin_settings_field_output_' . $field['type'] ):
+				
+				do_action( 'fep_admin_settings_field_output_' . $field['type'], $field );
+				
+				break;
 		
 				case 'text' :
 				case 'email' :
 				case 'url' :
 				case 'number' :
-							?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php esc_attr_e( $field['class'] ); ?>" type="<?php esc_attr_e( $field['type'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>" placeholder="<?php esc_attr_e( $field['placeholder'] ); ?>" value="<?php esc_attr_e( $field['value' ] ); ?>" /><?php
+							?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" type="<?php esc_attr_e( $field['type'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>" placeholder="<?php esc_attr_e( $field['placeholder'] ); ?>" value="<?php esc_attr_e( $field['value' ] ); ?>" /><?php
 
 					break;
 				case "textarea" :
 
-							?><textarea id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php esc_attr_e( $field['class'] ); ?>" cols="50" name="<?php esc_attr_e( $field['name'] ); ?>" placeholder="<?php esc_attr_e( $field['placeholder'] ); ?>"><?php echo wp_kses_post( $field['value' ] ); ?></textarea><?php
+							?><textarea id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" cols="50" name="<?php esc_attr_e( $field['name'] ); ?>" placeholder="<?php esc_attr_e( $field['placeholder'] ); ?>"><?php echo wp_kses_post( $field['value' ] ); ?></textarea><?php
 
 					break;
 					
@@ -417,18 +423,18 @@ class Fep_Admin_Settings
 							
 							if( ! empty( $field['multiple' ] ) ) {
 								foreach( $field['options' ] as $key => $name ) {
-								?><label><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php esc_attr_e( $field['class'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>[]" type="checkbox" value="<?php esc_attr_e( $key ); ?>" <?php if( in_array( $key, $field['value' ] ) ) { echo 'checked="checked"';} ?> /> <?php esc_attr_e( $name ); ?></label><br /><?php
+								?><label><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>[]" type="checkbox" value="<?php esc_attr_e( $key ); ?>" <?php if( in_array( $key, $field['value' ] ) ) { echo 'checked="checked"';} ?> /> <?php esc_attr_e( $name ); ?></label><br /><?php
 								}
 							} else {
 
-							?><label><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php esc_attr_e( $field['class'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>" type="checkbox" value="1" <?php checked( '1', $field['value' ] ); ?> /> <?php esc_attr_e( $field['cb_label'] ); ?></label><?php
+							?><label><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>" type="checkbox" value="1" <?php checked( '1', $field['value' ] ); ?> /> <?php esc_attr_e( $field['cb_label'] ); ?></label><?php
 							}
 
 					break;
 					
 				case "select" :
 
-							?><select id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php esc_attr_e( $field['class'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>"><?php
+							?><select id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>"><?php
 									foreach( $field['options'] as $key => $name ) {
 										?><option value="<?php esc_attr_e( $key ); ?>" <?php selected( $field['value' ], $key ); ?>><?php esc_attr_e( $name ); ?></option><?php }
 							?></select><?php
@@ -436,19 +442,13 @@ class Fep_Admin_Settings
 					break;
 					
 				default :
-						if ( has_action( 'fep_admin_settings_field_output_' . $field['type'] ) ) {
-						
-							do_action( 'fep_admin_settings_field_output_' . $field['type'], $field );
-						
-						} else {
-							printf(__('No Function or Hook defined for %s field type', 'front-end-pm'), $field['type'] );
-							}
-					
+					printf(__('No Function or Hook defined for %s field type', 'front-end-pm'), $field['type'] );
+
 					break;
 				
 				}
 					if ( ! empty($field['description']) ) {
-						?><p class="description"><?php echo $field['description']; ?></p><?php
+						?><p class="description"><?php echo wp_kses_post( $field['description'] ); ?></p><?php
 					}
 	}
 	
