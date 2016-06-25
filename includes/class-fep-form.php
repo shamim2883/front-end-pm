@@ -112,7 +112,7 @@ if (!class_exists('Fep_Form'))
 				);
 			}
 				
-		$fields = apply_filters( 'fep_fields_before_process', $fields );
+		$fields = apply_filters( 'fep_form_fields', $fields );
 
 		
 		foreach ( $fields as $key => $field )
@@ -147,7 +147,7 @@ if (!class_exists('Fep_Form'))
 			$fields[$key] = wp_parse_args( $fields[$key], $defaults);
 		}
 		
-		$fields = apply_filters( 'fep_fields', $fields );
+		$fields = apply_filters( 'fep_form_fields_after_process', $fields );
 
 		uasort( $fields, 'fep_sort_by_priority' );
 
@@ -157,10 +157,10 @@ if (!class_exists('Fep_Form'))
 function field_output( $field, $errors )
 	{
 		 if ( !empty($errors->get_error_message($field['id']))) : ?>
-		<p class="error">
+		<div class="fep-error">
 		<?php echo $errors->get_error_message($field['id']); ?>
 		<?php $errors->remove($field['id']); ?>
-		</p>
+		</div>
 		<?php endif;
 		$attrib = ''; 
 		 if ( ! empty( $field['required'] ) ) $attrib .= 'required = "required" ';
