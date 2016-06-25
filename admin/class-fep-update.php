@@ -296,4 +296,25 @@ function fep_update_script() {
 }
 add_action( 'admin_enqueue_scripts', 'fep_update_script' );
 
-
+function fep_insert_dummy_message(){
+	global $wpdb;
+	
+	for( $i = 0; $i < 3; $i++ ) {
+	$from = rand(1, 5);
+	
+		$wpdb->insert( FEP_MESSAGES_TABLE, array( 
+		'from_user' => $from, 
+		'to_user' => rand(1, 5), 
+		'message_title' => 'this is title', 
+		'message_contents' => 'this is message', 
+		'parent_id' => 0, 
+		'last_sender' => $from, 
+		'send_date' => current_time('mysql'), 
+		'last_date' => current_time('mysql'),
+		'status' => rand(0, 2) 
+		), 
+		array( '%d', '%d', '%s', '%s', '%d', '%d', '%s', '%s', '%d' ));
+		
+	}
+}
+//add_action('wp_loaded', 'fep_insert_dummy_message' );
