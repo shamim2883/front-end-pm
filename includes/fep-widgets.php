@@ -8,8 +8,8 @@ class FEP_menu_widget extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			'fep_menu_widget', // Base ID
-			__( 'FEP Menu Widget', 'fep' ), // Name
-			array( 'description' => __( 'Front End PM Menu Widget', 'fep' ), ) // Args
+			__( 'FEP Menu Widget', 'front-end-pm' ), // Name
+			array( 'description' => __( 'Front End PM Menu Widget', 'front-end-pm' ), ) // Args
 		);
 	}
 
@@ -41,7 +41,7 @@ class FEP_menu_widget extends WP_Widget {
 	 * @param array $instance Previously saved values from database.
 	 */
 	public function form( $instance ) {
-		$title = isset( $instance['title'] ) ? $instance['title'] : __( 'FEP Menu Widget', 'fep' );
+		$title = isset( $instance['title'] ) ? $instance['title'] : __( 'FEP Menu Widget', 'front-end-pm' );
 		?>
 		<p>
 		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
@@ -71,7 +71,7 @@ class FEP_menu_widget extends WP_Widget {
 
 // register FEP_menu_widget widget
 function register_fep_menu_widget() {
-if ( is_user_logged_in() )
+if ( fep_current_user_can( 'access_message' ) )
     register_widget( 'FEP_menu_widget' );
 }
 add_action( 'widgets_init', 'register_fep_menu_widget' );
@@ -84,8 +84,8 @@ class FEP_text_widget extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			'fep_text_widget', // Base ID
-			__( 'FEP Text Widget', 'fep' ), // Name
-			array( 'description' => __( 'Front End PM Text Widget', 'fep' ), ) // Args
+			__( 'FEP Text Widget', 'front-end-pm' ), // Name
+			array( 'description' => __( 'Front End PM Text Widget', 'front-end-pm' ), ) // Args
 		);
 	}
 
@@ -107,28 +107,26 @@ class FEP_text_widget extends WP_Widget {
 		$show_messagebox = isset( $instance['show_messagebox'] ) ? $instance['show_messagebox'] : false;
 		$show_announcement = isset( $instance['show_announcement'] ) ? $instance['show_announcement'] : false;
 		
-			echo __('Welcome', 'fep') . ' ' . fep_get_userdata( $user_ID, 'display_name', 'id' ). '<br />';
+			echo __('Welcome', 'front-end-pm') . ' ' . fep_get_userdata( $user_ID, 'display_name', 'id' ). '<br />';
 			
-			echo __('You have', 'fep');
+			echo __('You have', 'front-end-pm');
 		
 		if ( $show_messagebox )
 			{
-				$New_mgs = fep_get_new_message_number();
-				$sm = ( $New_mgs > 1 ) ? 's': '';
-				echo "<a href='".fep_action_url('messagebox')."'>".sprintf(__(" %d new message%s", 'fep'), $New_mgs, $sm ).'</a>';
+				$unread_count = fep_get_new_message_number();
+				$sm = sprintf(_n('%s unread message', '%s unread messages', $unread_count, 'front-end-pm'), number_format_i18n($unread_count) );
+				echo "<a href='".fep_query_url('messagebox')."'> $sm</a>";
 				
 			}
 		if ( $show_messagebox && $show_announcement )
-				echo __(' and', 'fep');
+				echo __(' and', 'front-end-pm');
 				
 		if ( $show_announcement )
 			{
-				$New_ann = 0;
-			if( class_exists('fep_announcement_class') )
-				$New_ann = fep_announcement_class::init()->getAnnouncementsNum();
-				$sa = ( $New_ann > 1 ) ? 's': '';
+				$unread_ann_count = fep_get_user_announcement_count( 'unread' );
+				$sa = sprintf(_n('%s unread announcement', '%s unread announcements', $unread_ann_count, 'front-end-pm'), number_format_i18n($unread_ann_count) );
 				
-				echo "<a href='".fep_action_url('announcements')."'>".sprintf(__(" %d new announcement%s", 'fep'), $New_ann, $sa ).'</a>';
+				echo "<a href='".fep_query_url('announcements')."'> $sa</a>";
 			}
 	
 			
@@ -145,7 +143,7 @@ class FEP_text_widget extends WP_Widget {
 	 * @param array $instance Previously saved values from database.
 	 */
 	public function form( $instance ) {
-		$title =  isset( $instance['title'] ) ? $instance['title'] : __( 'FEP Text Widget', 'fep' );
+		$title =  isset( $instance['title'] ) ? $instance['title'] : __( 'FEP Text Widget', 'front-end-pm' );
 		$show_messagebox =  isset( $instance['show_messagebox'] ) ? $instance['show_messagebox'] : false;
 		$show_announcement =  isset( $instance['show_announcement'] ) ? $instance['show_announcement'] : false;
 		?>
@@ -155,11 +153,11 @@ class FEP_text_widget extends WP_Widget {
 		</p>
 		<p>
     	<input class="checkbox" type="checkbox" <?php checked( $show_messagebox, 1 ); ?> id="<?php echo $this->get_field_id( 'show_messagebox' ); ?>" name="<?php echo $this->get_field_name( 'show_messagebox' ); ?>" value="1"/>
-    	<label for="<?php echo $this->get_field_id( 'show_messagebox' ); ?>"><?php _e('Show Messagebox?', 'fep'); ?></label>
+    	<label for="<?php echo $this->get_field_id( 'show_messagebox' ); ?>"><?php _e('Show Messagebox?', 'front-end-pm'); ?></label>
 		</p>
 		<p>
     	<input class="checkbox" type="checkbox" <?php checked( $show_announcement, 1 ); ?> id="<?php echo $this->get_field_id( 'show_announcement' ); ?>" name="<?php echo $this->get_field_name( 'show_announcement' ); ?>" value="1"/>
-    	<label for="<?php echo $this->get_field_id( 'show_announcement' ); ?>"><?php _e('Show Announcement?', 'fep'); ?></label>
+    	<label for="<?php echo $this->get_field_id( 'show_announcement' ); ?>"><?php _e('Show Announcement?', 'front-end-pm'); ?></label>
 		</p>
 		<?php 
 	}
@@ -187,7 +185,7 @@ class FEP_text_widget extends WP_Widget {
 
 // register FEP_menu_widget widget
 function register_fep_text_widget() {
-if ( is_user_logged_in() )
+if ( fep_current_user_can( 'access_message' ) )
     register_widget( 'FEP_text_widget' );
 }
 add_action( 'widgets_init', 'register_fep_text_widget' );
@@ -201,8 +199,8 @@ class FEP_empty_widget extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			'fep_empty_widget', // Base ID
-			__( 'FEP Empty Widget', 'fep' ), // Name
-			array( 'description' => __( 'Front End PM Empty Widget', 'fep' ), ) // Args
+			__( 'FEP Empty Widget', 'front-end-pm' ), // Name
+			array( 'description' => __( 'Front End PM Empty Widget', 'front-end-pm' ), ) // Args
 		);
 	}
 
@@ -223,8 +221,8 @@ class FEP_empty_widget extends WP_Widget {
 		
 		if ( $show_help )
 			{
-				echo "Use <code>add_action('fep_empty_widget_{$this->number}', 'your_function' );</code> to hook to only this widget where 'your_function' is your defined function.";
-				echo "<br />Use <code>add_action('fep_empty_widget', 'your_function' );</code> to hook to all FEP Empty widget where 'your_function' is your defined function";
+				echo "Use <code>add_action('fep_empty_widget_{$this->number}', 'your_function' );</code> to hook to ONLY this widget where 'your_function' is your callback function.";
+				echo "<br />Use <code>add_action('fep_empty_widget', 'your_function' );</code> to hook to all FEP Empty widget where 'your_function' is your callback function";
 			}
 		
 		do_action('fep_empty_widget_' . $this->number);
@@ -241,7 +239,7 @@ class FEP_empty_widget extends WP_Widget {
 	 * @param array $instance Previously saved values from database.
 	 */
 	public function form( $instance ) {
-		$title = isset( $instance['title'] ) ? $instance['title'] : __( 'FEP Empty Widget', 'fep' );
+		$title = isset( $instance['title'] ) ? $instance['title'] : __( 'FEP Empty Widget', 'front-end-pm' );
 		$show_help = isset( $instance['show_help'] ) ? $instance['show_help'] : false;
 		?>
 		<p>
@@ -251,7 +249,7 @@ class FEP_empty_widget extends WP_Widget {
 		
 		<p>
     	<input class="checkbox" type="checkbox" <?php checked( $show_help, 1 ); ?> id="<?php echo $this->get_field_id( 'show_help' ); ?>" name="<?php echo $this->get_field_name( 'show_help' ); ?>" value="1"/>
-    	<label for="<?php echo $this->get_field_id( 'show_help' ); ?>"><?php _e('Display help to configure this widget in front end?', 'fep'); ?></label>
+    	<label for="<?php echo $this->get_field_id( 'show_help' ); ?>"><?php _e('Display help to configure this widget in front end?', 'front-end-pm'); ?></label>
 		</p>
 		<?php 
 	}
@@ -278,7 +276,7 @@ class FEP_empty_widget extends WP_Widget {
 
 // register FEP_menu_widget widget
 function register_fep_empty_widget() {
-if ( is_user_logged_in() )
+if ( fep_current_user_can( 'access_message' ) )
     register_widget( 'FEP_empty_widget' );
 }
 add_action( 'widgets_init', 'register_fep_empty_widget' );

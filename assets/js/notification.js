@@ -7,10 +7,10 @@ jQuery(document).ready(function(){
 		jQuery.post(fep_notification_script.ajaxurl, data, function(results) {
 			jQuery('#fep-notification-bar').html(results);
 			if (results=='')
-			{document.getElementById('fep-notification-bar').style.display="none";}
+			{ jQuery('#fep-notification-bar').hide(); }
 			else 
-			{document.getElementById('fep-notification-bar').style.display="block";}
-												  });
+			{ jQuery('#fep-notification-bar').show(); }
+		});
         }
         setInterval(fep_ajax_call,60000);
       });

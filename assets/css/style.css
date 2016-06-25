@@ -1,0 +1,275 @@
+/*The main wrapper*/
+#fep-wrapper
+{
+	margin: 5px;
+	position: relative;
+	/*background-color: white;*/ /*Uncomment this if you have dark background and can't see the text*/
+}
+
+/*Header styling*/
+#fep-header
+{
+	border: 1px solid #E7E7E7;
+	width: 100%;
+	color: #000000;
+}
+
+#fep-header strong
+{
+	color: #333;
+	font-size: 20px;
+}
+
+#fep-header .avatar
+{
+	border: none;
+	margin: 5px;
+	padding: 0;
+	vertical-align: top;
+}
+
+/*Notify Styling*/
+.fep-error, .fep-success, .fep-wp-error
+{
+	color: black;
+	background-color: #FFEBE8;
+	border-color: #C00;
+	width: 100%;
+	text-align: center;
+	font-size: 12px;
+	font-weight: bold;
+	border-width: 1px;
+	border-style: solid;
+	padding: 0.6em;
+	margin: 15px 0;
+	-moz-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+}
+.fep-success
+{
+	background-color: #66FF99;
+	border-color: #00FF00;
+}
+.fep-wp-error
+{
+	text-align:left;
+}
+/*Content styling*/
+#fep-content
+{
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding: 5px;
+	height: auto;
+	width: 100%;
+	border: 1px solid #E7E7E7;
+	color: #000000;
+}
+
+#fep-content p, #fep-content form
+{
+	margin: 5px;
+}
+
+#fep-content  hr
+{
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+
+#fep-content textarea
+{
+	width: 100%;
+	height: 200px;
+	border: 1px solid #E7E7E7;
+}
+
+#fep-content input[type=text]
+{
+	width: 45%;
+	min-width:250px;
+	border: 1px solid #E7E7E7;
+}
+
+#fep-content a
+{
+	color: navy;
+	text-decoration: underline;
+}
+
+
+#fep-content .avatar {
+	border-radius: 50%;
+	-moz-border-radius: 50%;
+	-webkit-border-radius: 50%;
+}
+
+/*Footer styling*/
+#fep-footer
+{
+	text-align: center;
+	font-size: 10px;
+	border: 1px solid #E7E7E7;
+	width: 100%;
+	color: #333;
+}
+
+#fep-footer a, #fep-footer a:hover, #fep-footer a:visited
+{
+	color: #333;
+	text-decoration: underline;
+}
+
+/*Auto-suggest*/
+#fep-result
+{
+	width:250px;
+	border: solid 1px #333;
+	display: none;
+	position: absolute;
+	background: #D3EEF5;
+}
+
+#fep-result ul, #fep-result li
+{
+	padding: 0px;
+	margin: 0px;
+	border: 0px;
+	list-style: none;
+}
+
+#fep-result li
+{
+	border-top: solid 1px #333;
+}
+
+#fep-result li a
+{
+	display: block;
+	padding: 5px;
+	text-decoration: none;
+	color: #333;
+	font-weight: normal;
+}
+
+#fep-result li a:hover
+{
+	background: #333;
+	color: white;
+}
+
+.fep-table {display: table; width:100%; border-collapse: collapse;}
+.fep-table > div  {display: table-row;}
+.fep-table > div > div {display: table-cell;}
+.fep-table .fep-table-caption {display: table-caption; text-align:center; font-weight:bold;}
+
+.fep-action-table{ margin-bottom: 10px; }
+.fep-action-table > div > div { width:25%}
+.fep-action-table select { margin-top:10px;}
+
+.fep-table .fep-column-avatar, .fep-table .fep-column-fep-cb { vertical-align:middle; padding-right:10px;}
+.fep-table .fep-column-author, .fep-table .fep-column-date { min-width:150px;}
+.fep-table .fep-message-date { display:block;}
+.fep-table .fep-message-excerpt { opacity:0.3; }
+
+.fep-odd-even > div:nth-child(odd) {
+    background-color: #F2F7FC;
+}
+
+.fep-odd-even > div:nth-child(even) {
+    background-color: #FAFAFA;
+}
+
+.fep-unread-classp {
+    position:relative; 
+}
+
+.fep-unread-class {
+    position:absolute;    /* This breaks the div from the normal HTML document. */
+    top: -6px;
+    padding: 0 1px;
+    background-color:red; /* you could use a background image if you'd like as well */
+    color:white;
+    font-weight:bold;
+	font-size: 9px;
+    height: 16px;
+    line-height: 16px;
+    border-radius:30px;
+    box-shadow:1px 1px 1px gray;
+}
+
+.fep-align-left{ text-align:left;}
+.fep-align-right{ text-align:right;}
+.fep-align-centre{ text-align:center;}
+.fep-hd {display:none;}
+.fep-strong{ font-weight:bold; }
+
+.fep-pagination{display:inline-block;padding-left:0;margin:20px 0;border-radius:6px}
+.fep-pagination>li{display:inline}
+.fep-pagination>li>a,.fep-pagination>li>span{position:relative;float:left;padding:7px 12px;line-height:1.42857143;text-decoration:none;color:#337ab7;background-color:#fff;border:1px solid #ddd;margin-left:-1px;font-size:12px}
+.fep-pagination>li:first-child>a,.fep-pagination>li:first-child>span{margin-left:0;border-bottom-left-radius:3px;border-top-left-radius:3px}
+.fep-pagination>li:last-child>a,.fep-pagination>li:last-child>span{border-bottom-right-radius:3px;border-top-right-radius:3px}
+.fep-pagination>li>a:hover,.fep-pagination>li>span:hover,.fep-pagination>li>a:focus,.fep-pagination>li>span:focus{color:#23527c;background-color:#eee;border-color:#ddd}
+.fep-pagination>.active>a,.fep-pagination>.active>span,.fep-pagination>.active>a:hover,.fep-pagination>.active>span:hover,.fep-pagination>.active>a:focus,.fep-pagination>.active>span:focus{z-index:2;color:#fff;background-color:#337ab7;border-color:#337ab7;cursor:default}
+.fep-pagination>.disabled>span,.fep-pagination>.disabled>span:hover,.fep-pagination>.disabled>span:focus,.fep-pagination>.disabled>a,.fep-pagination>.disabled>a:hover,.fep-pagination>.disabled>a:focus{color:#777;background-color:#fff;border-color:#ddd;cursor:not-allowed}
+
+.fep-loading-gif {
+    background:url('../images/loading.gif') no-repeat right center;
+	padding-right:16px;
+}
+
+.fep-message .fep-message-title-heading {
+	border: 1px solid #E7E7E7;
+	width: 100%;
+	font-size: 20px;
+	font-weight:bold;
+	background-color:#F2F7FC;
+	border-radius: 10px;
+	padding-left:10px;
+	padding-right:10px;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.fep-per-message {
+	margin: 5px;
+	padding:5px;
+	border: 1px solid #E7E7E7;
+}
+.fep-per-message .fep-message-title
+{
+	border: 1px solid #E7E7E7;
+	width: 100%;
+	font-size: 16px;
+	font-weight:bold;
+	cursor:pointer;
+	background-color:#F2F7FC;
+	border-radius: 10px;
+	padding-left:10px;
+	padding-right:10px;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.fep-per-message .fep-message-title .date
+{
+	text-align:right;
+	padding-left:10px;
+	width: 100%;
+	display:block;
+	font-weight: normal;
+	font-size:12px
+}
+@media screen and (max-width: 480px) {
+.fep-table .fep-column-avatar { display:none;}
+.fep-action-table, .fep-action-table > div,.fep-action-table > div > div {display:block;}
+.fep-action-table > div > div {width:100%}
+#fep-menu .fep-button,.fep-button,.fep-button-active { width:100% }
+#fep-content input[type=text]{ width:100%}
+}
+@media screen and (max-width: 768px) {
+.fep-table .fep-message-excerpt { display:none;}
+}
