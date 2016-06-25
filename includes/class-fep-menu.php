@@ -59,7 +59,7 @@ class Fep_Menu
 			unset($menu['newmessage']);
 		}
 							
-		$menu = apply_filters('fep_menu_buttons', $menu);
+		$menu = apply_filters('fep_menu_buttons', $menu );
 						
 				foreach ( $menu as $key => $tab )
 					{

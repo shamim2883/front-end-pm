@@ -638,6 +638,7 @@ class Fep_Admin_Settings
 				do_settings_sections( "fep_settings_{$active_tab}" );
 				submit_button();
 			?>
+			<div><a href="https://wordpress.org/support/view/plugin-reviews/front-end-pm?filter=5#postform" target="_blank">like this plugin? Please consider review in WordPress.org and give a &#9733;&#9733;&#9733;&#9733;&#9733; rating.</a></div>
 			</form>
 		</div><!-- #tab_container-->
 		</div><!-- #post-body-content-->
@@ -676,11 +677,11 @@ function fep_admin_sidebar()
 						<div style="text-align: center; margin: auto">
 							<p>Some useful links are bellow to work with this plugin.</p>
 						<ul>
-							<li><a href="http://frontendpm.blogspot.com/2015/03/front-end-pm.html" target="_blank">Front End PM</a></li>
-							<li><a href="http://frontendpm.blogspot.com/2015/03/front-end-pm-actions.html" target="_blank">Front End PM actions</a></li>
-							<li><a href="http://frontendpm.blogspot.com/2015/03/front-end-pm-filters.html" target="_blank">Front End PM filters</a></li>
-							<li><a href="http://frontendpm.blogspot.com/2015/03/changelog-of-front-end-pm.html" target="_blank">Changelog</a></li>
-							<li><a href="http://frontendpm.blogspot.com/2015/03/frequently-asked-questions.html" target="_blank">FAQ</a></li>
+							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm/getting-started/basic-admin-settings/" target="_blank">Basic Admin Settings</a></li>
+							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm/getting-started/basic-front-end-walkthrough/" target="_blank">Walkthrough</a></li>
+							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm/customization/remove-minlength-message-title/" target="_blank">Remove minlength</a></li>
+							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm/customization/remove-settings-menu-button/" target="_blank">Remove menu</a></li>
+
 						</ul></div>
 					</div>
 				</div>';
