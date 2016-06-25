@@ -20,7 +20,7 @@ if (!class_exists('Fep_Form'))
     {
     }
 	
-	public function form_fields( $where = 'new_message' )
+	public function form_fields( $where = 'newmessage' )
 {
 	$admin_cap = apply_filters( 'fep_admin_cap', 'manage_options' );
 	
@@ -63,13 +63,13 @@ if (!class_exists('Fep_Form'))
 					'placeholder' => '',
 					'priority'    => 15,
 					'value'     => '',
-					'where'	=> array( 'new_message', 'reply' )
+					'where'	=> array( 'newmessage', 'reply' )
 				),
 				'token' => array(
 					'type'        => 'token',
 					'value'    => fep_create_nonce('fep_message'),
 					'token-action'    => 'fep_message',
-					'where'    => array( 'new_message', 'reply' )
+					'where'    => array( 'newmessage', 'reply' )
 				),
 				'fep_parent_id' => array(
 					'type'        => 'fep_parent_id',
@@ -108,7 +108,7 @@ if (!class_exists('Fep_Form'))
 					'type'        => 'file',
 					'value'    => '',
 					'priority'    => 20,
-					'where'    => array( 'new_message', 'reply' )
+					'where'    => array( 'newmessage', 'reply' )
 				);
 			}
 				
@@ -118,7 +118,7 @@ if (!class_exists('Fep_Form'))
 		foreach ( $fields as $key => $field )
 		{
 			if ( empty($field['where']) )
-				$field['where'] = array( 'new_message' );
+				$field['where'] = array( 'newmessage' );
 			
 			if( is_array($field['where'])){
 				if ( ! in_array(  $where, $field['where'] )){
@@ -480,7 +480,7 @@ function field_output( $field, $errors )
 	}
 	
 	
-public function form_field_output( $where = 'new_message', $errors= '', $value = array() )
+public function form_field_output( $where = 'newmessage', $errors= '', $value = array() )
 {
 	//$fields = $this->form_fields( $where );
 	
@@ -488,19 +488,20 @@ public function form_field_output( $where = 'new_message', $errors= '', $value =
 		$errors = new WP_Error();
 		
 		$form_attr = array(
-			'action' => esc_url( add_query_arg( false, false ) ),
 			'method' => 'post'
 			);
 		
 		if( 'settings' == $where ) {
 			$form_attr['action'] = fep_query_url( 'settings' );
-		} elseif( 'new_message' == $where ) {
+		} elseif( 'newmessage' == $where ) {
 			$form_attr['action'] = fep_query_url( 'newmessage' );
 		} elseif( 'reply' == $where && !empty($_GET['id']) ) {
 			$form_attr['action'] = fep_query_url( 'viewmessage', array( 'id' => $_GET['id'] ) );
+		} else {
+			$form_attr['action'] = esc_url( add_query_arg( false, false ) );
 		}
 		
-		if( in_array( $where, array( 'new_message', 'reply' ) ) && fep_get_option('allow_attachment', 0 ) ) {
+		if( in_array( $where, array( 'newmessage', 'reply' ) ) && fep_get_option('allow_attachment', 0 ) ) {
 			$form_attr['enctype'] = 'multipart/form-data';
 		}
 		
@@ -554,7 +555,7 @@ public function form_field_output( $where = 'new_message', $errors= '', $value =
 		} else {
 			$button_val = __('Send Message', 'front-end-pm');
 		}
-		echo apply_filters( 'fep_form_submit_button', '<button type="submit" class="fep-button" name="fep_action" value="'. $where .'">'.$button_val.'</button>' );
+		echo apply_filters( 'fep_form_submit_button', '<button type="submit" class="fep-button" name="fep_action" value="'. esc_attr( $where ) .'">'. esc_html( $button_val ).'</button>' );
 		
         echo '</form>';
 		echo '</div>';
@@ -562,7 +563,7 @@ public function form_field_output( $where = 'new_message', $errors= '', $value =
 		return apply_filters('fep_filter_form_output', ob_get_clean() );
 	}
 
-public function validate_form_field( $where = 'new_message' )
+public function validate_form_field( $where = 'newmessage' )
 {
 		$fields = $this->form_fields( $where );
 	

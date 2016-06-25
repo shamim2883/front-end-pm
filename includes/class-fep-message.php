@@ -27,7 +27,7 @@ class Fep_Message
 	
 	function time_delay_check( $where, $errors ) {
 	
-		if( 'new_message' != $where )
+		if( 'newmessage' != $where )
 			return;
 		
 		$admin_cap = apply_filters( 'fep_admin_cap', 'manage_options' );
@@ -54,7 +54,7 @@ class Fep_Message
 	
 	function box_full_check( $where, $errors ) {
 	
-		if( 'new_message' != $where )
+		if( 'newmessage' != $where )
 			return;
 			
 		if( ! $max = fep_get_current_user_max_message_number() )

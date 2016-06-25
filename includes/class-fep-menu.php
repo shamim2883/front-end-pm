@@ -33,7 +33,7 @@ class Fep_Menu
 	private function get_menu()
 	{
 		$menu = array(
-				'new_message'	=> array(
+				'newmessage'	=> array(
 					'title'			=> __('New Message', 'front-end-pm'),
 					'action'			=> 'newmessage',
 					'priority'			=> 5
@@ -56,7 +56,7 @@ class Fep_Menu
 							
 				);
 		if( ! fep_current_user_can( 'send_new_message' ) ) {
-			unset($menu['new_message']);
+			unset($menu['newmessage']);
 		}
 							
 		$menu = apply_filters('fep_menu_buttons', $menu);

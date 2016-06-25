@@ -99,7 +99,7 @@ if (!class_exists("fep_main_class"))
 			return;
 			
 		switch( $action ) {
-			case 'new_message' :
+			case 'newmessage' :
 				if ( ! fep_current_user_can( 'send_new_message') )
 					return;
 					
@@ -377,7 +377,7 @@ function new_message(){
 	
 		if( $this->have_error ){
 			//$html .= fep_error($this->errors);
-			$html .= Fep_Form::init()->form_field_output('new_message', $this->errors );
+			$html .= Fep_Form::init()->form_field_output('newmessage', $this->errors );
 		} else {
 			$html .= $this->message;
 			}
