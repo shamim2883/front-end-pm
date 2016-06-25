@@ -156,7 +156,7 @@ if (!class_exists('Fep_Form'))
 	
 function field_output( $field, $errors )
 	{
-		 if ( !empty($errors->get_error_message($field['id']))) : ?>
+		 if ( $errors->get_error_message($field['id'] ) ) : ?>
 		<div class="fep-error">
 		<?php echo $errors->get_error_message($field['id']); ?>
 		<?php $errors->remove($field['id']); ?>

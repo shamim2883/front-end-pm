@@ -15,13 +15,10 @@ Front End PM is a Private Messaging system to your WordPress site.This is full f
 
 **Some Useful Link**
 
-* [Front End PM](http://frontendpm.blogspot.com/2015/03/front-end-pm.html)
-* [How to install](http://frontendpm.blogspot.com/2015/03/how-to-install.html)
-* [Changelog](http://frontendpm.blogspot.com/2015/03/changelog-of-front-end-pm.html)
-* [FAQ](http://frontendpm.blogspot.com/2015/03/frequently-asked-questions.html)
-* [Front End PM actions](http://frontendpm.blogspot.com/2015/03/front-end-pm-actions.html)
-* [Front End PM filters](http://frontendpm.blogspot.com/2015/03/front-end-pm-filters.html)
-* [Front End PM remove action](http://frontendpm.blogspot.com/2015/03/front-end-pm-remove-action.html)
+* [Basic Admin Settings](https://www.shamimsplugins.com/wordpress/docs/front-end-pm/getting-started/basic-admin-settings/)
+* [Basic Walkthrough](https://www.shamimsplugins.com/wordpress/docs/front-end-pm/getting-started/basic-front-end-walkthrough/)
+* [Remove minlength](https://www.shamimsplugins.com/wordpress/docs/front-end-pm/customization/remove-minlength-message-title/)
+* [Remove menu button](https://www.shamimsplugins.com/wordpress/docs/front-end-pm/customization/remove-settings-menu-button/)
 
 * If you want paid support you can contact with me through [Front End PM paid support](http://frontendpm.blogspot.com/p/contact-us.html)
 
@@ -31,12 +28,10 @@ Front End PM is a Private Messaging system to your WordPress site.This is full f
 
 * Works through a Page rather than the dashboard. This is very helpful if you want to keep your users out of the Dashboard area!
 * Users can privately message one another
-* Threaded messages
-* BBCode in messages
+* Threaded messages/Individual message
 * Ability to embed things into messages like YouTube, Photobucket, Flickr, Wordpress TV, more.
-* Admins can create a page for "Front End PM" by one click (see Installation for more details).
-* Admins can send a public announcement for all users to see
-* Admins can set the max amount of messages a user can keep in his/her box. This is helpful for keeping Database sizes down.
+* Admins can send a public announcement for all users to see or to perticular role(s).
+* Admins can set the max amount of messages a user can keep in his/her box per role basis. This is helpful for keeping Database sizes down.
 * Admins can set how many messages to show per page in the message box.
 * Admins can set how many user to show per page in front end directory.
 * Admins can set will email be sent to all users when a new announcement is published or not.
@@ -52,18 +47,12 @@ Front End PM is a Private Messaging system to your WordPress site.This is full f
 * Users can select whether or not they want to be notified by email when they receive a new message.
 * Users can select whether or not they want to be notified by email when a new announcement is published.
 
-**FEP Contact Form**
-
-* "FEP Contact Form" is now a separate plugin from version 3.1, so that you can use that plugin with "Front End PM" or without.
-* Download [FEP Contact Form](https://wordpress.org/plugins/fep-contact-form/) from wordpress.
-
 **Translation**
 
-* German translation thanks to palatino.
-* Simplified Chinese thanks to Changmeng Hu.
+* please use wordpress translation.
 
 
-You can visit [Front End PM](http://frontendpm.blogspot.com/p/contact-us.html) and contact with me for paid support.
+You can visit [Front End PM](https://www.shamimsplugins.com/wordpress/contact-us/) and contact with me for paid support.
 
 == Installation ==
 1. Upload "front-end-pm" to the "/wp-content/plugins/" directory.
@@ -74,7 +63,7 @@ You can visit [Front End PM](http://frontendpm.blogspot.com/p/contact-us.html) a
 
 Or you can create page for Front End PM by one click. Go to **Front End PM>Instruction** give a Title(required) for Front End PM page and Slug(optional) then click "Create Page". It will automatically create a page for your Message. If you keep Slug field blank, slug of page will be automatically created based on your given title.
 
-Need more instruction? you can visit [Front End PM](http://frontendpm.blogspot.com/p/contact-us.html) and contact with me for paid support.
+Need more instruction? you can visit [Front End PM](https://www.shamimsplugins.com/wordpress/contact-us/) and contact with me for paid support.
 
 == Frequently Asked Questions ==
 = Can i use this plugin to my language? =
@@ -87,21 +76,34 @@ Yes. this plugin is translate ready. But If your language is not available you c
 I am very busy with my job. In my leisure i code for plugins. If you want to help to add comments to the code you are welcome.(only add comments and line space change, no code change. if you want code change you can suggest me).
 
 = Where to contact for paid support? =
-You can visit [Front End PM](http://frontendpm.blogspot.com/p/contact-us.html) and contact with me for paid support.
+You can visit [Front End PM](https://www.shamimsplugins.com/wordpress/contact-us/) and contact with me for paid support.
 
 == Screenshots ==
 
-1. Front End pm.
-2. Button widgets.
-3. Text widgets.
-4. Front End Directory.
-5. Admin settings page.
-6. Front End PM setup instruction.
-7. FEP Contact Form Settings
-8. FEP Contact Form Settings 2
-9. FEP Contact Form
+1. Responsive
+2. Messagebox.
+3. Button widgets.
+4. Text widgets.
+5. Front End Directory.
+6. Admin settings page.
 
 == Changelog ==
+
+= 4.1 =
+
+* This is almost a new plugin. If you are updating from any previous version please See screenshots and others changes first.
+* It is highly recommended to update any staging site first.
+* If you have any customized code (or plugin ) for this plugin make sure they are updated first to work with this new version.
+* Use custom post type rather than custom database table for both message and announcement.
+* Use settings API for back-end settings page of this plugin.
+* UI changed.
+* Better hook.
+* Better options for admin.
+* Now you can switch between thereded message view or individual message view.
+* textdomain changed to use wordpress online translation.
+* Now announcement can be published per role basis.
+* Better controling who can send message or reply or use any other options.
+* Embed issue fixed.
 
 = 3.3 =
 
@@ -201,6 +203,22 @@ You can visit [Front End PM](http://frontendpm.blogspot.com/p/contact-us.html) a
 * Initial release.
 
 == Upgrade Notice ==
+
+= 4.1 =
+
+* This is almost a new plugin. If you are updating from any previous version please See screenshots and others changes first.
+* It is highly recommended to update any staging site first.
+* If you have any customized code (or plugin ) for this plugin make sure they are updated first to work with this new version.
+* Use custom post type rather than custom database table for both message and announcement.
+* Use settings API for back-end settings page of this plugin.
+* UI changed.
+* Better hook.
+* Better options for admin.
+* Now you can switch between thereded message view or individual message view.
+* textdomain changed to use wordpress online translation.
+* Now announcement can be published per role basis.
+* Better controling who can send message or reply or use any other options.
+* Embed issue fixed.
 
 = 3.3 =
 
