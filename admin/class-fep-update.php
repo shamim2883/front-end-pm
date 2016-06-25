@@ -129,7 +129,7 @@ class Fep_Update
 					add_post_meta( $message_id, '_fep_delete_by_'. $message->to_user, time(), true );
 				}
 				
-				$this->insert_attachment( $message_id, $message->id );
+				$this->insert_attachment( $message_id, $message->id, $message->from_user );
 				$this->insert_replies( $message_id, $message->id );
 				
 				$this->delete_message( $message->id );
@@ -153,7 +153,7 @@ class Fep_Update
 			if( ! $ann_id = wp_insert_post($arr) )
 				continue;
 			
-			$this->insert_attachment( $ann_id, $announcement->id );
+			$this->insert_attachment( $ann_id, $announcement->id, $announcement->from_user );
 
 			foreach( array_keys( get_editable_roles() ) as $role ) {
 				add_post_meta( $ann_id, '_participant_roles', $role );
@@ -197,7 +197,7 @@ class Fep_Update
 		wp_die();
 	}
 	
-	function insert_attachment( $message_id, $message_prev_id )
+	function insert_attachment( $message_id, $message_prev_id, $author )
 	{
 		if( ! $attachments = $this->get_attachments( $message_prev_id ) )
 		return;
@@ -211,6 +211,7 @@ class Fep_Update
 					'post_mime_type' => $unserialized_file['type'],
 					'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $unserialized_file['url'] ) ),
 					'post_content'   => '',
+					'post_author'	=> $author,
 					'post_status'    => 'inherit'
 				);
 				
@@ -237,7 +238,7 @@ class Fep_Update
 				);
 			
 			if( $reply_id = fep_send_message( $arr, $override ) ) {
-				$this->insert_attachment( $reply_id, $reply->id );
+				$this->insert_attachment( $reply_id, $reply->id, $reply->from_user );
 				
 				$this->delete_message( $reply->id );
 			}

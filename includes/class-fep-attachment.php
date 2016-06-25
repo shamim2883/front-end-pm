@@ -21,12 +21,12 @@ class Fep_Attachment
 	add_action ('before_delete_post', array($this, 'delete_attachment') );
 	
 	if ( '1' == fep_get_option('allow_attachment',0)) {
-		add_action ('fep_action_message_after_send', array($this, 'upload_attachment'), 10, 2 );
+		add_action ('fep_action_message_after_send', array($this, 'upload_attachment'), 10, 3 );
 		}
     }
 	
 	
-function upload_attachment( $message_id, $message ) {
+function upload_attachment( $message_id, $message, $inserted_message ) {
     if ( !isset( $_FILES['fep_upload'] ) ) {
         return false;
     }
@@ -46,7 +46,7 @@ function upload_attachment( $message_id, $message ) {
                     'size' => $_FILES['fep_upload']['size'][$i]
                 );
 
-                $this->upload_file( $upload, $message_id);
+                $this->upload_file( $upload, $message_id, $inserted_message );
             }//file exists
         }// end for
 		
@@ -78,7 +78,7 @@ function upload_attachment( $message_id, $message ) {
  * @param int $message_id
  * @return bool
  */
-function upload_file( $upload_data, $message_id ) {
+function upload_file( $upload_data, $message_id, $inserted_message ) {
 
 	if ( ! function_exists( 'wp_handle_upload' ) ) require_once( ABSPATH . 'wp-admin/includes/file.php' );
 	
@@ -92,6 +92,7 @@ function upload_file( $upload_data, $message_id ) {
 			'post_mime_type' => $movefile['type'],
 			'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $movefile['url'] ) ),
 			'post_content'   => '',
+			'post_author'	=> $inserted_message->post_author,
 			'post_status'    => 'inherit'
 		);
 		
