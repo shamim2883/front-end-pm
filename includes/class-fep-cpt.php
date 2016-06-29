@@ -44,19 +44,19 @@ class Fep_Cpt {
 	{
 		/** fep_message Post Type */
 		$labels = array(
-			'name' 				=> _x('Messages', 'post type general name', 'edd' ),
-			'singular_name' 	=> _x('Message', 'post type singular name', 'edd' ),
-			'add_new' 			=> __( 'New Message', 'edd' ),
-			'add_new_item' 		=> __( 'New Message', 'edd' ),
-			'edit_item' 		=> __( 'Edit Message', 'edd' ),
-			'new_item' 			=> __( 'New Message', 'edd' ),
-			'all_items' 		=> __( 'All Messages', 'edd' ),
-			'view_item' 		=> __( 'View Message', 'edd' ),
-			'search_items' 		=> __( 'Search Message', 'edd' ),
-			'not_found' 		=>  __( 'No Messages found', 'edd' ),
-			'not_found_in_trash'=> __( 'No Messages found in Trash', 'edd' ),
+			'name' 				=> _x('Messages', 'post type general name', 'front-end-pm' ),
+			'singular_name' 	=> _x('Message', 'post type singular name', 'front-end-pm' ),
+			'add_new' 			=> __( 'New Message', 'front-end-pm' ),
+			'add_new_item' 		=> __( 'New Message', 'front-end-pm' ),
+			'edit_item' 		=> __( 'Edit Message', 'front-end-pm' ),
+			'new_item' 			=> __( 'New Message', 'front-end-pm' ),
+			'all_items' 		=> __( 'All Messages', 'front-end-pm' ),
+			'view_item' 		=> __( 'View Message', 'front-end-pm' ),
+			'search_items' 		=> __( 'Search Message', 'front-end-pm' ),
+			'not_found' 		=>  __( 'No Messages found', 'front-end-pm' ),
+			'not_found_in_trash'=> __( 'No Messages found in Trash', 'front-end-pm' ),
 			'parent_item_colon' => '',
-			'menu_name' 		=> __( 'Front End PM', 'edd' )
+			'menu_name' 		=> __( 'Front End PM', 'front-end-pm' )
 		);
 	
 		$args = array(
@@ -79,19 +79,19 @@ class Fep_Cpt {
 		
 		/** fep_announcement Post Type */
 		$announcement_labels = array(
-			'name' 				=> _x('Announcements', 'post type general name', 'edd' ),
-			'singular_name' 	=> _x('Announcement', 'post type singular name', 'edd' ),
-			'add_new' 			=> __( 'New Announcement', 'edd' ),
-			'add_new_item' 		=> __( 'New Announcement', 'edd' ),
-			'edit_item' 		=> __( 'Edit Announcement', 'edd' ),
-			'new_item' 			=> __( 'New Announcement', 'edd' ),
-			'all_items' 		=> __( 'All Announcements', 'edd' ),
-			'view_item' 		=> __( 'View Announcement', 'edd' ),
-			'search_items' 		=> __( 'Search Announcement', 'edd' ),
-			'not_found' 		=>  __( 'No Announcements found', 'edd' ),
-			'not_found_in_trash'=> __( 'No Announcements found in Trash', 'edd' ),
+			'name' 				=> _x('Announcements', 'post type general name', 'front-end-pm' ),
+			'singular_name' 	=> _x('Announcement', 'post type singular name', 'front-end-pm' ),
+			'add_new' 			=> __( 'New Announcement', 'front-end-pm' ),
+			'add_new_item' 		=> __( 'New Announcement', 'front-end-pm' ),
+			'edit_item' 		=> __( 'Edit Announcement', 'front-end-pm' ),
+			'new_item' 			=> __( 'New Announcement', 'front-end-pm' ),
+			'all_items' 		=> __( 'All Announcements', 'front-end-pm' ),
+			'view_item' 		=> __( 'View Announcement', 'front-end-pm' ),
+			'search_items' 		=> __( 'Search Announcement', 'front-end-pm' ),
+			'not_found' 		=>  __( 'No Announcements found', 'front-end-pm' ),
+			'not_found_in_trash'=> __( 'No Announcements found in Trash', 'front-end-pm' ),
 			'parent_item_colon' => '',
-			'menu_name' 		=> __( 'Announcement', 'edd' )
+			'menu_name' 		=> __( 'Announcement', 'front-end-pm' )
 		);
 		
 		$announcement_args = array(
@@ -149,7 +149,7 @@ function add_meta_boxes() {
     );
 	remove_meta_box( 'slugdiv', 'fep_message', 'normal' );
 	 //remove_meta_box( 'submitdiv', 'fep_message', 'core' );
-	 add_meta_box( 'fep_announcement_to', __( 'Announcement to roles' ), array($this, 'announcement_to'), 'fep_announcement', 'side', 'core' );
+	 add_meta_box( 'fep_announcement_to', __( 'Announcement to roles', 'front-end-pm' ), array($this, 'announcement_to'), 'fep_announcement', 'side', 'core' );
 }
 
 function announcement_to( $post ) {
