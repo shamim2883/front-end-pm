@@ -4,6 +4,8 @@ function fep_plugin_activate(){
 
 	global $wpdb;
 	
+	if( false === fep_get_option( 'userrole_access', false ) ) {
+	
 		$roles = array_keys( get_editable_roles() );
 		$id = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE post_content LIKE '%[front-end-pm]%' AND post_status = 'publish' AND post_type = 'page' LIMIT 1");
 		
@@ -15,8 +17,10 @@ function fep_plugin_activate(){
 		$options['page_id'] = $id;
 		
 		update_option( 'FEP_admin_options', wp_parse_args( get_option('FEP_admin_options'), $options) );
+	}
 
 }
+add_action( 'admin_init', 'fep_plugin_activate' ); 
 
 function fep_translation()
 	{
@@ -212,6 +216,8 @@ function fep_get_new_message_number()
 
       return fep_get_user_message_count( 'unread' );
     }
+
+add_shortcode( 'fep_new_message_count_shortcode', 'fep_get_new_message_button' );
 	
 function fep_get_new_message_button(){
 	if (fep_get_new_message_number()){
