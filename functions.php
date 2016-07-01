@@ -4,8 +4,6 @@ function fep_plugin_activate(){
 
 	global $wpdb;
 	
-	if( false === fep_get_option( 'userrole_access', false ) ) {
-	
 		$roles = array_keys( get_editable_roles() );
 		$id = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE post_content LIKE '%[front-end-pm]%' AND post_status = 'publish' AND post_type = 'page' LIMIT 1");
 		
@@ -14,13 +12,37 @@ function fep_plugin_activate(){
 		$options['userrole_access'] = $roles;
 		$options['userrole_new_message'] = $roles;
 		$options['userrole_reply'] = $roles;
+		$options['plugin_version'] = FEP_PLUGIN_VERSION;
 		$options['page_id'] = $id;
 		
 		update_option( 'FEP_admin_options', wp_parse_args( get_option('FEP_admin_options'), $options) );
+		
+		fep_add_caps_to_roles();
+
+}
+
+function fep_plugin_update(){
+	
+	$prev_ver = fep_get_option( 'plugin_version', '4.1' );
+	
+	if( version_compare( $prev_ver, FEP_PLUGIN_VERSION, '!=' ) ) {
+		
+		do_action( 'fep_plugin_update', $prev_ver );
+		
+		update_option( 'FEP_admin_options', wp_parse_args( array( 'plugin_version' => FEP_PLUGIN_VERSION ), get_option('FEP_admin_options') ) );
 	}
 
 }
-add_action( 'admin_init', 'fep_plugin_activate' ); 
+add_action( 'init', 'fep_plugin_update' );
+
+function fep_plugin_update_from_first( $prev_ver ){
+	
+	if( is_admin() && '4.1' == $prev_ver ) { //any previous version of 4.1 also return 4.1
+		fep_plugin_activate();
+	}
+
+}
+add_action( 'fep_plugin_update', 'fep_plugin_update_from_first' );
 
 function fep_translation()
 	{
@@ -571,7 +593,7 @@ function fep_current_user_can( $cap, $id = false ) {
 			}
 		break;
 		case 'view_announcement' :
-			if( $id && ( ( array_intersect( get_post_meta( $id, '_participant_roles' ), wp_get_current_user()->roles ) && get_post_status ( $id ) == 'publish') || current_user_can( $admin_cap ) ) ) {
+			if( $id && ( ( array_intersect( get_post_meta( $id, '_participant_roles' ), wp_get_current_user()->roles ) && get_post_status ( $id ) == 'publish') || current_user_can( $admin_cap ) || get_post_field( 'post_author', $id ) == get_current_user_id() ) ) {
 				$can = true;
 			}
 		break;
@@ -988,3 +1010,111 @@ function fep_auth_redirect_scheme( $scheme ){
     return 'logged_in';
 }
 
+function fep_get_plugin_caps( $edit_published = false, $for = 'both' ){
+	$message_caps = array(
+		'delete_published_fep_messages' => 'delete_published_fep_messages',
+		'delete_private_fep_messages' => 'delete_private_fep_messages',
+		'delete_others_fep_messages' => 'delete_others_fep_messages',
+		'delete_fep_messages' => 'delete_fep_messages',
+		'publish_fep_messages' => 'publish_fep_messages',
+		'read_private_fep_messages' => 'read_private_fep_messages',
+		'edit_private_fep_messages' => 'edit_private_fep_messages',
+		'edit_others_fep_messages' => 'edit_others_fep_messages',
+		'edit_fep_messages' => 'edit_fep_messages',
+		);
+	
+	$announcement_caps = array(
+		'delete_published_fep_announcements' => 'delete_published_fep_announcements',
+		'delete_private_fep_announcements' => 'delete_private_fep_announcements',
+		'delete_others_fep_announcements' => 'delete_others_fep_announcements',
+		'delete_fep_announcements' => 'delete_fep_announcements',
+		'publish_fep_announcements' => 'publish_fep_announcements',
+		'read_private_fep_announcements' => 'read_private_fep_announcements',
+		'edit_private_fep_announcements' => 'edit_private_fep_announcements',
+		'edit_others_fep_announcements' => 'edit_others_fep_announcements',
+		'edit_fep_announcements' => 'edit_fep_announcements',
+		);
+	
+	if( 'fep_message' == $for ) {
+		$caps = $message_caps;
+		if( $edit_published ) {
+			$caps['edit_published_fep_messages'] = 'edit_published_fep_messages';
+		}
+	} elseif( 'fep_announcement' == $for ){
+		$caps = $announcement_caps;
+		if( $edit_published ) {
+			$caps['edit_published_fep_announcements'] = 'edit_published_fep_announcements';
+		}
+	} else {
+		$caps = array_merge( $message_caps, $announcement_caps );
+		if( $edit_published ) {
+			$caps['edit_published_fep_messages'] = 'edit_published_fep_messages';
+			$caps['edit_published_fep_announcements'] = 'edit_published_fep_announcements';
+		}
+	}
+	return $caps;
+}
+
+function fep_add_caps_to_roles() {
+
+	$roles = array( 'administrator', 'editor' );
+	$caps = fep_get_plugin_caps();
+	
+	foreach( $roles as $role ) {
+		$role_obj = get_role( $role );
+		if( !$role_obj )
+			continue;
+			
+		foreach( $caps as $cap ) {
+			$role_obj->add_cap( $cap );
+		}
+	}
+}
+
+add_filter( 'map_meta_cap', 'fep_map_meta_cap', 10, 4 );
+
+function fep_map_meta_cap( $caps, $cap, $user_id, $args ) {
+
+	$our_caps = array( 'read_fep_message', 'edit_fep_message', 'delete_fep_message', 'read_fep_announcement', 'edit_fep_announcement', 'delete_fep_announcement' );
+	
+	/* If editing, deleting, or reading a message or announcement, get the post and post type object. */
+	if ( in_array( $cap, $our_caps ) ) {
+		$post = get_post( $args[0] );
+		$post_type = get_post_type_object( $post->post_type );
+
+		/* Set an empty array for the caps. */
+		$caps = array();
+	} else {
+		return $caps;
+	}
+
+	/* If editing a message or announcement, assign the required capability. */
+	if ( 'edit_fep_message' == $cap || 'edit_fep_announcement' == $cap ) {
+		if ( $user_id == $post->post_author )
+			$caps[] = $post_type->cap->edit_posts;
+		else
+			$caps[] = $post_type->cap->edit_others_posts;
+	}
+
+	/* If deleting a message or announcement, assign the required capability. */
+	elseif ( 'delete_fep_message' == $cap || 'delete_fep_announcement' == $cap ) {
+		if ( $user_id == $post->post_author )
+			$caps[] = $post_type->cap->delete_posts;
+		else
+			$caps[] = $post_type->cap->delete_others_posts;
+	}
+
+	/* If reading a private message or announcement, assign the required capability. */
+	elseif ( 'read_fep_message' == $cap || 'read_fep_announcement' == $cap ) {
+
+		if ( 'private' != $post->post_status )
+			$caps[] = 'read';
+		elseif ( $user_id == $post->post_author )
+			$caps[] = 'read';
+		else
+			$caps[] = $post_type->cap->read_private_posts;
+	}
+
+	/* Return the capabilities required by the user. */
+	return $caps;
+}
