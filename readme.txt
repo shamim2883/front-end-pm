@@ -20,7 +20,7 @@ Front End PM is a Private Messaging system to your WordPress site.This is full f
 * [Remove minlength](https://www.shamimsplugins.com/wordpress/docs/front-end-pm/customization/remove-minlength-message-title/)
 * [Remove menu button](https://www.shamimsplugins.com/wordpress/docs/front-end-pm/customization/remove-settings-menu-button/)
 
-* If you want paid support you can contact with me through [Front End PM paid support](http://frontendpm.blogspot.com/p/contact-us.html)
+* If you want paid support you can contact with me through [Front End PM paid support](https://www.shamimsplugins.com/wordpress/contact-us/)
 
 [youtube http://www.youtube.com/watch?v=SHKHTIlzr3w]
 
@@ -49,8 +49,11 @@ Front End PM is a Private Messaging system to your WordPress site.This is full f
 
 **Translation**
 
-* please use wordpress translation.
+* please use [wordpress translation](https://translate.wordpress.org/projects/wp-plugins/front-end-pm).
 
+**Github**
+
+[https://github.com/shamim2883/front-end-pm/](https://github.com/shamim2883/front-end-pm/)
 
 You can visit [Front End PM](https://www.shamimsplugins.com/wordpress/contact-us/) and contact with me for paid support.
 

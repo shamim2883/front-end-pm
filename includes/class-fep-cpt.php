@@ -65,10 +65,10 @@ class Fep_Cpt {
 			'rewrite' 			=> false,
 			'show_ui' 			=> true,
 			//'show_in_menu' 		=> true,
-			'capability_type' 	=> 'page',
+			'capability_type' 	=> 'fep_message',
 			'capabilities' => array(
 				'create_posts' => 'do_not_allow', //will be changed in next version to send message from BACK END
-				'edit_published_posts' => 'fep_cap_edit_published_messages' ), //Should not give permission to edit Sent Message
+				 ),
 			'map_meta_cap'      => true,
 			'menu_icon'   		=> 'dashicons-email-alt',
 			'supports' 			=> apply_filters( 'fep_message_cpt_supports', array( 'title', 'editor' ) ),
@@ -91,7 +91,7 @@ class Fep_Cpt {
 			'not_found' 		=>  __( 'No Announcements found', 'front-end-pm' ),
 			'not_found_in_trash'=> __( 'No Announcements found in Trash', 'front-end-pm' ),
 			'parent_item_colon' => '',
-			'menu_name' 		=> __( 'Announcement', 'front-end-pm' )
+			'menu_name' 		=> __( 'Front End PM', 'front-end-pm' )
 		);
 		
 		$announcement_args = array(
@@ -100,10 +100,7 @@ class Fep_Cpt {
 			'rewrite' 			=> false,
 			'show_ui' 			=> true,
 			'show_in_menu' 		=> 'edit.php?post_type=fep_message',
-			'capability_type' 	=> 'page',
-			'capabilities' => array(
-				'edit_published_posts' => 'fep_cap_edit_published_announcements'  //Should not give permission to edit Published announcements
-				),
+			'capability_type' 	=> 'fep_announcement',
 			'map_meta_cap'      => true,
 			'supports' 			=> apply_filters( 'fep_announcement_cpt_supports', array( 'title', 'editor' ) ),
 			'can_export'		=> true
@@ -256,8 +253,8 @@ function post_submitbox_start_info()
 			if ( is_admin() && ( empty($_POST['fep_nonce']) || ! wp_verify_nonce( $_POST['fep_nonce'], 'fep_nonce' ) ) ) return;
 			if ( wp_is_post_revision( $message ) ) return;
 			if ( wp_is_post_autosave( $message ) ) return;
-			//if ( ! current_user_can( 'edit_posts' ) ) return;
-			if ( ! current_user_can( 'edit_post', $message_id ) && ! current_user_can( 'delete_post', $message_id ) ) return;
+			//if ( ! current_user_can( 'edit_fep_messages' ) ) return;
+			if ( ! current_user_can( 'edit_fep_message', $message_id ) && ! current_user_can( 'delete_fep_message', $message_id ) ) return;
 			//if ( $message->post_type != 'fep_message' ) return;
 			
 			do_action( 'fep_save_message', $message_id, $message, $update );
@@ -269,8 +266,8 @@ function post_submitbox_start_info()
 			if ( empty($_POST['fep_nonce']) || ! wp_verify_nonce( $_POST['fep_nonce'], 'fep_nonce' ) ) return;
 			if ( wp_is_post_revision( $announcement ) ) return;
 			if ( wp_is_post_autosave( $announcement ) ) return;
-			//if ( ! current_user_can( 'edit_pages' ) ) return;
-			if ( ! current_user_can( 'edit_page', $announcement_id ) && ! current_user_can( 'delete_page', $announcement_id ) ) return;
+			//if ( ! current_user_can( 'edit_fep_announcements' ) ) return;
+			if ( ! current_user_can( 'edit_fep_announcement', $announcement_id ) && ! current_user_can( 'delete_fep_announcement', $announcement_id ) ) return;
 			//if ( $announcement->post_type != 'fep_announcement' ) return;
 	
 			do_action( 'fep_save_announcement', $announcement_id, $announcement, $update );
