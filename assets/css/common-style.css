@@ -21,6 +21,7 @@
 	margin-top:10px;
 	font-weight:bold;
 	text-decoration:none !important;
+	cursor: pointer;
 }
 
 #fep-menu .fep-button:hover,.fep-button-active {

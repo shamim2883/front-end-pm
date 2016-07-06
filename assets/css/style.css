@@ -46,6 +46,9 @@
 	-khtml-border-radius: 3px;
 	-webkit-border-radius: 3px;
 	border-radius: 3px;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 .fep-success
 {
@@ -91,7 +94,7 @@
 {
 	width: 45%;
 	min-width:250px;
-	border: 1px solid #E7E7E7;
+	/* border: 1px solid #E7E7E7; */
 }
 
 #fep-content a
