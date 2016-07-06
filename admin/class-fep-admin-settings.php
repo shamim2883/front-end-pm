@@ -18,7 +18,7 @@ class Fep_Admin_Settings
 		add_action('admin_menu', array($this, 'addAdminPage'));
 		add_action('admin_init', array($this, 'settings_output'));
 		add_filter('plugin_action_links', array($this, 'add_settings_link'), 10, 2 );
-		add_filter( 'fep_filter_before_admin_options_save', array($this, 'recalculate_user_message_count'));
+		add_action('fep_action_before_admin_options_save', array($this, 'recalculate_user_message_count'));
     }
 
     function addAdminPage()
@@ -33,8 +33,6 @@ class Fep_Admin_Settings
 	if( fep_get_option('message_view','threaded') != $settings['message_view'] ) {
 		delete_metadata( 'user', 0, '_fep_user_message_count', '', true );
 	}
-	
-	return $settings;
 }
 	
 	public function form_fields( $section = 'general' )
@@ -216,6 +214,14 @@ class Fep_Admin_Settings
 				'label' => __( 'Send email?', 'front-end-pm' ),
 				'description' => __( 'Send email to all users when a new announcement is published?', 'front-end-pm' )
 				),
+			'ann_to'	=> array(
+				'type'	=>	'email',
+				'value' => fep_get_option('ann_to', get_bloginfo('admin_email')),
+				'priority'	=> 20,
+				'section'	=> 'announcement',
+				'label' => __( 'Valid email address for "to" field of announcement email', 'front-end-pm' ),
+				'description' => __( 'All users email will be in "Bcc" field.', 'front-end-pm' )
+				),
 						
 			//Email Settings
 			
@@ -248,15 +254,7 @@ class Fep_Admin_Settings
 				'label' => __( 'From Email', 'front-end-pm' ),
 				'description' => __( 'All email send by Front End PM plugin will have this email address as sender.', 'front-end-pm' )
 				),
-					
-			'ann_to'	=> array(
-				'type'	=>	'email',
-				'value' => fep_get_option('ann_to', get_bloginfo('admin_email')),
-				'priority'	=> 20,
-				'section'	=> 'emails',
-				'label' => __( 'Valid email address for "to" field of announcement email', 'front-end-pm' ),
-				'description' => __( 'All users email will be in "Bcc" field.', 'front-end-pm' )
-				),
+				
 			//Security
 			
 			'userrole_access'	=> array(
@@ -534,11 +532,14 @@ class Fep_Admin_Settings
 				$posted_value = wp_parse_args( $sanitized, $posted_value ); 
 		}
 		
-	// Merge our new settings with the existing
-	$settings = wp_parse_args( $posted_value, get_option('FEP_admin_options') );
-	
+		// Merge our new settings with the existing
+		$settings = wp_parse_args( $posted_value, get_option('FEP_admin_options') );
+		
+		$settings = apply_filters( 'fep_filter_before_admin_options_save', $settings );
+		
+		do_action( 'fep_action_before_admin_options_save', $settings );
 
-		return apply_filters( 'fep_filter_before_admin_options_save', $settings );
+		return $settings;
 	}
 	
 	function sanitize( $section )
