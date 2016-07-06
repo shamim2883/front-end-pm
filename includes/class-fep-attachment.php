@@ -17,6 +17,7 @@ class Fep_Attachment
 	add_action ('fep_display_after_parent_message', array($this, 'display_attachment'));
 	add_action ('fep_display_after_reply_message', array($this, 'display_attachment'));
 	add_action ('fep_display_after_announcement', array($this, 'display_attachment'));
+	add_action('template_redirect', array($this, 'download_file' ) );
 	
 	add_action ('before_delete_post', array($this, 'delete_attachment') );
 	
@@ -109,7 +110,6 @@ function upload_file( $upload_data, $message_id, $inserted_message ) {
 	function display_attachment() {
 	
 	$attachments = fep_get_attachments();
-	$token = fep_create_nonce('download');
 	
 	if ($attachments) {
 		  echo "<hr /><strong>" . __("Attachments", 'front-end-pm') . ":</strong><br />";
@@ -118,9 +118,66 @@ function upload_file( $upload_data, $message_id, $inserted_message ) {
 		$attachment_id = $attachment->ID;
 		$name = esc_html( basename(wp_get_attachment_url( $attachment_id )) );
 		
-			echo "<a href='".fep_query_url('download', array( 'id' => $attachment_id, 'token' => $token ))."' title='Download {$name}'>{$name}</a><br />";
+			echo "<a href='".fep_query_url('download', array( 'id' => $attachment_id, 'token' => fep_create_nonce('download' . $attachment_id ) ))."' title='Download {$name}'>{$name}</a><br />";
 				} 
 			}
+		}
+
+	function download_file(){
+	
+		if ( empty($_GET['fepaction']) || $_GET['fepaction'] != 'download' )
+			return;
+			
+		$id = ! empty( $_GET['id'] ) ? absint($_GET['id']) : 0;
+		$token = ! empty( $_GET['token'] ) ? $_GET['token'] : '';
+	
+		if ( ! $id || !fep_verify_nonce( $token, 'download' . $id ) )
+		wp_die(__('Invalid token', 'front-end-pm'));
+		
+		if ( !fep_current_user_can( 'access_message' ) )
+		wp_die(__('No attachments found', 'front-end-pm'));
+	
+		if ( 'attachment' != get_post_type( $id ) || 'publish' != get_post_status ( $id ) )
+		wp_die(__('No attachments found', 'front-end-pm'));
+	
+		$message_id = fep_get_parent_id($id);
+		$post_type = get_post_type($message_id);
+		
+		if( ! in_array( $post_type, array( 'fep_message', 'fep_announcement' ) ) ) {
+			wp_die(__('You have no permission to download this attachment.', 'front-end-pm'));
+		} elseif( 'fep_message' == $post_type && ! fep_current_user_can('view_message', $message_id ) ) {
+			wp_die(__('You have no permission to download this attachment.', 'front-end-pm'));
+		} elseif( 'fep_announcement' == $post_type && ! fep_current_user_can('view_announcement', $message_id ) ) {
+			wp_die(__('You have no permission to download this attachment.', 'front-end-pm'));
+		}
+			  
+	
+			$attachment_type = get_post_mime_type( $id );
+			$attachment_url = wp_get_attachment_url( $id );
+			$attachment_path = get_attached_file( $id );
+			$attachment_name = basename($attachment_url);
+	
+		if( !file_exists($attachment_path) ){
+			wp_delete_attachment( $id );
+			wp_die(__('Attachment already deleted', 'front-end-pm'));
+		}
+		
+		
+			header("Content-Description: File Transfer");
+			header("Content-Transfer-Encoding: binary");
+			header("Content-Type: $attachment_type", true, 200);
+			header("Content-Disposition: attachment; filename=\"$attachment_name\"");
+			header("Content-Length: " . filesize($attachment_path));
+			nocache_headers();
+			
+			//clean all levels of output buffering
+			while (ob_get_level()) {
+				ob_end_clean();
+			}
+			
+			readfile($attachment_path);
+			
+				exit;
 		}
 		
 	
@@ -145,4 +202,4 @@ function upload_file( $upload_data, $message_id, $inserted_message ) {
   } //END CLASS
 
 add_action('wp_loaded', array(Fep_Attachment::init(), 'actions_filters'));
-?>
+

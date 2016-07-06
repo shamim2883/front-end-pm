@@ -431,66 +431,6 @@ function fep_format_date( $date, $d )
       return $html;
     }
 
-
-add_action('template_redirect', 'fep_download_file');
-
-function fep_download_file()
-		{
-		if ( !isset($_GET['fepaction']) || $_GET['fepaction'] != 'download')
-		return;
-		
-	$id = ! empty( $_GET['id'] ) ? absint($_GET['id']) : 0;
-	$token = ! empty( $_GET['token'] ) ? $_GET['token'] : '';
-
-	if ( ! $id || !fep_verify_nonce( $token, 'download') )
-	wp_die(__('Invalid token', 'front-end-pm'));
-	
-	if ( !fep_current_user_can( 'access_message' ) )
-	wp_die(__('No attachments found', 'front-end-pm'));
-
-	if ( 'attachment' != get_post_type( $id ) || 'publish' != get_post_status ( $id ) )
-	wp_die(__('No attachments found', 'front-end-pm'));
-
-	$message_id = fep_get_parent_id($id);
-	$post_type = get_post_type($message_id);
-	
-	if( ! in_array( $post_type, array( 'fep_message', 'fep_announcement' ) ) ) {
-		wp_die(__('You have no permission to download this attachment.', 'front-end-pm'));
-	} elseif( 'fep_message' == $post_type && ! fep_current_user_can('view_message', $message_id ) ) {
-		wp_die(__('You have no permission to download this attachment.', 'front-end-pm'));
-	} elseif( 'fep_announcement' == $post_type && ! fep_current_user_can('view_announcement', $message_id ) ) {
-		wp_die(__('You have no permission to download this attachment.', 'front-end-pm'));
-	}
-		  
-
-		$attachment_type = get_post_mime_type( $id );
-		$attachment_url = wp_get_attachment_url( $id );
-		$attachment_path = get_attached_file( $id );
-		$attachment_name = basename($attachment_url);
-
-	if( !file_exists($attachment_path) ){
-		wp_delete_attachment( $id );
-		wp_die(__('Attachment already deleted', 'front-end-pm'));
-	}
-	
-	
-		header("Content-Description: File Transfer");
-		header("Content-Transfer-Encoding: binary");
-		header("Content-Type: $attachment_type", true, 200);
-		header("Content-Disposition: attachment; filename=\"$attachment_name\"");
-		header("Content-Length: " . filesize($attachment_path));
-		nocache_headers();
-		
-		//clean all levels of output buffering
-		while (ob_get_level()) {
-    		ob_end_clean();
-		}
-		
-		readfile($attachment_path);
-		
-			exit;
-		}
-
 function fep_sort_by_priority( $a, $b ) {
 	    if ( ! isset( $a['priority'] ) || ! isset( $b['priority'] ) || $a['priority'] === $b['priority'] ) {
 	        return 0;

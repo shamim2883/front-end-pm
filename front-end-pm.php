@@ -50,7 +50,7 @@ function fep_include_require_files()
 	$fep_files = apply_filters('fep_include_files', $fep_files );
 	
 	foreach ( $fep_files as $fep_file ) {
-		require_once ( $fep_file );
+		require_once( $fep_file );
 		}
 	}
 
