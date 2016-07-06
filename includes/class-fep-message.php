@@ -29,10 +29,10 @@ class Fep_Message
 	
 		if( 'newmessage' != $where )
 			return;
+			
+		$delay = absint(fep_get_option('time_delay',5));
 		
-		$admin_cap = apply_filters( 'fep_admin_cap', 'manage_options' );
-		
-		if( current_user_can( $admin_cap ) || ! $delay = absint(fep_get_option('time_delay',5)) )
+		if( fep_is_user_admin() || ! $delay )
 			return;
 			
 		$args = array(
