@@ -412,6 +412,7 @@ class Fep_Admin_Settings
 					break;
 					
 				case "wp_editor" :
+				case "teeny" :
 				
 							wp_editor( wp_kses_post( $field['value' ] ), $field['id'], array( 'textarea_name' => $field['name'], 'editor_class' => $field['class'], 'teeny' => true, 'media_buttons' => false) );
 
@@ -437,6 +438,12 @@ class Fep_Admin_Settings
 										?><option value="<?php esc_attr_e( $key ); ?>" <?php selected( $field['value' ], $key ); ?>><?php esc_attr_e( $name ); ?></option><?php }
 							?></select><?php
 
+					break;
+				
+				case "radio" :
+
+						foreach( $field['options'] as $key => $name ) {
+							?><label><input type="radio" class="<?php echo sanitize_html_class( $field['class'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>" value="<?php esc_attr_e( $key ); ?>" <?php checked( $field['posted-value' ], $key ); ?> /> <?php esc_attr_e( $name ); ?></label><br /><?php }
 					break;
 					
 				default :
@@ -474,6 +481,7 @@ class Fep_Admin_Settings
 					break;
 				case "textarea" :
 				case "wp_editor" :
+				case "teeny" :
 							$sanitized = wp_kses_post( $value );
 					break;
 					
@@ -620,7 +628,7 @@ class Fep_Admin_Settings
 		<div id="poststuff">
 			<div id="post-body" class="metabox-holder columns-2">
 				<div id="post-body-content">
-				
+				<div><a href="https://wordpress.org/support/view/plugin-reviews/front-end-pm?filter=5#postform" target="_blank">like this plugin? Please consider review in WordPress.org and give a &#9733;&#9733;&#9733;&#9733;&#9733; rating.</a></div>
 		<h2 class="nav-tab-wrapper">
 		<?php foreach ( $this->tabs() as $key => $tab ) : 
 			if( empty($tab['tab_output'])) continue; ?>
@@ -639,7 +647,6 @@ class Fep_Admin_Settings
 				do_settings_sections( "fep_settings_{$active_tab}" );
 				submit_button();
 			?>
-			<div><a href="https://wordpress.org/support/view/plugin-reviews/front-end-pm?filter=5#postform" target="_blank">like this plugin? Please consider review in WordPress.org and give a &#9733;&#9733;&#9733;&#9733;&#9733; rating.</a></div>
 			</form>
 		</div><!-- #tab_container-->
 		</div><!-- #post-body-content-->
