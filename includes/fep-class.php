@@ -419,11 +419,17 @@ function view_message()
 	  ob_start();
 	  setup_postdata( $post ); //setup_postdata does not work properly if variable name is NOT $post !!!!!
 	  //$read_class = fep_is_read() ? ' fep-hide-if-js' : '';
+	  $participants = get_post_meta( get_the_ID(), '_participants' );
+	  $par = array();
+	  foreach( $participants as $participant ) {
+	  	$par[] = fep_get_userdata( $participant, 'display_name', 'id' );
+	  }
 	  fep_make_read();
 	  fep_make_read( true );
 	  ?>
 	  <div class="fep-message">
 	  	<div class="fep-message-title-heading"><?php the_title(); ?></div>
+		<div class="fep-message-title-heading"><?php _e("Participants", 'front-end-pm'); ?>: <?php echo implode( ', ', $par ); ?></div>
 	  	<div class="fep-per-message">
 			<div class="fep-message-title">
 				<span class="author"><?php the_author_meta('display_name'); ?></span>
