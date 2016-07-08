@@ -99,6 +99,9 @@ if (!class_exists("fep_main_class"))
 			return;
 			
 		switch( $action ) {
+			case has_action("fep_posted_action_{$action}"):
+				do_action("fep_posted_action_{$action}", $this );
+			break;
 			case 'newmessage' :
 				if ( ! fep_current_user_can( 'send_new_message') )
 					return;
@@ -183,7 +186,7 @@ if (!class_exists("fep_main_class"))
 				
 			break;
 			default:
-				do_action("fep_posted_action_{$action}", $this );
+				do_action("fep_posted_action", $this );
 			break;
 			
 		}

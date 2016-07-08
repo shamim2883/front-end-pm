@@ -354,6 +354,10 @@ function field_output( $field, $errors )
 			$this->validate( $field, $errors );
 			
 		switch( $field['type'] ) {
+				
+				case has_action( 'fep_form_field_validate_' . $field['type'] ):
+				do_action( 'fep_form_field_validate_' . $field['type'], $field, $errors );
+				break;
 		
 				case 'email' :
 					if( ! is_email($field['posted-value']) )
@@ -471,8 +475,6 @@ function field_output( $field, $errors )
 					break;
 					
 				default :
-						
-					do_action( 'fep_form_field_validate_' . $field['type'], $field, $errors );
 					
 					do_action( 'fep_form_field_validate', $field, $errors );
 	
