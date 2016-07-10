@@ -607,7 +607,8 @@ function fep_make_read( $parent = false, $post_id = false, $user_id = false )
 	
 }
 
-function fep_get_the_excerpt($count = 100){
+function fep_get_the_excerpt($count = 100, $excerpt = false ){
+  if( false === $excerpt )
   $excerpt = get_the_excerpt();
   $excerpt = strip_shortcodes($excerpt);
   $excerpt = wp_strip_all_tags($excerpt);
