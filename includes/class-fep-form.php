@@ -203,16 +203,16 @@ function field_output( $field, $errors )
 							$support = apply_filters( 'fep_message_to_support', $support );
 								
 							if ( !empty( $support['nicename'] ) && $user = fep_get_userdata( $to, 'user_nicename' ) ) {
-								$m_to = fep_get_userdata( $user, 'user_nicename' );
+								$m_to = $user;
 								$m_top = fep_get_userdata( $user, 'display_name');
 							} elseif( is_numeric( $to ) && !empty( $support['id'] ) && $user = fep_get_userdata( $to, 'user_nicename', 'id' ) ) {
-								$m_to = fep_get_userdata( $user, 'user_nicename' );
+								$m_to = $user;
 								$m_top = fep_get_userdata( $user, 'display_name');
 							} elseif ( is_email( $to ) && !empty( $support['email'] ) && $user = fep_get_userdata( $to, 'user_nicename', 'email' ) ) {
-								$m_to = fep_get_userdata( $user, 'user_nicename' );
+								$m_to = $user;
 								$m_top = fep_get_userdata( $user, 'display_name');
 							} elseif ( !empty( $support['login'] ) && $user = fep_get_userdata( $to, 'user_nicename', 'login' ) ) {
-								$m_to = fep_get_userdata( $user, 'user_nicename' );
+								$m_to = $user;
 								$m_top = fep_get_userdata( $user, 'display_name');
 							} else {
 								$m_to = '';
