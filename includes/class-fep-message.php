@@ -184,11 +184,11 @@ function user_message_count( $value = 'all', $force = false, $user_id = false )
 				
 			 	if( $from_user == $user_id )
 				{
-					$inbox_count++;
+					$sent_count++;
 					
 				} elseif( is_array( $to_user_meta ) && in_array($user_id, $to_user_meta ) ) {
 				
-					$sent_count++;
+					$inbox_count++;
 				}
 				if( $archive_meta ) {
 				
@@ -256,10 +256,10 @@ function user_messages( $action = 'messagebox', $user_id = false )
 		 
 		 switch( $filter ) {
 		 	case 'inbox' :
-				$args['author'] = $user_id;
+				$args['author'] = -$user_id;
 			break;
 			case 'sent' :
-				$args['author'] = -$user_id;
+				$args['author'] = $user_id;
 			break;
 			case 'archive' :
 				$args['meta_query'][] = array(
