@@ -348,7 +348,7 @@ function bulk_individual_action( $action, $id ) {
 			}
 			$should_delete_from_db = true;
 			foreach( get_post_meta( $id, '_participants' ) as $participant ) {
-				if( false === get_post_meta( $id, '_fep_delete_by_'. $participant, true ) ) {
+				if( ! get_post_meta( $id, '_fep_delete_by_'. $participant, true ) ) {
 					$should_delete_from_db = false;
 					break;
 				}
