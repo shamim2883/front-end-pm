@@ -181,6 +181,14 @@ class Fep_Admin_Settings
 				'class'	=> '',
 				'label' => __( 'Hide Branding Footer?', 'front-end-pm' )
 				),
+			'delete_data_on_uninstall'	=> array(
+				'type'	=>	'checkbox',
+				'value' => fep_get_option('delete_data_on_uninstall', false ),
+				'priority'	=> 35,
+				'class'	=> '',
+				'label' => __( 'Remove Data on Uninstall?', 'front-end-pm' ),
+				'description' => __( 'Check this box if you would like Front End PM to completely remove all of its data when the plugin is deleted.', 'front-end-pm' )
+				),
 			//Message
 			'message_view'	=> array(
 				'type'	=>	'select',
