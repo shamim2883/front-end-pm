@@ -224,10 +224,6 @@ if (!class_exists("fep_main_class"))
       $header .= "<div id='fep-header' class='fep-table'><div>";
       $header .= "<div>".get_avatar($user_ID, 64)."</div><div><strong>".__("Welcome", 'front-end-pm').": ". fep_get_userdata( $user_ID, 'display_name', 'id' ) ."</strong>";
 	  
-	  ob_start();
-	  do_action('fep_header_note', $user_ID);
-	  $header .= ob_get_clean();
-	  
 	  $header .= "<div>" .__('You have', 'front-end-pm'). ' ' . sprintf(_n('%s unread message', '%s unread messages', $unread_count, 'front-end-pm'), number_format_i18n($unread_count) );
 	  $header .= " " .__('and', 'front-end-pm'). ' ' . sprintf(_n('%s unread announcement', '%s unread announcements', $unread_ann_count, 'front-end-pm'), number_format_i18n($unread_ann_count) );
 	  $header .= "</div>";
@@ -238,6 +234,11 @@ if (!class_exists("fep_main_class"))
 	   		$class = "";
 	   }
       $header .= "<div{$class}>" . __("Message box size", 'front-end-pm').": ".sprintf(__("%s of %s", 'front-end-pm'), number_format_i18n($total_count), $max_text ). "</div>";
+	  
+	  ob_start();
+	  do_action('fep_header_note', $user_ID);
+	  $header .= ob_get_clean();
+	  
       $header .= "</div></div></div>";
 	  
       return $header;
