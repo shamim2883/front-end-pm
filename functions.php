@@ -33,7 +33,7 @@ function fep_plugin_update(){
 	}
 
 }
-add_action( 'init', 'fep_plugin_update' );
+add_action( 'admin_init', 'fep_plugin_update' );
 
 function fep_plugin_update_from_first( $prev_ver ){
 	
