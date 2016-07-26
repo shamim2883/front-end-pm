@@ -149,7 +149,7 @@ class Fep_Emails
 				$user_emails[] = $user->user_email;
 			}
 		}
-		//var_dump($emails);
+		//var_dump($user_emails);
 		$chunked_bcc = array_chunk( $user_emails, 25);
 		
 		$subject =  get_bloginfo("name").': '.__('New Announcement', 'front-end-pm');
