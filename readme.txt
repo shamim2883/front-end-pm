@@ -1,9 +1,9 @@
 === Front End PM ===
 Contributors: shamim51
 Tags: front end pm,front-end-pm,pm,private message,personal message,front end,frontend pm,frontend,message,widget,plugin,sidebar,shortcode,page,email,mail,contact form, secure contact form, simple contact form,akismet check,akismet
-Donate link: https://www.paypal.me/shamimhasan
+Donate link: https://www.paypal.me/hasanshamim
 Requires at least: 4.4
-Tested up to: 4.5.2
+Tested up to: 4.5.3
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -15,12 +15,12 @@ Front End PM is a Private Messaging system to your WordPress site.This is full f
 
 **Some Useful Link**
 
-* [Basic Admin Settings](https://www.shamimsplugins.com/wordpress/docs/front-end-pm/getting-started/basic-admin-settings/)
-* [Basic Walkthrough](https://www.shamimsplugins.com/wordpress/docs/front-end-pm/getting-started/basic-front-end-walkthrough/)
-* [Remove minlength](https://www.shamimsplugins.com/wordpress/docs/front-end-pm/customization/remove-minlength-message-title/)
-* [Remove menu button](https://www.shamimsplugins.com/wordpress/docs/front-end-pm/customization/remove-settings-menu-button/)
+* [Basic Admin Settings](https://www.shamimsplugins.com/wordpress/docs/front-end-pm/getting-started/basic-admin-settings/?utm_campaign=wordpress&utm_source=readme&utm_medium=description)
+* [Basic Walkthrough](https://www.shamimsplugins.com/wordpress/docs/front-end-pm/getting-started/basic-front-end-walkthrough/?utm_campaign=wordpress&utm_source=readme&utm_medium=description)
+* [Remove minlength](https://www.shamimsplugins.com/wordpress/docs/front-end-pm/customization/remove-minlength-message-title/?utm_campaign=wordpress&utm_source=readme&utm_medium=description)
+* [Remove menu button](https://www.shamimsplugins.com/wordpress/docs/front-end-pm/customization/remove-settings-menu-button/?utm_campaign=wordpress&utm_source=readme&utm_medium=description)
 
-* If you want paid support you can contact with me through [Front End PM paid support](https://www.shamimsplugins.com/wordpress/contact-us/)
+* If you want paid support you can contact with me through [Front End PM paid support](https://www.shamimsplugins.com/wordpress/contact-us/?utm_campaign=wordpress&utm_source=readme&utm_medium=description)
 
 [youtube http://www.youtube.com/watch?v=SHKHTIlzr3w]
 
@@ -55,42 +55,58 @@ Front End PM is a Private Messaging system to your WordPress site.This is full f
 
 [https://github.com/shamim2883/front-end-pm/](https://github.com/shamim2883/front-end-pm/)
 
-You can visit [Front End PM](https://www.shamimsplugins.com/wordpress/contact-us/) and contact with me for paid support.
+You can visit [Front End PM](https://www.shamimsplugins.com/wordpress/contact-us/?utm_campaign=wordpress&utm_source=readme&utm_medium=translation) and contact with me for paid support.
 
 == Installation ==
 1. Upload "front-end-pm" to the "/wp-content/plugins/" directory.
 1. Activate the plugin through the "Plugins" menu in WordPress.
 1. Create a new page.
 1. Paste code `[front-end-pm]` for Front End pm under the HTML tab of the page editor.
-1. Publish the page.
+1. Publish the page add select this page as "Front End PM Page" in settings page of this plugin.
 
-Or you can create page for Front End PM by one click. Go to **Front End PM>Instruction** give a Title(required) for Front End PM page and Slug(optional) then click "Create Page". It will automatically create a page for your Message. If you keep Slug field blank, slug of page will be automatically created based on your given title.
-
-Need more instruction? you can visit [Front End PM](https://www.shamimsplugins.com/wordpress/contact-us/) and contact with me for paid support.
+Need more instruction? you can visit [Front End PM](https://www.shamimsplugins.com/wordpress/contact-us/?utm_campaign=wordpress&utm_source=readme&utm_medium=installation) and contact with me for paid support.
 
 == Frequently Asked Questions ==
 = Can i use this plugin to my language? =
-Yes. this plugin is translate ready. But If your language is not available you can make one. If you want to help us to translate this plugin to your language you are welcome.
+Yes. this plugin is translate ready. But If your language is not available you can make one. If you want to help us to translate this plugin to your language you are welcome. please use [wordpress translation](https://translate.wordpress.org/projects/wp-plugins/front-end-pm).
 
 = Where is "FEP Contact Form" which was added from version 2.0? =
 "FEP Contact Form" is now a separate plugin from version 3.1, so that you can use that plugin with "Front End PM" or without. 
 
 = Why code comments is less? =
-I am very busy with my job. In my leisure i code for plugins. If you want to help to add comments to the code you are welcome.(only add comments and line space change, no code change. if you want code change you can suggest me).
+I am very busy with my job. In my leisure i code for plugins. If you want to help to add comments to the code or indentation you are welcome. [https://github.com/shamim2883/front-end-pm/](https://github.com/shamim2883/front-end-pm/).
 
 = Where to contact for paid support? =
-You can visit [Front End PM](https://www.shamimsplugins.com/wordpress/contact-us/) and contact with me for paid support.
+You can visit [Front End PM](https://www.shamimsplugins.com/wordpress/contact-us/?utm_campaign=wordpress&utm_source=readme&utm_medium=faq) and contact with me for paid support.
 
 == Screenshots ==
 
 1. Responsive
 2. Messagebox.
-3. Button widgets.
-4. Text widgets.
-5. Front End Directory.
-6. Admin settings page.
+3. Front End Directory.
+4. Admin settings page.
 
 == Changelog ==
+
+= 4.3 =
+
+* Inbox Outbox message count fix
+* Inbox Outbox message alternate output fix
+* Message delete bug fix.
+* Show participants in message.
+* new function fep_is_user_admin added.
+* remove unnecessary function call.
+* Show login link instead of redirect user to login page.
+* uninstall.php added.
+* Extensions page added. Now available extensions can be seen from dashboard extensions page of this plugin.
+
+= 4.2 =
+
+* If you are updating from version 3.3 or less please read also changelog for 4.1
+* Use custom capability for messages and announcements.
+* Better control of messages and announcements.
+* Minor bug fixed.
+* POT file updated.
 
 = 4.1 =
 
@@ -206,6 +222,26 @@ You can visit [Front End PM](https://www.shamimsplugins.com/wordpress/contact-us
 * Initial release.
 
 == Upgrade Notice ==
+
+= 4.3 =
+
+* Inbox Outbox message count fix
+* Inbox Outbox message alternate output fix
+* Message delete bug fix.
+* Show participants in message.
+* new function fep_is_user_admin added.
+* remove unnecessary function call.
+* Show login link instead of redirect user to login page.
+* uninstall.php added.
+* Extensions page added. Now available extensions can be seen from dashboard extensions page of this plugin.
+
+= 4.2 =
+
+* If you are updating from version 3.3 or less please read also changelog for 4.1
+* Use custom capability for messages and announcements.
+* Better control of messages and announcements.
+* Minor bug fixed.
+* POT file updated.
 
 = 4.1 =
 
