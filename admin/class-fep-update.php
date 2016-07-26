@@ -23,7 +23,7 @@ class Fep_Update
 	function sections( $tabs)
 	{
 		$tabs['update'] =  array(
-									'priority'			=> 35,
+									'priority'			=> 45,
 									'tab_title'			=> __('Update', 'front-end-pm'),
 									);
 		return $tabs;
