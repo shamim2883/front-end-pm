@@ -938,7 +938,7 @@ function fep_auth_redirect(){
 	
 	do_action( 'fep_template_redirect' );
 	
-	if( apply_filters( 'fep_using_auth_redirect', true ) ) {
+	if( apply_filters( 'fep_using_auth_redirect', false ) ) {
 		auth_redirect();
 	}
 }

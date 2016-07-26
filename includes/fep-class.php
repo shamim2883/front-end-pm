@@ -86,7 +86,7 @@ if (!class_exists("fep_main_class"))
       }
       else
       { 
-        $out = "<div class='fep-error'>".__("You must be logged-in to view your message.", 'front-end-pm')."</div>";
+        $out = "<div class='fep-error'>".sprintf(__("You must <a href='%s'>login</a> to view your message.", 'front-end-pm'), wp_login_url( get_permalink() ) )."</div>";
       }
       return apply_filters('fep_main_shortcode_output', $out);
     }
