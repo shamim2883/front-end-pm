@@ -673,7 +673,7 @@ function fep_admin_sidebar()
 	{
 		return '<div class="postbox">
 					<h3 class="hndle" style="text-align: center;">
-						<span>'. __( "Plugin Author", "fepcf" ). '</span>
+						<span>'. __( "Plugin Author", "front-end-pm" ). '</span>
 					</h3>
 
 					<div class="inside">
@@ -682,22 +682,38 @@ function fep_admin_sidebar()
 							Know php, MySql, css, javascript, html. Expert in WordPress. <br /><br />
 								
 						You can hire for plugin customization, build custom plugin or any kind of wordpress job via <br> <a
-								href="https://www.shamimsplugins.com/wordpress/contact-us/"><strong>Contact Form</strong></a>
+								href="https://www.shamimsplugins.com/wordpress/contact-us/?utm_campaign=admin&utm_source=sidebar&utm_medium=author"><strong>Contact Form</strong></a>
 					</div>
 				</div>
 			</div>
 
 				<div class="postbox">
 					<h3 class="hndle" style="text-align: center;">
-						<span>'. __( "Some Useful Links", "fepcf" ). '</span>
-					</h3><div class="inside">
+						<span>'. __( "Some Useful Links", "front-end-pm" ). '</span>
+					</h3>
+					<div class="inside">
 						<div style="text-align: center; margin: auto">
 							<p>Some useful links are bellow to work with this plugin.</p>
 						<ul>
-							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm/getting-started/basic-admin-settings/" target="_blank">Basic Admin Settings</a></li>
-							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm/getting-started/basic-front-end-walkthrough/" target="_blank">Walkthrough</a></li>
-							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm/customization/remove-minlength-message-title/" target="_blank">Remove minlength</a></li>
-							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm/customization/remove-settings-menu-button/" target="_blank">Remove menu</a></li>
+							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm/getting-started/basic-admin-settings/?utm_campaign=admin&utm_source=sidebar&utm_medium=useful_links" target="_blank">Basic Admin Settings</a></li>
+							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm/getting-started/basic-front-end-walkthrough/?utm_campaign=admin&utm_source=sidebar&utm_medium=useful_links" target="_blank">Walkthrough</a></li>
+							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm/customization/remove-minlength-message-title/?utm_campaign=admin&utm_source=sidebar&utm_medium=useful_links" target="_blank">Remove minlength</a></li>
+							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm/customization/remove-settings-menu-button/?utm_campaign=admin&utm_source=sidebar&utm_medium=useful_links" target="_blank">Remove menu</a></li>
+
+						</ul></div>
+					</div>
+				</div>
+				<div class="postbox">
+					<h3 class="hndle" style="text-align: center;">
+						<span>'. __( "Contribute", "front-end-pm" ). '</span>
+					</h3>
+					<div class="inside">
+						<div style="text-align: center; margin: auto">
+						<ul>
+							<li><a href="https://www.shamimsplugins.com/wordpress/products/category/front-end-pm-extensions/?utm_campaign=admin&utm_source=sidebar&utm_medium=contribute" target="_blank">Buy Extensions</a></li>
+							<li><a href="https://www.paypal.me/hasanshamim" target="_blank">Donate</a></li>
+							<li><a href="https://wordpress.org/support/view/plugin-reviews/front-end-pm?filter=5#postform" target="_blank">Review in WordPress.org</a></li>
+							<li><a href="https://github.com/shamim2883/front-end-pm/" target="_blank">Github</a></li>
 
 						</ul></div>
 					</div>
