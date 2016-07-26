@@ -18,7 +18,7 @@ class Fep_Admin_Settings
 		add_action('admin_menu', array($this, 'addAdminPage'));
 		add_action('admin_init', array($this, 'settings_output'));
 		add_filter('plugin_action_links', array($this, 'add_settings_link'), 10, 2 );
-		add_filter( 'fep_filter_before_admin_options_save', array($this, 'recalculate_user_message_count'));
+		add_action('fep_action_before_admin_options_save', array($this, 'recalculate_user_message_count'));
     }
 
     function addAdminPage()
@@ -26,6 +26,7 @@ class Fep_Admin_Settings
 		$admin_cap = apply_filters( 'fep_admin_cap', 'manage_options' );
 		
 		add_submenu_page('edit.php?post_type=fep_message', 'Front End PM - ' .__('Settings','front-end-pm'), __('Settings','front-end-pm'), $admin_cap, 'fep_settings', array($this, "settings_page"));
+		add_submenu_page('edit.php?post_type=fep_message', 'Front End PM - ' .__('Extensions','front-end-pm'), __('Extensions','front-end-pm'), $admin_cap, 'fep_extensions', array($this, "extensions_page"));
 	
     }
 	function recalculate_user_message_count( $settings ){
@@ -33,8 +34,6 @@ class Fep_Admin_Settings
 	if( fep_get_option('message_view','threaded') != $settings['message_view'] ) {
 		delete_metadata( 'user', 0, '_fep_user_message_count', '', true );
 	}
-	
-	return $settings;
 }
 	
 	public function form_fields( $section = 'general' )
@@ -183,6 +182,14 @@ class Fep_Admin_Settings
 				'class'	=> '',
 				'label' => __( 'Hide Branding Footer?', 'front-end-pm' )
 				),
+			'delete_data_on_uninstall'	=> array(
+				'type'	=>	'checkbox',
+				'value' => fep_get_option('delete_data_on_uninstall', false ),
+				'priority'	=> 35,
+				'class'	=> '',
+				'label' => __( 'Remove Data on Uninstall?', 'front-end-pm' ),
+				'description' => __( 'Check this box if you would like Front End PM to completely remove all of its data when the plugin is deleted.', 'front-end-pm' )
+				),
 			//Message
 			'message_view'	=> array(
 				'type'	=>	'select',
@@ -216,6 +223,14 @@ class Fep_Admin_Settings
 				'label' => __( 'Send email?', 'front-end-pm' ),
 				'description' => __( 'Send email to all users when a new announcement is published?', 'front-end-pm' )
 				),
+			'ann_to'	=> array(
+				'type'	=>	'email',
+				'value' => fep_get_option('ann_to', get_bloginfo('admin_email')),
+				'priority'	=> 20,
+				'section'	=> 'announcement',
+				'label' => __( 'Valid email address for "to" field of announcement email', 'front-end-pm' ),
+				'description' => __( 'All users email will be in "Bcc" field.', 'front-end-pm' )
+				),
 						
 			//Email Settings
 			
@@ -248,15 +263,7 @@ class Fep_Admin_Settings
 				'label' => __( 'From Email', 'front-end-pm' ),
 				'description' => __( 'All email send by Front End PM plugin will have this email address as sender.', 'front-end-pm' )
 				),
-					
-			'ann_to'	=> array(
-				'type'	=>	'email',
-				'value' => fep_get_option('ann_to', get_bloginfo('admin_email')),
-				'priority'	=> 20,
-				'section'	=> 'emails',
-				'label' => __( 'Valid email address for "to" field of announcement email', 'front-end-pm' ),
-				'description' => __( 'All users email will be in "Bcc" field.', 'front-end-pm' )
-				),
+				
 			//Security
 			
 			'userrole_access'	=> array(
@@ -414,6 +421,7 @@ class Fep_Admin_Settings
 					break;
 					
 				case "wp_editor" :
+				case "teeny" :
 				
 							wp_editor( wp_kses_post( $field['value' ] ), $field['id'], array( 'textarea_name' => $field['name'], 'editor_class' => $field['class'], 'teeny' => true, 'media_buttons' => false) );
 
@@ -439,6 +447,12 @@ class Fep_Admin_Settings
 										?><option value="<?php esc_attr_e( $key ); ?>" <?php selected( $field['value' ], $key ); ?>><?php esc_attr_e( $name ); ?></option><?php }
 							?></select><?php
 
+					break;
+				
+				case "radio" :
+
+						foreach( $field['options'] as $key => $name ) {
+							?><label><input type="radio" class="<?php echo sanitize_html_class( $field['class'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>" value="<?php esc_attr_e( $key ); ?>" <?php checked( $field['posted-value' ], $key ); ?> /> <?php esc_attr_e( $name ); ?></label><br /><?php }
 					break;
 					
 				default :
@@ -476,6 +490,7 @@ class Fep_Admin_Settings
 					break;
 				case "textarea" :
 				case "wp_editor" :
+				case "teeny" :
 							$sanitized = wp_kses_post( $value );
 					break;
 					
@@ -534,11 +549,14 @@ class Fep_Admin_Settings
 				$posted_value = wp_parse_args( $sanitized, $posted_value ); 
 		}
 		
-	// Merge our new settings with the existing
-	$settings = wp_parse_args( $posted_value, get_option('FEP_admin_options') );
-	
+		// Merge our new settings with the existing
+		$settings = wp_parse_args( $posted_value, get_option('FEP_admin_options') );
+		
+		$settings = apply_filters( 'fep_filter_before_admin_options_save', $settings );
+		
+		do_action( 'fep_action_before_admin_options_save', $settings );
 
-		return apply_filters( 'fep_filter_before_admin_options_save', $settings );
+		return $settings;
 	}
 	
 	function sanitize( $section )
@@ -619,7 +637,7 @@ class Fep_Admin_Settings
 		<div id="poststuff">
 			<div id="post-body" class="metabox-holder columns-2">
 				<div id="post-body-content">
-				
+				<div><a href="https://wordpress.org/support/view/plugin-reviews/front-end-pm?filter=5#postform" target="_blank">like this plugin? Please consider review in WordPress.org and give a &#9733;&#9733;&#9733;&#9733;&#9733; rating.</a></div>
 		<h2 class="nav-tab-wrapper">
 		<?php foreach ( $this->tabs() as $key => $tab ) : 
 			if( empty($tab['tab_output'])) continue; ?>
@@ -638,7 +656,6 @@ class Fep_Admin_Settings
 				do_settings_sections( "fep_settings_{$active_tab}" );
 				submit_button();
 			?>
-			<div><a href="https://wordpress.org/support/view/plugin-reviews/front-end-pm?filter=5#postform" target="_blank">like this plugin? Please consider review in WordPress.org and give a &#9733;&#9733;&#9733;&#9733;&#9733; rating.</a></div>
 			</form>
 		</div><!-- #tab_container-->
 		</div><!-- #post-body-content-->
@@ -656,7 +673,7 @@ function fep_admin_sidebar()
 	{
 		return '<div class="postbox">
 					<h3 class="hndle" style="text-align: center;">
-						<span>'. __( "Plugin Author", "fepcf" ). '</span>
+						<span>'. __( "Plugin Author", "front-end-pm" ). '</span>
 					</h3>
 
 					<div class="inside">
@@ -665,22 +682,38 @@ function fep_admin_sidebar()
 							Know php, MySql, css, javascript, html. Expert in WordPress. <br /><br />
 								
 						You can hire for plugin customization, build custom plugin or any kind of wordpress job via <br> <a
-								href="https://www.shamimsplugins.com/wordpress/contact-us/"><strong>Contact Form</strong></a>
+								href="https://www.shamimsplugins.com/wordpress/contact-us/?utm_campaign=admin&utm_source=sidebar&utm_medium=author"><strong>Contact Form</strong></a>
 					</div>
 				</div>
 			</div>
 
 				<div class="postbox">
 					<h3 class="hndle" style="text-align: center;">
-						<span>'. __( "Some Useful Links", "fepcf" ). '</span>
-					</h3><div class="inside">
+						<span>'. __( "Some Useful Links", "front-end-pm" ). '</span>
+					</h3>
+					<div class="inside">
 						<div style="text-align: center; margin: auto">
 							<p>Some useful links are bellow to work with this plugin.</p>
 						<ul>
-							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm/getting-started/basic-admin-settings/" target="_blank">Basic Admin Settings</a></li>
-							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm/getting-started/basic-front-end-walkthrough/" target="_blank">Walkthrough</a></li>
-							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm/customization/remove-minlength-message-title/" target="_blank">Remove minlength</a></li>
-							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm/customization/remove-settings-menu-button/" target="_blank">Remove menu</a></li>
+							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm/getting-started/basic-admin-settings/?utm_campaign=admin&utm_source=sidebar&utm_medium=useful_links" target="_blank">Basic Admin Settings</a></li>
+							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm/getting-started/basic-front-end-walkthrough/?utm_campaign=admin&utm_source=sidebar&utm_medium=useful_links" target="_blank">Walkthrough</a></li>
+							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm/customization/remove-minlength-message-title/?utm_campaign=admin&utm_source=sidebar&utm_medium=useful_links" target="_blank">Remove minlength</a></li>
+							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm/customization/remove-settings-menu-button/?utm_campaign=admin&utm_source=sidebar&utm_medium=useful_links" target="_blank">Remove menu</a></li>
+
+						</ul></div>
+					</div>
+				</div>
+				<div class="postbox">
+					<h3 class="hndle" style="text-align: center;">
+						<span>'. __( "Contribute", "front-end-pm" ). '</span>
+					</h3>
+					<div class="inside">
+						<div style="text-align: center; margin: auto">
+						<ul>
+							<li><a href="https://www.shamimsplugins.com/wordpress/products/category/front-end-pm-extensions/?utm_campaign=admin&utm_source=sidebar&utm_medium=contribute" target="_blank">Buy Extensions</a></li>
+							<li><a href="https://www.paypal.me/hasanshamim" target="_blank">Donate</a></li>
+							<li><a href="https://wordpress.org/support/view/plugin-reviews/front-end-pm?filter=5#postform" target="_blank">Review in WordPress.org</a></li>
+							<li><a href="https://github.com/shamim2883/front-end-pm/" target="_blank">Github</a></li>
 
 						</ul></div>
 					</div>
@@ -695,6 +728,10 @@ function add_settings_link( $links, $file ) {
 		array_unshift( $links, $settings_link );
 	}
 	return $links;
+}
+
+function extensions_page(){
+	include_once( FEP_PLUGIN_DIR. 'admin/extensions.php' );
 }
 
   } //END CLASS

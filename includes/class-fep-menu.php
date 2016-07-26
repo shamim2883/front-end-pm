@@ -66,7 +66,7 @@ class Fep_Menu
 				
 						$defaults = array(
 								'title'			=> '',
-								'action'		=> '',
+								'action'		=> $key,
 								'class'			=> 'fep-button',
 								'active-class'	=> 'fep-button-active',
 								'priority'		=> 20

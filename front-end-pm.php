@@ -3,7 +3,7 @@
 Plugin Name: Front End PM
 Plugin URI: https://www.shamimsplugins.com/wordpress/contact-us/
 Description: Front End PM is a Private Messaging system and a secure contact form to your WordPress site.This is full functioning messaging system fromfront end. The messaging is done entirely through the front-end of your site rather than the Dashboard. This is very helpful if you want to keep your users out of the Dashboard area.
-Version: 4.1
+Version: 4.3
 Author: Shamim
 Author URI: https://www.shamimsplugins.com/wordpress/contact-us/
 Text Domain: front-end-pm
@@ -11,7 +11,7 @@ License: GPLv2 or later
 */
 //DEFINE
 
-define('FEP_PLUGIN_VERSION', '4.2' );
+define('FEP_PLUGIN_VERSION', '4.3' );
 define('FEP_PLUGIN_DIR',plugin_dir_path( __FILE__ ) );
 define('FEP_PLUGIN_URL',plugins_url( '/', __FILE__ ) );
 
@@ -50,7 +50,7 @@ function fep_include_require_files()
 	$fep_files = apply_filters('fep_include_files', $fep_files );
 	
 	foreach ( $fep_files as $fep_file ) {
-		require_once ( $fep_file );
+		require_once( $fep_file );
 		}
 	}
 

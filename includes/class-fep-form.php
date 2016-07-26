@@ -22,7 +22,6 @@ if (!class_exists('Fep_Form'))
 	
 	public function form_fields( $where = 'newmessage' )
 {
-	$admin_cap = apply_filters( 'fep_admin_cap', 'manage_options' );
 	
 	$fields = array(
 				'message_to' => array(
@@ -36,7 +35,7 @@ if (!class_exists('Fep_Form'))
 					'id' => 'fep-message-to',
 					'name' => 'message_to',
 					'class' => 'input-text',
-					'suggestion' => (fep_get_option('hide_autosuggest') != '1' || current_user_can( $admin_cap )),
+					'suggestion' => (fep_get_option('hide_autosuggest') != '1' || fep_is_user_admin() ),
 					'priority'    => 5
 				),
 				'message_title' => array(
@@ -56,7 +55,7 @@ if (!class_exists('Fep_Form'))
 				),
 				'message_content' => array(
 					'label'       => __( 'Message', 'front-end-pm' ),
-					'type'        => current_user_can( $admin_cap ) ? 'wp_editor' : fep_get_option('editor_type','wp_editor'),
+					'type'        => fep_is_user_admin() ? 'wp_editor' : fep_get_option('editor_type','wp_editor'),
 					'required'    => true,
 					'minlength'	=> 10,
 					'maxlength' => 5000,
@@ -191,11 +190,6 @@ function field_output( $field, $errors )
 					?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" type="<?php esc_attr_e( $field['type'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>" placeholder="<?php esc_attr_e( $field['placeholder'] ); ?>" value="<?php esc_attr_e( $field['posted-value' ] ); ?>" <?php echo $attrib; ?> /><?php
 
 					break;
-				case 'auto' : //Not Ready Yet
-				 wp_enqueue_script( 'fep-script' );
-							?><input id="myAutocomplete" type="text" /><?php
-
-					break;
 				case 'message_to' :
 							$to = (isset($_REQUEST['to']))? $_REQUEST['to']:'';
 							
@@ -209,16 +203,16 @@ function field_output( $field, $errors )
 							$support = apply_filters( 'fep_message_to_support', $support );
 								
 							if ( !empty( $support['nicename'] ) && $user = fep_get_userdata( $to, 'user_nicename' ) ) {
-								$m_to = fep_get_userdata( $user, 'user_nicename' );
+								$m_to = $user;
 								$m_top = fep_get_userdata( $user, 'display_name');
 							} elseif( is_numeric( $to ) && !empty( $support['id'] ) && $user = fep_get_userdata( $to, 'user_nicename', 'id' ) ) {
-								$m_to = fep_get_userdata( $user, 'user_nicename' );
+								$m_to = $user;
 								$m_top = fep_get_userdata( $user, 'display_name');
 							} elseif ( is_email( $to ) && !empty( $support['email'] ) && $user = fep_get_userdata( $to, 'user_nicename', 'email' ) ) {
-								$m_to = fep_get_userdata( $user, 'user_nicename' );
+								$m_to = $user;
 								$m_top = fep_get_userdata( $user, 'display_name');
 							} elseif ( !empty( $support['login'] ) && $user = fep_get_userdata( $to, 'user_nicename', 'login' ) ) {
-								$m_to = fep_get_userdata( $user, 'user_nicename' );
+								$m_to = $user;
 								$m_top = fep_get_userdata( $user, 'display_name');
 							} else {
 								$m_to = '';
@@ -258,7 +252,14 @@ function field_output( $field, $errors )
 					
 				case "checkbox" :
 
+							if( ! empty( $field['multiple' ] ) ) {
+								foreach( $field['options' ] as $key => $name ) {
+								?><label><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>[]" type="checkbox" value="<?php esc_attr_e( $key ); ?>" <?php if( in_array( $key, $field['posted-value' ] ) ) { echo 'checked="checked"';} ?> /> <?php esc_attr_e( $name ); ?></label><br /><?php
+								}
+							} else {
+
 							?><label><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>" type="checkbox" value="1" <?php checked( '1', $field['posted-value' ] ); ?> /> <?php esc_attr_e( $field['cb_label'] ); ?></label><?php
+							}
 
 					break;
 					
@@ -273,7 +274,7 @@ function field_output( $field, $errors )
 				case "radio" :
 
 						foreach( $field['options'] as $key => $name ) {
-							?><label><input type="radio" class="<?php echo sanitize_html_class( $field['class'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>" value="<?php esc_attr_e( $key ); ?>" <?php checked( $field['posted-value' ], $key ); ?> /><?php esc_attr_e( $name ); ?></label><?php }
+							?><label><input type="radio" class="<?php echo sanitize_html_class( $field['class'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>" value="<?php esc_attr_e( $key ); ?>" <?php checked( $field['posted-value' ], $key ); ?> /> <?php esc_attr_e( $name ); ?></label><br /><?php }
 					break;
 					
 				case 'token' :
@@ -353,6 +354,10 @@ function field_output( $field, $errors )
 			$this->validate( $field, $errors );
 			
 		switch( $field['type'] ) {
+				
+				case has_action( 'fep_form_field_validate_' . $field['type'] ):
+				do_action( 'fep_form_field_validate_' . $field['type'], $field, $errors );
+				break;
 		
 				case 'email' :
 					if( ! is_email($field['posted-value']) )
@@ -384,13 +389,15 @@ function field_output( $field, $errors )
 					  $_POST['message_to_id'] = array();
 					  
 					  	foreach ( $preTo as $pre ) {
-							if( $to = fep_get_userdata( $pre ) && get_current_user_id() != $to) {
+							$to = fep_get_userdata( $pre );
+							
+							if( $to && get_current_user_id() != $to) {
 								$_POST['message_to_id'][] = $to;
 								if ( fep_get_user_option( 'allow_messages', 1, $to ) != '1') {
 									$errors->add( $field['id'] , sprintf(__("%s does not want to receive messages!", 'front-end-pm'), fep_get_userdata( $to, 'display_name', 'id')));
 								}
 							} else {
-								$errors->add( $field['id'] , sprintf(__("Invalid receiver %s.", "front-end-pm"), $pre ) );
+								$errors->add( $field['id'] , sprintf(__('Invalid receiver "%s".', "front-end-pm"), $pre ) );
 							}
 						}
 					  } else {
@@ -468,8 +475,6 @@ function field_output( $field, $errors )
 					break;
 					
 				default :
-						
-					do_action( 'fep_form_field_validate_' . $field['type'], $field, $errors );
 					
 					do_action( 'fep_form_field_validate', $field, $errors );
 	
@@ -505,7 +510,7 @@ public function form_field_output( $where = 'newmessage', $errors= '', $value = 
 			$form_attr['enctype'] = 'multipart/form-data';
 		}
 		
-		$form_attr = apply_filters( 'fep_form_attribute', $form_attr );
+		$form_attr = apply_filters( 'fep_form_attribute', $form_attr, $where );
 		
 		$attr = array();
 		foreach ( $form_attr as $k => $v ) {
@@ -537,8 +542,8 @@ public function form_field_output( $where = 'newmessage', $errors= '', $value = 
 			}
 			$field['posted-value'] = isset( $_REQUEST[$field['name']] ) ? $_REQUEST[$field['name']] : $field['value'];
 
-			if ( has_action( 'fep_form_field_output_' . $field['type'] ) ) {
-				do_action( 'fep_form_field_output_' . $field['type'], $field, $errors );
+			if ( has_action( 'fep_form_field_init_output_' . $field['type'] ) ) {
+				do_action( 'fep_form_field_init_output_' . $field['type'], $field, $errors );
 			} else {
 				call_user_func( array( $this, 'field_output' ), $field, $errors );
 			} 
@@ -580,8 +585,8 @@ public function validate_form_field( $where = 'newmessage' )
 			$field = wp_parse_args( $field, $defaults);
 			$field['posted-value'] = isset( $_POST[$field['name']] ) ? $_POST[$field['name']] : '';
 
-			if ( has_action( 'fep_form_field_validate_' . $field['type'] ) ) {
-				do_action( 'fep_form_field_validate_' . $field['type'], $field, $errors );
+			if ( has_action( 'fep_form_field_init_validate_' . $field['type'] ) ) {
+				do_action( 'fep_form_field_init_validate_' . $field['type'], $field, $errors );
 			} else {
 				call_user_func( array( $this, 'field_validate' ), $field, $errors);
 			}

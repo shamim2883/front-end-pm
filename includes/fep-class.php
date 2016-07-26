@@ -86,7 +86,7 @@ if (!class_exists("fep_main_class"))
       }
       else
       { 
-        $out = "<div class='fep-error'>".__("You must be logged-in to view your message.", 'front-end-pm')."</div>";
+        $out = "<div class='fep-error'>".sprintf(__("You must <a href='%s'>login</a> to view your message.", 'front-end-pm'), wp_login_url( get_permalink() ) )."</div>";
       }
       return apply_filters('fep_main_shortcode_output', $out);
     }
@@ -99,6 +99,9 @@ if (!class_exists("fep_main_class"))
 			return;
 			
 		switch( $action ) {
+			case has_action("fep_posted_action_{$action}"):
+				do_action("fep_posted_action_{$action}", $this );
+			break;
 			case 'newmessage' :
 				if ( ! fep_current_user_can( 'send_new_message') )
 					return;
@@ -183,7 +186,7 @@ if (!class_exists("fep_main_class"))
 				
 			break;
 			default:
-				do_action("fep_posted_action_{$action}", $this );
+				do_action("fep_posted_action", $this );
 			break;
 			
 		}
@@ -221,10 +224,6 @@ if (!class_exists("fep_main_class"))
       $header .= "<div id='fep-header' class='fep-table'><div>";
       $header .= "<div>".get_avatar($user_ID, 64)."</div><div><strong>".__("Welcome", 'front-end-pm').": ". fep_get_userdata( $user_ID, 'display_name', 'id' ) ."</strong>";
 	  
-	  ob_start();
-	  do_action('fep_header_note', $user_ID);
-	  $header .= ob_get_clean();
-	  
 	  $header .= "<div>" .__('You have', 'front-end-pm'). ' ' . sprintf(_n('%s unread message', '%s unread messages', $unread_count, 'front-end-pm'), number_format_i18n($unread_count) );
 	  $header .= " " .__('and', 'front-end-pm'). ' ' . sprintf(_n('%s unread announcement', '%s unread announcements', $unread_ann_count, 'front-end-pm'), number_format_i18n($unread_ann_count) );
 	  $header .= "</div>";
@@ -235,6 +234,11 @@ if (!class_exists("fep_main_class"))
 	   		$class = "";
 	   }
       $header .= "<div{$class}>" . __("Message box size", 'front-end-pm').": ".sprintf(__("%s of %s", 'front-end-pm'), number_format_i18n($total_count), $max_text ). "</div>";
+	  
+	  ob_start();
+	  do_action('fep_header_note', $user_ID);
+	  $header .= ob_get_clean();
+	  
       $header .= "</div></div></div>";
 	  
       return $header;
@@ -416,11 +420,17 @@ function view_message()
 	  ob_start();
 	  setup_postdata( $post ); //setup_postdata does not work properly if variable name is NOT $post !!!!!
 	  //$read_class = fep_is_read() ? ' fep-hide-if-js' : '';
+	  $participants = get_post_meta( get_the_ID(), '_participants' );
+	  $par = array();
+	  foreach( $participants as $participant ) {
+	  	$par[] = fep_get_userdata( $participant, 'display_name', 'id' );
+	  }
 	  fep_make_read();
 	  fep_make_read( true );
 	  ?>
 	  <div class="fep-message">
 	  	<div class="fep-message-title-heading"><?php the_title(); ?></div>
+		<div class="fep-message-title-heading"><?php _e("Participants", 'front-end-pm'); ?>: <?php echo implode( ', ', $par ); ?></div>
 	  	<div class="fep-per-message">
 			<div class="fep-message-title">
 				<span class="author"><?php the_author_meta('display_name'); ?></span>

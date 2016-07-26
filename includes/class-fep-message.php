@@ -29,10 +29,10 @@ class Fep_Message
 	
 		if( 'newmessage' != $where )
 			return;
+			
+		$delay = absint(fep_get_option('time_delay',5));
 		
-		$admin_cap = apply_filters( 'fep_admin_cap', 'manage_options' );
-		
-		if( current_user_can( $admin_cap ) || ! $delay = absint(fep_get_option('time_delay',5)) )
+		if( fep_is_user_admin() || ! $delay )
 			return;
 			
 		$args = array(
@@ -184,11 +184,11 @@ function user_message_count( $value = 'all', $force = false, $user_id = false )
 				
 			 	if( $from_user == $user_id )
 				{
-					$inbox_count++;
+					$sent_count++;
 					
 				} elseif( is_array( $to_user_meta ) && in_array($user_id, $to_user_meta ) ) {
 				
-					$sent_count++;
+					$inbox_count++;
 				}
 				if( $archive_meta ) {
 				
@@ -256,10 +256,10 @@ function user_messages( $action = 'messagebox', $user_id = false )
 		 
 		 switch( $filter ) {
 		 	case 'inbox' :
-				$args['author'] = $user_id;
+				$args['author'] = -$user_id;
 			break;
 			case 'sent' :
-				$args['author'] = -$user_id;
+				$args['author'] = $user_id;
 			break;
 			case 'archive' :
 				$args['meta_query'][] = array(
@@ -348,7 +348,7 @@ function bulk_individual_action( $action, $id ) {
 			}
 			$should_delete_from_db = true;
 			foreach( get_post_meta( $id, '_participants' ) as $participant ) {
-				if( false === get_post_meta( $id, '_fep_delete_by_'. $participant, true ) ) {
+				if( ! get_post_meta( $id, '_fep_delete_by_'. $participant, true ) ) {
 					$should_delete_from_db = false;
 					break;
 				}

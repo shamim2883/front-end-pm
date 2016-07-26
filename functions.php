@@ -33,7 +33,7 @@ function fep_plugin_update(){
 	}
 
 }
-add_action( 'init', 'fep_plugin_update' );
+add_action( 'admin_init', 'fep_plugin_update' );
 
 function fep_plugin_update_from_first( $prev_ver ){
 	
@@ -330,7 +330,7 @@ function fep_get_userdata($data, $need = 'ID', $type = 'slug' )
 			return $user->$need;
 		else
 			return '';
-		}
+	}
 
 function fep_get_user_message_count( $value = 'all', $force = false, $user_id = false )
 {
@@ -397,7 +397,7 @@ function fep_format_date( $date, $d )
     {
 		global $post;
 		
-		if( is_admin() || ! in_array( get_post_type(), array( 'fep_message', 'fep_announcement' ) ) )
+		if( is_admin() || ! in_array( get_post_type(), apply_filters( 'fep_post_types_for_time', array( 'fep_message', 'fep_announcement' ) ) ) )
 			return $date;
 			
 		
@@ -430,66 +430,6 @@ function fep_format_date( $date, $d )
 	  
       return $html;
     }
-
-
-add_action('template_redirect', 'fep_download_file');
-
-function fep_download_file()
-		{
-		if ( !isset($_GET['fepaction']) || $_GET['fepaction'] != 'download')
-		return;
-		
-	$id = ! empty( $_GET['id'] ) ? absint($_GET['id']) : 0;
-	$token = ! empty( $_GET['token'] ) ? $_GET['token'] : '';
-
-	if ( ! $id || !fep_verify_nonce( $token, 'download') )
-	wp_die(__('Invalid token', 'front-end-pm'));
-	
-	if ( !fep_current_user_can( 'access_message' ) )
-	wp_die(__('No attachments found', 'front-end-pm'));
-
-	if ( 'attachment' != get_post_type( $id ) || 'publish' != get_post_status ( $id ) )
-	wp_die(__('No attachments found', 'front-end-pm'));
-
-	$message_id = fep_get_parent_id($id);
-	$post_type = get_post_type($message_id);
-	
-	if( ! in_array( $post_type, array( 'fep_message', 'fep_announcement' ) ) ) {
-		wp_die(__('You have no permission to download this attachment.', 'front-end-pm'));
-	} elseif( 'fep_message' == $post_type && ! fep_current_user_can('view_message', $message_id ) ) {
-		wp_die(__('You have no permission to download this attachment.', 'front-end-pm'));
-	} elseif( 'fep_announcement' == $post_type && ! fep_current_user_can('view_announcement', $message_id ) ) {
-		wp_die(__('You have no permission to download this attachment.', 'front-end-pm'));
-	}
-		  
-
-		$attachment_type = get_post_mime_type( $id );
-		$attachment_url = wp_get_attachment_url( $id );
-		$attachment_path = get_attached_file( $id );
-		$attachment_name = basename($attachment_url);
-
-	if( !file_exists($attachment_path) ){
-		wp_delete_attachment( $id );
-		wp_die(__('Attachment already deleted', 'front-end-pm'));
-	}
-	
-	
-		header("Content-Description: File Transfer");
-		header("Content-Transfer-Encoding: binary");
-		header("Content-Type: $attachment_type", true, 200);
-		header("Content-Disposition: attachment; filename=\"$attachment_name\"");
-		header("Content-Length: " . filesize($attachment_path));
-		nocache_headers();
-		
-		//clean all levels of output buffering
-		while (ob_get_level()) {
-    		ob_end_clean();
-		}
-		
-		readfile($attachment_path);
-		
-			exit;
-		}
 
 function fep_sort_by_priority( $a, $b ) {
 	    if ( ! isset( $a['priority'] ) || ! isset( $b['priority'] ) || $a['priority'] === $b['priority'] ) {
@@ -550,14 +490,19 @@ function fep_pagination( $total = null, $per_page = null, $list_class = 'fep-pag
     return $html;
 }
 
+function fep_is_user_admin(){
+	
+	$admin_cap = apply_filters( 'fep_admin_cap', 'manage_options' );
+	
+	return current_user_can( $admin_cap );
+}
+
 function fep_current_user_can( $cap, $id = false ) {
 	$can = false;
 	
 	if( ! is_user_logged_in() || fep_is_user_blocked() ) {
 		return apply_filters( 'fep_current_user_can', $can, $cap, $id );
 	}
-	
-	$admin_cap = apply_filters( 'fep_admin_cap', 'manage_options' );
 	
 	switch( $cap ) {
 		case 'access_message':
@@ -578,7 +523,7 @@ function fep_current_user_can( $cap, $id = false ) {
 			}
 		break;
 		case 'view_message' :
-			if( $id && ( ( in_array( get_current_user_id(), get_post_meta( $id, '_participants' ) ) && get_post_status ( $id ) == 'publish' ) || current_user_can( $admin_cap ) )) {
+			if( $id && ( ( in_array( get_current_user_id(), get_post_meta( $id, '_participants' ) ) && get_post_status ( $id ) == 'publish' ) || fep_is_user_admin() )) {
 				$can = true;
 			}
 		break;
@@ -588,12 +533,12 @@ function fep_current_user_can( $cap, $id = false ) {
 			}
 		break;
 		case 'access_directory' :
-			if( current_user_can( $admin_cap ) || ! fep_get_option('hide_directory', 0 ) ) {
+			if( fep_is_user_admin() || ! fep_get_option('hide_directory', 0 ) ) {
 				$can = true;
 			}
 		break;
 		case 'view_announcement' :
-			if( $id && ( ( array_intersect( get_post_meta( $id, '_participant_roles' ), wp_get_current_user()->roles ) && get_post_status ( $id ) == 'publish') || current_user_can( $admin_cap ) || get_post_field( 'post_author', $id ) == get_current_user_id() ) ) {
+			if( $id && ( ( array_intersect( get_post_meta( $id, '_participant_roles' ), wp_get_current_user()->roles ) && get_post_status ( $id ) == 'publish') || fep_is_user_admin() || get_post_field( 'post_author', $id ) == get_current_user_id() ) ) {
 				$can = true;
 			}
 		break;
@@ -662,7 +607,8 @@ function fep_make_read( $parent = false, $post_id = false, $user_id = false )
 	
 }
 
-function fep_get_the_excerpt($count = 100){
+function fep_get_the_excerpt($count = 100, $excerpt = false ){
+  if( false === $excerpt )
   $excerpt = get_the_excerpt();
   $excerpt = strip_shortcodes($excerpt);
   $excerpt = wp_strip_all_tags($excerpt);
@@ -865,9 +811,7 @@ add_filter( 'fep_filter_message_before_send', 'fep_backticker_code_input_filter'
 function fep_autosuggestion_ajax() {
 global $user_ID;
 
-$admin_cap = apply_filters( 'fep_admin_cap', 'manage_options' );
-
-if(fep_get_option('hide_autosuggest') == '1' && !current_user_can( $admin_cap ))
+if(fep_get_option('hide_autosuggest') == '1' && !fep_is_user_admin() )
 die();
 
 if ( check_ajax_referer( 'fep-autosuggestion', 'token', false )) {
@@ -994,7 +938,7 @@ function fep_auth_redirect(){
 	
 	do_action( 'fep_template_redirect' );
 	
-	if( apply_filters( 'fep_using_auth_redirect', true ) ) {
+	if( apply_filters( 'fep_using_auth_redirect', false ) ) {
 		auth_redirect();
 	}
 }
@@ -1118,3 +1062,13 @@ function fep_map_meta_cap( $caps, $cap, $user_id, $args ) {
 	/* Return the capabilities required by the user. */
 	return $caps;
 }
+
+function fep_array_trim( $array )
+{
+		
+	if (!is_array( $array ))
+       return trim( $array );
+ 
+    return array_map('fep_array_trim',  $array );
+}
+

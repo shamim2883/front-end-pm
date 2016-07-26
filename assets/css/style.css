@@ -46,6 +46,9 @@
 	-khtml-border-radius: 3px;
 	-webkit-border-radius: 3px;
 	border-radius: 3px;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 .fep-success
 {
@@ -84,14 +87,14 @@
 {
 	width: 100%;
 	height: 200px;
-	border: 1px solid #E7E7E7;
+	/* border: 1px solid #E7E7E7; */
 }
 
 #fep-content input[type=text]
 {
-	width: 45%;
-	min-width:250px;
-	border: 1px solid #E7E7E7;
+	width: 90%;
+	/* min-width:250px; */
+	/* border: 1px solid #E7E7E7; */
 }
 
 #fep-content a
@@ -230,6 +233,7 @@
 	border-radius: 10px;
 	padding-left:10px;
 	padding-right:10px;
+	margin-bottom:5px;
 	-webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;

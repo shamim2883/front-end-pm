@@ -74,10 +74,6 @@ class Fep_Emails
 			if( 'html' == fep_get_option( 'email_content_type', 'plain_text' ) ) {
 				$message = nl2br( $message );
 			}
-			$content = apply_filters( 'fep_filter_before_email_send', compact( 'subject', 'message' ) );
-
-			if( empty( $content['subject'] ) || empty( $content['message'] ) )
-			return;
 			
 			fep_add_email_filters();
 			
@@ -92,6 +88,11 @@ class Fep_Emails
 				$to = fep_get_userdata( $participant, 'user_email', 'id');
 				
 				if( ! $to )
+					continue;
+					
+				$content = apply_filters( 'fep_filter_before_email_send', compact( 'subject', 'message' ), $post, $to );
+
+				if( empty( $content['subject'] ) || empty( $content['message'] ) )
 					continue;
 						
 				wp_mail( $to, $content['subject'], $content['message'] );
@@ -140,16 +141,16 @@ class Fep_Emails
 		$usersarray = get_users( $args );
 		$to = fep_get_option('ann_to', get_bloginfo('admin_email'));
 		
-		$bcc = array();
+		$user_emails = array();
 		foreach  ($usersarray as $user) {
 			$notify = fep_get_user_option( 'allow_ann', 1, $user->ID);
 			
 			if ($notify == '1'){
-				$bcc[] = $user->user_email;
+				$user_emails[] = $user->user_email;
 			}
 		}
-		//var_dump($bcc);
-		$chunked_bcc = array_chunk($bcc, 25);
+		//var_dump($user_emails);
+		$chunked_bcc = array_chunk( $user_emails, 25);
 		
 		$subject =  get_bloginfo("name").': '.__('New Announcement', 'front-end-pm');
 		$message = __('A new Announcement is Published in ', 'front-end-pm')."\r\n";
@@ -161,7 +162,7 @@ class Fep_Emails
 		if( 'html' == fep_get_option( 'email_content_type', 'plain_text' ) ) {
 			$message = nl2br( $message );
 		}
-		$content = apply_filters( 'fep_filter_before_announcement_email_send', compact( 'subject', 'message' ) );
+		$content = apply_filters( 'fep_filter_before_announcement_email_send', compact( 'subject', 'message' ), $post, $user_emails );
 		
 		if( empty( $content['subject'] ) || empty( $content['message'] ) )
 			return;
