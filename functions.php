@@ -1097,3 +1097,7 @@ function fep_array_trim( $array )
     return array_map('fep_array_trim',  $array );
 }
 
+function fep_is_pro(){
+	return file_exists( FEP_PLUGIN_DIR. 'pro/pro-features.php' );
+}
+
