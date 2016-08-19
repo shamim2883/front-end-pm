@@ -128,17 +128,9 @@ function fep_page_id() {
      return apply_filters( 'fep_page_id_filter', fep_get_option('page_id', 0 ) );
 }
 
-function fep_action_url( $action = '' ) {
-
-	_doing_it_wrong( __FUNCTION__, sprintf(__('use %s', 'front-end-pm'), 'fep_query_url()'), '3.3.1');
-	
-      global $wp_rewrite;
-      if($wp_rewrite->using_permalinks())
-        $delim = '?';
-      else
-        $delim = '&';
+function fep_action_url( $action = '', $arg = array() ) {
 	  
-	  return get_permalink(fep_page_id()).$delim."fepaction=$action";
+	  return fep_query_url( $action, $arg );
 }
 
 function fep_query_url( $action, $arg = array() ) {
