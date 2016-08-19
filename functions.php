@@ -19,6 +19,34 @@ function fep_plugin_activate(){
 		
 		fep_add_caps_to_roles();
 
+add_action('after_setup_theme', 'fep_include_require_files');
+
+function fep_include_require_files() {
+
+	$fep_files = array(
+			'announcement' 	=> FEP_PLUGIN_DIR. 'includes/class-fep-announcement.php',
+			'attachment' 	=> FEP_PLUGIN_DIR. 'includes/class-fep-attachment.php',
+			'cpt' 			=> FEP_PLUGIN_DIR. 'includes/class-fep-cpt.php',
+			'directory' 	=> FEP_PLUGIN_DIR. 'includes/class-fep-directory.php',
+			'email' 		=> FEP_PLUGIN_DIR. 'includes/class-fep-emails.php',
+			'form' 			=> FEP_PLUGIN_DIR. 'includes/class-fep-form.php',
+			'menu' 			=> FEP_PLUGIN_DIR. 'includes/class-fep-menu.php',
+			'message' 		=> FEP_PLUGIN_DIR. 'includes/class-fep-message.php',
+			'main' 			=> FEP_PLUGIN_DIR. 'includes/fep-class.php',
+			'widgets' 		=> FEP_PLUGIN_DIR. 'includes/fep-widgets.php'
+			);
+	
+	if( is_admin() ) {
+		$fep_files['settings'] 	= FEP_PLUGIN_DIR. 'admin/class-fep-admin-settings.php';
+		$fep_files['update'] 	= FEP_PLUGIN_DIR. 'admin/class-fep-update.php';
+		$fep_files['pro-info'] 	= FEP_PLUGIN_DIR. 'admin/class-fep-pro-info.php';
+	}			
+					
+	$fep_files = apply_filters('fep_include_files', $fep_files );
+	
+	foreach ( $fep_files as $fep_file ) {
+			require_once( $fep_file );
+		}
 }
 
 function fep_plugin_update(){
