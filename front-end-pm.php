@@ -33,6 +33,4 @@ require_once( FEP_PLUGIN_DIR. 'functions.php');
 	//ACTIVATE PLUGIN
 	register_activation_hook(__FILE__ , 'fep_plugin_activate');
 	
-	add_action('wp_enqueue_scripts', 'fep_enqueue_scripts');
-	//add_action('admin_enqueue_scripts', 'fep_enqueue_scripts');
 	

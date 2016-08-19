@@ -79,6 +79,8 @@ function fep_translation()
 	//SETUP TEXT DOMAIN FOR TRANSLATIONS
 	load_plugin_textdomain('front-end-pm', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 	}
+
+add_action('wp_enqueue_scripts', 'fep_enqueue_scripts');
 	
 function fep_enqueue_scripts()
     {
