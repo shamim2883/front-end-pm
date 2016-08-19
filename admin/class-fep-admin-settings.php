@@ -590,6 +590,10 @@ class Fep_Admin_Settings
 					'tab_title'			=> __('General', 'front-end-pm'),
 					'priority'			=> 5
 					),
+				'recipient'	=> array(
+					'tab_title'			=> __('Recipient', 'front-end-pm'),
+					'priority'			=> 7
+					),
 				'message'	=> array(
 					'tab_title'			=> __('Message', 'front-end-pm'),
 					'priority'			=> 10
