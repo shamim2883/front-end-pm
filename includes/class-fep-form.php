@@ -177,7 +177,7 @@ function field_output( $field, $errors )
 		
 				case has_action( 'fep_form_field_output_' . $field['type'] ):
 				
-				do_action( 'fep_form_field_output_' . $field['type'], $field );
+				do_action( 'fep_form_field_output_' . $field['type'], $field, $errors );
 				
 				break;
 			
