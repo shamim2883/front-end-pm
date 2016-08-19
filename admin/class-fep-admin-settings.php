@@ -158,15 +158,6 @@ class Fep_Admin_Settings
 				'description' => __( 'Always shown to Admins.', 'front-end-pm' )
 				),
 					
-			'hide_autosuggest'	=> array(
-				'type'	=>	'checkbox',
-				'value' => fep_get_option('hide_autosuggest',0),
-				'priority'	=> 26,
-				'class'	=> '',
-				'label' => __( 'Hide Autosuggestion when typing recipient name?', 'front-end-pm' ),
-				'description' => __( 'Always shown to Admins.', 'front-end-pm' )
-				),
-					
 			'hide_notification'	=> array(
 				'type'	=>	'checkbox',
 				'value' => fep_get_option('hide_notification',0),
@@ -190,6 +181,18 @@ class Fep_Admin_Settings
 				'label' => __( 'Remove Data on Uninstall?', 'front-end-pm' ),
 				'description' => __( 'Check this box if you would like Front End PM to completely remove all of its data when the plugin is deleted.', 'front-end-pm' )
 				),
+			//Recipient
+			'hide_autosuggest'	=> array(
+				'type'	=>	'checkbox',
+				'value' => fep_get_option('hide_autosuggest',0),
+				'priority'	=> 5,
+				'section'	=> 'recipient',
+				'class'	=> '',
+				'label' => __( 'Hide Autosuggestion', 'front-end-pm' ),
+				'cb_label' => __( 'Hide Autosuggestion when typing recipient name?', 'front-end-pm' ),
+				'description' => __( 'Always shown to Admins.', 'front-end-pm' )
+				),
+				
 			//Message
 			'message_view'	=> array(
 				'type'	=>	'select',
@@ -399,6 +402,13 @@ class Fep_Admin_Settings
 	
 	function field_output( $field )
 	{
+		$attrib = ''; 
+		 if ( ! empty( $field['required'] ) ) $attrib .= 'required = "required" ';
+		 if ( ! empty( $field['readonly'] ) ) $attrib .= 'readonly = "readonly" ';
+		 if ( ! empty( $field['disabled'] ) ) $attrib .= 'disabled = "disabled" ';
+		 if ( ! empty( $field['minlength'] ) ) $attrib .= 'minlength = "' . absint( $field['minlength'] ) . '" ';
+		 if ( ! empty( $field['maxlength'] ) ) $attrib .= 'maxlength = "' . absint( $field['maxlength'] ) . '" ';
+		 
 		switch( $field['type'] ) {
 				
 				case has_action( 'fep_admin_settings_field_output_' . $field['type'] ):
@@ -411,12 +421,12 @@ class Fep_Admin_Settings
 				case 'email' :
 				case 'url' :
 				case 'number' :
-							?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" type="<?php esc_attr_e( $field['type'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>" placeholder="<?php esc_attr_e( $field['placeholder'] ); ?>" value="<?php esc_attr_e( $field['value' ] ); ?>" /><?php
+							?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" type="<?php esc_attr_e( $field['type'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>" placeholder="<?php esc_attr_e( $field['placeholder'] ); ?>" value="<?php esc_attr_e( $field['value' ] ); ?>" <?php echo $attrib; ?> /><?php
 
 					break;
 				case "textarea" :
 
-							?><textarea id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" cols="50" name="<?php esc_attr_e( $field['name'] ); ?>" placeholder="<?php esc_attr_e( $field['placeholder'] ); ?>"><?php echo wp_kses_post( $field['value' ] ); ?></textarea><?php
+							?><textarea id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" cols="50" name="<?php esc_attr_e( $field['name'] ); ?>" placeholder="<?php esc_attr_e( $field['placeholder'] ); ?>" <?php echo $attrib; ?>><?php echo wp_kses_post( $field['value' ] ); ?></textarea><?php
 
 					break;
 					

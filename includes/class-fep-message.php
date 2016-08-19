@@ -92,7 +92,7 @@ function delete_replies( $message_id ) {
 			'fields' => 'ids'
 		 );
 		
-		$replies = get_posts( $message_id );
+		$replies = get_posts( $args );
 			
 		if ($replies) {
 		  foreach ($replies as $reply){
