@@ -33,8 +33,6 @@ require_once( FEP_PLUGIN_DIR. 'functions.php');
 	//ACTIVATE PLUGIN
 	register_activation_hook(__FILE__ , 'fep_plugin_activate');
 	
-	//ADD ACTIONS
-	add_action('plugins_loaded', 'fep_translation');
 	add_action('wp_enqueue_scripts', 'fep_enqueue_scripts');
 	//add_action('admin_enqueue_scripts', 'fep_enqueue_scripts');
 	

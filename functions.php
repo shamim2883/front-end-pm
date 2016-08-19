@@ -72,6 +72,8 @@ function fep_plugin_update_from_first( $prev_ver ){
 }
 add_action( 'fep_plugin_update', 'fep_plugin_update_from_first' );
 
+add_action('plugins_loaded', 'fep_translation');
+
 function fep_translation()
 	{
 	//SETUP TEXT DOMAIN FOR TRANSLATIONS
