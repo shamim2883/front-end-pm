@@ -81,7 +81,8 @@ function fep_enqueue_scripts()
 	wp_localize_script( 'fep-notification-script', 'fep_notification_script', 
 			array( 
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
-				'nonce' => wp_create_nonce('fep-notification')
+				'nonce' => wp_create_nonce('fep-notification'),
+				'interval' => apply_filters( 'fep_filter_ajax_notification_interval', 60000 )
 			) 
 		);
 	
