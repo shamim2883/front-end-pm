@@ -84,6 +84,9 @@ class Front_End_Pm {
 	
 	}
 	
+	function fep_plugin_deactivate(){
+	}
+	
 } //END Class
 
 Front_End_Pm::init();
