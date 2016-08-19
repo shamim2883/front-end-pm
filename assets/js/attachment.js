@@ -38,8 +38,10 @@
     // Listener: automatically add new file field when the visible ones are full.
 	// Listener: automatically hide file field when maximum field reached.
 	function fep_listener() {
-		fep_add_file_field();
-		fep_hide_file_field();
+		if ( jQuery('#fep_upload').length ) {
+			fep_add_file_field();
+			fep_hide_file_field();
+		}
 	}
 		
     setInterval("fep_listener()", 1000);
