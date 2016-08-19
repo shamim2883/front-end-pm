@@ -160,7 +160,7 @@ function get_user_announcement_count( $value = 'all', $force = false, $user_id =
 				}
 				$user_registered = strtotime(fep_get_userdata( $user_id, 'user_registered', 'id' ));
 					
-				if( $user_registered > strtotime( $announcement->post_date ) ) {
+				if( $user_registered < strtotime( $announcement->post_date ) ) {
 					$after_i_registered_count++;
 				}
 				
