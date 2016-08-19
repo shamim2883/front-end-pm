@@ -2,23 +2,11 @@
 
 function fep_plugin_activate(){
 
-	global $wpdb;
+	//Deprecated in 4.4
+	//Move inside Front_End_Pm class
 	
-		$roles = array_keys( get_editable_roles() );
-		$id = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE post_content LIKE '%[front-end-pm]%' AND post_status = 'publish' AND post_type = 'page' LIMIT 1");
-		
-		$options = array();
-		
-		$options['userrole_access'] = $roles;
-		$options['userrole_new_message'] = $roles;
-		$options['userrole_reply'] = $roles;
-		$options['plugin_version'] = FEP_PLUGIN_VERSION;
-		$options['page_id'] = $id;
-		
-		update_option( 'FEP_admin_options', wp_parse_args( get_option('FEP_admin_options'), $options) );
-		
-		fep_add_caps_to_roles();
-
+	}
+	
 add_action('after_setup_theme', 'fep_include_require_files');
 
 function fep_include_require_files() {
