@@ -1,0 +1,281 @@
+<?php
+
+if( fep_is_pro() )
+	return;
+	
+class Fep_Pro_Info
+  {
+	private static $instance;
+	
+	public static function init()
+        {
+            if(!self::$instance instanceof self) {
+                self::$instance = new self;
+            }
+            return self::$instance;
+        }
+	
+    function actions_filters()
+    	{
+			add_filter( 'fep_admin_settings_tabs', array($this, 'admin_settings_tabs' ) );
+			add_filter( 'fep_settings_fields', array($this, 'settings_fields' ) );
+			add_action('fep_admin_settings_field_output_oa_admins', array($this, 'field_output_oa_admins' ) );
+    	}
+	
+	function email_legends( $where = 'newmessage', $post = '', $value = 'description', $user_email = '' ){
+		$legends = array(
+			'subject' => array(
+				'description' => __('Subject', 'front-end-pm')
+				),
+			'message' => array(
+				'description' => __('Full Message', 'front-end-pm')
+				),
+			'message_url' => array(
+				'description' => __('URL of message', 'front-end-pm'),
+				'where' => array( 'newmessage', 'reply' )
+				),
+			'announcement_url' => array(
+				'description' => __('URL of announcement', 'front-end-pm'),
+				'where' => 'announcement'
+				),
+			'sender' => array(
+				'description' => __('Sender', 'front-end-pm')
+				),
+			'receiver' => array(
+				'description' => __('Receiver', 'front-end-pm')
+				),
+			'site_title' => array(
+				'description' => __('Website title', 'front-end-pm')
+				),
+			'site_url' => array(
+				'description' => __('Website URL', 'front-end-pm')
+				),
+			);
+		
+		$ret = array();
+		foreach( $legends as $k => $legend ) {
+		
+				if ( empty($legend['where']) )
+					$legend['where'] = array( 'newmessage', 'reply', 'announcement' );
+				
+				if( is_array($legend['where'])){
+					if ( ! in_array(  $where, $legend['where'] )){
+						continue;
+					}
+				} else {
+					if ( $where != $legend['where'] ){
+						continue;
+					}
+				}
+				if( 'description' == $value ) {
+					$ret[$k] = '<code>{{' . $k . '}}</code> = ' . $legend['description'];
+				}
+		}
+		return $ret;
+	}
+	
+	function admin_settings_tabs( $tabs ) {
+				
+		$tabs['eb_newmessage'] =  array(
+				'section_title'		=> __('New Message email', 'front-end-pm'),
+				'section_page'		=> 'fep_settings_emails',
+				'section_callback'	=> array($this, 'section_callback' ),
+				'priority'			=> 55,
+				'tab_output'		=> false
+				);
+		$tabs['eb_reply'] =  array(
+				'section_title'		=> __('Reply Message email', 'front-end-pm'),
+				'section_page'		=> 'fep_settings_emails',
+				'section_callback'	=> array($this, 'section_callback' ),
+				'priority'			=> 65,
+				'tab_output'		=> false
+				);
+		$tabs['eb_announcement'] =  array(
+				'section_title'		=> __('Announcement email', 'front-end-pm'),
+				'section_page'		=> 'fep_settings_emails',
+				'section_callback'	=> array($this, 'section_callback' ),
+				'priority'			=> 75,
+				'tab_output'		=> false
+				);
+		$tabs['mr_multiple_recipients'] =  array(
+				'section_title'			=> __('Multiple Recipients', 'front-end-pm'),
+				'section_page'		=> 'fep_settings_recipient',
+				'section_callback'	=> array($this, 'section_callback' ),
+				'priority'			=> 10,
+				'tab_output'		=> false
+				);
+		$tabs['oa_admins'] =  array(
+				'section_title'			=> __('Only Admins', 'front-end-pm'),
+				'section_page'		=> 'fep_settings_recipient',
+				'section_callback'	=> array($this, 'section_callback' ),
+				'priority'			=> 15,
+				'tab_output'		=> false
+				);
+				
+		return $tabs;
+	}
+	
+	function section_callback( $section ){
+		
+		static $added = false;
+		
+		if( ! $added ){ ?>
+		<script type="text/javascript">
+		jQuery(document).ready(function(){	
+			jQuery( ".fep_admin_div_need_pro" ).each(function() {
+				jQuery(this).css({
+							height: jQuery(this).next('table').height(), 
+							width: jQuery(this).next('table').width()
+						});
+				jQuery(this).show();
+			});
+
+		});
+		</script>
+		<style type="text/css">
+			.fep_admin_div_need_pro {
+				cursor: pointer;
+				background:#ffffff url('<?php echo FEP_PLUGIN_URL . 'assets/images/pro_only.png'; ?>') no-repeat center center;
+				-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+				filter: alpha(opacity=50);
+				opacity: 0.5;
+				position: absolute;
+				z-index: 10000;
+				display: none;
+			}
+		</style><?php
+		$added = true;
+		}
+		
+		echo '<div class="notice notice-warning inline"><p>'.sprintf(__('Following features only available in PRO version. <a href="%s" target="_blank">Upgrade to PRO</a>'), esc_url('https://www.shamimsplugins.com/wordpress/products/front-end-pm-pro/')). '</p></div>';
+		?><div class="fep_admin_div_need_pro" onclick="window.open('https://www.shamimsplugins.com/wordpress/products/front-end-pm-pro/');"></div><?php
+		
+	}
+	
+	function settings_fields( $fields )
+		{
+			$fields['eb_newmessage_subject'] =   array(
+				'section'	=> 'eb_newmessage',
+				'value' => fep_get_option('eb_newmessage_subject', ''),
+				'label' => __( 'New message subject.', 'front-end-pm' )
+				);
+			$fields['eb_newmessage_content'] =   array(
+				'type' => 'teeny',
+				'section'	=> 'eb_newmessage',
+				'value' => fep_get_option('eb_newmessage_content', ''),
+				'description' => implode( '<br />', $this->email_legends() ),
+				'label' => __( 'New message content.', 'front-end-pm' )
+				);
+			$fields['eb_reply_subject'] =   array(
+				'section'	=> 'eb_reply',
+				'value' => fep_get_option('eb_reply_subject', ''),
+				'label' => __( 'Reply subject.', 'front-end-pm' )
+				);
+			$fields['eb_reply_content'] =   array(
+				'type' => 'teeny',
+				'section'	=> 'eb_reply',
+				'value' => fep_get_option('eb_reply_content', ''),
+				'description' => implode( '<br />', $this->email_legends( 'reply' ) ),
+				'label' => __( 'Reply content.', 'front-end-pm' )
+				);
+			$fields['eb_announcement_interval'] =   array(
+				'type' => 'number',
+				'section'	=> 'eb_announcement',
+				'value' => fep_get_option('eb_announcement_interval', 60 ),
+				'label' => __( 'Sending Interval.', 'front-end-pm' ),
+				'description' => __( 'Announcement sending Interval in minutes.', 'front-end-pm' )
+				);
+			$fields['eb_announcement_email_per_interval'] =   array(
+				'type' => 'number',
+				'section'	=> 'eb_announcement',
+				'value' => fep_get_option('eb_announcement_email_per_interval', 100 ),
+				'label' => __( 'Emails send per interval.', 'front-end-pm' ),
+				'description' => __( 'Announcement emails send per interval.', 'front-end-pm' )
+				);
+			$fields['eb_announcement_subject'] =   array(
+				'section'	=> 'eb_announcement',
+				'value' => fep_get_option('eb_announcement_subject', ''),
+				'label' => __( 'Announcement subject.', 'front-end-pm' )
+				);
+			$fields['eb_announcement_content'] =   array(
+				'type' => 'teeny',
+				'section'	=> 'eb_announcement',
+				'value' => fep_get_option('eb_announcement_content', ''),
+				'description' => implode( '<br />', $this->email_legends( 'announcement' ) ),
+				'label' => __( 'Announcement content.', 'front-end-pm' )
+				);
+			$fields['mr-can-send-to-users'] =   array(
+								'type'	=>	'checkbox',
+								'class'	=> '',
+								'section'	=> 'mr_multiple_recipients',
+								'value' => fep_get_option('mr-can-send-to-users', 1 ),
+								'description' => __( 'Can users send message to other users.', 'front-end-pm' ),
+								'label' => __( 'Can send to users', 'front-end-pm' ),
+								'cb_label' => __( 'Can users send message to other users.', 'front-end-pm' )
+								);
+			$fields['mr-max-recipients'] =   array(
+								'type'	=>	'number',
+								'section'	=> 'mr_multiple_recipients',
+								'value' => fep_get_option('mr-max-recipients', 5 ),
+								'description' => __( 'Maximum recipients per message.', 'front-end-pm' ),
+								'label' => __( 'Max recipients', 'front-end-pm' )
+								);
+			$fields['mr-message'] =   array(
+								'type'	=>	'select',
+								'section'	=> 'mr_multiple_recipients',
+								'value' => fep_get_option('mr-message', 'same-message' ),
+								'description' => __( 'How message will be sent to recipients', 'front-end-pm' ),
+								'label' => __( 'Message type', 'front-end-pm' ),
+								'options' => array(
+									'same-message' => __( 'Same Message', 'front-end-pm' ),
+									'separate-message' => __( 'Separate Message', 'front-end-pm' )
+									)
+								);
+			$fields['oa-can-send-to-admin'] =   array(
+								'type'	=>	'checkbox',
+								'class'	=> '',
+								'section'	=> 'oa_admins',
+								'value' => fep_get_option('oa-can-send-to-admin', 1 ),
+								'description' => __( 'Can users send message to admin.', 'front-end-pm' ),
+								'label' => __( 'Can send to admin', 'front-end-pm' )
+								);
+			$fields['oa_admins'] =   array(
+								'type'	=>	'oa_admins',
+								'section'	=> 'oa_admins',
+								'value' => fep_get_option('oa_admins', array()),
+								'description' => __( 'Do not forget to save.', 'front-end-pm' ),
+								'label' => 'Admins'
+								);
+			$fields['oa_admins_frontend'] =   array(
+					'type'	=>	'select',
+					'section'	=> 'oa_admins',
+					'value' => fep_get_option('oa_admins_frontend', 'select' ),
+					'description' => __( 'Select how you want to see in frontend.', 'front-end-pm' ),
+					'label' => __( 'Show in front end as', 'front-end-pm' ),
+					'options'	=> array(
+						'select'	=> __( 'Select', 'front-end-pm' ),
+						'radio'	=> __( 'Radio', 'front-end-pm' )
+						)
+					);
+								
+			return $fields;
+			
+		}
+		
+		function field_output_oa_admins( $field ){
+		
+ ?>
+			<div>
+				<span><input type="text" placeholder="<?php esc_attr_e( 'Display as', 'front-end-pm' ); ?>" value=""/></span>
+				<span><input type="text" placeholder="<?php esc_attr_e( 'Username', 'front-end-pm' ); ?>" value=""/></span>
+				<span><input type="button" class="button button-small" value="<?php esc_attr_e( 'Remove' ); ?>" /></span>
+			</div>
+			<div><input type="button" class="button" value="<?php esc_attr_e( 'Add More', 'front-end-pm' ); ?>" /></div>
+		<?php
+		
+		}
+		
+  } //END CLASS
+
+add_action('admin_init', array(Fep_Pro_Info::init(), 'actions_filters'));
+
