@@ -421,19 +421,19 @@ class Fep_Admin_Settings
 				case 'email' :
 				case 'url' :
 				case 'number' :
-							?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" type="<?php esc_attr_e( $field['type'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>" placeholder="<?php esc_attr_e( $field['placeholder'] ); ?>" value="<?php esc_attr_e( $field['value' ] ); ?>" <?php echo $attrib; ?> /><?php
+							?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" type="<?php esc_attr_e( $field['type'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>" placeholder="<?php esc_attr_e( $field['placeholder'] ); ?>" value="<?php esc_attr_e( stripslashes($field['value' ]) ); ?>" <?php echo $attrib; ?> /><?php
 
 					break;
 				case "textarea" :
 
-							?><textarea id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" cols="50" name="<?php esc_attr_e( $field['name'] ); ?>" placeholder="<?php esc_attr_e( $field['placeholder'] ); ?>" <?php echo $attrib; ?>><?php echo wp_kses_post( $field['value' ] ); ?></textarea><?php
+							?><textarea id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" cols="50" name="<?php esc_attr_e( $field['name'] ); ?>" placeholder="<?php esc_attr_e( $field['placeholder'] ); ?>" <?php echo $attrib; ?>><?php echo wp_kses_post( stripslashes($field['value' ]) ); ?></textarea><?php
 
 					break;
 					
 				case "wp_editor" :
 				case "teeny" :
 				
-							wp_editor( wp_kses_post( $field['value' ] ), $field['id'], array( 'textarea_name' => $field['name'], 'editor_class' => $field['class'], 'teeny' => true, 'media_buttons' => false) );
+							wp_editor( wp_kses_post( stripslashes($field['value' ]) ), $field['id'], array( 'textarea_name' => $field['name'], 'editor_class' => $field['class'], 'teeny' => true, 'media_buttons' => false) );
 
 					break;
 					
