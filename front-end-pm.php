@@ -34,12 +34,12 @@ class Front_End_Pm {
 	
 	private function constants()
     	{
-			define('FEP_PLUGIN_VERSION', '4.3' );
+			global $wpdb;
+			
+			define('FEP_PLUGIN_VERSION', '4.4' );
 			define('FEP_PLUGIN_FILE',  __FILE__ );
 			define('FEP_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 			define('FEP_PLUGIN_URL', plugins_url( '/', __FILE__ ) );
-			
-			global $wpdb;
 			
 			if ( !defined ('FEP_MESSAGES_TABLE' ) )
 			define('FEP_MESSAGES_TABLE',$wpdb->prefix.'fep_messages');
