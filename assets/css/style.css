@@ -69,6 +69,7 @@
 	width: 100%;
 	border: 1px solid #E7E7E7;
 	color: #000000;
+	overflow:auto;
 }
 
 #fep-content p, #fep-content form

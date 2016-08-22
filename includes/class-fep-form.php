@@ -177,7 +177,7 @@ function field_output( $field, $errors )
 		
 				case has_action( 'fep_form_field_output_' . $field['type'] ):
 				
-				do_action( 'fep_form_field_output_' . $field['type'], $field );
+				do_action( 'fep_form_field_output_' . $field['type'], $field, $errors );
 				
 				break;
 			
@@ -540,7 +540,7 @@ public function form_field_output( $where = 'newmessage', $errors= '', $value = 
 			if( array_key_exists( $field['name'], $value ) ) {
 				$field['value'] = $value[$field['name']];
 			}
-			$field['posted-value'] = isset( $_REQUEST[$field['name']] ) ? $_REQUEST[$field['name']] : $field['value'];
+			$field['posted-value'] = isset( $_REQUEST[$field['name']] ) ? stripslashes_deep( $_REQUEST[$field['name']] ) : $field['value'];
 
 			if ( has_action( 'fep_form_field_init_output_' . $field['type'] ) ) {
 				do_action( 'fep_form_field_init_output_' . $field['type'], $field, $errors );

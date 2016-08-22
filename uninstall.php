@@ -8,7 +8,7 @@
 // Exit if accessed directly.
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) exit;
 
-include_once( 'front-end-pm.php' );
+include_once( 'functions.php' );
 
 global $wpdb;
 

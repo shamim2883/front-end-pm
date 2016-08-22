@@ -128,7 +128,7 @@ function get_user_announcement_count( $value = 'all', $force = false, $user_id =
 			'meta_query' => array(
 				array(
 					'key' => '_participant_roles',
-					'value' => wp_get_current_user()->roles,
+					'value' => get_userdata( $user_id )->roles,
 					'compare' => 'IN'
 				),
 				array(
@@ -160,7 +160,7 @@ function get_user_announcement_count( $value = 'all', $force = false, $user_id =
 				}
 				$user_registered = strtotime(fep_get_userdata( $user_id, 'user_registered', 'id' ));
 					
-				if( $user_registered > strtotime( $announcement->post_date ) ) {
+				if( $user_registered < strtotime( $announcement->post_date ) ) {
 					$after_i_registered_count++;
 				}
 				
@@ -363,7 +363,7 @@ function get_column_content($column)
 				<?php
 			} //endwhile
 			?></div><?php
-			echo fep_pagination( $this->get_user_announcement_count($g_filter) );
+			echo fep_pagination( $this->get_user_announcement_count( empty($g_filter) ? 'total' : $g_filter ), fep_get_option('announcements_page', 15) );
 		} else {
 			?><div class="fep-error"><?php _e('No announcements found. Try different filter.', 'front-end-pm'); ?></div><?php 
 		}

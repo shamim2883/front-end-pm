@@ -12,5 +12,5 @@ jQuery(document).ready(function(){
 			{ jQuery('#fep-notification-bar').show(); }
 		});
         }
-        setInterval(fep_ajax_call,60000);
+        setInterval(fep_ajax_call, parseInt(fep_notification_script.interval, 10) );
       });
