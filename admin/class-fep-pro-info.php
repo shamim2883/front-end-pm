@@ -140,15 +140,15 @@ class Fep_Pro_Info
 				filter: alpha(opacity=50);
 				opacity: 0.5;
 				position: absolute;
-				z-index: 10000;
+				z-index: 99;
 				display: none;
 			}
 		</style><?php
 		$added = true;
 		}
 		
-		echo '<div class="notice notice-warning inline"><p>'.sprintf(__('Following features only available in PRO version. <a href="%s" target="_blank">Upgrade to PRO</a>'), esc_url('https://www.shamimsplugins.com/wordpress/products/front-end-pm-pro/')). '</p></div>';
-		?><div class="fep_admin_div_need_pro" onclick="window.open('https://www.shamimsplugins.com/wordpress/products/front-end-pm-pro/');"></div><?php
+		echo '<div class="notice notice-warning inline"><p>'.sprintf(__('Following features only available in PRO version. <a href="%s" target="_blank">Upgrade to PRO</a>'), esc_url('https://www.shamimsplugins.com/wordpress/products/front-end-pm-pro/?utm_campaign=admin&utm_source=pro_features&utm_medium=links')). '</p></div>';
+		?><div class="fep_admin_div_need_pro" onclick="window.open('https://www.shamimsplugins.com/wordpress/products/front-end-pm-pro/?utm_campaign=admin&utm_source=pro_features&utm_medium=image');"></div><?php
 		
 	}
 	
