@@ -6,7 +6,76 @@ function fep_plugin_activate(){
 	//Move inside Front_End_Pm class
 	
 	}
+
+function fep_get_option( $option, $default = '', $section = 'FEP_admin_options' ) {
 	
+    $options = get_option( $section );
+
+    if ( isset( $options[$option] ) ) {
+        return $options[$option];
+    }
+
+    return $default;
+}
+
+function fep_get_user_option( $option, $default = '', $userid = '', $section = 'FEP_user_options' ) {
+			
+    $options = get_user_option( $section, $userid ); //if $userid = '' current user option will be return
+
+    if ( isset( $options[$option] ) ) {
+        return $options[$option];
+    }
+
+    return $default;
+}
+
+function fep_get_plugin_caps( $edit_published = false, $for = 'both' ){
+	$message_caps = array(
+		'delete_published_fep_messages' => 'delete_published_fep_messages',
+		'delete_private_fep_messages' => 'delete_private_fep_messages',
+		'delete_others_fep_messages' => 'delete_others_fep_messages',
+		'delete_fep_messages' => 'delete_fep_messages',
+		'publish_fep_messages' => 'publish_fep_messages',
+		'read_private_fep_messages' => 'read_private_fep_messages',
+		'edit_private_fep_messages' => 'edit_private_fep_messages',
+		'edit_others_fep_messages' => 'edit_others_fep_messages',
+		'edit_fep_messages' => 'edit_fep_messages',
+		);
+	
+	$announcement_caps = array(
+		'delete_published_fep_announcements' => 'delete_published_fep_announcements',
+		'delete_private_fep_announcements' => 'delete_private_fep_announcements',
+		'delete_others_fep_announcements' => 'delete_others_fep_announcements',
+		'delete_fep_announcements' => 'delete_fep_announcements',
+		'publish_fep_announcements' => 'publish_fep_announcements',
+		'read_private_fep_announcements' => 'read_private_fep_announcements',
+		'edit_private_fep_announcements' => 'edit_private_fep_announcements',
+		'edit_others_fep_announcements' => 'edit_others_fep_announcements',
+		'edit_fep_announcements' => 'edit_fep_announcements',
+		);
+	
+	if( 'fep_message' == $for ) {
+		$caps = $message_caps;
+		if( $edit_published ) {
+			$caps['edit_published_fep_messages'] = 'edit_published_fep_messages';
+		}
+	} elseif( 'fep_announcement' == $for ){
+		$caps = $announcement_caps;
+		if( $edit_published ) {
+			$caps['edit_published_fep_announcements'] = 'edit_published_fep_announcements';
+		}
+	} else {
+		$caps = array_merge( $message_caps, $announcement_caps );
+		if( $edit_published ) {
+			$caps['edit_published_fep_messages'] = 'edit_published_fep_messages';
+			$caps['edit_published_fep_announcements'] = 'edit_published_fep_announcements';
+		}
+	}
+	return $caps;
+}
+
+if ( defined( 'WP_UNINSTALL_PLUGIN' ) ) return;
+
 add_action('after_setup_theme', 'fep_include_require_files');
 
 function fep_include_require_files() {
@@ -119,29 +188,6 @@ function fep_enqueue_scripts()
 			) 
 		);
     }
- 
- 
-function fep_get_option( $option, $default = '', $section = 'FEP_admin_options' ) {
-	
-    $options = get_option( $section );
-
-    if ( isset( $options[$option] ) ) {
-        return $options[$option];
-    }
-
-    return $default;
-}
-
-function fep_get_user_option( $option, $default = '', $userid = '', $section = 'FEP_user_options' ) {
-			
-    $options = get_user_option( $section, $userid ); //if $userid = '' current user option will be return
-
-    if ( isset( $options[$option] ) ) {
-        return $options[$option];
-    }
-
-    return $default;
-}
 
 function fep_page_id() {
 		
@@ -965,51 +1011,6 @@ function fep_auth_redirect_scheme( $scheme ){
 	}
 	
     return 'logged_in';
-}
-
-function fep_get_plugin_caps( $edit_published = false, $for = 'both' ){
-	$message_caps = array(
-		'delete_published_fep_messages' => 'delete_published_fep_messages',
-		'delete_private_fep_messages' => 'delete_private_fep_messages',
-		'delete_others_fep_messages' => 'delete_others_fep_messages',
-		'delete_fep_messages' => 'delete_fep_messages',
-		'publish_fep_messages' => 'publish_fep_messages',
-		'read_private_fep_messages' => 'read_private_fep_messages',
-		'edit_private_fep_messages' => 'edit_private_fep_messages',
-		'edit_others_fep_messages' => 'edit_others_fep_messages',
-		'edit_fep_messages' => 'edit_fep_messages',
-		);
-	
-	$announcement_caps = array(
-		'delete_published_fep_announcements' => 'delete_published_fep_announcements',
-		'delete_private_fep_announcements' => 'delete_private_fep_announcements',
-		'delete_others_fep_announcements' => 'delete_others_fep_announcements',
-		'delete_fep_announcements' => 'delete_fep_announcements',
-		'publish_fep_announcements' => 'publish_fep_announcements',
-		'read_private_fep_announcements' => 'read_private_fep_announcements',
-		'edit_private_fep_announcements' => 'edit_private_fep_announcements',
-		'edit_others_fep_announcements' => 'edit_others_fep_announcements',
-		'edit_fep_announcements' => 'edit_fep_announcements',
-		);
-	
-	if( 'fep_message' == $for ) {
-		$caps = $message_caps;
-		if( $edit_published ) {
-			$caps['edit_published_fep_messages'] = 'edit_published_fep_messages';
-		}
-	} elseif( 'fep_announcement' == $for ){
-		$caps = $announcement_caps;
-		if( $edit_published ) {
-			$caps['edit_published_fep_announcements'] = 'edit_published_fep_announcements';
-		}
-	} else {
-		$caps = array_merge( $message_caps, $announcement_caps );
-		if( $edit_published ) {
-			$caps['edit_published_fep_messages'] = 'edit_published_fep_messages';
-			$caps['edit_published_fep_announcements'] = 'edit_published_fep_announcements';
-		}
-	}
-	return $caps;
 }
 
 function fep_add_caps_to_roles() {
