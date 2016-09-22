@@ -96,9 +96,10 @@ class Fep_Admin_Settings
 				'value' => fep_get_option('editor_type','wp_editor'),
 				'priority'	=> 12,
 				'label' => __( 'Editor Type', 'front-end-pm' ),
-				'description' => __( 'Admin alwayes have Wp Editor.', 'front-end-pm' ),
+				//'description' => __( 'Admin alwayes have Wp Editor.', 'front-end-pm' ),
 				'options'	=> array(
 					'wp_editor'	=> __( 'Wp Editor', 'front-end-pm' ),
+					'teeny'	=> __( 'Wp Editor (Teeny)', 'front-end-pm' ),
 					'textarea'	=> __( 'Textarea', 'front-end-pm' )
 					)						
 				),
@@ -129,7 +130,7 @@ class Fep_Admin_Settings
 					
 			'allow_attachment'	=> array(
 				'type'	=>	'checkbox',
-				'value' => fep_get_option('allow_attachment',0),
+				'value' => fep_get_option('allow_attachment', 1),
 				'priority'	=> 18,
 				'class'	=> '',
 				'label' => __( 'Allow Attachment?', 'front-end-pm' ),
@@ -431,6 +432,9 @@ class Fep_Admin_Settings
 					break;
 					
 				case "wp_editor" :
+						wp_editor( wp_kses_post( stripslashes($field['value' ]) ), $field['id'], array( 'textarea_name' => $field['name'], 'editor_class' => $field['class'], 'media_buttons' => false) );
+
+					break;
 				case "teeny" :
 				
 							wp_editor( wp_kses_post( stripslashes($field['value' ]) ), $field['id'], array( 'textarea_name' => $field['name'], 'editor_class' => $field['class'], 'teeny' => true, 'media_buttons' => false) );
@@ -651,7 +655,9 @@ class Fep_Admin_Settings
 		<div id="poststuff">
 			<div id="post-body" class="metabox-holder columns-2">
 				<div id="post-body-content">
-				<div><a href="https://wordpress.org/support/view/plugin-reviews/front-end-pm?filter=5#postform" target="_blank">like this plugin? Please consider review in WordPress.org and give a &#9733;&#9733;&#9733;&#9733;&#9733; rating.</a></div>
+				<?php if( ! fep_is_pro() ) { ?>
+				<div><a href="https://wordpress.org/support/plugin/front-end-pm/reviews/?filter=5#new-post" target="_blank">like this plugin? Please consider review in WordPress.org and give 5&#9733; rating.</a></div>
+				<?php } ?>
 		<h2 class="nav-tab-wrapper">
 		<?php foreach ( $this->tabs() as $key => $tab ) : 
 			if( empty($tab['tab_output'])) continue; ?>
@@ -719,15 +725,18 @@ function fep_admin_sidebar()
 				</div>
 				<div class="postbox">
 					<h3 class="hndle" style="text-align: center;">
-						<span>'. __( "Contribute", "front-end-pm" ). '</span>
+						<span>'. __( "Front End PM PRO", "front-end-pm" ). '</span>
 					</h3>
 					<div class="inside">
 						<div style="text-align: center; margin: auto">
+							<p>Some useful links are bellow to work with this plugin.</p>
 						<ul>
-							<li><a href="https://www.shamimsplugins.com/wordpress/products/category/front-end-pm-extensions/?utm_campaign=admin&utm_source=sidebar&utm_medium=contribute" target="_blank">Buy Extensions</a></li>
-							<li><a href="https://www.paypal.me/hasanshamim" target="_blank">Donate</a></li>
-							<li><a href="https://wordpress.org/support/view/plugin-reviews/front-end-pm?filter=5#postform" target="_blank">Review in WordPress.org</a></li>
-							<li><a href="https://github.com/shamim2883/front-end-pm/" target="_blank">Github</a></li>
+							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm-pro/getting-started-2/email-piping/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">Email Piping</a></li>
+							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm-pro/getting-started-2/multiple-recipients/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">Multiple Recipient</a></li>
+							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm-pro/getting-started-2/only-admin/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">Only Admin</a></li>
+							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm-pro/getting-started-2/email-beautify/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">Email Beautify</a></li>
+							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm-pro/getting-started-2/read-receipt/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">Read Receipt</a></li>
+							<li><a href="https://www.shamimsplugins.com/wordpress/products/front-end-pm-pro/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank"><strong>View More</strong></a></li>
 
 						</ul></div>
 					</div>
@@ -736,8 +745,7 @@ function fep_admin_sidebar()
 	
 function add_settings_link( $links, $file ) {
 	//add settings link in plugins page
-	$plugin_file = 'front-end-pm/front-end-pm.php';
-	if ( $file == $plugin_file ) {
+	if ( strpos( $file, 'front-end-pm' ) !== false ) {
 		$settings_link = '<a href="' . admin_url( 'edit.php?post_type=fep_message&page=fep_settings' ) . '">' .__( 'Settings', 'front-end-pm' ) . '</a>';
 		array_unshift( $links, $settings_link );
 	}

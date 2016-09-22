@@ -129,7 +129,7 @@ function fep_plugin_update_from_first( $prev_ver ){
 }
 add_action( 'fep_plugin_update', 'fep_plugin_update_from_first' );
 
-add_action('plugins_loaded', 'fep_translation');
+add_action('after_setup_theme', 'fep_translation');
 
 function fep_translation()
 	{
@@ -740,6 +740,8 @@ function fep_add_email_filters(){
 	add_filter( 'wp_mail_from', 'fep_wp_mail_from', 10, 1 );
 	add_filter( 'wp_mail_from_name', 'fep_wp_mail_from_name', 10, 1 );
 	add_filter( 'wp_mail_content_type', 'fep_wp_mail_content_type', 10, 1 );
+	
+	do_action( 'fep_action_after_add_email_filters' );
 }
 
 function fep_remove_email_filters(){
@@ -747,6 +749,8 @@ function fep_remove_email_filters(){
 	remove_filter( 'wp_mail_from', 'fep_wp_mail_from', 10, 1 );
 	remove_filter( 'wp_mail_from_name', 'fep_wp_mail_from_name', 10, 1 );
 	remove_filter( 'wp_mail_content_type', 'fep_wp_mail_content_type', 10, 1 );
+	
+	do_action( 'fep_action_after_remove_email_filters' );
 }
 
 function fep_send_message( $message = null, $override = array() )

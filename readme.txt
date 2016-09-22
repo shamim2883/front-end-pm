@@ -3,7 +3,7 @@ Contributors: shamim51
 Tags: front end pm,front-end-pm,pm,private message,personal message,front end,frontend pm,frontend,message,widget,plugin,sidebar,shortcode,page,email,mail,contact form, secure contact form, simple contact form,akismet check,akismet
 Donate link: https://www.paypal.me/hasanshamim
 Requires at least: 4.4
-Tested up to: 4.5.3
+Tested up to: 4.6.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -12,6 +12,18 @@ Front End PM is a Private Messaging system and a secure contact form to your Wor
 
 == Description ==
 Front End PM is a Private Messaging system to your WordPress site.This is full functioning messaging system from front end. The messaging is done entirely through the front-end of your site rather than the Dashboard. This is very helpful if you want to keep your users out of the Dashboard area.
+
+> Some **Front End PM PRO** Features
+>
+> * Multiple Recipients
+> * Only admin
+> * Email Piping
+> * Read Receipt
+> * Email template
+> * Email template tag
+> * Announcement Email queue
+>
+> [View Details](https://www.shamimsplugins.com/wordpress/products/front-end-pm-pro/?utm_campaign=wordpress&utm_source=readme_pro&utm_medium=description)
 
 **Some Useful Link**
 
@@ -85,8 +97,32 @@ You can visit [Front End PM](https://www.shamimsplugins.com/wordpress/contact-us
 2. Messagebox.
 3. Front End Directory.
 4. Admin settings page.
+5. Messagebox settings.
+6. Security settings.
 
 == Changelog ==
+
+= 4.5 =
+
+* Full WP Editor support
+* Allow attachment by default checked
+* Translation issue fix.
+* new action hook fep_action_after_add_email_filters added.
+* new action hook fep_action_after_remove_email_filters added.
+* Email piping (PRO)
+* Read receipt (PRO)
+
+= 4.4 =
+
+* Announcement count fix
+* Announcement filter fix
+* Magic quote fix.
+* new class Front_End_Pm added.
+* Add fep_filter_ajax_notification_interval.
+* new tab added in admin settings.
+* javascript error fix.
+* Better plugin uninstal handle.
+* PRO version release.
 
 = 4.3 =
 
@@ -222,6 +258,28 @@ You can visit [Front End PM](https://www.shamimsplugins.com/wordpress/contact-us
 * Initial release.
 
 == Upgrade Notice ==
+
+= 4.5 =
+
+* Full WP Editor support
+* Allow attachment by default checked
+* Translation issue fix.
+* new action hook fep_action_after_add_email_filters added.
+* new action hook fep_action_after_remove_email_filters added.
+* Email piping (PRO)
+* Read receipt (PRO)
+
+= 4.4 =
+
+* Announcement count fix
+* Announcement filter fix
+* Magic quote fix.
+* new class Front_End_Pm added.
+* Add fep_filter_ajax_notification_interval.
+* new tab added in admin settings.
+* javascript error fix.
+* Better plugin uninstal handle.
+* PRO version release.
 
 = 4.3 =
 
