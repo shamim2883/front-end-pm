@@ -21,7 +21,7 @@ class Fep_Attachment
 	
 	add_action ('before_delete_post', array($this, 'delete_attachment') );
 	
-	if ( '1' == fep_get_option('allow_attachment',0)) {
+	if ( '1' == fep_get_option('allow_attachment', 1)) {
 		add_action ('fep_action_message_after_send', array($this, 'upload_attachment'), 10, 3 );
 		}
     }

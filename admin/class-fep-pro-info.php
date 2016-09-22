@@ -75,7 +75,14 @@ class Fep_Pro_Info
 	}
 	
 	function admin_settings_tabs( $tabs ) {
-				
+		
+		$tabs['email_piping'] =  array(
+				'section_title'		=> __('Email Piping', 'front-end-pm'),
+				'section_page'		=> 'fep_settings_emails',
+				'section_callback'	=> array($this, 'section_callback' ),
+				'priority'			=> 53,
+				'tab_output'		=> false
+				);		
 		$tabs['eb_newmessage'] =  array(
 				'section_title'		=> __('New Message email', 'front-end-pm'),
 				'section_page'		=> 'fep_settings_emails',
@@ -153,7 +160,32 @@ class Fep_Pro_Info
 	}
 	
 	function settings_fields( $fields )
-		{
+		{	
+			
+			$fields['ep_enable'] =   array(
+				'type'	=>	'checkbox',
+				'class'	=> '',
+				'section'	=> 'email_piping',
+				'value' => fep_get_option('ep_enable', 1 ),
+				//'description' => __( 'Can users send message to other users.', 'front-end-pm' ),
+				'label' => __( 'Enable', 'front-end-pm' ),
+				'cb_label' => __( 'Enable email piping?', 'front-end-pm' )
+				);
+			$fields['ep_email'] =   array(
+				'type'	=>	'email',
+				'section'	=> 'email_piping',
+				'value' => fep_get_option('ep_email', get_bloginfo('admin_email') ),
+				'description' => __( 'Use this email as email piping.', 'front-end-pm' ),
+				'label' => __( 'Piping Email', 'front-end-pm' )
+				);
+			$fields['ep_clean_reply'] =   array(
+				'type'	=>	'checkbox',
+				'class'	=> '',
+				'section'	=> 'email_piping',
+				'value' => fep_get_option('ep_clean_reply', 1 ),
+				'label' => __( 'Clean reply quote', 'front-end-pm' ),
+				'cb_label' => __( 'Clean reply quote from email?', 'front-end-pm' )
+				);
 			$fields['eb_newmessage_subject'] =   array(
 				'section'	=> 'eb_newmessage',
 				'value' => fep_get_option('eb_newmessage_subject', ''),
@@ -205,58 +237,75 @@ class Fep_Pro_Info
 				'label' => __( 'Announcement content.', 'front-end-pm' )
 				);
 			$fields['mr-can-send-to-users'] =   array(
-								'type'	=>	'checkbox',
-								'class'	=> '',
-								'section'	=> 'mr_multiple_recipients',
-								'value' => fep_get_option('mr-can-send-to-users', 1 ),
-								'description' => __( 'Can users send message to other users.', 'front-end-pm' ),
-								'label' => __( 'Can send to users', 'front-end-pm' ),
-								'cb_label' => __( 'Can users send message to other users.', 'front-end-pm' )
-								);
+				'type'	=>	'checkbox',
+				'class'	=> '',
+				'section'	=> 'mr_multiple_recipients',
+				'value' => fep_get_option('mr-can-send-to-users', 1 ),
+				//'description' => __( 'Can users send message to other users.', 'front-end-pm' ),
+				'label' => __( 'Can send to users', 'front-end-pm' ),
+				'cb_label' => __( 'Can users send message to other users.', 'front-end-pm' )
+				);
+			$fields['mr-can-admin-send-to-users'] =   array(
+				'type'	=>	'checkbox',
+				'class'	=> '',
+				'section'	=> 'mr_multiple_recipients',
+				'value' => fep_get_option('mr-can-admin-send-to-users', 1 ),
+				//'description' => __( 'Can users send message to other users.', 'front-end-pm' ),
+				'label' => __( 'Can admin send to users', 'front-end-pm' ),
+				'cb_label' => __( 'Can admin send new message to other users.', 'front-end-pm' )
+				);
 			$fields['mr-max-recipients'] =   array(
-								'type'	=>	'number',
-								'section'	=> 'mr_multiple_recipients',
-								'value' => fep_get_option('mr-max-recipients', 5 ),
-								'description' => __( 'Maximum recipients per message.', 'front-end-pm' ),
-								'label' => __( 'Max recipients', 'front-end-pm' )
-								);
+				'type'	=>	'number',
+				'section'	=> 'mr_multiple_recipients',
+				'value' => fep_get_option('mr-max-recipients', 5 ),
+				'description' => __( 'Maximum recipients per message.', 'front-end-pm' ),
+				'label' => __( 'Max recipients', 'front-end-pm' )
+				);
 			$fields['mr-message'] =   array(
-								'type'	=>	'select',
-								'section'	=> 'mr_multiple_recipients',
-								'value' => fep_get_option('mr-message', 'same-message' ),
-								'description' => __( 'How message will be sent to recipients', 'front-end-pm' ),
-								'label' => __( 'Message type', 'front-end-pm' ),
-								'options' => array(
-									'same-message' => __( 'Same Message', 'front-end-pm' ),
-									'separate-message' => __( 'Separate Message', 'front-end-pm' )
-									)
-								);
+				'type'	=>	'select',
+				'section'	=> 'mr_multiple_recipients',
+				'value' => fep_get_option('mr-message', 'same-message' ),
+				'description' => __( 'How message will be sent to recipients', 'front-end-pm' ),
+				'label' => __( 'Message type', 'front-end-pm' ),
+				'options' => array(
+					'same-message' => __( 'Same Message', 'front-end-pm' ),
+					'separate-message' => __( 'Separate Message', 'front-end-pm' )
+					)
+				);
+			$fields['read_receipt'] =   array(
+				'type'	=>	'checkbox',
+				'class'	=> '',
+				'section'	=> 'mr_multiple_recipients',
+				'value' => fep_get_option('read_receipt', 1 ),
+				'label' => __( 'Read Receipt', 'front-end-pm' ),
+				'cb_label' => __( 'Show read receipt bottom of every message?', 'front-end-pm' )
+				);
 			$fields['oa-can-send-to-admin'] =   array(
-								'type'	=>	'checkbox',
-								'class'	=> '',
-								'section'	=> 'oa_admins',
-								'value' => fep_get_option('oa-can-send-to-admin', 1 ),
-								'description' => __( 'Can users send message to admin.', 'front-end-pm' ),
-								'label' => __( 'Can send to admin', 'front-end-pm' )
-								);
+				'type'	=>	'checkbox',
+				'class'	=> '',
+				'section'	=> 'oa_admins',
+				'value' => fep_get_option('oa-can-send-to-admin', 1 ),
+				'description' => __( 'Can users send message to admin.', 'front-end-pm' ),
+				'label' => __( 'Can send to admin', 'front-end-pm' )
+				);
 			$fields['oa_admins'] =   array(
-								'type'	=>	'oa_admins',
-								'section'	=> 'oa_admins',
-								'value' => fep_get_option('oa_admins', array()),
-								'description' => __( 'Do not forget to save.', 'front-end-pm' ),
-								'label' => 'Admins'
-								);
+				'type'	=>	'oa_admins',
+				'section'	=> 'oa_admins',
+				'value' => fep_get_option('oa_admins', array()),
+				'description' => __( 'Do not forget to save.', 'front-end-pm' ),
+				'label' => 'Admins'
+				);
 			$fields['oa_admins_frontend'] =   array(
-					'type'	=>	'select',
-					'section'	=> 'oa_admins',
-					'value' => fep_get_option('oa_admins_frontend', 'select' ),
-					'description' => __( 'Select how you want to see in frontend.', 'front-end-pm' ),
-					'label' => __( 'Show in front end as', 'front-end-pm' ),
-					'options'	=> array(
-						'select'	=> __( 'Select', 'front-end-pm' ),
-						'radio'	=> __( 'Radio', 'front-end-pm' )
-						)
-					);
+				'type'	=>	'select',
+				'section'	=> 'oa_admins',
+				'value' => fep_get_option('oa_admins_frontend', 'select' ),
+				'description' => __( 'Select how you want to see in frontend.', 'front-end-pm' ),
+				'label' => __( 'Show in front end as', 'front-end-pm' ),
+				'options'	=> array(
+					'select'	=> __( 'Select', 'front-end-pm' ),
+					'radio'	=> __( 'Radio', 'front-end-pm' )
+					)
+				);
 								
 			return $fields;
 			

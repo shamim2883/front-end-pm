@@ -55,7 +55,7 @@ if (!class_exists('Fep_Form'))
 				),
 				'message_content' => array(
 					'label'       => __( 'Message', 'front-end-pm' ),
-					'type'        => fep_is_user_admin() ? 'wp_editor' : fep_get_option('editor_type','wp_editor'),
+					'type'        => fep_get_option('editor_type','wp_editor'),
 					'required'    => true,
 					'minlength'	=> 10,
 					'maxlength' => 5000,
@@ -102,7 +102,7 @@ if (!class_exists('Fep_Form'))
 				),
 					
 				);
-			if ( '1' == fep_get_option('allow_attachment',0)) {
+			if ( '1' == fep_get_option('allow_attachment', 1)) {
 				$fields['fep_upload'] = array(
 					'type'        => 'file',
 					'value'    => '',
@@ -244,6 +244,10 @@ function field_output( $field, $errors )
 					break;
 					
 				case "wp_editor" :
+						
+						wp_editor( wp_kses_post( $field['posted-value' ] ), $field['id'], array( 'textarea_name' => $field['name'], 'editor_class' => $field['class'], 'media_buttons' => false) );
+
+					break;
 				case "teeny" :
 				
 							wp_editor( wp_kses_post( $field['posted-value' ] ), $field['id'], array( 'textarea_name' => $field['name'], 'editor_class' => $field['class'], 'teeny' => true, 'media_buttons' => false) );
@@ -506,7 +510,7 @@ public function form_field_output( $where = 'newmessage', $errors= '', $value = 
 			$form_attr['action'] = esc_url( add_query_arg( false, false ) );
 		}
 		
-		if( in_array( $where, array( 'newmessage', 'reply' ) ) && fep_get_option('allow_attachment', 0 ) ) {
+		if( in_array( $where, array( 'newmessage', 'reply' ) ) && fep_get_option('allow_attachment', 1 ) ) {
 			$form_attr['enctype'] = 'multipart/form-data';
 		}
 		
