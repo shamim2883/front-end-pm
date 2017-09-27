@@ -1,18 +1,18 @@
 <?php
 /*
 Plugin Name: Front End PM
-Plugin URI: https://www.shamimsplugins.com/wordpress/contact-us/
+Plugin URI: https://www.shamimsplugins.com/contact-us/
 Description: Front End PM is a Private Messaging system and a secure contact form to your WordPress site.This is full functioning messaging system fromfront end. The messaging is done entirely through the front-end of your site rather than the Dashboard. This is very helpful if you want to keep your users out of the Dashboard area.
-Version: 4.5
+Version: 5.1
 Author: Shamim
-Author URI: https://www.shamimsplugins.com/wordpress/contact-us/
+Author URI: https://www.shamimsplugins.com/contact-us/
 Text Domain: front-end-pm
 License: GPLv2 or later
 */
-//DEFINE
 
-if ( !defined ('FEP_PLUGIN_VERSION' ) )
-define('FEP_PLUGIN_VERSION', '4.5' );
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 class Front_End_Pm {
 
@@ -39,7 +39,7 @@ class Front_End_Pm {
     	{
 			global $wpdb;
 			
-			//define('FEP_PLUGIN_VERSION', '4.5' );
+			define('FEP_PLUGIN_VERSION', '5.1' );
 			define('FEP_PLUGIN_FILE',  __FILE__ );
 			define('FEP_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 			define('FEP_PLUGIN_URL', plugins_url( '/', __FILE__ ) );
@@ -67,23 +67,6 @@ class Front_End_Pm {
     	}
 	
 	function fep_plugin_activate(){
-
-		global $wpdb;
-		
-			$roles = array_keys( get_editable_roles() );
-			$id = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE post_content LIKE '%[front-end-pm]%' AND post_status = 'publish' AND post_type = 'page' LIMIT 1");
-			
-			$options = array();
-			
-			$options['userrole_access'] = $roles;
-			$options['userrole_new_message'] = $roles;
-			$options['userrole_reply'] = $roles;
-			$options['plugin_version'] = FEP_PLUGIN_VERSION;
-			$options['page_id'] = $id;
-			
-			update_option( 'FEP_admin_options', wp_parse_args( get_option('FEP_admin_options'), $options) );
-			
-			fep_add_caps_to_roles();
 	
 	}
 	
@@ -93,5 +76,4 @@ class Front_End_Pm {
 } //END Class
 
 Front_End_Pm::init();
-
 	

@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 class Fep_Emails
   {
  	private static $instance;
@@ -22,12 +26,12 @@ class Fep_Emails
 
 		//add_action ('publish_fep_message', array($this, 'publish_send_email'), 10, 2);
 		add_action ('transition_post_status', array($this, 'publish_send_email'), 10, 3);
-		add_action( 'fep_save_message', array($this, 'save_send_email'), 20, 2 ); //after '_participants' meta saved, if from Back End
+		add_action( 'fep_save_message', array($this, 'save_send_email'), 20, 2 ); //after '_fep_participants' meta saved, if from Back End
 		add_action( 'fep_action_message_after_send', array($this, 'save_send_email'), 20, 2 ); //Front End
 		
-		if ( '1' == fep_get_option('notify_ann') ){
+		if ( '1' == fep_get_option('notify_ann', '1' ) ){
 			add_action ('transition_post_status', array($this, 'publish_notify_users'), 10, 3);
-			add_action( 'fep_save_announcement', array($this, 'save_notify_users'), 20, 2 ); //after '_participant_roles' meta saved
+			add_action( 'fep_save_announcement', array($this, 'save_notify_users'), 20, 2 ); //after '_fep_participant_roles' meta saved
 		}
     }
 	
@@ -58,7 +62,7 @@ class Fep_Emails
 	
 	function send_email( $postid, $post ){
 		
-		$participants = get_post_meta( $postid, '_participants' );
+		$participants = fep_get_participants( $postid );
 		
 		if( $participants && is_array( $participants ) )
 		{
@@ -73,7 +77,15 @@ class Fep_Emails
 			
 			if( 'html' == fep_get_option( 'email_content_type', 'plain_text' ) ) {
 				$message = nl2br( $message );
+				$content_type = 'text/html';
+			} else {
+				$content_type = 'text/plain';
 			}
+			$attachments = array();
+			$headers = array();
+			$headers['from'] = 'From: '.stripslashes( fep_get_option('from_name', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) ) ).' <'. fep_get_option('from_email', get_bloginfo('admin_email')) .'>';
+			$headers['content_type'] = "Content-Type: $content_type";
+			
 			
 			fep_add_email_filters();
 			
@@ -90,12 +102,12 @@ class Fep_Emails
 				if( ! $to )
 					continue;
 					
-				$content = apply_filters( 'fep_filter_before_email_send', compact( 'subject', 'message' ), $post, $to );
+				$content = apply_filters( 'fep_filter_before_email_send', compact( 'subject', 'message', 'headers', 'attachments' ), $post, $to );
 
 				if( empty( $content['subject'] ) || empty( $content['message'] ) )
 					continue;
 						
-				wp_mail( $to, $content['subject'], $content['message'] );
+				wp_mail( $to, $content['subject'], $content['message'], $content['headers'], $content['attachments'] );
 			} //End foreach
 			
 			fep_remove_email_filters();
@@ -129,13 +141,14 @@ class Fep_Emails
 	//Mass emails when announcement is created
 	function notify_users( $postid, $post ) {
 		
-		$roles = get_post_meta( $postid, '_participant_roles' );
+		$roles = fep_get_participant_roles( $postid );
 		
 		if( !$roles || !is_array( $roles ) ) {
 			return;
 		} 
 		$args = array( 
 				'role__in' => $roles,
+				'fields' => array( 'ID', 'user_email' ),
 				'orderby' => 'ID' 
 		);
 		$usersarray = get_users( $args );
@@ -150,7 +163,6 @@ class Fep_Emails
 			}
 		}
 		//var_dump($user_emails);
-		$chunked_bcc = array_chunk( $user_emails, 25);
 		
 		$subject =  get_bloginfo("name").': '.__('New Announcement', 'front-end-pm');
 		$message = __('A new Announcement is Published in ', 'front-end-pm')."\r\n";
@@ -161,22 +173,40 @@ class Fep_Emails
 		
 		if( 'html' == fep_get_option( 'email_content_type', 'plain_text' ) ) {
 			$message = nl2br( $message );
+			$content_type = 'text/html';
+		} else {
+			$content_type = 'text/plain';
 		}
-		$content = apply_filters( 'fep_filter_before_announcement_email_send', compact( 'subject', 'message' ), $post, $user_emails );
+		$attachments = array();
+		$headers = array();
+		$headers['from'] = 'From: '.stripslashes( fep_get_option('from_name', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) ) ).' <'. fep_get_option('from_email', get_bloginfo('admin_email')) .'>';
+		$headers['content_type'] = "Content-Type: $content_type";
+		
+		$content = apply_filters( 'fep_filter_before_announcement_email_send', compact( 'subject', 'message', 'headers', 'attachments' ), $post, $user_emails );
 		
 		if( empty( $content['subject'] ) || empty( $content['message'] ) )
-			return;
+			return false;
 		
-	fep_add_email_filters();
+		do_action( 'fep_action_before_announcement_email_send', $content, $post, $user_emails );
+		
+		if( ! apply_filters( "fep_announcement_email_send_{$postid}", true ) )
+			return false;
+		
+		$chunked_bcc = array_chunk( $user_emails, 25);
+		
+	fep_add_email_filters( 'announcement' );
 	
 	foreach($chunked_bcc as $bcc_chunk){
-			$headers = array();
-			$headers['Bcc'] = 'Bcc: '.implode(',', $bcc_chunk);
-			
-			wp_mail($to , $content['subject'], $content['message'], $headers);
-		}
+		if( ! $bcc_chunk )
+			continue;
+	
+		//$headers = array();
+		$content['headers']['Bcc'] = 'Bcc: '.implode(',', $bcc_chunk);
 		
-	fep_remove_email_filters();
+		wp_mail($to , $content['subject'], $content['message'], $content['headers'], $content['attachments'] );
+	}
+		
+	fep_remove_email_filters( 'announcement' );
 	
 	update_post_meta( $post->ID, '_fep_email_sent', time() );
 	

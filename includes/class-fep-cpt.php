@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 class Fep_Cpt {
 
 	private static $instance;
@@ -15,6 +19,7 @@ class Fep_Cpt {
 	function actions_filters()
     {
 		add_action ('init', array($this, 'create_cpt') );
+		add_action ('admin_menu', array($this, 'admin_menu') );
 		//add_action ('contextual_help', array($this, 'contextual_help'), 10, 3 );
 		add_action ('save_post_fep_message', array($this, 'save_message'), 10, 3 );
 		add_action ('save_post_fep_announcement', array($this, 'save_announcement'), 10, 3 );
@@ -30,14 +35,13 @@ class Fep_Cpt {
 		add_filter('manage_fep_message_posts_columns', array($this, 'columns_head'));
 		add_filter('post_row_actions', array($this, 'view_link'), 10, 2 );
 		add_action('manage_fep_message_posts_custom_column', array($this, 'columns_content'), 10, 2);
-		add_filter( 'manage_fep_message_sortable_columns', array($this, 'sortable_column' ));
+		//add_filter( 'manage_fep_message_sortable_columns', array($this, 'sortable_column' ));
 		
 		add_filter('manage_fep_announcement_posts_columns', array($this, 'announcement_columns_head'));
 		add_action('manage_fep_announcement_posts_custom_column', array($this, 'announcement_columns_content'), 10, 2);
 		
-		add_action ('post_submitbox_start', array($this, 'post_submitbox_start_info') );
+		//add_action ('post_submitbox_start', array($this, 'post_submitbox_start_info') );
 		//add_action( 'pre_get_posts', array($this, 'sortable_orderby' ));
-		//add_filter('user_has_cap', array($this, 'restrict_editing'), 10, 3 );
     }
 
 	function create_cpt()
@@ -56,7 +60,7 @@ class Fep_Cpt {
 			'not_found' 		=>  __( 'No Messages found', 'front-end-pm' ),
 			'not_found_in_trash'=> __( 'No Messages found in Trash', 'front-end-pm' ),
 			'parent_item_colon' => '',
-			'menu_name' 		=> __( 'Front End PM', 'front-end-pm' )
+			'menu_name' 		=> fep_is_pro() ? 'Front End PM PRO' : 'Front End PM'
 		);
 	
 		$args = array(
@@ -108,6 +112,10 @@ class Fep_Cpt {
 		register_post_type( 'fep_announcement', apply_filters( 'fep_announcement_cpt_args', $announcement_args )  );
 	
 	}
+	
+	function admin_menu(){
+		add_submenu_page( 'edit.php?post_type=fep_message', __( 'New Announcement', 'front-end-pm' ), __( 'New Announcement', 'front-end-pm' ), 'create_fep_announcements', 'post-new.php?post_type=fep_announcement' );
+	}
 
 
 	function contextual_help( $contextual_help, $screen_id, $screen ) { 
@@ -151,30 +159,45 @@ function add_meta_boxes() {
 
 function announcement_to( $post ) {
  
-		$participants = get_post_meta( $post->ID, '_participant_roles' );
+		$participants = fep_get_participant_roles( $post->ID );
 
 		
 			foreach( get_editable_roles() as $key => $role ) {
 			
 				?><label><input id="" class="" name="participant_roles[]" type="checkbox" value="<?php echo $key; ?>" <?php if( in_array( $key, $participants ) ) echo'checked="checked"'; ?> /> <?php echo translate_user_role( $role['name'] ); ?></label><br /><?php
 			}
+			if ( isset($_GET['action'])  && $_GET['action'] == 'edit' ) {
+				echo '<hr />';
+				_e('Changing this will NOT send email to newly added users OR prevent email sending to removed users if any', 'front-end-pm');
+			}
 
 	}
 
+function save_announcement_to( $announcement_id, $announcement, $update ){
+	if( isset($_POST['participant_roles'] ) && is_array( $_POST['participant_roles'] ) ) {
+		delete_post_meta( $announcement_id, '_fep_participant_roles' );
+		
+			foreach($_POST['participant_roles'] as $role ) {
+				add_post_meta( $announcement_id, '_fep_participant_roles', $role );
+			}
+	
+	}
+}
 	
 function fep_message_to_box_content( $post ) {
  
 	if ( isset($_GET['action'])  && $_GET['action'] == 'edit' ) {
-		$participants = get_post_meta( $post->ID, '_participants' );
+		$participants = fep_get_participants( $post->ID );
 		
 		if( $participants ) {
 			foreach( $participants as $participant ) {
 			
 				if( $participant != $post->post_author )
-				echo '<a href="'. get_edit_user_link( $participant ) .'" target="_blank">'. esc_attr( fep_get_userdata( $participant, 'display_name', 'ID' ) ) .'</a>';
+				echo '<a href="'. get_edit_user_link( $participant ) .'" target="_blank">'. esc_attr( fep_get_userdata( $participant, 'display_name', 'ID' ) ) .'</a><br />';
 			}
 		}
-		echo '<h2>'. __('Sender', 'front-end-pm') . '</h2>';
+		echo '<hr />';
+		echo '<h2><strong>'. __('Sender', 'front-end-pm') . '</strong></h2>';
 		echo '<a href="'. get_edit_user_link( $post->post_author ) .'" target="_blank">'. esc_attr( fep_get_userdata( $post->post_author, 'display_name', 'ID' ) ) .'</a>';
 
 	} else {
@@ -183,9 +206,16 @@ function fep_message_to_box_content( $post ) {
 		$to 	= ( !empty( $_REQUEST['fep_to'] ) ) ? $_REQUEST['fep_to'] : '';
 		
 		if( $parent ) {
-			echo 'You are replying to '. $parent;
+			echo 'You are replying to <a href="'.fep_query_url('viewmessage', array( 'fep_id' => $parent ) ).'" title="" target="_blank">' . $parent . '</a>';
 			echo '<input type="hidden" name="fep_parent_id" value="' . $parent . '" />';
 		} else {
+			wp_register_script( 'fep-script', FEP_PLUGIN_URL . 'assets/js/script.js', array( 'jquery' ), '3.1', true );
+			wp_localize_script( 'fep-script', 'fep_script', 
+					array( 
+						'ajaxurl' => admin_url( 'admin-ajax.php' ),
+						'nonce' => wp_create_nonce('fep-autosuggestion')
+					) 
+				);
 			wp_enqueue_script( 'fep-script' ); ?>
 							
 			<input type="hidden" name="message_to" id="fep-message-to" autocomplete="off" value="<?php echo fep_get_userdata( $to, 'user_login' ); ?>" />		
@@ -200,25 +230,14 @@ function fep_save_message_to( $message_id, $message, $update ){
 	if( ! empty($_REQUEST['message_to'] ) ) { //BACK END message_to return login of participants
 		if( is_array( $_REQUEST['message_to'] ) ) {
 			foreach( $_REQUEST['message_to'] as $participant ) {
-				add_post_meta( $message_id, '_participants', fep_get_userdata( $participant, 'ID', 'login' ) );
+				add_post_meta( $message_id, '_fep_participants', fep_get_userdata( $participant, 'ID', 'login' ) );
 			}
 		} else {
-			add_post_meta( $message_id, '_participants', fep_get_userdata( $_REQUEST['message_to'], 'ID', 'login' ) );
+			add_post_meta( $message_id, '_fep_participants', fep_get_userdata( $_REQUEST['message_to'], 'ID', 'login' ) );
 		}
-		add_post_meta( $message_id, '_participants', $message->post_author );
+		add_post_meta( $message_id, '_fep_participants', $message->post_author );
 		
 		unset( $_REQUEST['message_to'] );
-	}
-}
-
-function save_announcement_to( $announcement_id, $announcement, $update ){
-	if( ! empty($_POST['participant_roles'] ) && is_array( $_POST['participant_roles'] ) ) {
-		delete_post_meta( $announcement_id, '_participant_roles' );
-		
-			foreach($_POST['participant_roles'] as $role ) {
-				add_post_meta( $announcement_id, '_participant_roles', $role );
-			}
-	
 	}
 }
 
@@ -273,34 +292,16 @@ function post_submitbox_start_info()
 			do_action( 'fep_save_announcement', $announcement_id, $announcement, $update );
 		}
 
-	function restrict_editing( $allcaps, $cap, $args ) {
-
-    // Bail out if we're not asking to edit a post ...
-    if( 'edit_post' != $args[0] 
-      // ... or user already cannot edit the post
-      || empty( $allcaps['edit_posts'] ) )
-        return $allcaps;
-
-    // Load the post data:
-    $post = get_post( $args[2] );
-
-    // Bail out if the post isn't published or not message
-    if( 'publish' != $post->post_status || 'fep_message' != $post->post_type )
-        return $allcaps;
-
-        //Then disallow editing.
-        $allcaps[$cap[0]] = false;
-		
-    return $allcaps;
-}
 
 function view_link($actions, $post)
 {
     if ( $post->post_type=='fep_message' )
     {
-        $actions['fep_view'] = '<a href="'.fep_query_url('viewmessage', array( 'id' => $post->ID ) ).'" title="" target="_blank">' . __("View", "front-end-pm") . '</a>';
+		$actions['fep_view'] = '<a href="'.fep_query_url('viewmessage', array( 'fep_id' => $post->ID ) ).'" title="" target="_blank">' . __("View", "front-end-pm") . '</a>';
+		$actions['fep_reply'] = '<a href="'.fep_query_url('viewmessage', array( 'fep_id' => $post->ID ) ).'#fep-reply-form" title="" target="_blank">' . __("Reply", "front-end-pm") . '</a>';
+
     } elseif( $post->post_type=='fep_announcement' ) {
-		$actions['fep_view'] = '<a href="'.fep_query_url('view_announcement', array( 'id' => $post->ID ) ).'" title="" target="_blank">' . __("View", "front-end-pm") . '</a>';
+		$actions['fep_view'] = '<a href="'.fep_query_url('view_announcement', array( 'fep_id' => $post->ID ) ).'" title="" target="_blank">' . __("View", "front-end-pm") . '</a>';
 	}
     return $actions;
 }
@@ -318,13 +319,13 @@ function columns_content($column_name, $post_ID) {
         $parent = $post->post_parent;
 		
 		if( $parent ) {
-			echo '<a href="'.fep_query_url('viewmessage', array( 'id' => $parent ) ).'" title="" target="_blank">View</a>';
+			echo '<a href="'.fep_query_url('viewmessage', array( 'fep_id' => $parent ) ).'" title="" target="_blank">' . esc_attr( $parent ) . '</a>';
 		} else {
 			_e('No Parent', 'front-end-pm');
 		}
     }
 	if ($column_name == 'participants') {
-        $participants = get_post_meta($post_ID, '_participants' );
+        $participants = fep_get_participants( $post_ID );
 		
 		if( $participants ) {
 			foreach( $participants as $participant ) {
@@ -367,10 +368,11 @@ function announcement_columns_content($column_name, $post_ID) {
 	if ($column_name == 'to') {
 		global $wp_roles;
 		
-       $roles = get_post_meta( $post_ID, '_participant_roles' );
+       $roles = fep_get_participant_roles( $post_ID );
 	
 		if( $roles && is_array( $roles ) ) {
 			foreach( $roles as $role ) {
+				if( $wp_roles->is_role( $role ) )
 				 echo translate_user_role( $wp_roles->roles[ $role ]['name'] ) .'<br />';
 			}
 		}

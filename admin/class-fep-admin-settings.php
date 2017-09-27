@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 class Fep_Admin_Settings
   {
 	private static $instance;
@@ -17,8 +21,8 @@ class Fep_Admin_Settings
     {
 		add_action('admin_menu', array($this, 'addAdminPage'));
 		add_action('admin_init', array($this, 'settings_output'));
-		add_filter('plugin_action_links', array($this, 'add_settings_link'), 10, 2 );
-		add_action('fep_action_before_admin_options_save', array($this, 'recalculate_user_message_count'));
+		add_filter('plugin_action_links_' . plugin_basename( FEP_PLUGIN_FILE ), array( $this, 'add_settings_link' ) );
+		add_action('fep_action_before_admin_options_save', array($this, 'recalculate_user_message_count'), 10, 2 );
     }
 
     function addAdminPage()
@@ -29,12 +33,17 @@ class Fep_Admin_Settings
 		add_submenu_page('edit.php?post_type=fep_message', 'Front End PM - ' .__('Extensions','front-end-pm'), __('Extensions','front-end-pm'), $admin_cap, 'fep_extensions', array($this, "extensions_page"));
 	
     }
-	function recalculate_user_message_count( $settings ){
+	function recalculate_user_message_count( $settings, $tab ){
 	
-	if( fep_get_option('message_view','threaded') != $settings['message_view'] ) {
-		delete_metadata( 'user', 0, '_fep_user_message_count', '', true );
+		if( 'message' == $tab && fep_get_message_view() != $settings['message_view'] ) {
+			if( 'threaded' == fep_get_message_view() ){
+				delete_metadata( 'user', 0, '_fep_user_message_count', '', true );
+			} else {
+				update_option( '_fep_message_view_changed', 1 );
+				delete_metadata( 'post', 0, '_fep_last_reply_by', '', true );
+			}
+		}
 	}
-}
 	
 	public function form_fields( $section = 'general' )
 	{
@@ -180,7 +189,7 @@ class Fep_Admin_Settings
 				'priority'	=> 35,
 				'class'	=> '',
 				'label' => __( 'Remove Data on Uninstall?', 'front-end-pm' ),
-				'description' => __( 'Check this box if you would like Front End PM to completely remove all of its data when the plugin is deleted.', 'front-end-pm' )
+				'description' => '<div style="color:red">'. sprintf(__( 'Check this box if you would like %s to completely remove all of its data when the plugin is deleted.', 'front-end-pm' ), fep_is_pro() ? 'Front End PM PRO' : 'Front End PM' ). '</div>'
 				),
 			//Recipient
 			'hide_autosuggest'	=> array(
@@ -197,10 +206,11 @@ class Fep_Admin_Settings
 			//Message
 			'message_view'	=> array(
 				'type'	=>	'select',
-				'value' => fep_get_option('message_view','threaded'),
+				'value' => fep_get_message_view(),
 				'priority'	=> 5,
 				'section'	=> 'message',
 				'label' => __( 'Message view', 'front-end-pm' ),
+				'description' => ( 'threaded' == fep_get_message_view() ) ? '' : __( 'This setting change will redirect you to update page for database update.', 'front-end-pm' ),
 				'options'	=> array(
 					'threaded'	=> __( 'Threaded', 'front-end-pm' ),
 					'individual'	=> __( 'Individual', 'front-end-pm' )
@@ -220,7 +230,7 @@ class Fep_Admin_Settings
 				
 			'notify_ann'	=> array(
 				'type'	=>	'checkbox',
-				'value' => fep_get_option('notify_ann', 0),
+				'value' => fep_get_option('notify_ann', '1' ),
 				'priority'	=> 10,
 				'class'	=> '',
 				'section'	=> 'announcement',
@@ -410,6 +420,12 @@ class Fep_Admin_Settings
 		 if ( ! empty( $field['minlength'] ) ) $attrib .= 'minlength = "' . absint( $field['minlength'] ) . '" ';
 		 if ( ! empty( $field['maxlength'] ) ) $attrib .= 'maxlength = "' . absint( $field['maxlength'] ) . '" ';
 		 
+		 if ( ! empty( $field['class'] ) ){
+			$field['class'] = explode( ' ', $field['class'] );
+			$field['class'] = array_map( 'sanitize_html_class', $field['class'] );
+			$field['class'] = implode( ' ', array_filter( $field['class'] ) );
+		}
+		 
 		switch( $field['type'] ) {
 				
 				case has_action( 'fep_admin_settings_field_output_' . $field['type'] ):
@@ -422,12 +438,12 @@ class Fep_Admin_Settings
 				case 'email' :
 				case 'url' :
 				case 'number' :
-							?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" type="<?php esc_attr_e( $field['type'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>" placeholder="<?php esc_attr_e( $field['placeholder'] ); ?>" value="<?php esc_attr_e( stripslashes($field['value' ]) ); ?>" <?php echo $attrib; ?> /><?php
+							?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" type="<?php esc_attr_e( $field['type'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>" placeholder="<?php esc_attr_e( $field['placeholder'] ); ?>" value="<?php esc_attr_e( stripslashes($field['value' ]) ); ?>" <?php echo $attrib; ?> /><?php
 
 					break;
 				case "textarea" :
 
-							?><textarea id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" cols="50" name="<?php esc_attr_e( $field['name'] ); ?>" placeholder="<?php esc_attr_e( $field['placeholder'] ); ?>" <?php echo $attrib; ?>><?php echo wp_kses_post( stripslashes($field['value' ]) ); ?></textarea><?php
+							?><textarea id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" cols="50" name="<?php esc_attr_e( $field['name'] ); ?>" placeholder="<?php esc_attr_e( $field['placeholder'] ); ?>" <?php echo $attrib; ?>><?php echo wp_kses_post( stripslashes($field['value' ]) ); ?></textarea><?php
 
 					break;
 					
@@ -445,18 +461,18 @@ class Fep_Admin_Settings
 							
 							if( ! empty( $field['multiple' ] ) ) {
 								foreach( $field['options' ] as $key => $name ) {
-								?><label><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>[]" type="checkbox" value="<?php esc_attr_e( $key ); ?>" <?php if( in_array( $key, $field['value' ] ) ) { echo 'checked="checked"';} ?> /> <?php esc_attr_e( $name ); ?></label><br /><?php
+								?><label><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" name="<?php esc_attr_e( $field['name'] ); ?>[]" type="checkbox" value="<?php esc_attr_e( $key ); ?>" <?php if( in_array( $key, $field['value' ] ) ) { echo 'checked="checked"';} ?> /> <?php esc_attr_e( $name ); ?></label><br /><?php
 								}
 							} else {
 
-							?><label><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>" type="checkbox" value="1" <?php checked( '1', $field['value' ] ); ?> /> <?php esc_attr_e( $field['cb_label'] ); ?></label><?php
+							?><label><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" name="<?php esc_attr_e( $field['name'] ); ?>" type="checkbox" value="1" <?php checked( '1', $field['value' ] ); ?> /> <?php esc_attr_e( $field['cb_label'] ); ?></label><?php
 							}
 
 					break;
 					
 				case "select" :
 
-							?><select id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>"><?php
+							?><select id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" name="<?php esc_attr_e( $field['name'] ); ?>"><?php
 									foreach( $field['options'] as $key => $name ) {
 										?><option value="<?php esc_attr_e( $key ); ?>" <?php selected( $field['value' ], $key ); ?>><?php esc_attr_e( $name ); ?></option><?php }
 							?></select><?php
@@ -466,7 +482,7 @@ class Fep_Admin_Settings
 				case "radio" :
 
 						foreach( $field['options'] as $key => $name ) {
-							?><label><input type="radio" class="<?php echo sanitize_html_class( $field['class'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>" value="<?php esc_attr_e( $key ); ?>" <?php checked( $field['posted-value' ], $key ); ?> /> <?php esc_attr_e( $name ); ?></label><br /><?php }
+							?><label><input type="radio" class="<?php echo $field['class']; ?>" name="<?php esc_attr_e( $field['name'] ); ?>" value="<?php esc_attr_e( $key ); ?>" <?php checked( $field['posted-value' ], $key ); ?> /> <?php esc_attr_e( $name ); ?></label><br /><?php }
 					break;
 					
 				default :
@@ -566,9 +582,9 @@ class Fep_Admin_Settings
 		// Merge our new settings with the existing
 		$settings = wp_parse_args( $posted_value, get_option('FEP_admin_options') );
 		
-		$settings = apply_filters( 'fep_filter_before_admin_options_save', $settings );
+		$settings = apply_filters( 'fep_filter_before_admin_options_save', $settings, $tab );
 		
-		do_action( 'fep_action_before_admin_options_save', $settings );
+		do_action( 'fep_action_before_admin_options_save', $settings, $tab );
 
 		return $settings;
 	}
@@ -649,6 +665,10 @@ class Fep_Admin_Settings
 	function settings_page()
 	{
 		$active_tab = ! empty( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'general';
+		$args = array(
+			'post_type'    => 'fep_message',
+			'page'        	=> 'fep_settings'
+			);
 		
 	?>
 	<div class="wrap">
@@ -660,9 +680,10 @@ class Fep_Admin_Settings
 				<?php } ?>
 		<h2 class="nav-tab-wrapper">
 		<?php foreach ( $this->tabs() as $key => $tab ) : 
-			if( empty($tab['tab_output'])) continue; ?>
+			if( empty($tab['tab_output'])) continue;
+			$args['tab'] = $tab['tab_slug']; ?>
 		
-		<a href="<?php echo add_query_arg('tab', $tab['tab_slug'], remove_query_arg('settings-updated')); ?>" class="nav-tab <?php if( $active_tab == $tab['tab_slug'] ) echo 'nav-tab-active'; ?>"><?php echo $tab['tab_title']; ?></a>
+		<a href="<?php echo esc_url( add_query_arg( $args, admin_url( 'edit.php' ) ) ); ?>" class="nav-tab<?php if( $active_tab == $tab['tab_slug'] ) echo ' nav-tab-active'; ?>"><?php echo $tab['tab_title']; ?></a>
 		
 		<?php endforeach; ?>
 		</h2>
@@ -702,7 +723,7 @@ function fep_admin_sidebar()
 							Know php, MySql, css, javascript, html. Expert in WordPress. <br /><br />
 								
 						You can hire for plugin customization, build custom plugin or any kind of wordpress job via <br> <a
-								href="https://www.shamimsplugins.com/wordpress/contact-us/?utm_campaign=admin&utm_source=sidebar&utm_medium=author"><strong>Contact Form</strong></a>
+								href="https://www.shamimsplugins.com/contact-us/?utm_campaign=admin&utm_source=sidebar&utm_medium=author"><strong>Contact Form</strong></a>
 					</div>
 				</div>
 			</div>
@@ -715,10 +736,11 @@ function fep_admin_sidebar()
 						<div style="text-align: center; margin: auto">
 							<p>Some useful links are bellow to work with this plugin.</p>
 						<ul>
-							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm/getting-started/basic-admin-settings/?utm_campaign=admin&utm_source=sidebar&utm_medium=useful_links" target="_blank">Basic Admin Settings</a></li>
-							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm/getting-started/basic-front-end-walkthrough/?utm_campaign=admin&utm_source=sidebar&utm_medium=useful_links" target="_blank">Walkthrough</a></li>
-							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm/customization/remove-minlength-message-title/?utm_campaign=admin&utm_source=sidebar&utm_medium=useful_links" target="_blank">Remove minlength</a></li>
-							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm/customization/remove-settings-menu-button/?utm_campaign=admin&utm_source=sidebar&utm_medium=useful_links" target="_blank">Remove menu</a></li>
+							<li><a href="https://www.shamimsplugins.com/docs/front-end-pm/getting-started/basic-admin-settings/?utm_campaign=admin&utm_source=sidebar&utm_medium=useful_links" target="_blank">Basic Admin Settings</a></li>
+							<li><a href="https://www.shamimsplugins.com/docs/front-end-pm/getting-started/basic-front-end-walkthrough/?utm_campaign=admin&utm_source=sidebar&utm_medium=useful_links" target="_blank">Walkthrough</a></li>
+							<li><a href="https://www.shamimsplugins.com/docs/front-end-pm/customization/remove-minlength-message-title/?utm_campaign=admin&utm_source=sidebar&utm_medium=useful_links" target="_blank">Remove minlength</a></li>
+							<li><a href="https://www.shamimsplugins.com/docs/front-end-pm/customization/remove-settings-menu-button/?utm_campaign=admin&utm_source=sidebar&utm_medium=useful_links" target="_blank">Remove menu</a></li>
+							<li><a href="https://www.shamimsplugins.com/docs/category/front-end-pm/shortcode/?utm_campaign=admin&utm_source=sidebar&utm_medium=useful_links" target="_blank">Shortcodes</a></li>
 
 						</ul></div>
 					</div>
@@ -731,29 +753,28 @@ function fep_admin_sidebar()
 						<div style="text-align: center; margin: auto">
 							<p>Some useful links are bellow to work with this plugin.</p>
 						<ul>
-							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm-pro/getting-started-2/email-piping/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">Email Piping</a></li>
-							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm-pro/getting-started-2/multiple-recipients/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">Multiple Recipient</a></li>
-							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm-pro/getting-started-2/only-admin/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">Only Admin</a></li>
-							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm-pro/getting-started-2/email-beautify/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">Email Beautify</a></li>
-							<li><a href="https://www.shamimsplugins.com/wordpress/docs/front-end-pm-pro/getting-started-2/read-receipt/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">Read Receipt</a></li>
-							<li><a href="https://www.shamimsplugins.com/wordpress/products/front-end-pm-pro/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank"><strong>View More</strong></a></li>
+							<li><a href="https://www.shamimsplugins.com/docs/front-end-pm-pro/getting-started-2/email-piping/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">Email Piping</a></li>
+							<li><a href="https://www.shamimsplugins.com/docs/front-end-pm-pro/getting-started-2/multiple-recipients/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">Multiple Recipient</a></li>
+							<li><a href="https://www.shamimsplugins.com/docs/front-end-pm-pro/getting-started-2/only-admin/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">Only Admin</a></li>
+							<li><a href="https://www.shamimsplugins.com/docs/front-end-pm-pro/getting-started-2/email-beautify/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">Email Beautify</a></li>
+							<li><a href="https://www.shamimsplugins.com/docs/front-end-pm-pro/getting-started-2/read-receipt/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">Read Receipt</a></li>
+							<li><a href="https://www.shamimsplugins.com/products/front-end-pm-pro/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank"><strong>View More</strong></a></li>
 
 						</ul></div>
 					</div>
 				</div>';
 	}
 	
-function add_settings_link( $links, $file ) {
+function add_settings_link( $links ) {
 	//add settings link in plugins page
-	if ( strpos( $file, 'front-end-pm' ) !== false ) {
-		$settings_link = '<a href="' . admin_url( 'edit.php?post_type=fep_message&page=fep_settings' ) . '">' .__( 'Settings', 'front-end-pm' ) . '</a>';
-		array_unshift( $links, $settings_link );
-	}
+	$settings_link = '<a href="' . admin_url( 'edit.php?post_type=fep_message&page=fep_settings' ) . '">' .__( 'Settings', 'front-end-pm' ) . '</a>';
+	array_unshift( $links, $settings_link );
+	
 	return $links;
 }
 
 function extensions_page(){
-	include_once( FEP_PLUGIN_DIR. 'admin/extensions.php' );
+	include( FEP_PLUGIN_DIR. 'admin/extensions.php' );
 }
 
   } //END CLASS
