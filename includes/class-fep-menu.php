@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 class Fep_Menu
   {
  	private static $instance;
@@ -21,9 +25,9 @@ class Fep_Menu
 		$menu = '';
 		
 		  foreach( $this->get_menu() as $menu_array ) {
-			$class = esc_attr( $menu_array['class'] );
+			$class = sanitize_html_class( $menu_array['class'] );
 			 if ( isset($_GET['fepaction']) && $_GET['fepaction'] == $menu_array['action'])
-			 $class = esc_attr( $menu_array['active-class'] );
+			 $class = sanitize_html_class( $menu_array['active-class'] );
 			 
 			 $menu .= "<a class='$class' href='".fep_query_url( $menu_array['action'] )."'>".strip_tags( $menu_array['title'], '<span>' )."</a>";
 		  }
@@ -71,7 +75,7 @@ class Fep_Menu
 								'active-class'	=> 'fep-button-active',
 								'priority'		=> 20
 							);
-					$menu[$key] = wp_parse_args( $menu[$key], $defaults);
+					$menu[$key] = wp_parse_args( $tab, $defaults);
 			
 				}
 			uasort( $menu, 'fep_sort_by_priority' );

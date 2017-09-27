@@ -54,3 +54,36 @@
 	z-index: 999;
 }
 .fep-font-red { color: #FF0000; }
+
+/*Notify Styling*/
+.fep-error, .fep-success, .fep-wp-error
+{
+	color: black;
+	background-color: #FFEBE8;
+	border-color: #C00;
+	width: 100%;
+	text-align: center;
+	font-size: 12px;
+	font-weight: bold;
+	border-width: 1px;
+	border-style: solid;
+	padding: 0.6em;
+	margin: 15px 0;
+	-moz-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.fep-success
+{
+	background-color: #66FF99;
+	border-color: #00FF00;
+}
+.fep-wp-error
+{
+	text-align:left;
+}
+

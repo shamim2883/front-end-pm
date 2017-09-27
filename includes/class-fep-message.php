@@ -1,4 +1,9 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 //Message CLASS
 class Fep_Message
   {
@@ -17,9 +22,7 @@ class Fep_Message
 			add_action('fep_action_validate_form', array($this, "time_delay_check"), 10, 2);
 			add_action('fep_action_validate_form', array($this, "box_full_check"), 10, 2);
 			
-			add_action( 'publish_fep_message', array($this, 'recalculate_user_stats') );
-			add_action( 'save_post_fep_message', array($this, 'recalculate_user_stats'), 20 ); //after '_participants' meta saved
-			add_action( 'trashed_post', array($this, 'recalculate_user_stats') );
+			add_action( 'fep_save_message', array($this, 'recalculate_user_stats'), 20 ); //after '_fep_participants' meta saved
 			add_action( 'before_delete_post', array($this, 'delete_replies') );
 			add_action( 'before_delete_post', array($this, 'participants_save') );
 			add_action( 'after_delete_post', array($this, 'recalculate_participants_stats') );
@@ -44,7 +47,7 @@ class Fep_Message
         		'after' => "-{$delay} minutes"
 				) 
 			);
-		if( 'threaded' == fep_get_option('message_view','threaded') )
+		if( 'threaded' == fep_get_message_view() )
 		 	$args['post_parent'] = 0;
 			
 		if( get_posts( $args ) ) {
@@ -67,7 +70,8 @@ class Fep_Message
 
 function recalculate_user_stats( $postid )
 {
-	$participants = get_post_meta( $postid, '_participants' );
+	
+	$participants = fep_get_participants( $postid );
 	
 	if( $participants && is_array( $participants ) )
 	{
@@ -83,8 +87,11 @@ function delete_replies( $message_id ) {
 
 		if( get_post_type( $message_id ) != 'fep_message'  )
 			return false;
-			
-			$args = array(
+		
+		if( 'threaded' != fep_get_message_view() ){
+			return false;
+		}
+		$args = array(
 			'post_type' => 'fep_message',
 			'post_status' => 'any',
 			'post_parent' => $message_id,
@@ -107,7 +114,7 @@ function delete_replies( $message_id ) {
 	if( get_post_type( $message_id ) != 'fep_message'  )
 		return false;
 			
-	$participants = get_post_meta( $message_id, '_participants' );
+	$participants = fep_get_participants( $message_id );
 	
 	if( $participants && is_array( $participants ) )
 	{
@@ -137,6 +144,18 @@ function user_message_count( $value = 'all', $force = false, $user_id = false )
 	if( ! $user_id ) {
 		$user_id = get_current_user_id();
 	}
+	
+	if( 'show-all' == $value )
+		$value = 'total';
+	
+	if( ! $user_id ) {
+		if( 'all' == $value ) {
+			return array();
+		} else {
+			return 0;
+		}
+	}
+	
 	$user_meta = get_user_meta( $user_id, '_fep_user_message_count', true );
 	
 	if( false === $user_meta || $force || !isset( $user_meta['total'] ) || !isset( $user_meta['read'] )|| !isset( $user_meta['unread'] ) || !isset( $user_meta['archive'] ) || !isset( $user_meta['inbox'] ) || !isset( $user_meta['sent'] ) ) {
@@ -147,7 +166,7 @@ function user_message_count( $value = 'all', $force = false, $user_id = false )
 			'posts_per_page' => -1,
 			'meta_query' => array(
 				array(
-					'key' => '_participants',
+					'key' => '_fep_participants',
 					'value' => $user_id,
 					'compare' => '='
 				),
@@ -160,9 +179,10 @@ function user_message_count( $value = 'all', $force = false, $user_id = false )
 			)
 		 );
 		 
-		 if( 'threaded' == fep_get_option('message_view','threaded') )
-		 	$args['post_parent'] = 0;
-			
+		if( 'threaded' == fep_get_message_view() ){
+			$args['post_parent'] = 0;
+			$args['fields'] = 'ids';
+		}
 		 $messages = get_posts( $args );
 		 
 		 $total_count 		= 0;
@@ -170,17 +190,35 @@ function user_message_count( $value = 'all', $force = false, $user_id = false )
 		 $unread_count 		= 0;
 		 $archive_count 	= 0;
 		 $inbox_count 		= 0;
-		 $sent_count 	= 0;
+		 $sent_count 		= 0;
 		 
 		 if( $messages && !is_wp_error($messages) ) {
+		 	
+			if( 'threaded' == fep_get_message_view() ){
+				$message_ids = $messages;
+			} else {
+				$message_ids = array();
+				foreach( $messages as $m ){
+					$message_ids[] = $m->ID;
+				}
+				reset( $messages );
+			}
+			update_postmeta_cache( $message_ids ); //Update all meta cache in one query
+			
 			 foreach( $messages as $message ) {
 			 	$total_count++;
-			 
-			 	$from_user 		= $message->post_author;
-				$to_user_meta 	= get_post_meta( $message->ID, '_participants' );
+			 	
+				if( 'threaded' == fep_get_message_view() ){
+					$message_id = $message;
+					$from_user 		= get_post_meta( $message_id, '_fep_last_reply_by', true );
+				} else {
+					$message_id = $message->ID;
+					$from_user 		= $message->post_author;
+				}
+				$to_user_meta 	= fep_get_participants( $message_id );
 				
-			 	$read_meta 	= get_post_meta( $message->ID, '_fep_parent_read_by_'. $user_id, true );
-				$archive_meta 	= get_post_meta( $message->ID, '_fep_archived_by_'. $user_id, true );
+			 	$read_meta 	= get_post_meta( $message_id, '_fep_parent_read_by_'. $user_id, true );
+				$archive_meta 	= get_post_meta( $message_id, '_fep_archived_by_'. $user_id, true );
 				
 			 	if( $from_user == $user_id )
 				{
@@ -236,9 +274,10 @@ function user_messages( $action = 'messagebox', $user_id = false )
 			'post_status' => 'publish',
 			'posts_per_page' => fep_get_option('messages_page',15),
 			'paged'	=> !empty($_GET['feppage']) ? absint($_GET['feppage']): 1,
+			//'orderby' => 'post_modified',
 			'meta_query' => array(
 				array(
-					'key' => '_participants',
+					'key' => '_fep_participants',
 					'value' => $user_id,
 					'compare' => '='
 				),
@@ -250,16 +289,38 @@ function user_messages( $action = 'messagebox', $user_id = false )
 				
 			)
 		 );
-		 
-		 if( 'threaded' == fep_get_option('message_view','threaded') )
-		 	$args['post_parent'] = 0;
+		
+		if( 'threaded' == fep_get_message_view() ){
+			$args['post_parent'] = 0;
+			$args['orderby'] = 'meta_value_num';
+			$args['meta_key'] = '_fep_last_reply_time';
+		}
+		if( !empty($_GET['fep-search']) ) {
+			$args['s'] = $_GET['fep-search'];
+		}
 		 
 		 switch( $filter ) {
 		 	case 'inbox' :
-				$args['author'] = -$user_id;
+				if( 'threaded' == fep_get_message_view() ){
+					$args['meta_query'][] = array(
+						'key' => '_fep_last_reply_by',
+						'value' => $user_id,
+						'compare' => '!='
+					);
+				} else {
+					$args['author'] = -$user_id;
+				}
 			break;
 			case 'sent' :
-				$args['author'] = $user_id;
+				if( 'threaded' == fep_get_message_view() ){
+					$args['meta_query'][] = array(
+						'key' => '_fep_last_reply_by',
+						'value' => $user_id,
+						'compare' => '='
+					);
+				} else {
+					$args['author'] = $user_id;
+				}
 			break;
 			case 'archive' :
 				$args['meta_query'][] = array(
@@ -286,8 +347,36 @@ function user_messages( $action = 'messagebox', $user_id = false )
 				$args = apply_filters( 'fep_message_query_args_'. $filter, $args);
 			break;
 		 }
+		 
 		 $args = apply_filters( 'fep_message_query_args', $args);
 		 
+		if( 'threaded' == fep_get_message_view() && apply_filters( 'fep_thread_show_last_message', true ) ){
+			
+			$ids = get_posts( wp_parse_args( array( 'fields' => 'ids' ), $args ) );
+			
+			if( $ids = array_filter( array_map( 'absint', $ids ) ) ){
+				global $wpdb;
+				$ids = implode( ',', $ids );
+				$message_ids = $wpdb->get_col( "SELECT meta_value FROM $wpdb->postmeta WHERE meta_key = '_fep_last_reply_id' AND post_id IN ($ids)" );
+				
+				if( $message_ids = array_filter( array_map( 'absint', $message_ids ) ) ){
+					$args = array(
+						'post_type' => 'fep_message',
+						'post_status' => 'publish',
+						'posts_per_page' => fep_get_option( 'messages_page', 15 ),
+						'post__in'		=> $message_ids,
+						'order'		=> isset( $args['order'] ) ? $args['order'] : 'DESC',
+						);
+				} else {
+					$args['post__in'] = array( 0 );
+				}
+			} else {
+				$args['post__in'] = array( 0 );
+			}
+			
+		} else {
+			//return new WP_Query( $args );
+		}
 	return new WP_Query( $args );
 
 }
@@ -312,34 +401,33 @@ function bulk_action( $action, $ids = null ) {
 	if( $count ) {
 		delete_user_meta( get_current_user_id(), '_fep_user_message_count' );
 		
-		if( 'delete' == $action ){
 			$message = sprintf(_n('%s message', '%s messages', $count, 'front-end-pm'), number_format_i18n($count) );
 			$message .= ' ';
+			
+		if( 'delete' == $action ){
 			$message .= __('successfully deleted.', 'front-end-pm');
 		} elseif( 'mark-as-read' == $action ){
-			$message = sprintf(_n('%s message', '%s messages', $count, 'front-end-pm'), number_format_i18n($count) );
-			$message .= ' ';
 			$message .= __('successfully marked as read.', 'front-end-pm');
 		} elseif( 'mark-as-unread' == $action ){
-			$message = sprintf(_n('%s message', '%s messages', $count, 'front-end-pm'), number_format_i18n($count) );
-			$message .= ' ';
 			$message .= __('successfully marked as unread.', 'front-end-pm');
 		} elseif( 'archive' == $action ){
-			$message = sprintf(_n('%s message', '%s messages', $count, 'front-end-pm'), number_format_i18n($count) );
-			$message .= ' ';
 			$message .= __('successfully archived.', 'front-end-pm');
 		} elseif( 'restore' == $action ){
-			$message = sprintf(_n('%s message', '%s messages', $count, 'front-end-pm'), number_format_i18n($count) );
-			$message .= ' ';
 			$message .= __('successfully restored.', 'front-end-pm');
 		}
-		$message = '<div class="fep-success">'.$message.'</div>';
+		//$message = '<div class="fep-success">'.$message.'</div>';
 	}
 	return apply_filters( 'fep_message_bulk_action_message', $message, $count);
 }
 
-function bulk_individual_action( $action, $id ) {
+function bulk_individual_action( $action, $passed_id ) {
 	$return = false;
+	
+	if( 'threaded' == fep_get_message_view() ){
+		$id = fep_get_parent_id( $passed_id );
+	} else {
+		$id = $passed_id;
+	}
 	
 	switch( $action ) {
 		case 'delete':
@@ -347,7 +435,7 @@ function bulk_individual_action( $action, $id ) {
 				$return = add_post_meta( $id, '_fep_delete_by_'. get_current_user_id(), time(), true );
 			}
 			$should_delete_from_db = true;
-			foreach( get_post_meta( $id, '_participants' ) as $participant ) {
+			foreach( fep_get_participants( $id ) as $participant ) {
 				if( ! get_post_meta( $id, '_fep_delete_by_'. $participant, true ) ) {
 					$should_delete_from_db = false;
 					break;
@@ -379,7 +467,7 @@ function bulk_individual_action( $action, $id ) {
 			}
 		break;
 		default:
-			$return = apply_filters( 'fep_message_bulk_individual_action', false, $action, $id );
+			$return = apply_filters( 'fep_message_bulk_individual_action', false, $action, $id, $passed_id );
 		break;
 	}
 	return $return;
@@ -407,6 +495,7 @@ function get_table_bulk_actions()
 function get_table_filters()
 {
 	$filters = array(
+			'show-all' => __('Show all', 'front-end-pm'),
 			'inbox' => __('Inbox', 'front-end-pm'),
 			'sent' => __('Sent', 'front-end-pm'),
 			'read' => __('Read', 'front-end-pm'),
@@ -430,6 +519,12 @@ function get_table_columns()
 function get_column_content($column)
 {
 	switch( $column ) {
+		
+		case has_action("fep_message_table_column_content_{$column}"):
+
+			do_action("fep_message_table_column_content_{$column}");
+
+		break;
 		case 'fep-cb' :
 			?><input type="checkbox" name="fep-message-cb[]" value="<?php echo get_the_ID(); ?>" /><?php
 		break;
@@ -447,7 +542,7 @@ function get_column_content($column)
 					$span = '';
 					$class = '';
 				} 
-			?><span class="<?php echo $class; ?>"><a href="<?php echo fep_query_url('viewmessage', array('id'=> get_the_ID())); ?>"><?php the_title(); ?></a></span><?php echo $span; ?><div class="fep-message-excerpt"><?php echo fep_get_the_excerpt(100); ?></div><?php
+			?><span class="<?php echo $class; ?>"><a href="<?php echo fep_query_url('viewmessage', array('fep_id'=> get_the_ID())); ?>"><?php the_title(); ?></a></span><?php echo $span; ?><div class="fep-message-excerpt"><?php echo fep_get_the_excerpt(100); ?></div><?php
 		break;
 		default:
 			do_action( 'fep_message_table_column_content', $column );

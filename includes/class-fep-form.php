@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 if (!class_exists('Fep_Form'))
 {
   class Fep_Form
@@ -51,18 +55,33 @@ if (!class_exists('Fep_Form'))
 					'id' => 'message_title',
 					'name' => 'message_title',
 					'class' => 'input-text',
-					'priority'    => 10
+					'priority'    => 10,
+					'where'	=> array( 'newmessage', 'shortcode-newmessage' )
 				),
 				'message_content' => array(
 					'label'       => __( 'Message', 'front-end-pm' ),
-					'type'        => fep_get_option('editor_type','wp_editor'),
+					'type'        => ( 'shortcode-newmessage' == $where ) ? 'textarea' : fep_get_option('editor_type','wp_editor'),
+					//Ajax form submit creating problem with wp_editor
 					'required'    => true,
 					'minlength'	=> 10,
 					'maxlength' => 5000,
 					'placeholder' => '',
 					'priority'    => 15,
 					'value'     => '',
-					'where'	=> array( 'newmessage', 'reply' )
+					'where'	=> array( 'newmessage', 'reply', 'shortcode-newmessage' )
+				),
+				'shortcode-message-to' => array(
+					'type'        => 'shortcode-message-to',
+					'name' => 'message_to',
+					'value'    => '',
+					'where'    => 'shortcode-newmessage'
+				),
+				'wp_token' => array(
+					'type'        => 'wp_token',
+					'name'        => 'token',
+					'value'    => wp_create_nonce('fep_message'),
+					'token-action'    => 'fep_message',
+					'where'    => 'shortcode-newmessage'
 				),
 				'token' => array(
 					'type'        => 'token',
@@ -143,7 +162,7 @@ if (!class_exists('Fep_Form'))
 					'placeholder'=> '',
 					'priority'	=> $this->priority
 					);
-			$fields[$key] = wp_parse_args( $fields[$key], $defaults);
+			$fields[$key] = wp_parse_args( $field, $defaults);
 		}
 		
 		$fields = apply_filters( 'fep_form_fields_after_process', $fields );
@@ -162,11 +181,17 @@ function field_output( $field, $errors )
 		</div>
 		<?php endif;
 		$attrib = ''; 
-		 if ( ! empty( $field['required'] ) ) $attrib .= 'required = "required" ';
-		 if ( ! empty( $field['readonly'] ) ) $attrib .= 'readonly = "readonly" ';
-		 if ( ! empty( $field['disabled'] ) ) $attrib .= 'disabled = "disabled" ';
-		 if ( ! empty( $field['minlength'] ) ) $attrib .= 'minlength = "' . absint( $field['minlength'] ) . '" ';
-		 if ( ! empty( $field['maxlength'] ) ) $attrib .= 'maxlength = "' . absint( $field['maxlength'] ) . '" ';
+		if ( ! empty( $field['required'] ) ) $attrib .= 'required = "required" ';
+		if ( ! empty( $field['readonly'] ) ) $attrib .= 'readonly = "readonly" ';
+		if ( ! empty( $field['disabled'] ) ) $attrib .= 'disabled = "disabled" ';
+		if ( ! empty( $field['minlength'] ) ) $attrib .= 'minlength = "' . absint( $field['minlength'] ) . '" ';
+		if ( ! empty( $field['maxlength'] ) ) $attrib .= 'maxlength = "' . absint( $field['maxlength'] ) . '" ';
+		 
+		if ( ! empty( $field['class'] ) ){
+			$field['class'] = explode( ' ', $field['class'] );
+			$field['class'] = array_map( 'sanitize_html_class', $field['class'] );
+			$field['class'] = implode( ' ', array_filter( $field['class'] ) );
+		}
 		
 		?><div class="fep-form-field"><?php if ( !empty($field['label']) ) { ?>
 			<div class="fep-label"><label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['label'] ) ; ?>: <?php if ( ! empty( $field['required'] ) ) : ?><span class="required">*</span><?php endif; ?></label></div>
@@ -187,59 +212,69 @@ function field_output( $field, $errors )
 				case 'number' :
 				case 'hidden' :
 				case 'submit' :
-					?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" type="<?php esc_attr_e( $field['type'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>" placeholder="<?php esc_attr_e( $field['placeholder'] ); ?>" value="<?php esc_attr_e( $field['posted-value' ] ); ?>" <?php echo $attrib; ?> /><?php
+					?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" type="<?php esc_attr_e( $field['type'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>" placeholder="<?php esc_attr_e( $field['placeholder'] ); ?>" value="<?php esc_attr_e( $field['posted-value' ] ); ?>" <?php echo $attrib; ?> /><?php
 
 					break;
 				case 'message_to' :
-							$to = (isset($_REQUEST['to']))? $_REQUEST['to']:'';
+					
+					if( isset( $_REQUEST['fep_to'] ) ) {
+						$to = $_REQUEST['fep_to'];
+					} else {
+						$to = (isset($_REQUEST['to']))? $_REQUEST['to']:'';
+					}
+					
+					if( ! empty( $field['posted-value' ] ) ) {
+						$message_to = fep_get_userdata( $field['posted-value' ], 'user_nicename' );
+						$message_top = fep_get_userdata( $message_to, 'display_name' );
+					} elseif( $to ){
+						$support = array(
+							'nicename' 	=> true,
+							'id' 		=> true,
+							'email' 	=> true,
+							'login' 	=> true
+							);
+						
+						$support = apply_filters( 'fep_message_to_support', $support );
 							
-							$support = array(
-								'nicename' 	=> true,
-								'id' 		=> true,
-								'email' 	=> true,
-								'login' 	=> true
-								);
-							
-							$support = apply_filters( 'fep_message_to_support', $support );
-								
-							if ( !empty( $support['nicename'] ) && $user = fep_get_userdata( $to, 'user_nicename' ) ) {
-								$m_to = $user;
-								$m_top = fep_get_userdata( $user, 'display_name');
-							} elseif( is_numeric( $to ) && !empty( $support['id'] ) && $user = fep_get_userdata( $to, 'user_nicename', 'id' ) ) {
-								$m_to = $user;
-								$m_top = fep_get_userdata( $user, 'display_name');
-							} elseif ( is_email( $to ) && !empty( $support['email'] ) && $user = fep_get_userdata( $to, 'user_nicename', 'email' ) ) {
-								$m_to = $user;
-								$m_top = fep_get_userdata( $user, 'display_name');
-							} elseif ( !empty( $support['login'] ) && $user = fep_get_userdata( $to, 'user_nicename', 'login' ) ) {
-								$m_to = $user;
-								$m_top = fep_get_userdata( $user, 'display_name');
-							} else {
-								$m_to = '';
-								$m_top = '';
-							}
-							
-							$message_to = ( isset( $_POST['message_to'] ) ) ? esc_attr( $_POST['message_to'] ): $m_to;
-							$message_top = ( isset( $_POST['message_top'] ) ) ? esc_attr( $_POST['message_top'] ): $m_top;
+						if ( !empty( $support['nicename'] ) && $user = fep_get_userdata( $to, 'user_nicename' ) ) {
+							$message_to = $user;
+							$message_top = fep_get_userdata( $user, 'display_name');
+						} elseif( is_numeric( $to ) && !empty( $support['id'] ) && $user = fep_get_userdata( $to, 'user_nicename', 'id' ) ) {
+							$message_to = $user;
+							$message_top = fep_get_userdata( $user, 'display_name');
+						} elseif ( is_email( $to ) && !empty( $support['email'] ) && $user = fep_get_userdata( $to, 'user_nicename', 'email' ) ) {
+							$message_to = $user;
+							$message_top = fep_get_userdata( $user, 'display_name');
+						} elseif ( !empty( $support['login'] ) && $user = fep_get_userdata( $to, 'user_nicename', 'login' ) ) {
+							$message_to = $user;
+							$message_top = fep_get_userdata( $user, 'display_name');
+						} else {
+							$message_to = '';
+							$message_top = '';
+						}
+					} else {
+						$message_to = '';
+						$message_top = '';
+					}
 
-								 if( ! empty($field['suggestion'])) : ?>
+						if( ! empty($field['suggestion'])) : ?>
 							<?php wp_enqueue_script( 'fep-script' ); ?>
 							
-							<input type="hidden" name="message_to" id="fep-message-to" autocomplete="off" value="<?php echo $message_to; ?>" />
+							<input type="hidden" name="message_to" id="fep-message-to" autocomplete="off" value="<?php echo esc_attr( $message_to ); ?>" />
 							
-							<input type="text" class="<?php echo sanitize_html_class( $field['class'] ); ?>" name="message_top" id="fep-message-top" autocomplete="off" placeholder="<?php echo esc_attr( $field['placeholder'] ); ?>" value="<?php echo $message_top; ?>" />
+							<input type="text" class="<?php echo $field['class']; ?>" name="message_top" id="fep-message-top" autocomplete="off" placeholder="<?php echo esc_attr( $field['placeholder'] ); ?>" value="<?php echo esc_attr( $message_top ); ?>" />
 							<div id="fep-result"></div>
 							
 						<?php else : ?>
 							
-							<input type="text" class="<?php echo sanitize_html_class( $field['class'] ); ?>" name="message_to" id="fep-message-top" placeholder="<?php echo esc_attr( $field['noscript-placeholder'] ); ?>" autocomplete="off" value="<?php echo $message_to; ?>" />
+							<input type="text" class="<?php echo $field['class']; ?>" name="message_to" id="fep-message-top" placeholder="<?php echo esc_attr( $field['noscript-placeholder'] ); ?>" autocomplete="off" value="<?php echo esc_attr( $message_to ); ?>" />
 							
 						<?php endif;
 
 					break;
 				case "textarea" :
 
-							?><textarea id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" cols="50" name="<?php esc_attr_e( $field['name'] ); ?>" placeholder="<?php esc_attr_e( $field['placeholder'] ); ?>" <?php echo $attrib; ?>><?php echo esc_textarea( $field['posted-value' ] ); ?></textarea><?php
+							?><textarea id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" cols="50" name="<?php esc_attr_e( $field['name'] ); ?>" placeholder="<?php esc_attr_e( $field['placeholder'] ); ?>" <?php echo $attrib; ?>><?php echo esc_textarea( $field['posted-value' ] ); ?></textarea><?php
 
 					break;
 					
@@ -258,18 +293,18 @@ function field_output( $field, $errors )
 
 							if( ! empty( $field['multiple' ] ) ) {
 								foreach( $field['options' ] as $key => $name ) {
-								?><label><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>[]" type="checkbox" value="<?php esc_attr_e( $key ); ?>" <?php if( in_array( $key, $field['posted-value' ] ) ) { echo 'checked="checked"';} ?> /> <?php esc_attr_e( $name ); ?></label><br /><?php
+								?><label><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" name="<?php esc_attr_e( $field['name'] ); ?>[]" type="checkbox" value="<?php esc_attr_e( $key ); ?>" <?php if( in_array( $key, $field['posted-value' ] ) ) { echo 'checked="checked"';} ?> /> <?php esc_attr_e( $name ); ?></label><br /><?php
 								}
 							} else {
 
-							?><label><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>" type="checkbox" value="1" <?php checked( '1', $field['posted-value' ] ); ?> /> <?php esc_attr_e( $field['cb_label'] ); ?></label><?php
+							?><label><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" name="<?php esc_attr_e( $field['name'] ); ?>" type="checkbox" value="1" <?php checked( '1', $field['posted-value' ] ); ?> /> <?php esc_attr_e( $field['cb_label'] ); ?></label><?php
 							}
 
 					break;
 					
 				case "select" :
 
-							?><select id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>" <?php echo $attrib; ?>><?php
+							?><select id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" name="<?php esc_attr_e( $field['name'] ); ?>" <?php echo $attrib; ?>><?php
 									foreach( $field['options'] as $key => $name ) {
 										?><option value="<?php esc_attr_e( $key ); ?>" <?php selected( $field['posted-value' ], $key ); ?>><?php esc_attr_e( $name ); ?></option><?php }
 							?></select><?php
@@ -278,15 +313,17 @@ function field_output( $field, $errors )
 				case "radio" :
 
 						foreach( $field['options'] as $key => $name ) {
-							?><label><input type="radio" class="<?php echo sanitize_html_class( $field['class'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>" value="<?php esc_attr_e( $key ); ?>" <?php checked( $field['posted-value' ], $key ); ?> /> <?php esc_attr_e( $name ); ?></label><br /><?php }
+							?><label><input type="radio" class="<?php echo $field['class']; ?>" name="<?php esc_attr_e( $field['name'] ); ?>" value="<?php esc_attr_e( $key ); ?>" <?php checked( $field['posted-value' ], $key ); ?> /> <?php esc_attr_e( $name ); ?></label><br /><?php }
 					break;
 					
 				case 'token' :
-					?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" type="hidden" name="<?php esc_attr_e( $field['name'] ); ?>" value="<?php esc_attr_e( $field['value' ] ); ?>" <?php echo $attrib; ?> /><?php
+				case 'wp_token' :
+				case 'shortcode-message-to' :
+					?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" type="hidden" name="<?php esc_attr_e( $field['name'] ); ?>" value="<?php esc_attr_e( $field['value' ] ); ?>" <?php echo $attrib; ?> /><?php
 
 					break;
 				case 'fep_parent_id' :
-					?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" type="hidden" name="<?php esc_attr_e( $field['name'] ); ?>" value="<?php esc_attr_e( $field['posted-value' ] ); ?>" <?php echo $attrib; ?> /><?php
+					?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" type="hidden" name="<?php esc_attr_e( $field['name'] ); ?>" value="<?php esc_attr_e( $field['posted-value' ] ); ?>" <?php echo $attrib; ?> /><?php
 
 					break;
 					
@@ -295,7 +332,7 @@ function field_output( $field, $errors )
 					?>
 						<div id="fep_upload">
 							<div id="p-0">
-								<input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo sanitize_html_class( $field['class'] ); ?>" type="file" name="<?php esc_attr_e( $field['name'] ); ?>[]" /><a href="#" onclick="fep_remove_element('p-0'); return false;" class="fep-attachment-field"><?php echo __('Remove', 'front-end-pm') ; ?></a>
+								<input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" type="file" name="<?php esc_attr_e( $field['name'] ); ?>[]" /><a href="#" onclick="fep_remove_element('p-0'); return false;" class="fep-attachment-field"><?php echo __('Remove', 'front-end-pm') ; ?></a>
 							</div>
 						</div>
 						<a id="fep-attachment-field-add" href="#" onclick="fep_add_new_file_field(); return false;"><?php echo __('Add new field', 'front-end-pm') ; ?></a>
@@ -380,7 +417,13 @@ function field_output( $field, $errors )
         				$errors->add( $field['id'], __("Invalid Token. Please try again!", 'front-end-pm'));
 					}
 				break;
+				case 'wp_token':
+					if (!wp_verify_nonce( $field['posted-value'], $field['token-action'])) {
+        				$errors->add( $field['id'], __("Invalid Token. Please try again!", 'front-end-pm'));
+					}
+				break;
 				case 'message_to' :
+				case 'shortcode-message-to' :
 					if (!empty($_POST['message_to'])) {
 					  	$preTo = $_POST['message_to'];
 					 } else {
@@ -422,7 +465,7 @@ function field_output( $field, $errors )
 				case 'fep_parent_id' :
 					 if ( empty($field['posted-value']) || $field['posted-value'] != absint($field['posted-value']) || fep_get_parent_id( $field['posted-value'] ) != $field['posted-value'] ) {
 					 		$errors->add( $field['id'] , __("Invalid parent ID!", 'front-end-pm'));
-					 } elseif ( ! $participants = get_post_meta( $field['posted-value'], '_participants' ) || ! in_array( get_current_user_id(), $participants ) ) {
+					 } elseif ( ! in_array( get_current_user_id(), fep_get_participants( $field['posted-value'] ) ) ) {
 						  	$errors->add( $field['id'] , __("You do not have permission to send this message!", 'front-end-pm'));
 						}
 		
@@ -491,26 +534,33 @@ function field_output( $field, $errors )
 	
 public function form_field_output( $where = 'newmessage', $errors= '', $value = array() )
 {
-	//$fields = $this->form_fields( $where );
+	$fields = $this->form_fields( $where );
 	
 	if( ! is_wp_error($errors) )
-		$errors = new WP_Error();
-		
+		$errors = fep_errors();
+	
+	if( isset( $_GET['fep_id'] ) ){
+		$id = absint( $_GET['fep_id'] );
+	} else {
+		$id = !empty($_GET['id']) ? absint($_GET['id']) : 0;
+	}
+	  
 		$form_attr = array(
-			'method' => 'post'
+			'method' => 'post',
+			'class' => 'fep-form'
 			);
 		
 		if( 'settings' == $where ) {
 			$form_attr['action'] = fep_query_url( 'settings' );
 		} elseif( 'newmessage' == $where ) {
 			$form_attr['action'] = fep_query_url( 'newmessage' );
-		} elseif( 'reply' == $where && !empty($_GET['id']) ) {
-			$form_attr['action'] = fep_query_url( 'viewmessage', array( 'id' => $_GET['id'] ) );
+		} elseif( 'reply' == $where && $id ) {
+			$form_attr['action'] = fep_query_url( 'viewmessage', array( 'fep_id' => $id ) );
 		} else {
 			$form_attr['action'] = esc_url( add_query_arg( false, false ) );
 		}
 		
-		if( in_array( $where, array( 'newmessage', 'reply' ) ) && fep_get_option('allow_attachment', 1 ) ) {
+		if( isset( $fields['fep_upload']) ) {
 			$form_attr['enctype'] = 'multipart/form-data';
 		}
 		
@@ -530,7 +580,7 @@ public function form_field_output( $where = 'newmessage', $errors= '', $value = 
 
 		do_action( 'fep_before_form_fields', $where, $errors );
 
-		foreach ( $this->form_fields( $where ) as $key => $field ) {
+		foreach ( $fields as $key => $field ) {
 			$type = ! empty( $field['type'] ) ? $field['type'] : 'text';
 			$defaults = array(
 								'key'		=> $key,
@@ -545,7 +595,9 @@ public function form_field_output( $where = 'newmessage', $errors= '', $value = 
 				$field['value'] = $value[$field['name']];
 			}
 			$field['posted-value'] = isset( $_REQUEST[$field['name']] ) ? stripslashes_deep( $_REQUEST[$field['name']] ) : $field['value'];
-
+			
+			$field = apply_filters( 'fep_filter_form_field_before_output', $field, $where );
+			
 			if ( has_action( 'fep_form_field_init_output_' . $field['type'] ) ) {
 				do_action( 'fep_form_field_init_output_' . $field['type'], $field, $errors );
 			} else {
@@ -564,7 +616,7 @@ public function form_field_output( $where = 'newmessage', $errors= '', $value = 
 		} else {
 			$button_val = __('Send Message', 'front-end-pm');
 		}
-		echo apply_filters( 'fep_form_submit_button', '<button type="submit" class="fep-button" name="fep_action" value="'. esc_attr( $where ) .'">'. esc_html( $button_val ).'</button>' );
+		echo apply_filters( 'fep_form_submit_button', '<button type="submit" class="fep-button" name="fep_action" value="'. esc_attr( $where ) .'">'. esc_html( $button_val ).'</button>', $where );
 		
         echo '</form>';
 		echo '</div>';
@@ -576,7 +628,7 @@ public function validate_form_field( $where = 'newmessage' )
 {
 		$fields = $this->form_fields( $where );
 	
-		$errors = new WP_Error();
+		$errors = fep_errors();
 
 		foreach ( $fields as $key => $field ) {
 			$defaults = array(

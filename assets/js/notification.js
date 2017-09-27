@@ -6,7 +6,7 @@ jQuery(document).ready(function(){
         var fep_ajax_call = function(){
 		jQuery.post(fep_notification_script.ajaxurl, data, function(results) {
 			jQuery('#fep-notification-bar').html(results);
-			if (results=='')
+			if ( jQuery.trim(results).length < 1 )
 			{ jQuery('#fep-notification-bar').hide(); }
 			else 
 			{ jQuery('#fep-notification-bar').show(); }

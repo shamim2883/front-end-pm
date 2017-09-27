@@ -1,26 +1,38 @@
-jQuery(document).ready(function(){
+jQuery( document ).ready( function() {
+					
+	function fep_update( custom_str, custom_int ){
 		jQuery('#submit').hide();
-		
-		jQuery( document ).on( "click", "#fep-update-button", function(e) {
-			e.preventDefault();
+		jQuery('.fep-ajax-img').show();
+		var data = { 
+			action: 'fep_update_ajax',
+			custom_str : custom_str,
+			custom_int : custom_int
+			};
+		jQuery.post( ajaxurl, data, function (response) {
+			if( response['message'].length ) {
+				jQuery('#fep-ajax-response').append(response['message'] + '<br />');
+			}
 			
-			jQuery('#fep-update-button').prop('disabled', true);
-			jQuery('#fep-ajax-response').html('Please wait, It may take some time.');
-			
-			jQuery('.fep-ajax-img').show();
-			
-		var data = jQuery('form').serialize().replace(/&action=[^&;]*/,'&action=fep_update_ajax');
-
-		jQuery.post( ajaxurl, data, function(results) {
-			jQuery('#fep-ajax-response').html(results['message']);
-			
+			if( response['update'] == 'completed' ) {
+				//jQuery('#fep-ajax-response').html('Update completed.');
+				jQuery('.fep-ajax-img').hide();
+				jQuery('#fep-update-warning').hide();
+				jQuery('#fep-ajax-response').html(response['message']);
+				//document.location.href = 'index.php'; // Redirect to the dashboard
+			} else {
+				fep_update( response['custom_str'], response['custom_int'] );
+			}
 		}, 'json')
-			.fail(function() {
-					 jQuery('#fep-ajax-response').html('Refresh this page and try again.');
-			})
-			.complete(function() {
-					 jQuery('.fep-ajax-img').hide();
-			});;
-      });
+		.fail(function() {
+			jQuery('#fep-ajax-response').html('Refresh this page and try again.');
+			jQuery('.fep-ajax-img').hide();
+			jQuery('#fep-update-warning').hide();
+		})
+		.complete(function() {
+			//jQuery('.fep-ajax-img').hide();
+		});
+	}
+	// Trigger upgrades on page load
+	fep_update( '', 0 );
 });
 

@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 if( fep_is_pro() )
 	return;
 	
@@ -20,6 +24,7 @@ class Fep_Pro_Info
 			add_filter( 'fep_admin_settings_tabs', array($this, 'admin_settings_tabs' ) );
 			add_filter( 'fep_settings_fields', array($this, 'settings_fields' ) );
 			add_action('fep_admin_settings_field_output_oa_admins', array($this, 'field_output_oa_admins' ) );
+			add_action('fep_admin_settings_field_output_rtr_block', array($this, 'field_output_rtr_block' ) );
     	}
 	
 	function email_legends( $where = 'newmessage', $post = '', $value = 'description', $user_email = '' ){
@@ -118,6 +123,13 @@ class Fep_Pro_Info
 				'priority'			=> 15,
 				'tab_output'		=> false
 				);
+		$tabs['rtr_block'] =  array(
+				'section_title'			=> __('Role to Role Block', 'front-end-pm'),
+				'section_page'		=> 'fep_settings_security',
+				'section_callback'	=> array($this, 'section_callback' ),
+				'priority'			=> 35,
+				'tab_output'		=> false
+				);
 				
 		return $tabs;
 	}
@@ -154,8 +166,8 @@ class Fep_Pro_Info
 		$added = true;
 		}
 		
-		echo '<div class="notice notice-warning inline"><p>'.sprintf(__('Following features only available in PRO version. <a href="%s" target="_blank">Upgrade to PRO</a>'), esc_url('https://www.shamimsplugins.com/wordpress/products/front-end-pm-pro/?utm_campaign=admin&utm_source=pro_features&utm_medium=links')). '</p></div>';
-		?><div class="fep_admin_div_need_pro" onclick="window.open('https://www.shamimsplugins.com/wordpress/products/front-end-pm-pro/?utm_campaign=admin&utm_source=pro_features&utm_medium=image');"></div><?php
+		echo '<div class="notice notice-warning inline"><p>'.sprintf(__('Following features only available in PRO version. <a href="%s" target="_blank">Upgrade to PRO</a>'), esc_url('https://www.shamimsplugins.com/products/front-end-pm-pro/?utm_campaign=admin&utm_source=pro_features&utm_medium=links')). '</p></div>';
+		?><div class="fep_admin_div_need_pro" onclick="window.open('https://www.shamimsplugins.com/products/front-end-pm-pro/?utm_campaign=admin&utm_source=pro_features&utm_medium=image');"></div><?php
 		
 	}
 	
@@ -166,7 +178,7 @@ class Fep_Pro_Info
 				'type'	=>	'checkbox',
 				'class'	=> '',
 				'section'	=> 'email_piping',
-				'value' => fep_get_option('ep_enable', 1 ),
+				'value' => fep_get_option('ep_enable', 0 ),
 				//'description' => __( 'Can users send message to other users.', 'front-end-pm' ),
 				'label' => __( 'Enable', 'front-end-pm' ),
 				'cb_label' => __( 'Enable email piping?', 'front-end-pm' )
@@ -186,6 +198,18 @@ class Fep_Pro_Info
 				'label' => __( 'Clean reply quote', 'front-end-pm' ),
 				'cb_label' => __( 'Clean reply quote from email?', 'front-end-pm' )
 				);
+			$templates = array(
+				'default'	=> __( 'Default', 'front-end-pm' ),
+				);
+			
+			$fields['eb_newmessage_template'] =   array(
+				'section'	=> 'eb_newmessage',
+				'value' => fep_get_option('eb_newmessage_template', 'default'),
+				'label' => __( 'New message email template', 'front-end-pm' ),
+				'type'	=>	'select',
+				//'description' => __( 'Admin alwayes have Wp Editor.', 'front-end-pm' ),
+				'options'	=> apply_filters( 'fep_eb_templates', $templates, 'newmessage' ),
+				);
 			$fields['eb_newmessage_subject'] =   array(
 				'section'	=> 'eb_newmessage',
 				'value' => fep_get_option('eb_newmessage_subject', ''),
@@ -198,6 +222,22 @@ class Fep_Pro_Info
 				'description' => implode( '<br />', $this->email_legends() ),
 				'label' => __( 'New message content.', 'front-end-pm' )
 				);
+			$fields['eb_newmessage_attachment'] =   array(
+				'type'	=>	'checkbox',
+				'class'	=> '',
+				'section'	=> 'eb_newmessage',
+				'value' => fep_get_option('eb_newmessage_attachment', 0 ),
+				'label' => __( 'Send Attachments', 'front-end-pm' ),
+				'cb_label' => __( 'Send attachments with new message email?', 'front-end-pm' )
+				);
+			$fields['eb_reply_template'] =   array(
+				'section'	=> 'eb_reply',
+				'value' => fep_get_option('eb_reply_template', 'default'),
+				'label' => __( 'Reply message email template', 'front-end-pm' ),
+				'type'	=>	'select',
+				//'description' => __( 'Admin alwayes have Wp Editor.', 'front-end-pm' ),
+				'options'	=> apply_filters( 'fep_eb_templates', $templates, 'reply' ),
+				);
 			$fields['eb_reply_subject'] =   array(
 				'section'	=> 'eb_reply',
 				'value' => fep_get_option('eb_reply_subject', ''),
@@ -209,6 +249,14 @@ class Fep_Pro_Info
 				'value' => fep_get_option('eb_reply_content', ''),
 				'description' => implode( '<br />', $this->email_legends( 'reply' ) ),
 				'label' => __( 'Reply content.', 'front-end-pm' )
+				);
+			$fields['eb_reply_attachment'] =   array(
+				'type'	=>	'checkbox',
+				'class'	=> '',
+				'section'	=> 'eb_reply',
+				'value' => fep_get_option('eb_reply_attachment', 0 ),
+				'label' => __( 'Send Attachments', 'front-end-pm' ),
+				'cb_label' => __( 'Send attachments with reply message email?', 'front-end-pm' )
 				);
 			$fields['eb_announcement_interval'] =   array(
 				'type' => 'number',
@@ -224,6 +272,14 @@ class Fep_Pro_Info
 				'label' => __( 'Emails send per interval.', 'front-end-pm' ),
 				'description' => __( 'Announcement emails send per interval.', 'front-end-pm' )
 				);
+			$fields['eb_announcement_template'] =   array(
+				'section'	=> 'eb_announcement',
+				'value' => fep_get_option('eb_announcement_template', 'default'),
+				'label' => __( 'Announcement email template', 'front-end-pm' ),
+				'type'	=>	'select',
+				//'description' => __( 'Admin alwayes have Wp Editor.', 'front-end-pm' ),
+				'options'	=> apply_filters( 'fep_eb_templates', $templates, 'announcement' ),
+				);
 			$fields['eb_announcement_subject'] =   array(
 				'section'	=> 'eb_announcement',
 				'value' => fep_get_option('eb_announcement_subject', ''),
@@ -235,6 +291,14 @@ class Fep_Pro_Info
 				'value' => fep_get_option('eb_announcement_content', ''),
 				'description' => implode( '<br />', $this->email_legends( 'announcement' ) ),
 				'label' => __( 'Announcement content.', 'front-end-pm' )
+				);
+			$fields['eb_announcement_attachment'] =   array(
+				'type'	=>	'checkbox',
+				'class'	=> '',
+				'section'	=> 'eb_announcement',
+				'value' => fep_get_option('eb_announcement_attachment', 0 ),
+				'label' => __( 'Send Attachments', 'front-end-pm' ),
+				'cb_label' => __( 'Send attachments with announcement email?', 'front-end-pm' )
 				);
 			$fields['mr-can-send-to-users'] =   array(
 				'type'	=>	'checkbox',
@@ -293,7 +357,7 @@ class Fep_Pro_Info
 				'section'	=> 'oa_admins',
 				'value' => fep_get_option('oa_admins', array()),
 				'description' => __( 'Do not forget to save.', 'front-end-pm' ),
-				'label' => 'Admins'
+				'label' => __( 'Admins', 'front-end-pm' )
 				);
 			$fields['oa_admins_frontend'] =   array(
 				'type'	=>	'select',
@@ -306,6 +370,12 @@ class Fep_Pro_Info
 					'radio'	=> __( 'Radio', 'front-end-pm' )
 					)
 				);
+			$fields['rtr_block'] =   array(
+				'type'	=>	'rtr_block',
+				'section'	=> 'rtr_block',
+				'value' => fep_get_option('rtr_block', array()),
+				'description' => __( 'Do not forget to save.', 'front-end-pm' ),
+				);
 								
 			return $fields;
 			
@@ -313,15 +383,39 @@ class Fep_Pro_Info
 		
 		function field_output_oa_admins( $field ){
 		
- ?>
+		?>
 			<div>
 				<span><input type="text" placeholder="<?php esc_attr_e( 'Display as', 'front-end-pm' ); ?>" value=""/></span>
 				<span><input type="text" placeholder="<?php esc_attr_e( 'Username', 'front-end-pm' ); ?>" value=""/></span>
-				<span><input type="button" class="button button-small" value="<?php esc_attr_e( 'Remove' ); ?>" /></span>
+				<span><input type="button" class="button button-small" value="<?php esc_attr_e( 'Remove', 'front-end-pm' ); ?>" /></span>
 			</div>
 			<div><input type="button" class="button" value="<?php esc_attr_e( 'Add More', 'front-end-pm' ); ?>" /></div>
 		<?php
 		
+		}
+		function field_output_rtr_block( $field ){
+		
+		?>
+			<table>
+				<th><?php _e( 'From Role', 'front-end-pm' );?></th>
+				<th><?php _e( 'To Role', 'front-end-pm' );?></th>
+				<th><?php _e( 'Block For', 'front-end-pm' );?></th>
+				<th><?php _e( 'Remove', 'front-end-pm' );?></th>
+			</table>
+			
+			<div>
+				<span><select><option value=""><?php _e( 'Select Role', 'front-end-pm' ); ?></option></select></span>
+				<span><select><option value=""><?php _e( 'Select Role', 'front-end-pm' ); ?></option></select></span>
+				<span><select><option value=""><?php _e( 'Select For', 'front-end-pm' ); ?></option></select></span>
+				<span><input type="button" class="button button-small" value="<?php esc_attr_e( 'Remove', 'front-end-pm' ); ?>" /></span>
+			</div>
+			<div><input type="button" class="button" value="<?php esc_attr_e( 'Add More', 'front-end-pm' ); ?>" /></div>
+		<?php
+		
+		}
+		
+		function to_use_wp_online_translation(){
+			__( 'Send Message to admin', 'front-end-pm' );
 		}
 		
   } //END CLASS

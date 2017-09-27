@@ -3,7 +3,7 @@ Contributors: shamim51
 Tags: front end pm,front-end-pm,pm,private message,personal message,front end,frontend pm,frontend,message,widget,plugin,sidebar,shortcode,page,email,mail,contact form, secure contact form, simple contact form,akismet check,akismet
 Donate link: https://www.paypal.me/hasanshamim
 Requires at least: 4.4
-Tested up to: 4.6.1
+Tested up to: 4.8
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -23,16 +23,16 @@ Front End PM is a Private Messaging system to your WordPress site.This is full f
 > * Email template tag
 > * Announcement Email queue
 >
-> [View Details](https://www.shamimsplugins.com/wordpress/products/front-end-pm-pro/?utm_campaign=wordpress&utm_source=readme_pro&utm_medium=description)
+> [View Details](https://www.shamimsplugins.com/products/front-end-pm-pro/?utm_campaign=wordpress&utm_source=readme_pro&utm_medium=description)
 
 **Some Useful Link**
 
-* [Basic Admin Settings](https://www.shamimsplugins.com/wordpress/docs/front-end-pm/getting-started/basic-admin-settings/?utm_campaign=wordpress&utm_source=readme&utm_medium=description)
-* [Basic Walkthrough](https://www.shamimsplugins.com/wordpress/docs/front-end-pm/getting-started/basic-front-end-walkthrough/?utm_campaign=wordpress&utm_source=readme&utm_medium=description)
-* [Remove minlength](https://www.shamimsplugins.com/wordpress/docs/front-end-pm/customization/remove-minlength-message-title/?utm_campaign=wordpress&utm_source=readme&utm_medium=description)
-* [Remove menu button](https://www.shamimsplugins.com/wordpress/docs/front-end-pm/customization/remove-settings-menu-button/?utm_campaign=wordpress&utm_source=readme&utm_medium=description)
+* [Basic Admin Settings](https://www.shamimsplugins.com/docs/front-end-pm/getting-started/basic-admin-settings/?utm_campaign=wordpress&utm_source=readme&utm_medium=description)
+* [Basic Walkthrough](https://www.shamimsplugins.com/docs/front-end-pm/getting-started/basic-front-end-walkthrough/?utm_campaign=wordpress&utm_source=readme&utm_medium=description)
+* [Remove minlength](https://www.shamimsplugins.com/docs/front-end-pm/customization/remove-minlength-message-title/?utm_campaign=wordpress&utm_source=readme&utm_medium=description)
+* [Remove menu button](https://www.shamimsplugins.com/docs/front-end-pm/customization/remove-settings-menu-button/?utm_campaign=wordpress&utm_source=readme&utm_medium=description)
 
-* If you want paid support you can contact with me through [Front End PM paid support](https://www.shamimsplugins.com/wordpress/contact-us/?utm_campaign=wordpress&utm_source=readme&utm_medium=description)
+* If you want paid support you can contact with me through [Front End PM paid support](https://www.shamimsplugins.com/contact-us/?utm_campaign=wordpress&utm_source=readme&utm_medium=description)
 
 [youtube http://www.youtube.com/watch?v=SHKHTIlzr3w]
 
@@ -67,7 +67,7 @@ Front End PM is a Private Messaging system to your WordPress site.This is full f
 
 [https://github.com/shamim2883/front-end-pm/](https://github.com/shamim2883/front-end-pm/)
 
-You can visit [Front End PM](https://www.shamimsplugins.com/wordpress/contact-us/?utm_campaign=wordpress&utm_source=readme&utm_medium=translation) and contact with me for paid support.
+You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_campaign=wordpress&utm_source=readme&utm_medium=translation) and contact with me for paid support.
 
 == Installation ==
 1. Upload "front-end-pm" to the "/wp-content/plugins/" directory.
@@ -76,9 +76,13 @@ You can visit [Front End PM](https://www.shamimsplugins.com/wordpress/contact-us
 1. Paste code `[front-end-pm]` for Front End pm under the HTML tab of the page editor.
 1. Publish the page add select this page as "Front End PM Page" in settings page of this plugin.
 
-Need more instruction? you can visit [Front End PM](https://www.shamimsplugins.com/wordpress/contact-us/?utm_campaign=wordpress&utm_source=readme&utm_medium=installation) and contact with me for paid support.
+Need more instruction? you can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_campaign=wordpress&utm_source=readme&utm_medium=installation) and contact with me for paid support.
 
 == Frequently Asked Questions ==
+= How to update? =
+DO NOT UPDATE IN PRODUCTION SITE BEFORE TEST IN STAGING SITE.
+Please full backup first before update so that if anything goes wrong you can recover easily.
+
 = Can i use this plugin to my language? =
 Yes. this plugin is translate ready. But If your language is not available you can make one. If you want to help us to translate this plugin to your language you are welcome. please use [wordpress translation](https://translate.wordpress.org/projects/wp-plugins/front-end-pm).
 
@@ -89,7 +93,7 @@ Yes. this plugin is translate ready. But If your language is not available you c
 I am very busy with my job. In my leisure i code for plugins. If you want to help to add comments to the code or indentation you are welcome. [https://github.com/shamim2883/front-end-pm/](https://github.com/shamim2883/front-end-pm/).
 
 = Where to contact for paid support? =
-You can visit [Front End PM](https://www.shamimsplugins.com/wordpress/contact-us/?utm_campaign=wordpress&utm_source=readme&utm_medium=faq) and contact with me for paid support.
+You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_campaign=wordpress&utm_source=readme&utm_medium=faq) and contact with me for paid support.
 
 == Screenshots ==
 
@@ -101,6 +105,52 @@ You can visit [Front End PM](https://www.shamimsplugins.com/wordpress/contact-us
 6. Security settings.
 
 == Changelog ==
+
+= 5.1 =
+
+**DO NOT UPDATE IN PRODUCTION SITE BEFORE TEST IN STAGING SITE.**
+**If YOU HAVE CUSTOM CODE FOR THIS PLUGIN MAKE SURE THEY ARE UP TO DATE BEFORE UPDATE THIS PLUGIN.**
+
+* id -> fep_id, to -> fep_to, search -> fep_search, _participants -> _fep_participants, _message_key -> _fep_message_key, _participant_roles -> _fep_participant_roles changes due to compitablity
+* fep_no_role_access filter to grand access to message system for users who do not have any role for the site.
+* Message box thread now show last message of the thread instead of first message
+* Inbox/ Sent box now determine by last message of the thread instead of first message
+* Show reply form after sent reply message.
+* New shortcodes - fep_shortcode_new_message_count, fep_shortcode_message_to, fep_shortcode_new_message_form
+* front-end-pm shortcode now support fepaction and fep-filter args
+* Pre-populate "To" and "Subject" now by shortcode.
+* Show link to send message to author by shortcode
+* Ability to send message directly to post author from post page ( Ajax/ non-Ajax )
+* Email From and From Email now pass through headers so that other can easily change that easily.
+* New classes - Fep_Ajax, Fep_Shortcodes
+* New functions - fep_update_option, fep_form_posted, fep_get_participants, fep_get_participant_roles, fep_get_message_view
+* New action hooks - fep_action_before_announcement_email_send
+* New filter hooks - fep_template_locations, fep_get_message_view, fep_autosuggestion_user_name, fep_no_role_access
+* New template - shortcode_newmessage_form.php, 
+* Plugin update process improved.
+* Minor performance improved.
+
+= 4.8 =
+
+* New feature, search users in directory
+* New feature, toggle all messages when view message
+* new filter hook fep_filter_display_participants added.
+* new filter hook fep_query_url_filter added.
+
+= 4.7 =
+
+* Security update
+* new action hook fep_get_announcement_column_content_{$column} added.
+* new action hook fep_message_table_column_content_{$column} added.
+* new filter hook fep_get_option added.
+* new filter hook fep_get_user_option added.
+
+= 4.6 =
+
+* Introduce template system
+* Better error handler
+* More developer friendly
+* Performance improved
 
 = 4.5 =
 
@@ -258,6 +308,28 @@ You can visit [Front End PM](https://www.shamimsplugins.com/wordpress/contact-us
 * Initial release.
 
 == Upgrade Notice ==
+
+= 4.8 =
+
+* New feature, search users in directory
+* New feature, toggle all messages when view message
+* new filter hook fep_filter_display_participants added.
+* new filter hook fep_query_url_filter added.
+
+= 4.7 =
+
+* Security update
+* new action hook fep_get_announcement_column_content_{$column} added.
+* new action hook fep_message_table_column_content_{$column} added.
+* new filter hook fep_get_option added.
+* new filter hook fep_get_user_option added.
+
+= 4.6 =
+
+* Introduce template system
+* Better error handler
+* More developer friendly
+* Performance improved
 
 = 4.5 =
 

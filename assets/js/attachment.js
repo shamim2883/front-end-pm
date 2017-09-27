@@ -7,7 +7,7 @@
     }
     function fep_add_new_file_field() {
         var maximum = fep_attachment_script.maximum;
-        var num_img = jQuery('input[name="fep_upload[]"]').size() + jQuery("a.delete").size();
+        var num_img = jQuery('input[name="fep_upload[]"]').size();
         if((maximum!=0 && num_img<maximum) || maximum==0) {
             var id = 'p-' + fep_Index++;
 
@@ -32,7 +32,7 @@
             fep_get_by_id('fep_upload').appendChild(d);
 
         } else {
-            alert(fep_attachment_script.max_text+' '+fep_attachment_script.maximum);
+            alert( fep_attachment_script.max_text );
         }
     }
     // Listener: automatically add new file field when the visible ones are full.
@@ -56,18 +56,18 @@
             }
         });
         var maximum = fep_attachment_script.maximum;
-        var num_img = jQuery('input[name="fep_upload[]"]').size() + jQuery("a.delete").size();
+        var num_img = jQuery('input[name="fep_upload[]"]').size();
         if (count == 0 && (maximum==0 || (maximum!=0 && num_img<maximum))) {
             fep_add_new_file_field();
         }
     }
 	function fep_hide_file_field() {
         var maximum = fep_attachment_script.maximum;
-        var num_img = jQuery('input[name="fep_upload[]"]').size() + jQuery("a.delete").size();
+        var num_img = jQuery('input[name="fep_upload[]"]').size();
         if (maximum!=0 && num_img>maximum-1) {
 			//alert('maximum');
             jQuery('#fep-attachment-field-add').hide();
-			jQuery('#fep-attachment-note').html(fep_attachment_script.max_text+' '+fep_attachment_script.maximum);
+			jQuery('#fep-attachment-note').html( fep_attachment_script.max_text );
         } else {
 			jQuery('#fep-attachment-field-add').show();
 			jQuery('#fep-attachment-note').html('');
