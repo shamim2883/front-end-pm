@@ -8,13 +8,14 @@ $i = 0;
 
 if( $messages->have_posts() ) {
 	wp_enqueue_script( 'fep-replies-show-hide' );
+	$hide_read = apply_filters( 'fep_filter_hide_message_initially_if_read', true );
 	?>
 	<div class="fep-message"><?php
 		while ( $messages->have_posts() ) {
 			$i++;
 			
-			$messages->the_post(); 
-			$read_class = fep_is_read() ? ' fep-hide-if-js' : '';
+			$messages->the_post();
+			$read_class = ( $hide_read && fep_is_read() ) ? ' fep-hide-if-js' : '';
 			fep_make_read(); 
 			fep_make_read( true ); ?>
 			
