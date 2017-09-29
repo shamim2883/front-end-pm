@@ -318,7 +318,7 @@ class Fep_Admin_Settings
 				'section'	=> 'security',
 				'priority'	=> 20,
 				'label' => __( 'Whitelist Username', 'front-end-pm' ),
-				'description' => __( 'Separated by comma. These users have all permission if blocked by roll also.', 'front-end-pm' )
+				'description' => __( 'Separated by comma. These users have all permission if blocked by role also.', 'front-end-pm' )
 				),
 			'have_permission'	=> array(
 				'type'	=>	'textarea',
@@ -326,7 +326,7 @@ class Fep_Admin_Settings
 				'section'	=> 'security',
 				'priority'	=> 25,
 				'label' => __( 'Blacklist Username', 'front-end-pm' ),
-				'description' => __( 'Separated by comma. These users have NO permission if allowed by roll also.', 'front-end-pm' )
+				'description' => __( 'Separated by comma. These users have NO permission if allowed by role also.', 'front-end-pm' )
 				),
 					
 			);
