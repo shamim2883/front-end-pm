@@ -675,9 +675,9 @@ class Fep_Admin_Settings
 		<div id="poststuff">
 			<div id="post-body" class="metabox-holder columns-2">
 				<div id="post-body-content">
-				<?php if( ! fep_is_pro() ) { ?>
+				<?php /*  if( ! fep_is_pro() ) { ?>
 				<div><a href="https://wordpress.org/support/plugin/front-end-pm/reviews/?filter=5#new-post" target="_blank">like this plugin? Please consider review in WordPress.org and give 5&#9733; rating.</a></div>
-				<?php } ?>
+				<?php } */ ?>
 		<h2 class="nav-tab-wrapper">
 		<?php foreach ( $this->tabs() as $key => $tab ) : 
 			if( empty($tab['tab_output'])) continue;
