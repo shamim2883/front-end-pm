@@ -1,9 +1,10 @@
 === Front End PM ===
 Contributors: shamim51
-Tags: front end pm,front-end-pm,pm,private message,personal message,front end,frontend pm,frontend,message,widget,plugin,sidebar,shortcode,page,email,mail,contact form, secure contact form, simple contact form,akismet check,akismet
+Tags: front end pm,front-end-pm,pm,private message,personal message,front end,frontend pm,frontend,message,widget,plugin,sidebar,shortcode,page,email,mail,contact form, secure contact form, simple contact form
 Donate link: https://www.paypal.me/hasanshamim
 Requires at least: 4.4
 Tested up to: 4.8
+Requires PHP: 5.3
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -20,8 +21,8 @@ Front End PM is a Private Messaging system to your WordPress site.This is full f
 > * Email Piping
 > * Read Receipt
 > * Email template
-> * Email template tag
 > * Announcement Email queue
+> * Role to Role Block
 >
 > [View Details](https://www.shamimsplugins.com/products/front-end-pm-pro/?utm_campaign=wordpress&utm_source=readme_pro&utm_medium=description)
 
@@ -67,8 +68,6 @@ Front End PM is a Private Messaging system to your WordPress site.This is full f
 
 [https://github.com/shamim2883/front-end-pm/](https://github.com/shamim2883/front-end-pm/)
 
-You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_campaign=wordpress&utm_source=readme&utm_medium=translation) and contact with me for paid support.
-
 == Installation ==
 1. Upload "front-end-pm" to the "/wp-content/plugins/" directory.
 1. Activate the plugin through the "Plugins" menu in WordPress.
@@ -106,6 +105,15 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 
 == Changelog ==
 
+= 5.2 =
+
+* New feature: search messages in Message Box
+* new filter hook fep_filter_hide_message_initially_if_read added.
+* new filter hook fep_eb_announcement_email_return_check_bypass added.
+* Fix: announcement count wrong when user role changed.
+* Fix: One character cut from From Email Name
+* New feature: Role to Role Block (PRO)
+
 = 5.1 =
 
 **DO NOT UPDATE IN PRODUCTION SITE BEFORE TEST IN STAGING SITE.**
@@ -126,7 +134,7 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 * New functions - fep_update_option, fep_form_posted, fep_get_participants, fep_get_participant_roles, fep_get_message_view
 * New action hooks - fep_action_before_announcement_email_send
 * New filter hooks - fep_template_locations, fep_get_message_view, fep_autosuggestion_user_name, fep_no_role_access
-* New template - shortcode_newmessage_form.php, 
+* New template - shortcode_newmessage_form.php,
 * Plugin update process improved.
 * Minor performance improved.
 
@@ -308,6 +316,39 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 * Initial release.
 
 == Upgrade Notice ==
+
+= 5.2 =
+
+* New feature: search messages in Message Box
+* new filter hook fep_filter_hide_message_initially_if_read added.
+* new filter hook fep_eb_announcement_email_return_check_bypass added.
+* Fix: announcement count wrong when user role changed.
+* Fix: One character cut from From Email Name
+* New feature: Role to Role Block (PRO)
+
+= 5.1 =
+
+**DO NOT UPDATE IN PRODUCTION SITE BEFORE TEST IN STAGING SITE.**
+**If YOU HAVE CUSTOM CODE FOR THIS PLUGIN MAKE SURE THEY ARE UP TO DATE BEFORE UPDATE THIS PLUGIN.**
+
+* id -> fep_id, to -> fep_to, search -> fep_search, _participants -> _fep_participants, _message_key -> _fep_message_key, _participant_roles -> _fep_participant_roles changes due to compitablity
+* fep_no_role_access filter to grand access to message system for users who do not have any role for the site.
+* Message box thread now show last message of the thread instead of first message
+* Inbox/ Sent box now determine by last message of the thread instead of first message
+* Show reply form after sent reply message.
+* New shortcodes - fep_shortcode_new_message_count, fep_shortcode_message_to, fep_shortcode_new_message_form
+* front-end-pm shortcode now support fepaction and fep-filter args
+* Pre-populate "To" and "Subject" now by shortcode.
+* Show link to send message to author by shortcode
+* Ability to send message directly to post author from post page ( Ajax/ non-Ajax )
+* Email From and From Email now pass through headers so that other can easily change that easily.
+* New classes - Fep_Ajax, Fep_Shortcodes
+* New functions - fep_update_option, fep_form_posted, fep_get_participants, fep_get_participant_roles, fep_get_message_view
+* New action hooks - fep_action_before_announcement_email_send
+* New filter hooks - fep_template_locations, fep_get_message_view, fep_autosuggestion_user_name, fep_no_role_access
+* New template - shortcode_newmessage_form.php,
+* Plugin update process improved.
+* Minor performance improved.
 
 = 4.8 =
 
