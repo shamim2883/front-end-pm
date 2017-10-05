@@ -344,12 +344,12 @@ class Fep_Pro_Info
 			$fields['oa_admins_frontend'] =   array(
 				'type'	=>	'select',
 				'section'	=> 'oa_admins',
-				'value' => fep_get_option('oa_admins_frontend', 'select' ),
+				'value' => fep_get_option('oa_admins_frontend', 'dropdown' ),
 				'description' => __( 'Select how you want to see in frontend.', 'front-end-pm' ),
 				'label' => __( 'Show in front end as', 'front-end-pm' ),
 				'options'	=> array(
-					'select'	=> __( 'Select', 'front-end-pm' ),
-					'radio'	=> __( 'Radio', 'front-end-pm' )
+					'dropdown'	=> __( 'Dropdown', 'front-end-pm' ),
+					'radio'	=> __( 'Radio Button', 'front-end-pm' )
 					)
 				);
 			$fields['rtr_block'] =   array(
