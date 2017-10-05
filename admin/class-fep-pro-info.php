@@ -300,24 +300,6 @@ class Fep_Pro_Info
 				'label' => __( 'Send Attachments', 'front-end-pm' ),
 				'cb_label' => __( 'Send attachments with announcement email?', 'front-end-pm' )
 				);
-			$fields['mr-can-send-to-users'] =   array(
-				'type'	=>	'checkbox',
-				'class'	=> '',
-				'section'	=> 'mr_multiple_recipients',
-				'value' => fep_get_option('mr-can-send-to-users', 1 ),
-				//'description' => __( 'Can users send message to other users.', 'front-end-pm' ),
-				'label' => __( 'Can send to users', 'front-end-pm' ),
-				'cb_label' => __( 'Can users send message to other users.', 'front-end-pm' )
-				);
-			$fields['mr-can-admin-send-to-users'] =   array(
-				'type'	=>	'checkbox',
-				'class'	=> '',
-				'section'	=> 'mr_multiple_recipients',
-				'value' => fep_get_option('mr-can-admin-send-to-users', 1 ),
-				//'description' => __( 'Can users send message to other users.', 'front-end-pm' ),
-				'label' => __( 'Can admin send to users', 'front-end-pm' ),
-				'cb_label' => __( 'Can admin send new message to other users.', 'front-end-pm' )
-				);
 			$fields['mr-max-recipients'] =   array(
 				'type'	=>	'number',
 				'section'	=> 'mr_multiple_recipients',
