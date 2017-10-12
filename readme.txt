@@ -3,9 +3,9 @@ Contributors: shamim51
 Tags: front end pm,front-end-pm,pm,private message,personal message,front end,frontend pm,frontend,message,widget,plugin,sidebar,shortcode,page,email,mail,contact form, secure contact form, simple contact form
 Donate link: https://www.paypal.me/hasanshamim
 Requires at least: 4.4
-Tested up to: 4.8
+Tested up to: 4.8.2
 Requires PHP: 5.3
-Stable tag: trunk
+Stable tag: 5.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,10 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 
 == Changelog ==
 
+= 5.3 =
+
+* Security update for all previous versions
+
 = 5.2 =
 
 * New feature: search messages in Message Box
@@ -116,7 +120,6 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 
 = 5.1 =
 
-**DO NOT UPDATE IN PRODUCTION SITE BEFORE TEST IN STAGING SITE.**
 **If YOU HAVE CUSTOM CODE FOR THIS PLUGIN MAKE SURE THEY ARE UP TO DATE BEFORE UPDATE THIS PLUGIN.**
 
 * id -> fep_id, to -> fep_to, search -> fep_search, _participants -> _fep_participants, _message_key -> _fep_message_key, _participant_roles -> _fep_participant_roles changes due to compitablity
@@ -317,6 +320,10 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 
 == Upgrade Notice ==
 
+= 5.3 =
+
+* Security update for all previous versions
+
 = 5.2 =
 
 * New feature: search messages in Message Box
@@ -328,7 +335,6 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 
 = 5.1 =
 
-**DO NOT UPDATE IN PRODUCTION SITE BEFORE TEST IN STAGING SITE.**
 **If YOU HAVE CUSTOM CODE FOR THIS PLUGIN MAKE SURE THEY ARE UP TO DATE BEFORE UPDATE THIS PLUGIN.**
 
 * id -> fep_id, to -> fep_to, search -> fep_search, _participants -> _fep_participants, _message_key -> _fep_message_key, _participant_roles -> _fep_participant_roles changes due to compitablity
