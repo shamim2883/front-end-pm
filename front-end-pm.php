@@ -39,7 +39,7 @@ class Front_End_Pm {
     	{
 			global $wpdb;
 			
-			define('FEP_PLUGIN_VERSION', '5.2' );
+			define('FEP_PLUGIN_VERSION', '5.3' );
 			define('FEP_PLUGIN_FILE',  __FILE__ );
 			define('FEP_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 			define('FEP_PLUGIN_URL', plugins_url( '/', __FILE__ ) );
