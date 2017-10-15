@@ -866,18 +866,18 @@ function fep_wp_mail_content_type( $content_type ) {
 
 function fep_add_email_filters( $for = 'message' ){
 	
-	//add_filter( 'wp_mail_from', 'fep_wp_mail_from', 10, 1 );
-	//add_filter( 'wp_mail_from_name', 'fep_wp_mail_from_name', 10, 1 );
-	//add_filter( 'wp_mail_content_type', 'fep_wp_mail_content_type', 10, 1 );
+	//add_filter( 'wp_mail_from', 'fep_wp_mail_from', 10 );
+	//add_filter( 'wp_mail_from_name', 'fep_wp_mail_from_name', 10 );
+	//add_filter( 'wp_mail_content_type', 'fep_wp_mail_content_type', 10 );
 	
 	do_action( 'fep_action_after_add_email_filters', $for );
 }
 
 function fep_remove_email_filters( $for = 'message' ){
 	
-	//remove_filter( 'wp_mail_from', 'fep_wp_mail_from', 10, 1 );
-	//remove_filter( 'wp_mail_from_name', 'fep_wp_mail_from_name', 10, 1 );
-	//remove_filter( 'wp_mail_content_type', 'fep_wp_mail_content_type', 10, 1 );
+	//remove_filter( 'wp_mail_from', 'fep_wp_mail_from', 10 );
+	//remove_filter( 'wp_mail_from_name', 'fep_wp_mail_from_name', 10 );
+	//remove_filter( 'wp_mail_content_type', 'fep_wp_mail_content_type', 10 );
 	
 	do_action( 'fep_action_after_remove_email_filters', $for );
 }
@@ -1577,4 +1577,3 @@ function fep_get_message_view(){
 	
 	return $message_view;
 }
-

@@ -35,7 +35,7 @@ function upload_attachment( $message_id, $message, $inserted_message ) {
     if ( !isset( $_FILES['fep_upload'] ) ) {
         return false;
     }
-	add_filter('upload_dir', array($this, 'upload_dir'));
+	add_filter('upload_dir', array($this, 'upload_dir'), 99 );
 	
     $fields = (int) fep_get_option('attachment_no', 4);
 
@@ -55,7 +55,7 @@ function upload_attachment( $message_id, $message, $inserted_message ) {
             }//file exists
         }// end for
 		
-	remove_filter('upload_dir', array($this, 'upload_dir'));
+	remove_filter('upload_dir', array($this, 'upload_dir'), 99 );
 }
 
 	function upload_dir($upload) {
@@ -214,4 +214,3 @@ function upload_file( $upload_data, $message_id, $inserted_message ) {
   } //END CLASS
 
 add_action('wp_loaded', array(Fep_Attachment::init(), 'actions_filters'));
-
