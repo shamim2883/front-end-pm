@@ -92,7 +92,9 @@ class Fep_Shortcodes
 			
 			extract( $atts );
 			
-			if( ! fep_current_user_can('send_new_message_to', $to ) )
+			$to_id = fep_get_userdata( $to );
+			
+			if( ! fep_current_user_can('send_new_message_to', $to_id ) )
 				return '';
 			
 			if( ! empty( $enable_ajax )){

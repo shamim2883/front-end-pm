@@ -690,8 +690,14 @@ function fep_current_user_can( $cap, $id = false ) {
 			}
 		break;
 		case 'send_new_message_to' :
+			if( is_numeric( $id ) ){
+				// $id == user ID
+				if ( $id && $id != get_current_user_id() && fep_current_user_can('access_message') && fep_current_user_can('send_new_message') && fep_get_user_option( 'allow_messages', 1,  $id ) ){
+					$can = true;
+				}
 			// $id == user_nicename
-			if( $id && $id != fep_get_userdata( get_current_user_id(), 'user_nicename', 'id' ) && fep_current_user_can('access_message') && fep_current_user_can('send_new_message') && fep_get_user_option( 'allow_messages', 1, fep_get_userdata( $id ) ) ){
+			// Backward compability ( do not use )
+			} elseif ( $id && $id != fep_get_userdata( get_current_user_id(), 'user_nicename', 'id' ) && fep_current_user_can('access_message') && fep_current_user_can('send_new_message') && fep_get_user_option( 'allow_messages', 1, fep_get_userdata( $id ) ) ){
 				$can = true;
 			}
 		break;
