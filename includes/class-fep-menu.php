@@ -85,5 +85,5 @@ class Fep_Menu
 	
  } //END CLASS
 
-add_action('wp_loaded', array(Fep_Menu::init(), 'actions_filters'));
+add_action('init', array(Fep_Menu::init(), 'actions_filters'));
 
