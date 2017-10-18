@@ -34,7 +34,7 @@ class Fep_Menu
 		  echo $menu;
 	 }
 	
-	private function get_menu()
+	public function get_menu()
 	{
 		$menu = array(
 				'newmessage'	=> array(
