@@ -65,6 +65,9 @@ if (!class_exists("fep_main_class"))
 			ob_end_clean();
 			break;
          case 'newmessage':
+		case has_filter("fep_filter_switch_{$switch}"):
+			$out .= apply_filters( "fep_filter_switch_{$switch}", '');
+			break;
             $out .= $this->new_message();
             break;
           case 'viewmessage':
