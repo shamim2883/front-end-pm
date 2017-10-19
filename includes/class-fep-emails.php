@@ -31,7 +31,7 @@ class Fep_Emails
 		
 		if ( '1' == fep_get_option('notify_ann', '1' ) ){
 			add_action ('transition_post_status', array($this, 'publish_notify_users'), 10, 3);
-			add_action( 'fep_save_announcement', array($this, 'save_notify_users'), 20, 2 ); //after '_fep_participant_roles' meta saved
+			add_action( 'fep_save_announcement', array($this, 'save_notify_users'), 20 ); //after '_fep_participant_roles' meta saved
 		}
     }
 	
@@ -127,8 +127,10 @@ class Fep_Emails
 		$this->notify_users( $post->ID, $post );
 	}
 	
-	function save_notify_users( $postid, $post )
+	function save_notify_users( $postid )
 	{
+		$post = get_post( $postid );
+		
 		if( 'publish' != $post->post_status )
 			return;
 		
