@@ -26,6 +26,12 @@ if (!class_exists('Fep_Form'))
 	
 	public function form_fields( $where = 'newmessage' )
 {
+	$wp_roles = wp_roles()->roles;
+	$roles = array();
+	foreach( $wp_roles as $role => $role_info ){
+		$roles[ $role ] = translate_user_role( $role_info['name']);
+	}
+	$roles = apply_filters( 'fep_filter_to_roles_to_create_announcement', $roles );
 	
 	$fields = array(
 				'message_to' => array(
@@ -42,6 +48,15 @@ if (!class_exists('Fep_Form'))
 					'suggestion' => (fep_get_option('hide_autosuggest') != '1' || fep_is_user_admin() ),
 					'priority'    => 5
 				),
+				'announcement_roles' => array(
+					'label'       => __( 'To Roles', 'front-end-pm' ),
+					'type'        => 'checkbox',
+					'multiple'		=> true,
+					'options'		=> $roles,
+					'required'    => true,
+					'priority'    => 7,
+					'where'	=> 'new_announcement'
+				),
 				'message_title' => array(
 					'label'       => __( 'Subject', 'front-end-pm' ),
 					//'description' => __( 'Enter your message subject here', 'front-end-pm' ),
@@ -56,7 +71,7 @@ if (!class_exists('Fep_Form'))
 					'name' => 'message_title',
 					'class' => 'input-text',
 					'priority'    => 10,
-					'where'	=> array( 'newmessage', 'shortcode-newmessage' )
+					'where'	=> array( 'newmessage', 'shortcode-newmessage', 'new_announcement' )
 				),
 				'message_content' => array(
 					'label'       => __( 'Message', 'front-end-pm' ),
@@ -68,7 +83,7 @@ if (!class_exists('Fep_Form'))
 					'placeholder' => '',
 					'priority'    => 15,
 					'value'     => '',
-					'where'	=> array( 'newmessage', 'reply', 'shortcode-newmessage' )
+					'where'	=> array( 'newmessage', 'reply', 'shortcode-newmessage', 'new_announcement' )
 				),
 				'shortcode-message-to' => array(
 					'type'        => 'shortcode-message-to',
@@ -87,7 +102,13 @@ if (!class_exists('Fep_Form'))
 					'type'        => 'token',
 					'value'    => fep_create_nonce('fep_message'),
 					'token-action'    => 'fep_message',
-					'where'    => array( 'newmessage', 'reply' )
+					'where'    => array( 'newmessage', 'reply', 'new_announcement' )
+				),
+				'new_announcement_token' => array(
+					'type'        => 'token',
+					'value'    => fep_create_nonce('new_announcement'),
+					'token-action'    => 'new_announcement',
+					'where'    => 'new_announcement'
 				),
 				'fep_parent_id' => array(
 					'type'        => 'fep_parent_id',
@@ -126,7 +147,7 @@ if (!class_exists('Fep_Form'))
 					'type'        => 'file',
 					'value'    => '',
 					'priority'    => 20,
-					'where'    => array( 'newmessage', 'reply' )
+					'where'    => array( 'newmessage', 'reply', 'new_announcement' )
 				);
 			}
 				

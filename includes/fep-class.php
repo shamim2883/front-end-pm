@@ -77,12 +77,15 @@ if (!class_exists("fep_main_class"))
           case ( 'settings' == $switch && ! empty( $menu['settings'] ) ):
             $out .= $this->user_settings();
             break;
+			/*
+			// See Fep_Announcement Class
 		case 'announcements':
             $out .= Fep_Announcement::init()->announcement_box();
             break;
 		case 'view_announcement':
             $out .= Fep_Announcement::init()->view_announcement();
             break;
+			*/
 		//case 'directory': // See Fep_Directory Class
             //$out .= $this->directory();
            // break;

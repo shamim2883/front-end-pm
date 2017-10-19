@@ -723,6 +723,11 @@ function fep_current_user_can( $cap, $id = false ) {
 				$can = true;
 			}
 		break;
+		case 'add_announcement' :
+			if( fep_is_user_admin() || current_user_can('create_fep_announcements') ) {
+				$can = true;
+			}
+		break;
 		case 'view_announcement' :
 			if( $id && ( ( ( array_intersect( fep_get_participant_roles( $id ), $roles ) || ( ! $roles && $no_role_access ) ) && get_post_status ( $id ) == 'publish') || fep_is_user_admin() || get_post_field( 'post_author', $id ) == get_current_user_id() ) ) {
 				$can = true;
