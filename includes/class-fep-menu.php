@@ -52,11 +52,6 @@ class Fep_Menu
 					'action'			=> 'settings',
 					'priority'			=> 15
 					),
-				'announcements'	=> array(
-					'title'			=> sprintf(__('Announcement%s', 'front-end-pm'), fep_get_new_announcement_button() ),
-					'action'			=> 'announcements',
-					'priority'			=> 20
-					)
 							
 				);
 		if( ! fep_current_user_can( 'send_new_message' ) ) {

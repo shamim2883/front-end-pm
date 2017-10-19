@@ -27,6 +27,7 @@ class Fep_Attachment
 	
 	if ( '1' == fep_get_option('allow_attachment', 1)) {
 		add_action ('fep_action_message_after_send', array($this, 'upload_attachment'), 10, 3 );
+		add_action ('fep_action_announcement_after_added', array($this, 'upload_attachment'), 10, 3 );
 		}
     }
 	
