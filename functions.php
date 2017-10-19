@@ -923,7 +923,7 @@ function fep_send_message( $message = null, $override = array() )
 		$post = wp_parse_args( $override, $post );
 	}
 	 
-	$post = apply_filters('fep_filter_message_after_override', $post );
+	$post = apply_filters('fep_filter_message_after_override', $post, $message );
 	
 	// Insert the message into the database
 	$message_id = wp_insert_post( $post );
