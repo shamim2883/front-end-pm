@@ -280,6 +280,7 @@ function post_submitbox_start_info()
 		}
 		
 	function save_announcement( $announcement_id, $announcement, $update ) {
+			if ( ! is_admin() ) return; //only for BACK END . for FRONT END use 'fep_action_announcement_after_added' action hook
 			if ( empty( $announcement_id ) || empty( $announcement ) || empty( $_POST ) ) return;
 			if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) return;
 			if ( empty($_POST['fep_nonce']) || ! wp_verify_nonce( $_POST['fep_nonce'], 'fep_nonce' ) ) return;
