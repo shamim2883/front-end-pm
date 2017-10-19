@@ -1033,6 +1033,50 @@ function fep_send_message_transition_post_status( $new_status, $old_status, $pos
 	}
 }
 
+function fep_add_announcement( $announcement = null, $override = array() )
+{
+	if( null === $announcement ) {
+		$announcement = $_POST;
+	}
+	
+	$announcement = apply_filters('fep_filter_announcement_before_added', $announcement );
+	
+	if( empty($announcement['message_title']) || empty($announcement['message_content']) ) {
+		return false;
+	}
+	// Create post array
+	$post = array(
+	  	'post_title'    => $announcement['message_title'],
+	  	'post_content'  => $announcement['message_content'],
+	  	'post_status'   => 'publish',
+	  	'post_type'   	=> 'fep_announcement'
+	);
+	
+	if( $override && is_array( $override ) ) {
+		$post = wp_parse_args( $override, $post );
+	}
+	 
+	$post = apply_filters('fep_filter_announcement_after_override', $post, $announcement );
+	
+	// Insert the message into the database
+	$announcement_id = wp_insert_post( $post );
+	
+	if( ! $announcement_id || is_wp_error( $announcement_id ) ) {
+		return false;
+	}
+	$inserted_announcement = get_post( $announcement_id );
+	
+	if( ! empty($announcement['announcement_roles']) && is_array($announcement['announcement_roles']) ) {
+		foreach($announcement['announcement_roles'] as $role ) {
+			add_post_meta( $announcement_id, '_fep_participant_roles', $role );
+		}
+	}
+	
+	 do_action('fep_action_announcement_after_added', $announcement_id, $announcement, $inserted_announcement );
+	
+	return $announcement_id;
+}
+
 function fep_backticker_encode($text) {
 	$text = $text[1];
     $text = str_replace('&amp;lt;', '&lt;', $text);
