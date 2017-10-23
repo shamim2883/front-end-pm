@@ -282,7 +282,7 @@ function fep_enqueue_scripts()
 		);
 	wp_register_script( 'fep-tokeninput-script', FEP_PLUGIN_URL . 'assets/js/jquery.tokeninput.js', array( 'jquery' ), '5.4', true );
 	wp_register_script( 'fep-block-unblock-script', FEP_PLUGIN_URL . 'assets/js/block-unblock.js', array( 'jquery' ), '5.4', true );
-	wp_localize_script( 'fep-block-unblock-script', 'fep_bolck_unblock_script', 
+	wp_localize_script( 'fep-block-unblock-script', 'fep_block_unblock_script', 
 			array( 
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
 				'token' => wp_create_nonce('fep-block-unblock-script')
