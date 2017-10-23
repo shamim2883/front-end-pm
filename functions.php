@@ -59,6 +59,25 @@ function fep_get_user_option( $option, $default = '', $userid = '', $section = '
     return apply_filters('fep_get_user_option', $value, $option, $default, $userid, $is_default );
 }
 
+function fep_update_user_option( $option, $value = '', $userid = '', $section = 'FEP_user_options' ) {
+	
+	if( empty( $option ) )
+		return false;
+		
+	if( ! is_array( $option ) )
+		$option = array( $option => $value );
+	
+	if( ! $userid )
+	$userid = get_current_user_id();
+	
+    $options = get_user_option( $section, $userid );
+	
+	if( ! is_array( $options ) )
+		$options = array();
+
+    return update_user_option( $userid, $section, wp_parse_args( $option, $options ) );
+}
+
 if ( !function_exists('fep_get_plugin_caps') ) :
 
 function fep_get_plugin_caps( $edit_published = false, $for = 'both' ){
