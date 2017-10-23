@@ -34,6 +34,7 @@ class Fep_Announcement
 			add_filter( 'posts_where' , array( $this, 'posts_where' ), 99, 2 );
 			add_filter('fep_filter_switch_announcements', array($this, 'announcement_box'));
 			add_filter('fep_filter_switch_view_announcement', array($this, 'view_announcement'));
+			add_action( 'fep_posted_bulk_announcement_bulk_action', array($this, 'bulk_action') );
 		}		
 	}
 	
@@ -328,7 +329,11 @@ function bulk_action( $action, $ids = null ) {
 		} 
 		//$message = '<div class="fep-success">'.$message.'</div>';
 	}
-	return apply_filters( 'fep_bulk_action_message', $message, $count);
+	$message = apply_filters( 'fep_bulk_action_message', $message, $count);
+	
+	if( $message ){
+		fep_success()->add( 'success', $message );
+	}
 }
 
 function bulk_individual_action( $action, $id ) {

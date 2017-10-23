@@ -26,6 +26,7 @@ class Fep_Message
 			add_action( 'before_delete_post', array($this, 'delete_replies') );
 			add_action( 'before_delete_post', array($this, 'participants_save') );
 			add_action( 'after_delete_post', array($this, 'recalculate_participants_stats') );
+			add_action( 'fep_posted_bulk_bulk_action', array($this, 'bulk_action') );
     	}
 	
 	function time_delay_check( $where, $errors ) {
@@ -388,7 +389,7 @@ function bulk_action( $action, $ids = null ) {
 		$ids = !empty($_POST['fep-message-cb'])? $_POST['fep-message-cb'] : array();
 	}
 	if( !$action || !$ids || !is_array($ids) ) {
-		return '';
+		return;
 	}
 	$count = 0;
 	foreach( $ids as $id ) {
@@ -417,7 +418,11 @@ function bulk_action( $action, $ids = null ) {
 		}
 		//$message = '<div class="fep-success">'.$message.'</div>';
 	}
-	return apply_filters( 'fep_message_bulk_action_message', $message, $count);
+	$message = apply_filters( 'fep_message_bulk_action_message', $message, $count);
+	
+	if( $message ){
+		fep_success()->add( 'success', $message );
+	}
 }
 
 function bulk_individual_action( $action, $passed_id ) {

@@ -1494,36 +1494,21 @@ function fep_form_posted()
 			
 		break;
 		case 'bulk_action' :
-			$posted_bulk_action = ! empty($_POST['fep-bulk-action']) ? $_POST['fep-bulk-action'] : '';
-			if( ! $posted_bulk_action )
-				break;
-			
-			$token = ! empty($_POST['token']) ? $_POST['token'] : '';
-			
-			if ( ! fep_verify_nonce( $token, 'bulk_action') ) {
-				fep_errors()->add( 'token', __("Invalid Token. Please try again!", 'front-end-pm') );
-				break;
-			}
-			
-			if( $bulk_action_return = Fep_Message::init()->bulk_action( $posted_bulk_action ) ) {
-				fep_success()->add( 'success', $bulk_action_return );
-			}
-		break;
 		case 'announcement_bulk_action' :
+		case 'directory_bulk_action' :
 			$posted_bulk_action = ! empty($_POST['fep-bulk-action']) ? $_POST['fep-bulk-action'] : '';
 			if( ! $posted_bulk_action )
 				break;
 			
 			$token = ! empty($_POST['token']) ? $_POST['token'] : '';
 			
-			if ( ! fep_verify_nonce( $token, 'announcement_bulk_action') ) {
+			if ( ! fep_verify_nonce( $token, $action ) ) {
 				fep_errors()->add( 'token', __("Invalid Token. Please try again!", 'front-end-pm') );
 				break;
 			}
 			
-			if( $bulk_action_return = Fep_Announcement::init()->bulk_action( $posted_bulk_action ) ) {
-				fep_success()->add( 'success', $bulk_action_return );
-			}
+			do_action( "fep_posted_bulk_{$action}", $posted_bulk_action );
+
 		break;
 		case ( 'settings' == $action && ! empty( $menu['settings'] ) ) :
 			
