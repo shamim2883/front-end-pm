@@ -301,7 +301,8 @@ function fep_action_url( $action = '', $arg = array() ) {
 }
 
 function fep_query_url( $action, $arg = array() ) {
-      
+	$args = array( 'fepaction' => $action );
+	$args = array_merge( $args, $arg );
 	$url = esc_url( fep_query_url_without_esc( $action, $arg ) );
 
 	return apply_filters( 'fep_query_url_filter', $url, $args );
