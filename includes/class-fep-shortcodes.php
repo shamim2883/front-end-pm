@@ -21,6 +21,7 @@ class Fep_Shortcodes
 			//ADD SHORTCODES
 			add_shortcode( 'front-end-pm', array(fep_main_class::init(), 'main_shortcode_output' )); //for FRONT END PM
 			add_shortcode( 'fep_shortcode_new_message_count', array($this, 'new_message_count' ) );
+			add_shortcode( 'fep_shortcode_new_announcement_count', array($this, 'new_announcement_count' ) );
 			add_shortcode( 'fep_shortcode_message_to', array($this, 'message_to') );
 			add_shortcode( 'fep_shortcode_new_message_form', array($this, 'new_message_form') );
 
@@ -35,6 +36,31 @@ class Fep_Shortcodes
 			), $atts, $tag );
 			
 		$new = fep_get_new_message_number();
+		if( ! $new && $atts['hide_if_zero'] ){
+			return '';
+		}
+		$ret = '';
+		
+		if( $atts['show_bracket'] ){
+			$ret .= '(';
+		}
+		$ret .= '<span class="' . $atts['class'] . '">' . $new . '</span>';
+		if( $atts['show_bracket'] ){
+			$ret .= ')';
+		}
+			
+		return $ret;
+	}
+	
+	function new_announcement_count( $atts = array(), $content = null, $tag = '' ){
+		$atts = array_change_key_case((array)$atts, CASE_LOWER);
+		$atts = shortcode_atts( array(
+				'show_bracket'		=> '1',
+				'hide_if_zero'		=> '1',
+				'class'				=> 'fep-font-red',
+			), $atts, $tag );
+			
+		$new = fep_get_new_announcement_number();
 		if( ! $new && $atts['hide_if_zero'] ){
 			return '';
 		}
