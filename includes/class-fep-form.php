@@ -642,7 +642,7 @@ public function form_field_output( $where = 'newmessage', $errors= '', $value = 
         echo '</form>';
 		echo '</div>';
 		
-		return apply_filters('fep_filter_form_output', ob_get_clean() );
+		return apply_filters('fep_filter_form_output', ob_get_clean(), $where );
 	}
 
 public function validate_form_field( $where = 'newmessage' )
