@@ -626,7 +626,7 @@ public function form_field_output( $where = 'newmessage', $errors= '', $value = 
 			} 
 		}
 
-		do_action( 'fep_after_form_fields', $where, $errors );
+		do_action( 'fep_after_form_fields', $where, $errors, $fields );
 		
 		echo fep_error($errors);
 		
