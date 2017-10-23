@@ -235,7 +235,7 @@ class Fep_Admin_Settings
 				'class'	=> '',
 				'section'	=> 'announcement',
 				'label' => __( 'Send email?', 'front-end-pm' ),
-				'description' => __( 'Send email to all users when a new announcement is published?', 'front-end-pm' )
+				'cb_label' => __( 'Send email to all users when a new announcement is published?', 'front-end-pm' )
 				),
 			'ann_to'	=> array(
 				'type'	=>	'email',
@@ -244,6 +244,15 @@ class Fep_Admin_Settings
 				'section'	=> 'announcement',
 				'label' => __( 'Valid email address for "to" field of announcement email', 'front-end-pm' ),
 				'description' => __( 'All users email will be in "Bcc" field.', 'front-end-pm' )
+				),
+			'add_ann_frontend'	=> array(
+				'type'	=>	'checkbox',
+				'value' => fep_get_option('add_ann_frontend',0),
+				'priority'	=> 25,
+				'section'	=> 'announcement',
+				'class'	=> '',
+				'label' => __( 'Add Announcement From Frontend', 'front-end-pm' ),
+				'cb_label' => __( 'Can permitted users add Announcement from frontend?', 'front-end-pm' ),
 				),
 						
 			//Email Settings

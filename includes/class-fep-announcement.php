@@ -23,7 +23,7 @@ class Fep_Announcement
 		add_action( 'set_user_role', array($this, 'set_user_role'), 10, 3 );
 		
 		add_filter('fep_menu_buttons', array($this, 'menu'));
-		if( fep_current_user_can( 'add_announcement' ) ){
+		if( fep_current_user_can( 'add_announcement' ) && fep_get_option( 'add_ann_frontend', 0 ) ){
 			add_filter('fep_menu_buttons', array($this, 'menu_new_announcement'));
 			add_filter('fep_filter_switch_new_announcement', array($this, 'new_announcement'));
 			add_action( 'fep_posted_action_new_announcement', array($this, 'fep_posted_action_new_announcement') );
