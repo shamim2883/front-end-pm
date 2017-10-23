@@ -292,16 +292,23 @@ function fep_action_url( $action = '', $arg = array() ) {
 
 function fep_query_url( $action, $arg = array() ) {
       
+	$url = esc_url( fep_query_url_without_esc( $action, $arg ) );
+
+	return apply_filters( 'fep_query_url_filter', $url, $args );
+}
+
+function fep_query_url_without_esc( $action, $arg = array() ) {
+      
 	$args = array( 'fepaction' => $action );
 	$args = array_merge( $args, $arg );
 	
 	if ( fep_page_id() ) {
-		$url = esc_url( add_query_arg( $args, get_permalink( fep_page_id() ) ) );
+		$url = add_query_arg( $args, get_permalink( fep_page_id() ) );
 	} else {
-		$url = esc_url( add_query_arg( $args ) );
+		$url = add_query_arg( $args );
 	}
 	
-	return apply_filters( 'fep_query_url_filter', $url, $args );
+	return apply_filters( 'fep_query_url_without_esc_filter', $url, $args );
 }
 
 if ( !function_exists('fep_create_nonce') ) :
