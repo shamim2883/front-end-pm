@@ -26,8 +26,29 @@ class Fep_Shortcodes
 
     	}
 	
-	function new_message_count(){
-		return fep_get_new_message_button();
+	function new_message_count( $atts = array(), $content = null, $tag = '' ){
+		$atts = array_change_key_case((array)$atts, CASE_LOWER);
+		$atts = shortcode_atts( array(
+				'show_bracket'		=> '1',
+				'hide_if_zero'		=> '1',
+				'class'				=> 'fep-font-red',
+			), $atts, $tag );
+			
+		$new = fep_get_new_message_number();
+		if( ! $new && $atts['hide_if_zero'] ){
+			return '';
+		}
+		$ret = '';
+		
+		if( $atts['show_bracket'] ){
+			$ret .= '(';
+		}
+		$ret .= '<span class="' . $atts['class'] . '">' . $new . '</span>';
+		if( $atts['show_bracket'] ){
+			$ret .= ')';
+		}
+			
+		return $ret;
 	}
 	
 	function message_to( $atts, $content = null ) {
