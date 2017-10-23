@@ -8,6 +8,9 @@ $i = 0;
 
 if( $messages->have_posts() ) {
 	wp_enqueue_script( 'fep-replies-show-hide' );
+	if( fep_get_option( 'block_other_users', 1 ) ){
+		wp_enqueue_script( 'fep-block-unblock-script');
+	}
 	$hide_read = apply_filters( 'fep_filter_hide_message_initially_if_read', true );
 	?>
 	<div class="fep-message"><?php
@@ -25,7 +28,13 @@ if( $messages->have_posts() ) {
 					$participants = fep_get_participants( get_the_ID() );
 					$par = array();
 					foreach( $participants as $participant ) {
-						$par[] = fep_get_userdata( $participant, 'display_name', 'id' );
+												
+						if( get_current_user_id() != $participant && fep_get_option( 'block_other_users', 1 ) ){
+							$block_unblock_text = fep_is_user_blocked_for_user( get_current_user_id(), $participant ) ? __("Unblock", "front-end-pm") : __("Block", "front-end-pm");
+							$par[] = fep_get_userdata( $participant, 'display_name', 'id' ) . '(<a href="#" class="fep_block_unblock_user" data-user_id="' . $participant . '">'. $block_unblock_text . '</a>)';
+						} else {
+							$par[] = fep_get_userdata( $participant, 'display_name', 'id' );
+						}
 					} ?>
 					<div class="fep-message-title-heading"><?php the_title(); ?></div>
 					<div class="fep-message-title-heading participants"><?php _e("Participants", 'front-end-pm'); ?>: <?php echo apply_filters( 'fep_filter_display_participants', implode( ', ', $par ), $par, $participants ); ?></div>

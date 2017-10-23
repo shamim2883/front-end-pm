@@ -120,18 +120,21 @@ if (!class_exists('Fep_Form'))
 					'type'        => 'checkbox',
 					'value'    => fep_get_user_option( 'allow_messages', 1),
 					'cb_label'    => __("Allow others to send me messages?", 'front-end-pm'),
+					'priority'    => 10,
 					'where'    => 'settings'
 				),
 				'allow_emails' => array(
 					'type'        => 'checkbox',
 					'value'    => fep_get_user_option( 'allow_emails', 1),
 					'cb_label'    => __("Email me when I get new messages?", 'front-end-pm'),
+					'priority'    => 20,
 					'where'    => 'settings'
 				),
 				'allow_ann' => array(
 					'type'        => 'checkbox',
 					'value'    => fep_get_user_option( 'allow_ann', 1),
 					'cb_label'    => __("Email me when new announcement is published?", 'front-end-pm'),
+					'priority'    => 30,
 					'where'    => 'settings'
 				),
 				'settings_token' => array(
@@ -142,6 +145,15 @@ if (!class_exists('Fep_Form'))
 				),
 					
 				);
+			if ( fep_get_option( 'block_other_users', 1 ) ) {
+				$fields['blocked_users'] = array(
+					'label'       => __( 'Blocked Users', 'front-end-pm' ),
+					'type'        =>  'text',
+					'value'     => '', //fep_get_user_option( 'blocked_users', ''),
+					'priority'    => 40,
+					'where'    => 'settings'
+				);
+			}
 			if ( '1' == fep_get_option('allow_attachment', 1)) {
 				$fields['fep_upload'] = array(
 					'type'        => 'file',
@@ -461,7 +473,7 @@ function field_output( $field, $errors )
 							
 							if( $to && get_current_user_id() != $to) {
 								$_POST['message_to_id'][] = $to;
-								if ( fep_get_user_option( 'allow_messages', 1, $to ) != '1') {
+								if ( ! fep_current_user_can('send_new_message_to', $to ) ) {
 									$errors->add( $field['id'] , sprintf(__("%s does not want to receive messages!", 'front-end-pm'), fep_get_userdata( $to, 'display_name', 'id')));
 								}
 							} else {
@@ -470,11 +482,12 @@ function field_output( $field, $errors )
 						}
 					  } else {
 					  	$to = $_POST['message_to_id'] = fep_get_userdata( $preTo ); //return ID;
-						if (fep_get_user_option( 'allow_messages', 1, $to ) != '1') {
-							$errors->add( $field['id'] , sprintf(__("%s does not want to receive messages!", 'front-end-pm'), fep_get_userdata( $to, 'display_name', 'id')));
-						}
-						if( get_current_user_id() == $to ) {
-							$errors->add( $field['id'] , __('You can not message yourself!', 'front-end-pm'));
+						if( $to && get_current_user_id() != $to) {
+							if ( ! fep_current_user_can('send_new_message_to', $to ) ) {
+								$errors->add( $field['id'] , sprintf(__("%s does not want to receive messages!", 'front-end-pm'), fep_get_userdata( $to, 'display_name', 'id')));
+							}
+						} else {
+							$errors->add( $field['id'] , sprintf(__('Invalid receiver "%s".', "front-end-pm"), $pre ) );
 						}
 					  }
 					  

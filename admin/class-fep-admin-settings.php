@@ -337,6 +337,15 @@ class Fep_Admin_Settings
 				'label' => __( 'Blacklist Username', 'front-end-pm' ),
 				'description' => __( 'Separated by comma. These users have NO permission if allowed by role also.', 'front-end-pm' )
 				),
+			'block_other_users'	=> array(
+				'type'	=>	'checkbox',
+				'value' => fep_get_option( 'block_other_users', 1 ),
+				'priority'	=> 30,
+				'section'	=> 'security',
+				'class'	=> '',
+				'label' => __( 'Block other users', 'front-end-pm' ),
+				'cb_label' => __( 'Can users block other users?', 'front-end-pm' ),
+				),
 					
 			);
 				

@@ -214,6 +214,10 @@
 .fep-message .fep-message-title-heading {
 	font-size: 20px;
 }
+.fep-message .fep-message-title-heading .fep_block_unblock_user {
+	font-size: 16px;
+	font-weight: normal;
+}
 .fep-per-message .fep-message-title {
 	font-size: 16px;
 	cursor:pointer;

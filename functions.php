@@ -168,6 +168,7 @@ function fep_include_require_files() {
 			'menu' 			=> FEP_PLUGIN_DIR. 'includes/class-fep-menu.php',
 			'message' 		=> FEP_PLUGIN_DIR. 'includes/class-fep-message.php',
 			'shortcodes' 	=> FEP_PLUGIN_DIR. 'includes/class-fep-shortcodes.php',
+			'user-settings' => FEP_PLUGIN_DIR. 'includes/class-fep-user-settings.php',
 			'main' 			=> FEP_PLUGIN_DIR. 'includes/fep-class.php',
 			'widgets' 		=> FEP_PLUGIN_DIR. 'includes/fep-widgets.php'
 			);
@@ -225,8 +226,9 @@ add_action('wp_enqueue_scripts', 'fep_enqueue_scripts');
 function fep_enqueue_scripts()
     {
 	
-	wp_register_style( 'fep-common-style', FEP_PLUGIN_URL . 'assets/css/common-style.css' );
-	wp_register_style( 'fep-style', FEP_PLUGIN_URL . 'assets/css/style.css' );
+	wp_register_style( 'fep-common-style', FEP_PLUGIN_URL . 'assets/css/common-style.css', array(), '5.4' );
+	wp_register_style( 'fep-style', FEP_PLUGIN_URL . 'assets/css/style.css', array(), '5.4' );
+	wp_register_style( 'fep-tokeninput-style', FEP_PLUGIN_URL . 'assets/css/token-input-facebook.css' );
 
 	if( fep_page_id() ) {
 		if( is_page( fep_page_id() ) || is_single( fep_page_id() ) ) {
@@ -270,12 +272,20 @@ function fep_enqueue_scripts()
 				
 			) 
 		);
-	wp_register_script( 'fep-shortcode-newmessage', FEP_PLUGIN_URL . 'assets/js/shortcode-newmessage.js', array( 'jquery' ), '4.9', true );
+	wp_register_script( 'fep-shortcode-newmessage', FEP_PLUGIN_URL . 'assets/js/shortcode-newmessage.js', array( 'jquery' ), '5.4', true );
 	wp_localize_script( 'fep-shortcode-newmessage', 'fep_shortcode_newmessage', 
 			array( 
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
 				'token' => wp_create_nonce('fep_message'),
 				'refresh_text' => __('Refresh this page and try again.', 'front-end-pm'),
+			) 
+		);
+	wp_register_script( 'fep-tokeninput-script', FEP_PLUGIN_URL . 'assets/js/jquery.tokeninput.js', array( 'jquery' ), '5.4', true );
+	wp_register_script( 'fep-block-unblock-script', FEP_PLUGIN_URL . 'assets/js/block-unblock.js', array( 'jquery' ), '5.4', true );
+	wp_localize_script( 'fep-block-unblock-script', 'fep_bolck_unblock_script', 
+			array( 
+				'ajaxurl' => admin_url( 'admin-ajax.php' ),
+				'token' => wp_create_nonce('fep-block-unblock-script')
 			) 
 		);
     }
@@ -719,12 +729,12 @@ function fep_current_user_can( $cap, $id = false ) {
 		case 'send_new_message_to' :
 			if( is_numeric( $id ) ){
 				// $id == user ID
-				if ( $id && $id != get_current_user_id() && fep_current_user_can('access_message') && fep_current_user_can('send_new_message') && fep_get_user_option( 'allow_messages', 1,  $id ) ){
+				if ( $id && $id != get_current_user_id() && fep_current_user_can('access_message') && fep_current_user_can('send_new_message') && fep_get_user_option( 'allow_messages', 1,  $id ) && ! fep_is_user_blocked_for_user( $id ) ){
 					$can = true;
 				}
 			// $id == user_nicename
 			// Backward compability ( do not use )
-			} elseif ( $id && $id != fep_get_userdata( get_current_user_id(), 'user_nicename', 'id' ) && fep_current_user_can('access_message') && fep_current_user_can('send_new_message') && fep_get_user_option( 'allow_messages', 1, fep_get_userdata( $id ) ) ){
+		} elseif ( $id && $id != fep_get_userdata( get_current_user_id(), 'user_nicename', 'id' ) && fep_current_user_can('access_message') && fep_current_user_can('send_new_message') && fep_get_user_option( 'allow_messages', 1, fep_get_userdata( $id ) ) && ! fep_is_user_blocked_for_user( fep_get_userdata( $id ) ) ){
 				$can = true;
 			}
 		break;
@@ -733,6 +743,13 @@ function fep_current_user_can( $cap, $id = false ) {
 			
 			} elseif( fep_is_user_whitelisted() || fep_is_user_admin() || array_intersect( fep_get_option('userrole_reply', array() ), $roles ) || ( ! $roles && $no_role_access ) ){
 				$can = true;
+				$participants = fep_get_participants( $id );
+				foreach( $participants as $participant ){
+					if( fep_is_user_blocked_for_user( $participant ) ){
+						$can = false;
+						break;
+					}
+				}
 			}
 		break;
 		case 'view_message' :
@@ -1536,6 +1553,8 @@ function fep_form_posted()
 			do_action( "fep_posted_bulk_{$action}", $posted_bulk_action );
 
 		break;
+		/*
+		// See Fep_User_Settings Class
 		case ( 'settings' == $action && ! empty( $menu['settings'] ) ) :
 			
 			add_action ('fep_action_form_validated', 'fep_user_settings_save', 10, 2);
@@ -1547,6 +1566,7 @@ function fep_form_posted()
 			}
 			
 		break;
+		*/
 		default:
 			do_action( "fep_posted_action" );
 		break;
@@ -1625,3 +1645,61 @@ function fep_get_message_view(){
 	
 	return $message_view;
 }
+
+function fep_get_blocked_users_for_user( $userid = '' ){
+	$return = array();
+	
+	if( $blocked_users = fep_get_user_option( 'blocked_users', '', $userid ) ){
+		$blocked_users = explode( ',', $blocked_users );
+		$return = array_filter( array_map( 'absint', $blocked_users ) );
+	}
+	return apply_filters( 'fep_get_blocked_users_for_user', $return, $userid );
+}
+
+function fep_is_user_blocked_for_user( $userid, $check_id = '' ){
+	$blocked_users = fep_get_blocked_users_for_user( $userid );
+	
+	if( ! $check_id )
+	$check_id = get_current_user_id();
+	
+	if( in_array( $check_id, $blocked_users ) )
+	return true;
+	
+	return false;
+}
+
+function fep_block_users_for_user( $user_ids, $userid ='' ){
+			
+	if( is_numeric( $user_ids ) )
+	$user_ids = array( $user_ids );
+	
+	if( ! $user_ids || ! is_array( $user_ids ) )
+	return 0;
+	
+	$blocked_users = fep_get_blocked_users_for_user( $userid = '' );
+	$need_block = array_diff( $user_ids, $blocked_users );
+	
+	if( $need_block ){
+		$blocked_users = array_unique( array_merge( $blocked_users, $need_block ) );
+		fep_update_user_option( 'blocked_users', implode( ',', $blocked_users ) );
+	}
+	return count( $need_block );
+}
+
+function fep_unblock_users_for_user( $user_ids, $userid ='' ){
+	if( is_numeric( $user_ids ) )
+	$user_ids = array( $user_ids );
+	
+	if( ! $user_ids || ! is_array( $user_ids ) )
+	return 0;
+	
+	$blocked_users = fep_get_blocked_users_for_user( $userid = '' );
+	$need_unblock = array_intersect( $blocked_users, $user_ids );
+	
+	if( $need_unblock ){
+		$blocked_users = array_unique( array_diff( $blocked_users, $need_unblock ) );
+		fep_update_user_option( 'blocked_users', implode( ',', $blocked_users ) );
+	}
+	return count( $need_unblock );
+}
+

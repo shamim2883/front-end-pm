@@ -74,9 +74,12 @@ if (!class_exists("fep_main_class"))
           case 'viewmessage':
             $out .= $this->view_message();
             break;
+			/*
+			// See Fep_User_Settings Class
           case ( 'settings' == $switch && ! empty( $menu['settings'] ) ):
             $out .= $this->user_settings();
             break;
+			*/
 			/*
 			// See Fep_Announcement Class
 		case 'announcements':
