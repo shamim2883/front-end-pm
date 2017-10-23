@@ -255,7 +255,8 @@ function fep_enqueue_scripts()
 	wp_localize_script( 'fep-shortcode-newmessage', 'fep_shortcode_newmessage', 
 			array( 
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
-				'token' => wp_create_nonce('fep_message')
+				'token' => wp_create_nonce('fep_message'),
+				'refresh_text' => __('Refresh this page and try again.', 'front-end-pm'),
 			) 
 		);
     }
