@@ -137,10 +137,19 @@ class Fep_Ajax
 	function fep_notification_ajax() {
 
 		if ( check_ajax_referer( 'fep-notification', 'token', false )) {
-		
-			$notification = fep_notification();
-			if ( $notification )
-				wp_die( $notification );
+			$unread_count 		= fep_get_new_message_number();
+			$unread_ann_count 	= fep_get_new_announcement_number();
+			
+			$ret = array(
+				'message_count'					=> $unread_count,
+				'message_count_i18n'			=> number_format_i18n( $unread_count ),
+				'message_count_text'			=> sprintf(_n('%s unread message', '%s unread messages', $unread_count, 'front-end-pm'), number_format_i18n($unread_count) ),
+				'announcement_count'			=> $unread_ann_count,
+				'announcement_count_i18n'		=> number_format_i18n( $unread_ann_count ),
+				'announcement_count_text'		=> sprintf(_n('%s unread announcement', '%s unread announcements', $unread_ann_count, 'front-end-pm'), number_format_i18n($unread_ann_count) ),
+				'notification'					=> fep_notification(),
+			);
+			wp_send_json( $ret );
 		}
 		die;
 	}

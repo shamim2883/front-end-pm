@@ -117,20 +117,26 @@ class FEP_text_widget extends WP_Widget {
 		
 		if ( $show_messagebox )
 			{
+				echo ' ';
+				
 				$unread_count = fep_get_new_message_number();
 				$sm = sprintf(_n('%s unread message', '%s unread messages', $unread_count, 'front-end-pm'), number_format_i18n($unread_count) );
-				echo "<a href='".fep_query_url('messagebox')."'> $sm</a>";
+				
+				echo '<a href="' . fep_query_url('messagebox') .'"><span class="fep_new_message_count_text">' . $sm . '</span></a>';
 				
 			}
-		if ( $show_messagebox && $show_announcement )
-				echo __(' and', 'front-end-pm');
+		if ( $show_messagebox && $show_announcement ){
+			echo ' ';
+			echo __('and', 'front-end-pm');
+		}
 				
 		if ( $show_announcement )
 			{
+				echo ' ';
 				$unread_ann_count = fep_get_user_announcement_count( 'unread' );
 				$sa = sprintf(_n('%s unread announcement', '%s unread announcements', $unread_ann_count, 'front-end-pm'), number_format_i18n($unread_ann_count) );
 				
-				echo "<a href='".fep_query_url('announcements')."'> $sa</a>";
+				echo '<a href="' . fep_query_url('messagebox') .'"><span class="fep_new_announcement_count_text">' . $sa . '</span></a>';
 			}
 	
 			

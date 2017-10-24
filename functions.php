@@ -410,16 +410,68 @@ function fep_get_new_message_number()
       return fep_get_user_message_count( 'unread' );
     }
 	
-function fep_get_new_message_button(){
-	if (fep_get_new_message_number()){
-	  	$newmgs = " (<span class='fep-font-red'>";
-		$newmgs .= fep_get_new_message_number();
-		$newmgs .='</span>)';
-		} else {
-		$newmgs = '';
+function fep_get_new_message_button( $args = array() ){
+	if ( ! fep_current_user_can( 'access_message' ) )
+	return '';
+	
+	$args = wp_parse_args( $args, array(
+			'show_bracket'		=> '1',
+			'hide_if_zero'		=> '1',
+			'ajax'				=> '1',
+			'class'				=> 'fep-font-red',
+		) );
+	
+	$new = fep_get_new_message_number();
+	
+	if( empty( $args['ajax'] ) ){
+		if( ! $new && $args['hide_if_zero'] ){
+			return '';
+		}
+		$ret = '';
+		
+		if( $args['show_bracket'] ){
+			$ret .= '(';
+		}
+		$ret .= '<span class="' . $args['class'] . '">' . $new . '</span>';
+		if( $args['show_bracket'] ){
+			$ret .= ')';
+		}
+			
+		return $ret;
+	}
+	
+	wp_enqueue_script( 'fep-notification-script' );
+
+	$args['class'] =  $args['class'] . ' fep_new_message_count';
+	
+	if( $args['hide_if_zero'] ){
+		$args['class'] =  $args['class'] . ' fep_new_message_count_hide_if_zero';
+	}
+
+	$ret = '';
+	
+	if( $args['show_bracket'] && $args['hide_if_zero'] && ! $new ){
+		$ret .= '<span class="fep_new_message_count_hide_if_zero" style="display: none">(</span>';
+	} elseif( $args['show_bracket'] && $args['hide_if_zero'] ){
+		$ret .= '<span class="fep_new_message_count_hide_if_zero">(</span>';
+	} elseif( $args['show_bracket'] ){
+		$ret .= '(';
+	}
+	if( ! $new && $args['hide_if_zero'] ){
+		$ret .= '<span class="' . $args['class'] . '" style="display: none">' . $new . '</span>';
+	} else {
+		$ret .= '<span class="' . $args['class'] . '">' . $new . '</span>';
+	}
+	
+	if( $args['show_bracket'] && $args['hide_if_zero'] && ! $new ){
+		$ret .= '<span class="fep_new_message_count_hide_if_zero" style="display: none">)</span>';
+	} elseif( $args['show_bracket'] && $args['hide_if_zero'] ){
+		$ret .= '<span class="fep_new_message_count_hide_if_zero">)</span>';
+	} elseif( $args['show_bracket'] ){
+		$ret .= ')';
 	}
 		
-	return $newmgs;
+	return $ret;
 }
 
 function fep_get_new_announcement_number()
@@ -427,17 +479,69 @@ function fep_get_new_announcement_number()
 
       return fep_get_user_announcement_count( 'unread' );
     }
+
+function fep_get_new_announcement_button( $args = array() ){
+	if ( ! fep_current_user_can( 'access_message' ) )
+	return '';
 	
-function fep_get_new_announcement_button(){
-	if (fep_get_new_announcement_number()){
-	  	$newmgs = " (<span class='fep-font-red'>";
-		$newmgs .= fep_get_new_announcement_number();
-		$newmgs .='</span>)';
-		} else {
-		$newmgs = '';
+	$args = wp_parse_args( $args, array(
+			'show_bracket'		=> '1',
+			'hide_if_zero'		=> '1',
+			'ajax'				=> '1',
+			'class'				=> 'fep-font-red',
+		) );
+	
+	$new = fep_get_new_announcement_number();
+	
+	if( empty( $args['ajax'] ) ){
+		if( ! $new && $args['hide_if_zero'] ){
+			return '';
+		}
+		$ret = '';
+		
+		if( $args['show_bracket'] ){
+			$ret .= '(';
+		}
+		$ret .= '<span class="' . $args['class'] . '">' . $new . '</span>';
+		if( $args['show_bracket'] ){
+			$ret .= ')';
+		}
+			
+		return $ret;
+	}
+	
+	wp_enqueue_script( 'fep-notification-script' );
+
+	$args['class'] =  $args['class'] . ' fep_new_announcement_count';
+	
+	if( $args['hide_if_zero'] ){
+		$args['class'] =  $args['class'] . ' fep_new_announcement_count_hide_if_zero';
+	}
+
+	$ret = '';
+	
+	if( $args['show_bracket'] && $args['hide_if_zero'] && ! $new ){
+		$ret .= '<span class="fep_new_announcement_count_hide_if_zero" style="display: none">(</span>';
+	} elseif( $args['show_bracket'] && $args['hide_if_zero'] ){
+		$ret .= '<span class="fep_new_announcement_count_hide_if_zero">(</span>';
+	} elseif( $args['show_bracket'] ){
+		$ret .= '(';
+	}
+	if( ! $new && $args['hide_if_zero'] ){
+		$ret .= '<span class="' . $args['class'] . '" style="display: none">' . $new . '</span>';
+	} else {
+		$ret .= '<span class="' . $args['class'] . '">' . $new . '</span>';
+	}
+	
+	if( $args['show_bracket'] && $args['hide_if_zero'] && ! $new ){
+		$ret .= '<span class="fep_new_announcement_count_hide_if_zero" style="display: none">)</span>';
+	} elseif( $args['show_bracket'] && $args['hide_if_zero'] ){
+		$ret .= '<span class="fep_new_announcement_count_hide_if_zero">)</span>';
+	} elseif( $args['show_bracket'] ){
+		$ret .= ')';
 	}
 		
-	return $newmgs;
+	return $ret;
 }
 
 function fep_is_user_blocked( $login = '' ){
@@ -1260,9 +1364,9 @@ function fep_notification_div() {
 	wp_enqueue_script( 'fep-notification-script' );
 	$notification = fep_notification();
 	if ( $notification )
-	echo "<div id='fep-notification-bar'>$notification</div>";
+	echo '<div id="fep-notification-bar" class="fep-notification">' . $notification . '</div>';
 	else
-	echo "<div id='fep-notification-bar' style='display: none'></div>";
+	echo '<div id="fep-notification-bar" class="fep-notification" style="display: none"></div>';
 	}
 
 add_action('wp_head', 'fep_notification_div', 99 );
