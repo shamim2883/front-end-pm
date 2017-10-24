@@ -254,6 +254,8 @@ function get_user_announcement_count( $value = 'all', $force = false, $user_id =
 			$args['fep_announcement_include_own'] = true;
 			$args['suppress_filters'] = false;
 		}
+		$args = apply_filters( 'fep_announcement_count_query_args', $args);
+		
 		 $announcements = get_posts( $args );
 		 
 		 $total_count 		= 0;
