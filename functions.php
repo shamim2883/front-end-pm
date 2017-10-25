@@ -767,7 +767,7 @@ function fep_pagination( $total = null, $per_page = null, $list_class = 'fep-pag
     $last       = ceil( absint($total) / absint($per_page) );
 	
 	if( $last <= 1 )
-		return;
+		return '';
 		
 	//$numPgs = $total_message / fep_get_option('messages_page',50);
 	$page 		=  ( ! empty( $_GET['feppage'] )) ? absint($_GET['feppage']) : 1;
