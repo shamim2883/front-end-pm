@@ -137,7 +137,7 @@ class FEP_text_widget extends WP_Widget {
 				$unread_ann_count = fep_get_new_announcement_number();
 				$sa = sprintf(_n('%s announcement', '%s announcements', $unread_ann_count, 'front-end-pm'), number_format_i18n($unread_ann_count) );
 				
-				echo '<a href="' . fep_query_url('messagebox') .'"><span class="fep_new_announcement_count_text">' . $sa . '</span></a>';
+				echo '<a href="' . fep_query_url('announcements') .'"><span class="fep_new_announcement_count_text">' . $sa . '</span></a>';
 			}
 			echo ' ';
 			echo __('unread', 'front-end-pm');
