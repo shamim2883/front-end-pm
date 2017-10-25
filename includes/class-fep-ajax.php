@@ -143,10 +143,10 @@ class Fep_Ajax
 			$ret = array(
 				'message_count'					=> $unread_count,
 				'message_count_i18n'			=> number_format_i18n( $unread_count ),
-				'message_count_text'			=> sprintf(_n('%s unread message', '%s unread messages', $unread_count, 'front-end-pm'), number_format_i18n($unread_count) ),
+				'message_count_text'			=> sprintf(_n('%s message', '%s messages', $unread_count, 'front-end-pm'), number_format_i18n($unread_count) ),
 				'announcement_count'			=> $unread_ann_count,
 				'announcement_count_i18n'		=> number_format_i18n( $unread_ann_count ),
-				'announcement_count_text'		=> sprintf(_n('%s unread announcement', '%s unread announcements', $unread_ann_count, 'front-end-pm'), number_format_i18n($unread_ann_count) ),
+				'announcement_count_text'		=> sprintf(_n('%s announcement', '%s announcements', $unread_ann_count, 'front-end-pm'), number_format_i18n($unread_ann_count) ),
 				'notification'					=> fep_notification(),
 			);
 			wp_send_json( $ret );

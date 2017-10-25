@@ -1331,12 +1331,12 @@ function fep_notification()
 				return '';
 			
 			$unread_count = fep_get_new_message_number();
-			$sm = sprintf(_n('%s unread message', '%s unread messages', $unread_count, 'front-end-pm'), number_format_i18n($unread_count) );
+			$sm = sprintf(_n('%s message', '%s messages', $unread_count, 'front-end-pm'), number_format_i18n($unread_count) );
 
 				$show = '';
 				
 				$unread_ann_count = fep_get_user_announcement_count( 'unread' );
-				$sa = sprintf(_n('%s unread announcement', '%s unread announcements', $unread_ann_count, 'front-end-pm'), number_format_i18n($unread_ann_count) );
+				$sa = sprintf(_n('%s announcement', '%s announcements', $unread_ann_count, 'front-end-pm'), number_format_i18n($unread_ann_count) );
 	
 			if ( $unread_count || $unread_ann_count ) {
 				$show = __("You have", 'front-end-pm');
@@ -1350,6 +1350,8 @@ function fep_notification()
 			if ( $unread_ann_count )
 				$show .= "<a href='".fep_query_url('announcements')."'> $sa</a>";
 				
+				$show .= ' ';
+				$show .= __('unread', 'front-end-pm');
 			}
 			return apply_filters('fep_header_notification', $show);
 		}

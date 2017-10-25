@@ -111,6 +111,7 @@ class FEP_text_widget extends WP_Widget {
 		$show_messagebox = isset( $instance['show_messagebox'] ) ? $instance['show_messagebox'] : false;
 		$show_announcement = isset( $instance['show_announcement'] ) ? $instance['show_announcement'] : false;
 		
+		if ( $show_messagebox || $show_announcement ){
 			echo __('Welcome', 'front-end-pm') . ' ' . fep_get_userdata( $user_ID, 'display_name', 'id' ). '<br />';
 			
 			echo __('You have', 'front-end-pm');
@@ -120,7 +121,7 @@ class FEP_text_widget extends WP_Widget {
 				echo ' ';
 				
 				$unread_count = fep_get_new_message_number();
-				$sm = sprintf(_n('%s unread message', '%s unread messages', $unread_count, 'front-end-pm'), number_format_i18n($unread_count) );
+				$sm = sprintf(_n('%s message', '%s messages', $unread_count, 'front-end-pm'), number_format_i18n($unread_count) );
 				
 				echo '<a href="' . fep_query_url('messagebox') .'"><span class="fep_new_message_count_text">' . $sm . '</span></a>';
 				
@@ -133,12 +134,14 @@ class FEP_text_widget extends WP_Widget {
 		if ( $show_announcement )
 			{
 				echo ' ';
-				$unread_ann_count = fep_get_user_announcement_count( 'unread' );
-				$sa = sprintf(_n('%s unread announcement', '%s unread announcements', $unread_ann_count, 'front-end-pm'), number_format_i18n($unread_ann_count) );
+				$unread_ann_count = fep_get_new_announcement_number();
+				$sa = sprintf(_n('%s announcement', '%s announcements', $unread_ann_count, 'front-end-pm'), number_format_i18n($unread_ann_count) );
 				
 				echo '<a href="' . fep_query_url('messagebox') .'"><span class="fep_new_announcement_count_text">' . $sa . '</span></a>';
 			}
-	
+			echo ' ';
+			echo __('unread', 'front-end-pm');
+		}
 			
 		do_action('fep_text_widget');
 		
