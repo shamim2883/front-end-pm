@@ -137,20 +137,20 @@ class Fep_Ajax
 	function fep_notification_ajax() {
 
 		if ( check_ajax_referer( 'fep-notification', 'token', false )) {
-			$unread_count 		= fep_get_new_message_number();
-			$unread_ann_count 	= fep_get_new_announcement_number();
+			$mgs_unread_count 		= fep_get_new_message_number();
 			$mgs_total_count 		= fep_get_user_message_count( 'total' );
+			$ann_unread_count 		= fep_get_new_announcement_number();
 			
 			$ret = array(
-				'message_count'					=> $unread_count,
-				'message_count_i18n'			=> number_format_i18n( $unread_count ),
-				'message_count_text'			=> sprintf(_n('%s message', '%s messages', $unread_count, 'front-end-pm'), number_format_i18n($unread_count) ),
-				'announcement_count'			=> $unread_ann_count,
-				'announcement_count_i18n'		=> number_format_i18n( $unread_ann_count ),
-				'announcement_count_text'		=> sprintf(_n('%s announcement', '%s announcements', $unread_ann_count, 'front-end-pm'), number_format_i18n($unread_ann_count) ),
-				'notification'					=> fep_notification(),
+				'message_unread_count'				=> $mgs_unread_count,
+				'message_unread_count_i18n'			=> number_format_i18n( $mgs_unread_count ),
 				//'message_total_count'				=> $mgs_total_count,
 				'message_total_count_i18n'			=> number_format_i18n( $mgs_total_count ),
+				'message_unread_count_text'			=> sprintf(_n('%s message', '%s messages', $mgs_unread_count, 'front-end-pm'), number_format_i18n($mgs_unread_count) ),
+				'announcement_unread_count'			=> $ann_unread_count,
+				'announcement_unread_count_i18n'	=> number_format_i18n( $ann_unread_count ),
+				'announcement_unread_count_text'	=> sprintf(_n('%s announcement', '%s announcements', $ann_unread_count, 'front-end-pm'), number_format_i18n($ann_unread_count) ),
+				'notification'						=> fep_notification(),
 			);
 			wp_send_json( $ret );
 		}
