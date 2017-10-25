@@ -144,9 +144,9 @@ class Fep_Ajax
 			$ret = array(
 				'message_unread_count'				=> $mgs_unread_count,
 				'message_unread_count_i18n'			=> number_format_i18n( $mgs_unread_count ),
+				'message_unread_count_text'			=> sprintf(_n('%s message', '%s messages', $mgs_unread_count, 'front-end-pm'), number_format_i18n($mgs_unread_count) ),
 				//'message_total_count'				=> $mgs_total_count,
 				'message_total_count_i18n'			=> number_format_i18n( $mgs_total_count ),
-				'message_unread_count_text'			=> sprintf(_n('%s message', '%s messages', $mgs_unread_count, 'front-end-pm'), number_format_i18n($mgs_unread_count) ),
 				'announcement_unread_count'			=> $ann_unread_count,
 				'announcement_unread_count_i18n'	=> number_format_i18n( $ann_unread_count ),
 				'announcement_unread_count_text'	=> sprintf(_n('%s announcement', '%s announcements', $ann_unread_count, 'front-end-pm'), number_format_i18n($ann_unread_count) ),
