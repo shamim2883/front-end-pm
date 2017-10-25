@@ -1808,3 +1808,12 @@ function fep_unblock_users_for_user( $user_ids, $userid ='' ){
 	return count( $need_unblock );
 }
 
+function fep_sanitize_html_class( $class ){
+	if ( $class ){
+		$class = explode( ' ', $class );
+		$class = array_map( 'sanitize_html_class', $class );
+		$class = implode( ' ', array_filter( $class ) );
+	}
+	return (string) $class;
+}
+
