@@ -139,6 +139,7 @@ class Fep_Ajax
 		if ( check_ajax_referer( 'fep-notification', 'token', false )) {
 			$unread_count 		= fep_get_new_message_number();
 			$unread_ann_count 	= fep_get_new_announcement_number();
+			$mgs_total_count 		= fep_get_user_message_count( 'total' );
 			
 			$ret = array(
 				'message_count'					=> $unread_count,
@@ -148,6 +149,8 @@ class Fep_Ajax
 				'announcement_count_i18n'		=> number_format_i18n( $unread_ann_count ),
 				'announcement_count_text'		=> sprintf(_n('%s announcement', '%s announcements', $unread_ann_count, 'front-end-pm'), number_format_i18n($unread_ann_count) ),
 				'notification'					=> fep_notification(),
+				//'message_total_count'				=> $mgs_total_count,
+				'message_total_count_i18n'			=> number_format_i18n( $mgs_total_count ),
 			);
 			wp_send_json( $ret );
 		}

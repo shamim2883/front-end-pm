@@ -28,6 +28,7 @@ var fep_ajax_call = function(){
 		}
 		jQuery('.fep_new_message_count_text').html(response['message_count_text']);
 		jQuery('.fep_new_announcement_count_text').html(response['announcement_count_text']);
+		jQuery('.fep_total_message_count').html(response['message_total_count_i18n']);
 		
 	}, 'json');
 }
