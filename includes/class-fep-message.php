@@ -536,7 +536,19 @@ function get_column_content($column)
 			?><input type="checkbox" name="fep-message-cb[]" value="<?php echo get_the_ID(); ?>" /><?php
 		break;
 		case 'avatar' :
-			 echo get_avatar( get_the_author_meta('ID'), 55 );
+			$participants = fep_get_participants( get_the_ID() );
+			$count = 1;
+		?>
+		<div class="fep-avatar-p <?php echo ( count( $participants ) > 2 ) ? 'fep-avatar-p-120' : 'fep-avatar-p-90' ?>"><?php
+			foreach( $participants as $p ){
+				if( $count > 2 ){
+					echo '<div class="fep-avatar-more-60" title="' . __('More users', 'front-end-pm') . '"></div>';
+					break;
+				} 
+				?><div class="fep-avatar-<?php echo $count; ?>"><?php echo get_avatar( $p, 60, '', '', array( 'extra_attr'=> 'title="'. fep_get_userdata( $p, 'display_name', 'ID' ) . '"') ); ?></div><?php
+				$count++;
+			}
+		echo '</div>';
 		break;
 		case 'author' :
 			?><span class="fep-message-author"><?php the_author_meta('display_name'); ?></span><span class="fep-message-date"><?php the_time(); ?></span><?php
