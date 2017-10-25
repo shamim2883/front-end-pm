@@ -241,10 +241,10 @@
     height: 60px;
 }
 .fep-avatar-p-120 {
-    width: 120px;
+	min-width: 120px;
 }
 .fep-avatar-p-90 {
-    width: 90px;
+	min-width: 90px;
 }
 .fep-avatar-p .fep-avatar-1, .fep-avatar-p .fep-avatar-2, .fep-avatar-more-60 {
     width: 60px;
