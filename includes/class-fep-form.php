@@ -499,7 +499,7 @@ function field_output( $field, $errors )
 				case 'fep_parent_id' :
 					 if ( empty($field['posted-value']) || $field['posted-value'] != absint($field['posted-value']) || fep_get_parent_id( $field['posted-value'] ) != $field['posted-value'] ) {
 					 		$errors->add( $field['id'] , __("Invalid parent ID!", 'front-end-pm'));
-					 } elseif ( ! in_array( get_current_user_id(), fep_get_participants( $field['posted-value'] ) ) ) {
+					 } elseif ( ! fep_current_user_can( 'send_reply', $field['posted-value'] ) ) {
 						  	$errors->add( $field['id'] , __("You do not have permission to send this message!", 'front-end-pm'));
 						}
 		
