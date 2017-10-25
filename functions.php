@@ -451,20 +451,19 @@ function fep_get_new_message_button( $args = array() ){
 	$ret = '';
 	
 	if( $args['show_bracket'] && $args['hide_if_zero'] && ! $new ){
-		$ret .= '<span class="fep_new_message_count_hide_if_zero" style="display: none">(</span>';
+		$ret .= '<span class="fep_new_message_count_hide_if_zero fep-hide">(</span>';
 	} elseif( $args['show_bracket'] && $args['hide_if_zero'] ){
 		$ret .= '<span class="fep_new_message_count_hide_if_zero">(</span>';
 	} elseif( $args['show_bracket'] ){
 		$ret .= '(';
 	}
 	if( ! $new && $args['hide_if_zero'] ){
-		$ret .= '<span class="' . $args['class'] . '" style="display: none">' . $new . '</span>';
-	} else {
-		$ret .= '<span class="' . $args['class'] . '">' . $new . '</span>';
+		$args['class'] =  $args['class'] . ' fep-hide';
 	}
+	$ret .= '<span class="' . $args['class'] . '">' . $new . '</span>';
 	
 	if( $args['show_bracket'] && $args['hide_if_zero'] && ! $new ){
-		$ret .= '<span class="fep_new_message_count_hide_if_zero" style="display: none">)</span>';
+		$ret .= '<span class="fep_new_message_count_hide_if_zero fep-hide">)</span>';
 	} elseif( $args['show_bracket'] && $args['hide_if_zero'] ){
 		$ret .= '<span class="fep_new_message_count_hide_if_zero">)</span>';
 	} elseif( $args['show_bracket'] ){
@@ -521,20 +520,19 @@ function fep_get_new_announcement_button( $args = array() ){
 	$ret = '';
 	
 	if( $args['show_bracket'] && $args['hide_if_zero'] && ! $new ){
-		$ret .= '<span class="fep_new_announcement_count_hide_if_zero" style="display: none">(</span>';
+		$ret .= '<span class="fep_new_announcement_count_hide_if_zero fep-hide">(</span>';
 	} elseif( $args['show_bracket'] && $args['hide_if_zero'] ){
 		$ret .= '<span class="fep_new_announcement_count_hide_if_zero">(</span>';
 	} elseif( $args['show_bracket'] ){
 		$ret .= '(';
 	}
 	if( ! $new && $args['hide_if_zero'] ){
-		$ret .= '<span class="' . $args['class'] . '" style="display: none">' . $new . '</span>';
-	} else {
-		$ret .= '<span class="' . $args['class'] . '">' . $new . '</span>';
+		$args['class'] =  $args['class'] . ' fep-hide';
 	}
+	$ret .= '<span class="' . $args['class'] . '">' . $new . '</span>';
 	
 	if( $args['show_bracket'] && $args['hide_if_zero'] && ! $new ){
-		$ret .= '<span class="fep_new_announcement_count_hide_if_zero" style="display: none">)</span>';
+		$ret .= '<span class="fep_new_announcement_count_hide_if_zero fep-hide">)</span>';
 	} elseif( $args['show_bracket'] && $args['hide_if_zero'] ){
 		$ret .= '<span class="fep_new_announcement_count_hide_if_zero">)</span>';
 	} elseif( $args['show_bracket'] ){
@@ -1368,7 +1366,7 @@ function fep_notification_div() {
 	if ( $notification )
 	echo '<div id="fep-notification-bar" class="fep-notification">' . $notification . '</div>';
 	else
-	echo '<div id="fep-notification-bar" class="fep-notification" style="display: none"></div>';
+	echo '<div id="fep-notification-bar" class="fep-notification fep-hide"></div>';
 	}
 
 add_action('wp_head', 'fep_notification_div', 99 );
