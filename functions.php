@@ -1702,6 +1702,8 @@ function fep_user_settings_save( $where, $fields )
 {
 	if( 'settings' != $where )
 		return;
+		
+	_deprecated_function( __FUNCTION__, '5.3', 'Fep_User_Settings Class' );
 	
 	if( !$fields || ! is_array( $fields ) )
 		return;
