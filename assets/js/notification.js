@@ -1,4 +1,14 @@
+	var fep_notification_block_count = 0;
 	function fep_notification_ajax_call(){
+		
+		if ( document.hidden ) {
+			if( fep_notification_block_count < parseInt(fep_notification_script.skip, 10) ){
+				fep_notification_block_count++;
+				return;				
+			}
+		}
+		fep_notification_block_count = 0;
+		  
 		var data = {
 			action: 'fep_notification_ajax',
 			token: fep_notification_script.nonce

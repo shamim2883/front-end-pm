@@ -257,6 +257,7 @@ function fep_enqueue_scripts()
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
 				'nonce' => wp_create_nonce('fep-notification'),
 				'interval' => apply_filters( 'fep_filter_ajax_notification_interval', MINUTE_IN_SECONDS * 1000 ),
+				'skip' => apply_filters( 'fep_filter_skip_notification_call', 2 ), //How many times notification ajax call will be skipped if browser tab not opened
 				'show_in_title'	=> fep_get_option( 'show_unread_count_in_title', '1' ),
 			) 
 		);
