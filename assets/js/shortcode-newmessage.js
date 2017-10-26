@@ -1,29 +1,28 @@
 jQuery(document).ready(function(){
 		
-		jQuery( '.fep-form' ).on( "click", ".fep-button", function(e) {
+		jQuery( '.shortcode-newmessage-ajax' ).on( "click", ".fep-button", function(e) {
 			e.preventDefault();
 			var element = this;
 			jQuery(element).prop('disabled', true);
-			jQuery('.fep-ajax-response').html('');
+			jQuery(element).parent().parent().next('.fep-ajax-response').html('');
+			jQuery(element).next('.fep-ajax-img').show();
 			
-			jQuery('.fep-ajax-img').show();
-			
-		var data = jQuery(this.form).serialize().replace(/&token=[^&;]*/,'&token=' + fep_shortcode_newmessage.token) + '&fep_action=shortcode-newmessage';
+		var data = jQuery(element.form).serialize().replace(/&token=[^&;]*/,'&token=' + fep_shortcode_newmessage.token) + '&fep_action=shortcode-newmessage';
 
 		jQuery.post( fep_shortcode_newmessage.ajaxurl, data, function(response) {
-			jQuery('.fep-ajax-response').html(response['info']);
+			jQuery(element).parent().parent().next('.fep-ajax-response').html(response['info']);
 			if( response['fep_return'] == 'success' ){
 				jQuery(element.form).hide();
 			}
 			
 		}, 'json')
 			.fail(function() {
-					 jQuery('.fep-ajax-response').html(fep_shortcode_newmessage.refresh_text);
+					 jQuery(element).parent().parent().next('.fep-ajax-response').html(fep_shortcode_newmessage.refresh_text);
 			})
 			.complete(function() {
-					 jQuery('.fep-ajax-img').hide();
+					 jQuery(element).next('.fep-ajax-img').hide();
 					 jQuery(element).prop('disabled', false);
-			});;
+			});
       });
 });
 

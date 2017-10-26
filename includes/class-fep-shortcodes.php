@@ -86,8 +86,8 @@ class Fep_Shortcodes
 	
 	function new_message_form( $atts, $content = null ){
 		$atts = shortcode_atts( array(
-				'to'		=> '{current-post-author}',
-				'subject' => '',
+				'to'			=> '{current-post-author}',
+				'subject' 		=> '',
 				'ajax'			=> '1',
 				'heading'		=> __('Contact','front-end-pm' )
 			), $atts, 'fep_shortcode_new_message_form' );
@@ -118,6 +118,7 @@ class Fep_Shortcodes
 			
 			if( ! empty( $ajax )){
 				wp_enqueue_script( 'fep-shortcode-newmessage' );
+				add_filter( 'fep_form_attribute', array( $this, 'fep_form_attribute'), 10, 2 );
 				add_filter( 'fep_form_submit_button', array( $this, 'show_ajax_img'), 10, 2 );
 			}
 			
@@ -126,6 +127,13 @@ class Fep_Shortcodes
 		  ob_start();
 		  include( $template );
 		  return ob_get_clean();
+	}
+	
+	function fep_form_attribute( $form_attr, $where ){
+		if( 'shortcode-newmessage' == $where ){
+			$form_attr['class'] = $form_attr['class'] . ' shortcode-newmessage-ajax';
+		}
+		return $form_attr;
 	}
 	
 	function show_ajax_img( $button, $where ){
