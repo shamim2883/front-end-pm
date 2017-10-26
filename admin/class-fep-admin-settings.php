@@ -142,54 +142,57 @@ class Fep_Admin_Settings
 				'value' => fep_get_option('allow_attachment', 1),
 				'priority'	=> 18,
 				'class'	=> '',
-				'label' => __( 'Allow Attachment?', 'front-end-pm' ),
-				'description' => __( 'Allow to attach attachment with message?', 'front-end-pm' )
+				'label' => __( 'Allow Attachment', 'front-end-pm' ),
+				'cb_label' => __( 'Allow to attach attachment with message?', 'front-end-pm' )
 				),
 			'attachment_size'	=> array(
 				'type'	=>	'text',
 				'value' => fep_get_option('attachment_size','4MB'),
 				'priority'	=> 20,
-				'label' => __( 'Maximum size of attachment?', 'front-end-pm' ),
+				'label' => __( 'Maximum size of attachment', 'front-end-pm' ),
 				'description' => __( 'Use KB, MB or GB.(eg. 4MB)', 'front-end-pm' )
 				),
 			'attachment_no'	=> array(
 				'type'	=>	'number',
 				'value' => fep_get_option('attachment_no','4'),
 				'priority'	=> 22,
-				'label' => __( 'Maximum Number of attachment?', 'front-end-pm' )
+				'label' => __( 'Maximum attachments', 'front-end-pm' ),
+				'description' => __( 'Maximum Number of attachments a user can add with message', 'front-end-pm' )
 				),
 					
-			'hide_directory'	=> array(
+			'show_directory'	=> array(
 				'type'	=>	'checkbox',
-				'value' => fep_get_option('hide_directory',0),
+				'value' => fep_get_option('show_directory', 1),
 				'priority'	=> 24,
 				'class'	=> '',
-				'label' => __( 'Hide Directory from front end?', 'front-end-pm' ),
+				'label' => __( 'Show Directory', 'front-end-pm' ),
+				'cb_label' => __( 'Show Directory in front end?', 'front-end-pm' ),
 				'description' => __( 'Always shown to Admins.', 'front-end-pm' )
 				),
 					
-			'hide_notification'	=> array(
+			'show_notification'	=> array(
 				'type'	=>	'checkbox',
-				'value' => fep_get_option('hide_notification',0),
+				'value' => fep_get_option('show_notification', 1),
 				'priority'	=> 28,
 				'class'	=> '',
-				'label' => __( 'Hide site wide notification in header?', 'front-end-pm' )
+				'label' => __( 'Show notification', 'front-end-pm' ),
+				'cb_label' => __( 'Show site wide notification in header?', 'front-end-pm' ),
 				),
 			'show_unread_count_in_title'	=> array(
 				'type'	=>	'checkbox',
 				'value' => fep_get_option('show_unread_count_in_title', 1),
 				'priority'	=> 29,
 				'class'	=> '',
-				'label' => __( 'Show count?', 'front-end-pm' ),
+				'label' => __( 'Show count', 'front-end-pm' ),
 				'cb_label' => __( 'Show unread message count in website title?', 'front-end-pm' ),
 				),
 					
-			'hide_branding'	=> array(
+			'show_branding'	=> array(
 				'type'	=>	'checkbox',
-				'value' => fep_get_option('hide_branding',0),
+				'value' => fep_get_option('show_branding', 1),
 				'priority'	=> 30,
 				'class'	=> '',
-				'label' => __( 'Hide Branding Footer?', 'front-end-pm' )
+				'label' => __( 'Show Branding Footer', 'front-end-pm' )
 				),
 			'delete_data_on_uninstall'	=> array(
 				'type'	=>	'checkbox',
@@ -200,14 +203,14 @@ class Fep_Admin_Settings
 				'description' => '<div style="color:red">'. sprintf(__( 'Check this box if you would like %s to completely remove all of its data when the plugin is deleted.', 'front-end-pm' ), fep_is_pro() ? 'Front End PM PRO' : 'Front End PM' ). '</div>'
 				),
 			//Recipient
-			'hide_autosuggest'	=> array(
+			'show_autosuggest'	=> array(
 				'type'	=>	'checkbox',
-				'value' => fep_get_option('hide_autosuggest',0),
+				'value' => fep_get_option('show_autosuggest', 1),
 				'priority'	=> 5,
 				'section'	=> 'recipient',
 				'class'	=> '',
-				'label' => __( 'Hide Autosuggestion', 'front-end-pm' ),
-				'cb_label' => __( 'Hide Autosuggestion when typing recipient name?', 'front-end-pm' ),
+				'label' => __( 'Show Autosuggestion', 'front-end-pm' ),
+				'cb_label' => __( 'Show Autosuggestion when typing recipient name?', 'front-end-pm' ),
 				'description' => __( 'Always shown to Admins.', 'front-end-pm' )
 				),
 				

@@ -45,7 +45,7 @@ if (!class_exists('Fep_Form'))
 					'id' => 'fep-message-to',
 					'name' => 'message_to',
 					'class' => 'input-text',
-					'suggestion' => (fep_get_option('hide_autosuggest') != '1' || fep_is_user_admin() ),
+					'suggestion' => (fep_get_option('show_autosuggest', 1) || fep_is_user_admin() ),
 					'priority'    => 5
 				),
 				'announcement_roles' => array(

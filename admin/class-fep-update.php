@@ -57,6 +57,15 @@ class Fep_Update
 		if( version_compare( $prev_ver, '5.3', '<' ) ){
 			$this->create_htaccess();
 		}
+		if( version_compare( $prev_ver, '6.1', '<' ) ){
+			$options = array();
+			$options['show_directory'] = fep_get_option('hide_directory',0) ? 0 : 1;
+			$options['show_notification'] = fep_get_option('hide_notification',0) ? 0 : 1;
+			$options['show_branding'] = fep_get_option('hide_branding',0) ? 0 : 1;
+			$options['show_autosuggest'] = fep_get_option('hide_autosuggest',0) ? 0 : 1;
+			
+			fep_update_option( $options );
+		}
 	}
 	
 	function sections( $tabs)

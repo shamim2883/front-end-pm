@@ -32,7 +32,7 @@ class Fep_Ajax
 	function fep_autosuggestion_ajax() {
 		global $user_ID;
 		
-		if(fep_get_option('hide_autosuggest') == '1' && !fep_is_user_admin() )
+		if( !fep_get_option('show_autosuggest', 1) && !fep_is_user_admin() )
 			die();
 		
 		if ( check_ajax_referer( 'fep-autosuggestion', 'token', false )) {

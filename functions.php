@@ -868,7 +868,7 @@ function fep_current_user_can( $cap, $id = false ) {
 			}
 		break;
 		case 'access_directory' :
-			if( fep_is_user_admin() || ! fep_get_option('hide_directory', 0 ) ) {
+			if( fep_is_user_admin() || fep_get_option('show_directory', 1 ) ) {
 				$can = true;
 			}
 		break;
@@ -1265,7 +1265,7 @@ function fep_autosuggestion_ajax() {
 	
 	global $user_ID;
 
-	if(fep_get_option('hide_autosuggest') == '1' && !fep_is_user_admin() )
+	if( !fep_get_option('show_autosuggest', 1) && !fep_is_user_admin() )
 	die();
 
 	if ( check_ajax_referer( 'fep-autosuggestion', 'token', false )) {
@@ -1315,7 +1315,7 @@ die();
 function fep_footer_credit()
     {
 	$style = '';
-	if ( fep_get_option('hide_branding',0) == 1 ) {
+	if ( ! fep_get_option('show_branding', 1) ) {
 		$style = " style='display: none'";
 	}
 	echo "<div{$style}><a href='https://www.shamimsplugins.com/products/front-end-pm-pro/' target='_blank'>Front End PM</a></div>";
@@ -1327,7 +1327,7 @@ function fep_notification()
 		{
 			if ( ! fep_current_user_can( 'access_message' ) )
 				return '';
-			if ( fep_get_option('hide_notification',0) == 1 )
+			if ( ! fep_get_option('show_notification', 1) )
 				return '';
 			
 			$unread_count = fep_get_new_message_number();
@@ -1360,7 +1360,7 @@ function fep_notification()
 function fep_notification_div() {
 	if ( ! fep_current_user_can( 'access_message' ) )
 				return;
-	if ( fep_get_option('hide_notification',0) == 1 )
+	if ( ! fep_get_option('show_notification', 1) )
 				return;
 				
 	wp_enqueue_script( 'fep-notification-script' );
