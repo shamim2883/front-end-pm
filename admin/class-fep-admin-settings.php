@@ -175,6 +175,14 @@ class Fep_Admin_Settings
 				'class'	=> '',
 				'label' => __( 'Hide site wide notification in header?', 'front-end-pm' )
 				),
+			'show_unread_count_in_title'	=> array(
+				'type'	=>	'checkbox',
+				'value' => fep_get_option('show_unread_count_in_title', 1),
+				'priority'	=> 29,
+				'class'	=> '',
+				'label' => __( 'Show count?', 'front-end-pm' ),
+				'cb_label' => __( 'Show unread message count in website title?', 'front-end-pm' ),
+				),
 					
 			'hide_branding'	=> array(
 				'type'	=>	'checkbox',

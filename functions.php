@@ -256,7 +256,8 @@ function fep_enqueue_scripts()
 			array( 
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
 				'nonce' => wp_create_nonce('fep-notification'),
-				'interval' => apply_filters( 'fep_filter_ajax_notification_interval', MINUTE_IN_SECONDS * 1000 )
+				'interval' => apply_filters( 'fep_filter_ajax_notification_interval', MINUTE_IN_SECONDS * 1000 ),
+				'show_in_title'	=> fep_get_option( 'show_unread_count_in_title', '1' ),
 			) 
 		);
 	
@@ -1817,5 +1818,32 @@ function fep_sanitize_html_class( $class ){
 		$class = implode( ' ', array_filter( $class ) );
 	}
 	return (string) $class;
+}
+
+add_filter( 'document_title_parts', 'fep_show_unread_count_in_title', 999 );
+
+function fep_show_unread_count_in_title( $title ){
+	if( fep_get_option( 'show_unread_count_in_title', 1 ) && fep_current_user_can( 'access_message' ) ){
+		wp_enqueue_script( 'fep-notification-script' );
+		
+		if( $count = fep_get_new_message_number() ){
+			$title['title'] = "($count) " . $title['title'];
+		}
+	}
+	return $title;
+}
+
+add_filter( 'pre_get_document_title', 'fep_pre_get_document_title', 999 );
+
+function fep_pre_get_document_title( $title ){
+	
+	if( ! empty( $title ) && fep_get_option( 'show_unread_count_in_title', 1 ) && fep_current_user_can( 'access_message' ) ){
+		wp_enqueue_script( 'fep-notification-script' );
+		
+		if( $count = fep_get_new_message_number() ){
+			$title = "($count) " . $title;
+		}
+	}
+	return $title;
 }
 
