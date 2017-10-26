@@ -88,7 +88,7 @@ class Fep_Shortcodes
 		$atts = shortcode_atts( array(
 				'to'		=> '{current-post-author}',
 				'subject' => '',
-				'enable_ajax'		=> true,
+				'ajax'			=> '1',
 				'heading'		=> __('Contact','front-end-pm' )
 			), $atts, 'fep_shortcode_new_message_form' );
 			
@@ -116,7 +116,7 @@ class Fep_Shortcodes
 			if( ! fep_current_user_can('send_new_message_to', $to_id ) )
 				return '';
 			
-			if( ! empty( $enable_ajax )){
+			if( ! empty( $ajax )){
 				wp_enqueue_script( 'fep-shortcode-newmessage' );
 				add_filter( 'fep_form_submit_button', array( $this, 'show_ajax_img'), 10, 2 );
 			}
