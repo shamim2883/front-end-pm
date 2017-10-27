@@ -214,11 +214,11 @@ function field_output( $field, $errors )
 		</div>
 		<?php endif;
 		$attrib = ''; 
-		if ( ! empty( $field['required'] ) ) $attrib .= 'required = "required" ';
-		if ( ! empty( $field['readonly'] ) ) $attrib .= 'readonly = "readonly" ';
-		if ( ! empty( $field['disabled'] ) ) $attrib .= 'disabled = "disabled" ';
-		if ( ! empty( $field['minlength'] ) ) $attrib .= 'minlength = "' . absint( $field['minlength'] ) . '" ';
-		if ( ! empty( $field['maxlength'] ) ) $attrib .= 'maxlength = "' . absint( $field['maxlength'] ) . '" ';
+		if ( ! empty( $field['required'] ) ) $attrib .= ' required = "required"';
+		if ( ! empty( $field['readonly'] ) ) $attrib .= ' readonly = "readonly"';
+		if ( ! empty( $field['disabled'] ) ) $attrib .= ' disabled = "disabled"';
+		if ( ! empty( $field['minlength'] ) ) $attrib .= ' minlength = "' . absint( $field['minlength'] ) . '"';
+		if ( ! empty( $field['maxlength'] ) ) $attrib .= ' maxlength = "' . absint( $field['maxlength'] ) . '"';
 		 
 		if ( ! empty( $field['class'] ) ){
 			$field['class'] = explode( ' ', $field['class'] );
@@ -245,7 +245,7 @@ function field_output( $field, $errors )
 				case 'number' :
 				case 'hidden' :
 				case 'submit' :
-					?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" type="<?php esc_attr_e( $field['type'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>" placeholder="<?php esc_attr_e( $field['placeholder'] ); ?>" value="<?php esc_attr_e( $field['posted-value' ] ); ?>" <?php echo $attrib; ?> /><?php
+					?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" type="<?php esc_attr_e( $field['type'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>" placeholder="<?php esc_attr_e( $field['placeholder'] ); ?>" value="<?php esc_attr_e( $field['posted-value' ] ); ?>"<?php echo $attrib; ?> /><?php
 
 					break;
 				case 'message_to' :
@@ -307,7 +307,7 @@ function field_output( $field, $errors )
 					break;
 				case "textarea" :
 
-							?><textarea id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" cols="50" name="<?php esc_attr_e( $field['name'] ); ?>" placeholder="<?php esc_attr_e( $field['placeholder'] ); ?>" <?php echo $attrib; ?>><?php echo esc_textarea( $field['posted-value' ] ); ?></textarea><?php
+							?><textarea id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" cols="50" name="<?php esc_attr_e( $field['name'] ); ?>" placeholder="<?php esc_attr_e( $field['placeholder'] ); ?>"<?php echo $attrib; ?>><?php echo esc_textarea( $field['posted-value' ] ); ?></textarea><?php
 
 					break;
 					
@@ -337,7 +337,7 @@ function field_output( $field, $errors )
 					
 				case "select" :
 
-							?><select id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" name="<?php esc_attr_e( $field['name'] ); ?>" <?php echo $attrib; ?>><?php
+							?><select id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" name="<?php esc_attr_e( $field['name'] ); ?>"<?php echo $attrib; ?>><?php
 									foreach( $field['options'] as $key => $name ) {
 										?><option value="<?php esc_attr_e( $key ); ?>" <?php selected( $field['posted-value' ], $key ); ?>><?php esc_attr_e( $name ); ?></option><?php }
 							?></select><?php
@@ -352,11 +352,11 @@ function field_output( $field, $errors )
 				case 'token' :
 				case 'wp_token' :
 				case 'shortcode-message-to' :
-					?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" type="hidden" name="<?php esc_attr_e( $field['name'] ); ?>" value="<?php esc_attr_e( $field['value' ] ); ?>" <?php echo $attrib; ?> /><?php
+					?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" type="hidden" name="<?php esc_attr_e( $field['name'] ); ?>" value="<?php esc_attr_e( $field['value' ] ); ?>"<?php echo $attrib; ?> /><?php
 
 					break;
 				case 'fep_parent_id' :
-					?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" type="hidden" name="<?php esc_attr_e( $field['name'] ); ?>" value="<?php esc_attr_e( $field['posted-value' ] ); ?>" <?php echo $attrib; ?> /><?php
+					?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" type="hidden" name="<?php esc_attr_e( $field['name'] ); ?>" value="<?php esc_attr_e( $field['posted-value' ] ); ?>"<?php echo $attrib; ?> /><?php
 
 					break;
 					
