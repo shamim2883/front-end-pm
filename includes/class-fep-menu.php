@@ -23,15 +23,20 @@ class Fep_Menu
 
 	function menu(){
 		$menu = '';
-		
-		  foreach( $this->get_menu() as $menu_array ) {
-			$class = sanitize_html_class( $menu_array['class'] );
-			 if ( isset($_GET['fepaction']) && $_GET['fepaction'] == $menu_array['action'])
-			 $class = sanitize_html_class( $menu_array['active-class'] );
-			 
-			 $menu .= "<a class='$class' href='".fep_query_url( $menu_array['action'] )."'>".strip_tags( $menu_array['title'], '<span>' )."</a>";
-		  }
-		  echo $menu;
+
+		foreach( $this->get_menu() as $menu_array ) {
+			$class = $menu_array['class'];
+			if ( isset($_GET['fepaction']) && $_GET['fepaction'] == $menu_array['action'])
+			$class = $menu_array['active-class'];
+
+			$menu .= sprintf('<a id="%1$s" class="%2$s" href="%3$s">%4$s</a>',
+				$menu_array['id'],
+				fep_sanitize_html_class( $class ),
+				fep_query_url( $menu_array['action'] ),
+				strip_tags( $menu_array['title'], '<span>' )
+			);
+		}
+		echo $menu;
 	 }
 	
 	public function get_menu()
@@ -66,6 +71,7 @@ class Fep_Menu
 						$defaults = array(
 								'title'			=> '',
 								'action'		=> $key,
+								'id'			=> 'fep-menu-' . $key,
 								'class'			=> 'fep-button',
 								'active-class'	=> 'fep-button-active',
 								'priority'		=> 20
