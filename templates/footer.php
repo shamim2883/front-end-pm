@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 		</div><!--#fep-content -->
 	  
-	<div id='fep-footer'>
+	<div id="fep-footer">
 
 	<?php do_action('fep_footer_note'); ?>
 

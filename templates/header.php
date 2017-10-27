@@ -5,22 +5,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( $max_total && (( $max_total * 90 )/ 100 ) <= $total_count  ) {
-	$class = " class='fep-font-red'";
+	$class = ' class="fep-font-red"';
 } else {
-	$class = "";
+	$class = '';
 }
 
 ?>
 
-<div id='fep-wrapper'>
-	<div id='fep-header' class='fep-table'>
+<div id="fep-wrapper">
+	<div id="fep-header" class="fep-table">
 		<div>
 			<div>
 				<?php echo get_avatar($user_ID, 64); ?>
 			</div>
 			<div>
 				<div>
-					<strong><?php _e("Welcome", 'front-end-pm');?>: <?php echo fep_get_userdata( $user_ID, 'display_name', 'id' ); ?></strong>
+					<strong><?php _e('Welcome', 'front-end-pm');?>: <?php echo fep_get_userdata( $user_ID, 'display_name', 'id' ); ?></strong>
 				</div>
 	  			<div><?php _e('You have', 'front-end-pm');
 					?> <span class="fep_new_message_count_text"><?php printf(_n('%s message', '%s messages', $unread_count, 'front-end-pm'), number_format_i18n($unread_count) ); 
