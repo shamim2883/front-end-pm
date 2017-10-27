@@ -1814,6 +1814,7 @@ function fep_unblock_users_for_user( $user_ids, $userid ='' ){
 
 function fep_sanitize_html_class( $class ){
 	if ( $class ){
+		if( ! is_array( $class ) )
 		$class = explode( ' ', $class );
 		$class = array_map( 'sanitize_html_class', $class );
 		$class = implode( ' ', array_filter( $class ) );
