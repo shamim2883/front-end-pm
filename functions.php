@@ -1821,7 +1821,10 @@ function fep_sanitize_html_class( $class ){
 		$class = array_map( 'sanitize_html_class', $class );
 		$class = implode( ' ', array_filter( $class ) );
 	}
-	return (string) $class;
+	if( ! is_string( $class ) )
+	$class = '';
+	
+	return $class;
 }
 
 add_filter( 'document_title_parts', 'fep_show_unread_count_in_title', 999 );
