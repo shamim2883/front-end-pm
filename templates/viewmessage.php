@@ -19,10 +19,28 @@ if( $messages->have_posts() ) {
 			
 			$messages->the_post();
 			$read_class = ( $hide_read && fep_is_read() ) ? ' fep-hide-if-js' : '';
+			$content_class = array();
+			$content_class[] = 'fep-message-content';
+			$content_class[] = 'fep-message-content-' . get_the_ID();
+			//$content_class[] = 'fep-message-content-author-' . get_the_author_meta('ID');
+			$per_mgs_class = array();
+			$per_mgs_class[] = 'fep-per-message';
+			$per_mgs_class[] = 'fep-per-message-' . get_the_ID();
+			//$per_mgs_class[] = 'fep-per-message-' . get_the_author_meta('ID');
+			
+			if( get_current_user_id() == get_the_author_meta('ID') ){
+				$content_class[] = 'fep-message-content-own';
+				$per_mgs_class[] = 'fep-per-message-own';
+			}
+			if( fep_is_user_admin( get_the_author_meta('ID') ) ){
+				$content_class[] = 'fep-message-content-admin';
+				$per_mgs_class[] = 'fep-per-message-admin';
+			}
+			
+			
 			fep_make_read(); 
 			fep_make_read( true ); ?>
 			
-			<div class="fep-per-message">
 				<?php if( $i === 1 ){
 
 					$participants = fep_get_participants( get_the_ID() );
@@ -36,16 +54,18 @@ if( $messages->have_posts() ) {
 							$par[] = fep_get_userdata( $participant, 'display_name', 'id' );
 						}
 					} ?>
+				<div class="fep-per-message fep-per-message-top fep-per-message-<?php the_ID(); ?>">
 					<div class="fep-message-title-heading"><?php the_title(); ?></div>
 					<div class="fep-message-title-heading participants"><?php _e("Participants", 'front-end-pm'); ?>: <?php echo apply_filters( 'fep_filter_display_participants', implode( ', ', $par ), $par, $participants ); ?></div>
 					<div class="fep-message-toggle-all fep-align-right"><?php _e("Toggle Messages", 'front-end-pm'); ?></div>
+				</div>
 				<?php } ?>
-				
+			<div id="fep-message-<?php the_ID(); ?>" class="<?php echo fep_sanitize_html_class( $per_mgs_class ); ?>">
 				<div class="fep-message-title fep-message-title-<?php the_ID(); ?>">
 					<span class="author"><?php the_author_meta('display_name'); ?></span>
 					<span class="date"><?php the_time(); ?></span>
 				</div>
-				<div class="fep-message-content fep-message-content-<?php the_ID(); ?><?php echo $read_class; ?>">
+				<div class="<?php echo fep_sanitize_html_class( $content_class ); ?>">
 					<?php the_content(); ?>
 					
 					<?php if( $i === 1 ){
