@@ -804,10 +804,12 @@ function fep_pagination( $total = null, $per_page = null, $list_class = 'fep-pag
     return $html;
 }
 
-function fep_is_user_admin(){
+function fep_is_user_admin( $user_id = 0 ){
 	
 	$admin_cap = apply_filters( 'fep_admin_cap', 'manage_options' );
-	
+	if( $user_id ){
+		return user_can( $user_id, $admin_cap );
+	}
 	return current_user_can( $admin_cap );
 }
 
