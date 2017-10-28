@@ -44,7 +44,7 @@
 		}
 	}
 		
-    setInterval("fep_listener()", 1000);
+    setInterval( fep_listener, 1000);
     /**
      * Timed: if there are no empty file fields, add new file field.
      */
