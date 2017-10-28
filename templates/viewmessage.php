@@ -36,6 +36,10 @@ if( $messages->have_posts() ) {
 				$content_class[] = 'fep-message-content-admin';
 				$per_mgs_class[] = 'fep-per-message-admin';
 			}
+			if( $hide_read && fep_is_read() ){
+				$content_class[] = 'fep-hide-if-js';
+				//$per_mgs_class[] = 'fep-hide-if-js';
+			}
 			
 			
 			fep_make_read(); 
