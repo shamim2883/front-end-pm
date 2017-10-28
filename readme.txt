@@ -59,6 +59,7 @@ Front End PM is a Private Messaging system to your WordPress site.This is full f
 * Users can select whether or not they want to receive messages
 * Users can select whether or not they want to be notified by email when they receive a new message.
 * Users can select whether or not they want to be notified by email when a new announcement is published.
+* Users can block other users.
 
 **Translation**
 
@@ -104,6 +105,22 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 6. Security settings.
 
 == Changelog ==
+
+= 6.1 =
+
+* New: Users can block other users.
+* New: Can add announcement from front end.
+* New: Unread message notification in website title.
+* New: Show multiple users avatar in messagebox.
+* New: shortcode fep_shortcode_new_announcement_count added
+* New: All counts in widgets, shortcodes, notifications etc update by ajax.
+* New: Classes added to capture ajax response.
+* New: Notification ajax call delayed if browser tab not opened, reduce call to server.
+* New: More classes added in messages for better styling.
+* New: Select multiple users from directory.
+* Fix: Admin could not send reply if not participant.
+* Some templates changes
+* Performance improved
 
 = 5.3 =
 
@@ -319,6 +336,22 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 * Initial release.
 
 == Upgrade Notice ==
+
+= 6.1 =
+
+* New: Users can block other users.
+* New: Can add announcement from front end.
+* New: Unread message notification in website title.
+* New: Show multiple users avatar in messagebox.
+* New: shortcode fep_shortcode_new_announcement_count added
+* New: All counts in widgets, shortcodes, notifications etc update by ajax.
+* New: Classes added to capture ajax response.
+* New: Notification ajax call delayed if browser tab not opened, reduce call to server.
+* New: More classes added in messages for better styling.
+* New: Select multiple users from directory.
+* Fix: Admin could not send reply if not participant.
+* Some templates changes
+* Performance improved
 
 = 5.3 =
 
