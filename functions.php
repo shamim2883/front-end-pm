@@ -252,6 +252,9 @@ function fep_enqueue_scripts()
 		);
 		
 	wp_register_script( 'fep-notification-script', FEP_PLUGIN_URL . 'assets/js/notification.js', array( 'jquery' ), '3.1', true );
+	$call_on_ready = ( isset($_GET['fepaction']) &&
+		( ( $_GET['fepaction'] == 'viewmessage' && fep_get_new_message_number() ) || $_GET['fepaction'] == 'view_announcement' && fep_get_new_announcement_number() ) 
+		) ? '1' : '0';
 	wp_localize_script( 'fep-notification-script', 'fep_notification_script', 
 			array( 
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
@@ -259,6 +262,7 @@ function fep_enqueue_scripts()
 				'interval' => apply_filters( 'fep_filter_ajax_notification_interval', MINUTE_IN_SECONDS * 1000 ),
 				'skip' => apply_filters( 'fep_filter_skip_notification_call', 2 ), //How many times notification ajax call will be skipped if browser tab not opened
 				'show_in_title'	=> fep_get_option( 'show_unread_count_in_title', '1' ),
+				'call_on_ready'	=> apply_filters( 'fep_filter_notification_call_on_ready', $call_on_ready ),
 			) 
 		);
 	

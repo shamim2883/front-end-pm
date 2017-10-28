@@ -8,7 +8,7 @@
 			}
 		}
 		fep_notification_block_count = 0;
-		  
+		
 		var data = {
 			action: 'fep_notification_ajax',
 			token: fep_notification_script.nonce
@@ -68,5 +68,8 @@
 		}
 	}
 jQuery(document).ready(function(){
+	if( fep_notification_script.call_on_ready == "1" ){
+		fep_notification_ajax_call();
+	}
 	setInterval(fep_notification_ajax_call, parseInt(fep_notification_script.interval, 10) );
 });
