@@ -1048,6 +1048,33 @@ function fep_remove_email_filters( $for = 'message' ){
 	do_action( 'fep_action_after_remove_email_filters', $for );
 }
 
+function fep_delete_message( $message_id, $user_id = 0 ){
+	if( 'threaded' == fep_get_message_view() ){
+		$id = fep_get_parent_id( $message_id );
+	} else {
+		$id = $message_id;
+	}
+	$return = false;
+	
+	if( $user_id ) {
+		$return = add_post_meta( $id, '_fep_delete_by_'. $user_id, time(), true );
+	} elseif( fep_current_user_can( 'delete_message', $id ) ){
+		$return = add_post_meta( $id, '_fep_delete_by_'. get_current_user_id(), time(), true );
+	}
+	$should_delete_from_db = true;
+	foreach( fep_get_participants( $id ) as $participant ) {
+		if( ! get_post_meta( $id, '_fep_delete_by_'. $participant, true ) ) {
+			$should_delete_from_db = false;
+			break;
+		}
+		
+	}
+	if( $should_delete_from_db ) {
+		$return = wp_trash_post( $id  );
+	}
+	return $return;
+}
+
 function fep_send_message( $message = null, $override = array() )
 {
 	if( null === $message ) {

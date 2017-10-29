@@ -438,20 +438,7 @@ function bulk_individual_action( $action, $passed_id ) {
 	
 	switch( $action ) {
 		case 'delete':
-			if( fep_current_user_can( 'delete_message', $id ) ) {
-				$return = add_post_meta( $id, '_fep_delete_by_'. get_current_user_id(), time(), true );
-			}
-			$should_delete_from_db = true;
-			foreach( fep_get_participants( $id ) as $participant ) {
-				if( ! get_post_meta( $id, '_fep_delete_by_'. $participant, true ) ) {
-					$should_delete_from_db = false;
-					break;
-				}
-				
-			}
-			if( $should_delete_from_db ) {
-				$return = wp_trash_post( $id  );
-			}
+			$return = fep_delete_message( $id );
 		break;
 		case 'mark-as-read':
 			if( fep_current_user_can( 'view_message', $id ) ) {
