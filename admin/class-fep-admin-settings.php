@@ -262,7 +262,7 @@ class Fep_Admin_Settings
 				'priority'	=> 25,
 				'section'	=> 'announcement',
 				'class'	=> '',
-				'label' => __( 'Add Announcement From Frontend', 'front-end-pm' ),
+				'label' => __( 'Add Announcement', 'front-end-pm' ),
 				'cb_label' => __( 'Can permitted users add Announcement from frontend?', 'front-end-pm' ),
 				),
 						
@@ -355,7 +355,7 @@ class Fep_Admin_Settings
 				'section'	=> 'security',
 				'class'	=> '',
 				'label' => __( 'Block other users', 'front-end-pm' ),
-				'cb_label' => __( 'Can users block other users?', 'front-end-pm' ),
+				'cb_label' => __( 'Can user block other users?', 'front-end-pm' ),
 				),
 					
 			);
