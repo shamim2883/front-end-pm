@@ -209,7 +209,7 @@ class Fep_Directory
 				fep_success()->add( 'success', $message );
 			break;
 			default:
-				do_action( "fep_directory_posted_bulk_action_{$action }", $ids );
+				do_action( "fep_directory_posted_bulk_action_{$action}", $ids );
 			break;
 		}
 	}
