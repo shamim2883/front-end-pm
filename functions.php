@@ -1075,6 +1075,23 @@ function fep_delete_message( $message_id, $user_id = 0 ){
 	return $return;
 }
 
+function fep_undelete_message( $message_id, $user_id = 0 ){
+	if( 'threaded' == fep_get_message_view() ){
+		$id = fep_get_parent_id( $message_id );
+	} else {
+		$id = $message_id;
+	}
+	$return = false;
+	
+	if( $user_id ) {
+		$return = delete_post_meta( $id, '_fep_delete_by_'. $user_id );
+	} elseif( fep_current_user_can( 'delete_message', $id ) ){
+		$return = delete_post_meta( $id, '_fep_delete_by_'. get_current_user_id() );
+	}
+
+	return $return;
+}
+
 function fep_send_message( $message = null, $override = array() )
 {
 	if( null === $message ) {
@@ -1132,6 +1149,7 @@ function fep_send_message( $message = null, $override = array() )
 			foreach( $participants as $participant ) 
 			{
 				if( $participant != $inserted_message->post_author ){
+					fep_undelete_message( $inserted_message->post_parent, $participant);
 					delete_post_meta( $inserted_message->post_parent, '_fep_parent_read_by_'. $participant );
 					delete_user_meta( $participant, '_fep_user_message_count' );
 				}
