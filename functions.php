@@ -1699,8 +1699,8 @@ function fep_form_posted()
 		
 		wp_send_json( $response );
 	} elseif( !empty( $_POST['fep_redirect'] ) ){
-		wp_redirect( $_POST['fep_redirect'] );
-		/* exit; */
+		wp_safe_redirect( $_POST['fep_redirect'] );
+		exit;
 	}
 }
 
