@@ -23,10 +23,10 @@ if ( $max_total && (( $max_total * 90 )/ 100 ) <= $total_count  ) {
 					<strong><?php _e('Welcome', 'front-end-pm');?>: <?php echo fep_get_userdata( $user_ID, 'display_name', 'id' ); ?></strong>
 				</div>
 	  			<div><?php _e('You have', 'front-end-pm');
-					?> <span class="fep_new_message_count_text"><?php printf(_n('%s message', '%s messages', $unread_count, 'front-end-pm'), number_format_i18n($unread_count) ); 
+					?> <span class="fep_unread_message_count_text"><?php printf(_n('%s message', '%s messages', $unread_count, 'front-end-pm'), number_format_i18n($unread_count) ); 
 					?></span> <?php 
 					_e('and', 'front-end-pm');
-					?> <span class="fep_new_announcement_count_text"><?php
+					?> <span class="fep_unread_announcement_count_text"><?php
 					printf(_n('%s announcement', '%s announcements', $unread_ann_count, 'front-end-pm'), number_format_i18n($unread_ann_count) ); 
 					?></span> <?php _e('unread', 'front-end-pm'); ?>
 				</div>
