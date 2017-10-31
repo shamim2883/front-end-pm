@@ -17,28 +17,35 @@
 		jQuery.post(fep_notification_script.ajaxurl, data, function(response) {
 			
 			jQuery('.fep_unread_message_count').html(response['message_unread_count_i18n']);
+			jQuery('.fep_unread_announcement_count').html(response['announcement_unread_count_i18n']);
+			jQuery('.fep_total_message_count').html(response['message_total_count_i18n']);
+			jQuery('.fep_unread_message_count_text').html(response['message_unread_count_text']);
+			jQuery('.fep_unread_announcement_count_text').html(response['announcement_unread_count_text']);
+			
 			if ( response['message_unread_count'] ){ 
 				jQuery('.fep_unread_message_count_hide_if_zero').show();
 			} else {
 				jQuery('.fep_unread_message_count_hide_if_zero').hide();
 			}
 			
-			jQuery('.fep_unread_announcement_count').html(response['announcement_unread_count_i18n']);
 			if ( response['announcement_unread_count'] ){ 
 				jQuery('.fep_unread_announcement_count_hide_if_zero').show();
 			} else {
 				jQuery('.fep_unread_announcement_count_hide_if_zero').hide();
 			}
 			
-			jQuery('.fep-notification').html(response['notification']);
-			if ( response['notification'] ){ 
-				jQuery('.fep-notification').show();
+			if ( response['announcement_unread_count'] && response['message_unread_count'] ){ 
+				jQuery('.fep_hide_if_anyone_zero').show();
 			} else {
-				jQuery('.fep-notification').hide();
+				jQuery('.fep_hide_if_anyone_zero').hide();
 			}
-			jQuery('.fep_unread_message_count_text').html(response['message_unread_count_text']);
-			jQuery('.fep_total_message_count').html(response['message_total_count_i18n']);
-			jQuery('.fep_unread_announcement_count_text').html(response['announcement_unread_count_text']);
+			
+			if ( response['announcement_unread_count'] || response['message_unread_count'] ){ 
+				jQuery('.fep_hide_if_both_zero').show();
+			} else {
+				jQuery('.fep_hide_if_both_zero').hide();
+			}
+			
 			if( fep_notification_script.show_in_title == "1" ){
 				fep_show_count_in_title( response['message_unread_count'], response['message_unread_count_i18n'] );
 			}

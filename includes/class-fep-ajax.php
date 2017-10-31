@@ -150,7 +150,6 @@ class Fep_Ajax
 				'announcement_unread_count'			=> $ann_unread_count,
 				'announcement_unread_count_i18n'	=> number_format_i18n( $ann_unread_count ),
 				'announcement_unread_count_text'	=> sprintf(_n('%s announcement', '%s announcements', $ann_unread_count, 'front-end-pm'), number_format_i18n($ann_unread_count) ),
-				'notification'						=> fep_notification(),
 			);
 			wp_send_json( $ret );
 		}

@@ -1415,12 +1415,45 @@ function fep_notification_div() {
 				return;
 				
 	wp_enqueue_script( 'fep-notification-script' );
-	$notification = fep_notification();
-	if ( $notification )
-	echo '<div id="fep-notification-bar" class="fep-notification">' . $notification . '</div>';
-	else
-	echo '<div id="fep-notification-bar" class="fep-notification fep-hide"></div>';
-	}
+	
+	$unread_count = fep_get_new_message_number();
+	$sm = sprintf(_n('%s message', '%s messages', $unread_count, 'front-end-pm'), number_format_i18n($unread_count) );
+
+	$unread_ann_count = fep_get_new_announcement_number();
+	$sa = sprintf(_n('%s announcement', '%s announcements', $unread_ann_count, 'front-end-pm'), number_format_i18n($unread_ann_count) );
+	
+	$class = 'fep_hide_if_both_zero';
+	if( !$unread_count && !$unread_ann_count )
+	$class .= ' fep-hide';
+	
+	$show = '<div id="fep-notification-bar" class="'. $class . '">';
+	$show .= __("You have", 'front-end-pm');
+	
+	$class = 'fep_unread_message_count_hide_if_zero';
+	if( ! $unread_count )
+	$class .= ' fep-hide';
+	
+	$show .= '<span class="'.$class.'"> <a href="'.fep_query_url('messagebox').'"><span class="fep_unread_message_count_text">'. $sm . '</span></a></span>';
+	
+	$class = 'fep_hide_if_anyone_zero';
+	if( ! $unread_count || ! $unread_ann_count )
+	$class .= ' fep-hide';
+	
+	$show .= '<span class="'.$class.'"> ' .__('and', 'front-end-pm') . '</span>';
+	
+	$class = 'fep_unread_announcement_count_hide_if_zero';
+	if( ! $unread_ann_count )
+	$class .= ' fep-hide';
+		
+	$show .= '<span class="'.$class.'"> <a href="'.fep_query_url('announcements').'"><span class="fep_unread_announcement_count_text">'. $sa . '</span></a></span>';
+		
+	$show .= ' ';
+	$show .= __('unread', 'front-end-pm');
+	$show .= '</div>';
+		
+	echo apply_filters('fep_header_notification', $show);
+}
+
 
 add_action('wp_head', 'fep_notification_div', 99 );
 
