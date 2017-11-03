@@ -5,7 +5,7 @@ Donate link: https://www.paypal.me/hasanshamim
 Requires at least: 4.4
 Tested up to: 4.8.2
 Requires PHP: 5.3
-Stable tag: 5.3
+Stable tag: 6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -99,10 +99,11 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 
 1. Responsive
 2. Messagebox.
-3. Front End Directory.
-4. Admin settings page.
-5. Messagebox settings.
-6. Security settings.
+3. Unread message count in website title
+4. Front End Directory.
+5. Admin settings page.
+6. Messagebox settings.
+7. Security settings.
 
 == Changelog ==
 
