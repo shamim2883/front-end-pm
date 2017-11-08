@@ -51,7 +51,7 @@
 	-webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-	z-index: 999;
+	z-index: 999999;
 }
 .fep-font-red { color: #FF0000; }
 
