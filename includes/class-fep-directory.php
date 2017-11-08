@@ -138,7 +138,7 @@ class Fep_Directory
 			
 			case has_action("fep_directory_table_column_content_{$column}"):
 
-				do_action("fep_directory_table_column_content_{$column}");
+				do_action("fep_directory_table_column_content_{$column}", $user );
 
 			break;
 			case 'fep-cb' :
@@ -169,7 +169,7 @@ class Fep_Directory
 			}
 			break;
 			default:
-				do_action( 'fep_directory_table_column_content', $column );
+				do_action( 'fep_directory_table_column_content', $column, $user );
 			break;
 		}
 	}
