@@ -524,6 +524,10 @@ function get_column_content($column)
 		break;
 		case 'avatar' :
 			$participants = fep_get_participants( get_the_ID() );
+			if ( apply_filters('fep_remove_own_avatar_from_messagebox', false )
+			&& ($key = array_search(get_current_user_id(), $participants)) !== false) {
+				unset($participants[$key]);
+			}
 			$count = 1;
 		?>
 		<div class="fep-avatar-p <?php echo ( count( $participants ) > 2 ) ? 'fep-avatar-p-120' : 'fep-avatar-p-90' ?>"><?php
