@@ -487,7 +487,7 @@ function field_output( $field, $errors )
 								$errors->add( $field['id'] , sprintf(__("%s does not want to receive messages!", 'front-end-pm'), fep_get_userdata( $to, 'display_name', 'id')));
 							}
 						} else {
-							$errors->add( $field['id'] , sprintf(__('Invalid receiver "%s".', "front-end-pm"), $pre ) );
+							$errors->add( $field['id'] , sprintf(__('Invalid receiver "%s".', "front-end-pm"), $preTo ) );
 						}
 					  }
 					  
@@ -544,7 +544,7 @@ function field_output( $field, $errors )
 				
 							//check file size
 							if ( $attach_size > $size_limit ) {
-								$errors->add('AttachmentSize', sprintf(__( "Attachment (%s) file is too big", 'front-end-pm' ), esc_html($file_name) ));
+								$errors->add('AttachmentSize', sprintf(__( 'Attachment (%1$s) file is too big. Maximum file size allowed %2$s', 'front-end-pm' ), esc_html($file_name), fep_get_option('attachment_size','4MB') ));
 							}
 				
 							//check file type
