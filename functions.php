@@ -1101,7 +1101,7 @@ function fep_send_message( $message = null, $override = array() )
 	if( ! empty($message['fep_parent_id'] ) ) {
 		$message['post_parent'] = absint( $message['fep_parent_id'] );
 		$message['post_status'] = fep_get_option('reply_post_status','publish');
-		$message['message_title'] = __('RE:', 'front-end-pm'). ' ' . get_the_title( $message['post_parent'] );
+		$message['message_title'] = __('RE:', 'front-end-pm'). ' ' . wp_slash( get_post( $message['post_parent'] )->post_title );
 		if( 'threaded' != fep_get_message_view() )
 			$message['message_to_id'] = fep_get_participants( $message['post_parent'] );
 	} else {
