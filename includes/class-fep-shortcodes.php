@@ -66,6 +66,8 @@ class Fep_Shortcodes
 					$atts['to'] = $nicename;
 				}
 				unset( $nicename );
+			} elseif( '{um-current-author}' == $atts['to'] && function_exists( 'um_profile_id' ) ){
+				$atts['to'] = fep_get_userdata( um_profile_id(), 'user_nicename', 'id' );
 			} else {
 				$atts['to'] = esc_html( $atts['to'] );
 			}
@@ -101,6 +103,8 @@ class Fep_Shortcodes
 					$atts['to'] = $nicename;
 				}
 				unset( $nicename );
+			} elseif( '{um-current-author}' == $atts['to'] && function_exists( 'um_profile_id' ) ){
+				$atts['to'] = fep_get_userdata( um_profile_id(), 'user_nicename', 'id' );
 			} else {
 				$atts['to'] = esc_html( $atts['to'] );
 			}
