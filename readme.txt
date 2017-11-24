@@ -3,9 +3,9 @@ Contributors: shamim51
 Tags: front end pm,front-end-pm,pm,private message,personal message,front end,frontend pm,frontend,message,widget,plugin,sidebar,shortcode,page,email,mail,contact form, secure contact form, simple contact form
 Donate link: https://www.paypal.me/hasanshamim
 Requires at least: 4.4
-Tested up to: 4.8.2
+Tested up to: 4.9
 Requires PHP: 5.3
-Stable tag: 6.1
+Stable tag: 6.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -106,6 +106,15 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 7. Security settings.
 
 == Changelog ==
+
+= 6.2 =
+
+* New: Shortcode attr.
+* New: Max file size allowed shows when size error.
+* New: fep_remove_own_avatar_from_messagebox filter.
+* Pass user data in directory hook.
+* Increase z-index for header notification
+* Fix: Title was filtered wrongly.
 
 = 6.1 =
 
