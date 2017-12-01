@@ -277,7 +277,7 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 * Now admin can see how many users seen that announcement.
 * Use of transient increases so less db query.
 * Now Widgets can be used multiple times.You can cofigure widgets now. You can also use hooks.
-* Now use wordpress ajax for autosuggestion when typing recipent name.
+* Now use wordpress ajax for autosuggestion when typing recipient name.
 * Custom CSS support. admin can add CSS from backend to add or override this plugins CSS.
 * Now script and plugin files added only when needed.
 * You can also add or remove any file of this plugin using hook.
@@ -508,7 +508,7 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 * Now admin can see how many users seen that announcement.
 * Use of transient increases so less db query.
 * Now Widgets can be used multiple times.You can cofigure widgets now. You can also use hooks.
-* Now use wordpress ajax for autosuggestion when typing recipent name.
+* Now use wordpress ajax for autosuggestion when typing recipient name.
 * Custom CSS support. admin can add CSS from backend to add or override this plugins CSS.
 * Now script and plugin files added only when needed.
 * You can also add or remove any file of this plugin using hook.

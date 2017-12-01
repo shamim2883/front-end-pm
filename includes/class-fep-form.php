@@ -36,11 +36,11 @@ if (!class_exists('Fep_Form'))
 	$fields = array(
 				'message_to' => array(
 					'label'       => __( 'To', 'front-end-pm' ),
-					//'description' => __( 'Name of the receipent you want to send message.', 'front-end-pm' ),
+					//'description' => __( 'Name of the recipient you want to send message.', 'front-end-pm' ),
 					'type'        => 'message_to',
 					'required'    => true,
-					'placeholder' => __( 'Name of the receipent.', 'front-end-pm' ),
-					'noscript-placeholder' => __( 'Username of the receipent.', 'front-end-pm' ),
+					'placeholder' => __( 'Name of the recipient.', 'front-end-pm' ),
+					'noscript-placeholder' => __( 'Username of the recipient.', 'front-end-pm' ),
 					'value' => '',
 					'id' => 'fep-message-to',
 					'name' => 'message_to',
