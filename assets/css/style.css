@@ -246,7 +246,7 @@
 .fep-avatar-p-90 {
 	min-width: 90px;
 }
-.fep-avatar-p .fep-avatar-1, .fep-avatar-p .fep-avatar-2, .fep-avatar-more-60 {
+.fep-avatar-p .fep-avatar-1, .fep-avatar-p .fep-avatar-2, .fep-avatar-more-60, .fep-avatar-group-60  {
     width: 60px;
     height: 60px;
 }
@@ -257,6 +257,9 @@
 }
 .fep-avatar-more-60 {
     background:url('../images/avatar-more-60.png') no-repeat 0 0;
+}
+.fep-avatar-group-60 {
+    background:url('../images/avatar-group-60.png') no-repeat 0 0;
 }
 .fep-avatar-p .fep-avatar-more-60 {
     position: absolute;

@@ -539,6 +539,9 @@ function get_column_content($column)
 				?><div class="fep-avatar-<?php echo $count; ?>"><?php echo get_avatar( $p, 60, '', '', array( 'extra_attr'=> 'title="'. fep_get_userdata( $p, 'display_name', 'ID' ) . '"') ); ?></div><?php
 				$count++;
 			}
+			if( ! $participants && $group = get_post_meta( get_the_ID(), '_fep_group', true ) ){
+				echo '<div class="fep-avatar-group-60" title="' . __('Group', 'front-end-pm') . '"></div>';
+			}
 		echo '</div>';
 		break;
 		case 'author' :
