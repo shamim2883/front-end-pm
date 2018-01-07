@@ -351,7 +351,7 @@ function user_messages( $action = 'messagebox', $user_id = false )
 			break;
 		 }
 		 
-		 $args = apply_filters( 'fep_message_query_args', $args);
+		 $args = apply_filters( 'fep_message_query_args', $args, $user_id );
 		 
 		if( 'threaded' == fep_get_message_view() && apply_filters( 'fep_thread_show_last_message', true ) ){
 			
