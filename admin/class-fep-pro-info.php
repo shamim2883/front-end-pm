@@ -330,7 +330,7 @@ class Fep_Pro_Info
 				'type'	=>	'checkbox',
 				'class'	=> '',
 				'section'	=> 'oa_admins',
-				'value' => fep_get_option('oa-can-send-to-admin', 1 ),
+				'value' => fep_get_option('oa-can-send-to-admin', 0 ),
 				'description' => __( 'Can users send message to admin.', 'front-end-pm' ),
 				'label' => __( 'Can send to admin', 'front-end-pm' )
 				);
