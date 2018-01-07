@@ -24,6 +24,7 @@ class Fep_Pro_Info
 			add_filter( 'fep_admin_settings_tabs', array($this, 'admin_settings_tabs' ) );
 			add_filter( 'fep_settings_fields', array($this, 'settings_fields' ) );
 			add_action('fep_admin_settings_field_output_oa_admins', array($this, 'field_output_oa_admins' ) );
+			add_action('fep_admin_settings_field_output_gm_groups', array($this, 'field_output_gm_groups' ) );
 			add_action('fep_admin_settings_field_output_rtr_block', array($this, 'field_output_rtr_block' ) );
     	}
 	
@@ -121,6 +122,13 @@ class Fep_Pro_Info
 				'section_page'		=> 'fep_settings_recipient',
 				'section_callback'	=> array($this, 'section_callback' ),
 				'priority'			=> 15,
+				'tab_output'		=> false
+				);
+		$tabs['gm_groups'] =  array(
+				'section_title'			=> __('Groups', 'front-end-pm'),
+				'section_page'		=> 'fep_settings_recipient',
+				'section_callback'	=> array($this, 'section_callback' ),
+				'priority'			=> 20,
 				'tab_output'		=> false
 				);
 		$tabs['rtr_block'] =  array(
@@ -352,6 +360,40 @@ class Fep_Pro_Info
 					'radio'	=> __( 'Radio Button', 'front-end-pm' )
 					)
 				);
+			$fields['can-send-to-group'] =   array(
+				'type'	=>	'checkbox',
+				'class'	=> '',
+				'section'	=> 'gm_groups',
+				'value' => fep_get_option('can-send-to-group', 0 ),
+				'cb_label' => __( 'Can users send message to group.', 'front-end-pm' ),
+				'label' => __( 'Can send to group', 'front-end-pm' )
+				);
+			$fields['can-add-to-group'] =   array(
+				'type'	=>	'checkbox',
+				'class'	=> '',
+				'section'	=> 'gm_groups',
+				'value' => fep_get_option('can-add-to-group', 0 ),
+				'cb_label' => __( 'Can users add themself to group.', 'front-end-pm' ),
+				'label' => __( 'Can add to group', 'front-end-pm' )
+				);
+			$fields['gm_groups'] =   array(
+				'type'	=>	'gm_groups',
+				'section'	=> 'gm_groups',
+				'value' => fep_get_option('gm_groups', array()),
+				'description' => __( 'Do not forget to save.', 'front-end-pm' ),
+				'label' => __( 'Groups', 'front-end-pm' )
+				);
+			$fields['gm_frontend'] =   array(
+				'type'	=>	'select',
+				'section'	=> 'gm_groups',
+				'value' => fep_get_option('gm_frontend', 'dropdown' ),
+				'description' => __( 'Select how you want to see in frontend.', 'front-end-pm' ),
+				'label' => __( 'Show in front end as', 'front-end-pm' ),
+				'options'	=> array(
+					'dropdown'	=> __( 'Dropdown', 'front-end-pm' ),
+					'radio'	=> __( 'Radio Button', 'front-end-pm' )
+					)
+				);
 			$fields['rtr_block'] =   array(
 				'type'	=>	'rtr_block',
 				'section'	=> 'rtr_block',
@@ -374,6 +416,11 @@ class Fep_Pro_Info
 			<div><input type="button" class="button" value="<?php esc_attr_e( 'Add More', 'front-end-pm' ); ?>" /></div>
 		<?php
 		
+		}
+		
+		function field_output_gm_groups(){ ?>
+			<div><input type="button" class="button" value="<?php esc_attr_e( 'Add More', 'front-end-pm' ); ?>" /></div>
+			<?php
 		}
 		function field_output_rtr_block( $field ){
 		
@@ -398,6 +445,7 @@ class Fep_Pro_Info
 		
 		function to_use_wp_online_translation(){
 			__( 'Send Message to admin', 'front-end-pm' );
+			__( 'Send Message to group', 'front-end-pm' );
 		}
 		
   } //END CLASS
