@@ -65,6 +65,8 @@ class Fep_Emails
 		
 		$participants = fep_get_participants( $postid );
 		
+		$participants = apply_filters( 'fep_filter_send_email_participants', $participants, $postid );
+		
 		if( $participants && is_array( $participants ) )
 		{
 			
