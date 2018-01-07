@@ -1137,6 +1137,15 @@ function fep_send_message( $message = null, $override = array() )
 	}
 	$inserted_message = get_post( $message_id );
 	
+	 do_action('fep_action_message_after_send', $message_id, $message, $inserted_message );
+	
+	return $message_id;
+}
+
+add_action( 'fep_action_message_after_send', 'fep_add_message_participants', 5, 3 );
+
+function fep_add_message_participants( $message_id, $message, $inserted_message ){
+	
 	if( $inserted_message->post_parent ) {
 		if( 'threaded' == fep_get_message_view() ){
 			if( ! in_array( $inserted_message->post_author, fep_get_participants( $inserted_message->post_parent ) )){
@@ -1180,10 +1189,6 @@ function fep_send_message( $message = null, $override = array() )
 			
 		fep_make_read( true, $message_id, $inserted_message->post_author );
 	}
-	
-	 do_action('fep_action_message_after_send', $message_id, $message, $inserted_message );
-	
-	return $message_id;
 }
 
 add_action ('transition_post_status', 'fep_send_message_transition_post_status', 10, 3);
