@@ -347,7 +347,7 @@ function user_messages( $action = 'messagebox', $user_id = false )
 				);
 			break;
 			default:
-				$args = apply_filters( 'fep_message_query_args_'. $filter, $args);
+				$args = apply_filters( 'fep_message_query_args_'. $filter, $args, $user_id );
 			break;
 		 }
 		 
