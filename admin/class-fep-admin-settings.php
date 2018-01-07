@@ -594,9 +594,14 @@ class Fep_Admin_Settings
 		wp_parse_str( $_POST['_wp_http_referer'], $referrer );
 
 		$tab       = !empty( $referrer['tab'] ) ? $referrer['tab'] : 'general';
+		
+		if( empty( $referrer['page'] ) || 'fep_settings' != $referrer['page'] )
+		return $value;
 	
-		if( empty( $wp_settings_sections['fep_settings_' . $tab] ) )
-			return /** $value */ get_option('FEP_admin_options');
+		if( empty( $wp_settings_sections['fep_settings_' . $tab] ) ){
+			//return /** $value */ get_option('FEP_admin_options');
+			return $value;
+		}
 	
 		$posted_value = array();
 	
