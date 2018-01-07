@@ -184,7 +184,7 @@ function user_message_count( $value = 'all', $force = false, $user_id = false )
 			$args['post_parent'] = 0;
 			$args['fields'] = 'ids';
 		}
-		$args = apply_filters( 'fep_message_count_query_args', $args);
+		$args = apply_filters( 'fep_message_count_query_args', $args, $user_id );
 		
 		 $messages = get_posts( $args );
 		 
