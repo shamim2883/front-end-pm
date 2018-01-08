@@ -18,6 +18,7 @@ Front End PM is a Private Messaging system to your WordPress site.This is full f
 >
 > * Multiple Recipients
 > * Only admin
+> * Group message
 > * Email Piping
 > * Read Receipt
 > * Email template
@@ -106,6 +107,17 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 7. Security settings.
 
 == Changelog ==
+
+= 6.3 =
+
+* New: fep_filter_send_email_participants added.
+* pass user_id to fep_message_query_args filter
+* pass user_id to fep_message_count_query_args filter
+* pass user_id to fep_message_query_args_'. $filter filter
+* add participants in fep_action_message_after_send hook
+* New css class added.
+* Fix: Option save not updated.
+* New feature: Group message (PRO)
 
 = 6.2 =
 
@@ -346,6 +358,26 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 * Initial release.
 
 == Upgrade Notice ==
+
+= 6.3 =
+
+* New: fep_filter_send_email_participants added.
+* pass user_id to fep_message_query_args filter
+* pass user_id to fep_message_count_query_args filter
+* pass user_id to fep_message_query_args_'. $filter filter
+* add participants in fep_action_message_after_send hook
+* New css class added.
+* Fix: Option save not updated.
+* New feature: Group message (PRO)
+
+= 6.2 =
+
+* New: Shortcode attr.
+* New: Max file size allowed shows when size error.
+* New: fep_remove_own_avatar_from_messagebox filter.
+* Pass user data in directory hook.
+* Increase z-index for header notification
+* Fix: Title was filtered wrongly.
 
 = 6.1 =
 
