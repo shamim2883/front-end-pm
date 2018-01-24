@@ -140,7 +140,7 @@ function get_user_announcements()
  			'relation' => 'OR',
 				array(
 					'key' => '_fep_participant_roles',
-					'value' => wp_get_current_user()->roles,
+					'value' => get_userdata( $user_id )->roles,
 					'compare' => 'IN'
 				),
  				array(
