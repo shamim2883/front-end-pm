@@ -159,12 +159,13 @@ function user_message_count( $value = 'all', $force = false, $user_id = false )
 	
 	$user_meta = get_user_meta( $user_id, '_fep_user_message_count', true );
 	
-	if( false === $user_meta || $force || !isset( $user_meta['total'] ) || !isset( $user_meta['read'] )|| !isset( $user_meta['unread'] ) || !isset( $user_meta['archive'] ) || !isset( $user_meta['inbox'] ) || !isset( $user_meta['sent'] ) ) {
+	if( false === $user_meta || $force || !isset( $user_meta['total'] ) || !isset( $user_meta['unread'] ) ) {
 	
 		$args = array(
 			'post_type' => 'fep_message',
 			'post_status' => 'publish',
 			'posts_per_page' => -1,
+			'fields' => 'ids',
 			'meta_query' => array(
 				array(
 					'key' => '_fep_participants',
@@ -176,81 +177,30 @@ function user_message_count( $value = 'all', $force = false, $user_id = false )
 					//'value' => $id,
 					'compare' => 'NOT EXISTS'
 				)
-				
 			)
 		 );
 		 
 		if( 'threaded' == fep_get_message_view() ){
 			$args['post_parent'] = 0;
-			$args['fields'] = 'ids';
 		}
 		$args = apply_filters( 'fep_message_count_query_args', $args, $user_id );
 		
-		 $messages = get_posts( $args );
-		 
-		 $total_count 		= 0;
-		 $read_count 		= 0;
-		 $unread_count 		= 0;
-		 $archive_count 	= 0;
-		 $inbox_count 		= 0;
-		 $sent_count 		= 0;
-		 
-		 if( $messages && !is_wp_error($messages) ) {
-		 	
-			if( 'threaded' == fep_get_message_view() ){
-				$message_ids = $messages;
-			} else {
-				$message_ids = array();
-				foreach( $messages as $m ){
-					$message_ids[] = $m->ID;
-				}
-				reset( $messages );
-			}
-			update_postmeta_cache( $message_ids ); //Update all meta cache in one query
-			
-			 foreach( $messages as $message ) {
-			 	$total_count++;
-			 	
-				if( 'threaded' == fep_get_message_view() ){
-					$message_id = $message;
-					$from_user 		= get_post_meta( $message_id, '_fep_last_reply_by', true );
-				} else {
-					$message_id = $message->ID;
-					$from_user 		= $message->post_author;
-				}
-				$to_user_meta 	= fep_get_participants( $message_id );
-				
-			 	$read_meta 	= get_post_meta( $message_id, '_fep_parent_read_by_'. $user_id, true );
-				$archive_meta 	= get_post_meta( $message_id, '_fep_archived_by_'. $user_id, true );
-				
-			 	if( $from_user == $user_id )
-				{
-					$sent_count++;
-					
-				} elseif( is_array( $to_user_meta ) && in_array($user_id, $to_user_meta ) ) {
-				
-					$inbox_count++;
-				}
-				if( $archive_meta ) {
-				
-					$archive_count++;
-				}
-				if( $read_meta ) {
-						$read_count++;
-					} else {
-						$unread_count++;
-					}
-				}
-			 }
-
+		$messages = get_posts( $args );
+		
+		$total_count 	= count( $messages );
+		
+		$args['meta_query'][] = array(
+			'key' => '_fep_parent_read_by_'. $user_id,
+			'compare' => 'NOT EXISTS'
+		);
+		
+		$messages = get_posts( $args );
+		
+		$unread_count 	= count( $messages );
 		 
 		 $user_meta = array(
 			'total' => $total_count,
-			'read' => $read_count,
 			'unread' => $unread_count,
-			'archive' => $archive_count,
-			'inbox' => $inbox_count,
-			'sent' => $sent_count
 		);
 		update_user_meta( $user_id, '_fep_user_message_count', $user_meta );
 	}
