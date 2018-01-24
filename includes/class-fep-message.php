@@ -9,6 +9,8 @@ class Fep_Message
   {
 	private static $instance;
 	
+	public $found_messages = false;
+	
 	public static function init()
         {
             if(!self::$instance instanceof self) {
@@ -305,7 +307,10 @@ function user_messages( $action = 'messagebox', $user_id = false )
 		 
 		if( 'threaded' == fep_get_message_view() && apply_filters( 'fep_thread_show_last_message', true ) ){
 			
-			$ids = get_posts( wp_parse_args( array( 'fields' => 'ids' ), $args ) );
+			$query = new WP_Query( wp_parse_args( array( 'fields' => 'ids' ), $args ) );
+			//$ids = get_posts( wp_parse_args( array( 'fields' => 'ids' ), $args ) );
+			$ids = $query->posts;
+			$this->found_messages = $query->found_posts;
 			
 			if( $ids = array_filter( array_map( 'absint', $ids ) ) ){
 				global $wpdb;
@@ -316,6 +321,7 @@ function user_messages( $action = 'messagebox', $user_id = false )
 					$args = array(
 						'post_type' => 'fep_message',
 						'post_status' => 'publish',
+						'no_found_rows' => true,
 						'posts_per_page' => fep_get_option( 'messages_page', 15 ),
 						'post__in'		=> $message_ids,
 						'order'		=> isset( $args['order'] ) ? $args['order'] : 'DESC',
@@ -330,7 +336,13 @@ function user_messages( $action = 'messagebox', $user_id = false )
 		} else {
 			//return new WP_Query( $args );
 		}
-	return new WP_Query( $args );
+		
+		$query = new WP_Query( $args );
+		if( false === $this->found_messages ){
+			$this->found_messages = $query->found_posts;
+		}
+		
+	return $query;
 
 }
 
