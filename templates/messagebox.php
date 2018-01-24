@@ -5,12 +5,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 echo fep_info_output();
-
+/*
 if( ! $total_message ) {
 	echo "<div class='fep-error'>".apply_filters('fep_filter_messagebox_empty', __("No messages found.", 'front-end-pm'), $action)."</div>";
 	return;
 }
-
+*/
 do_action('fep_display_before_messagebox', $action);
 	  
 	  	?><div class="fep-messagebox-search-form-div">
@@ -58,7 +58,7 @@ do_action('fep_display_before_messagebox', $action);
 				<?php
 			} //endwhile
 			?></div><?php
-			echo fep_pagination();
+			echo fep_pagination( $total_message );
 		} else {
 			?><div class="fep-error"><?php _e('No messages found. Try different filter.', 'front-end-pm'); ?></div><?php 
 		}
