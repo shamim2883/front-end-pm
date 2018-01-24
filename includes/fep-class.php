@@ -286,11 +286,12 @@ if (!class_exists("fep_main_class"))
 	  	$g_filter = ! empty( $_GET['fep-filter'] ) ? $_GET['fep-filter'] : '';
 	  
 	  	if( false === $total_message ) {
-	  		$total_message = fep_get_user_message_count('total');
+	  		//$total_message = fep_get_user_message_count('total');
 	  	}
 	  
 	  	if( false === $messages ){
 	  		$messages = Fep_Message::init()->user_messages( $action );
+			$total_message = Fep_Message::init()->found_messages;
 	  	}
 	  
 	  $template = fep_locate_template( 'messagebox.php');
