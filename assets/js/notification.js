@@ -49,6 +49,7 @@
 			if( fep_notification_script.show_in_title == "1" ){
 				fep_show_count_in_title( response['message_unread_count'], response['message_unread_count_i18n'] );
 			}
+			jQuery(document).trigger( 'fep_notification', response );
 			
 		}, 'json');
 	}
