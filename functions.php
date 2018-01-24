@@ -1069,7 +1069,7 @@ function fep_delete_message( $message_id, $user_id = 0 ){
 		}
 		
 	}
-	if( $should_delete_from_db ) {
+	if( $should_delete_from_db && ! get_post_meta( $id, '_fep_group', true ) ) {
 		$return = wp_trash_post( $id  );
 	}
 	return $return;
