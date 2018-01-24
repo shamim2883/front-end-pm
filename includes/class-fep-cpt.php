@@ -28,6 +28,7 @@ class Fep_Cpt {
 		add_action ('fep_save_message', array($this, 'fep_save_message'), 10, 3 );
 		
 		add_action ('fep_save_announcement', array($this, 'save_announcement_to'), 10, 3 );
+		add_action ('fep_save_announcement', array($this, 'save_announcement_author'), 10, 3 );
 		
 		add_action ('edit_form_after_title', array($this, 'edit_form_after_title') );
 		add_action ('add_meta_boxes', array($this, 'add_meta_boxes') );
@@ -182,6 +183,10 @@ function save_announcement_to( $announcement_id, $announcement, $update ){
 			}
 	
 	}
+}
+
+function save_announcement_author( $announcement_id, $announcement, $update ){
+	update_post_meta( $announcement_id, '_fep_author', $announcement->post_author );
 }
 	
 function fep_message_to_box_content( $post ) {

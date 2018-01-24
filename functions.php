@@ -1281,6 +1281,7 @@ function fep_add_announcement( $announcement = null, $override = array() )
 			add_post_meta( $announcement_id, '_fep_participant_roles', $role );
 		}
 	}
+	add_post_meta( $announcement_id, '_fep_author', $inserted_announcement->post_author, true);
 	
 	 do_action('fep_action_announcement_after_added', $announcement_id, $announcement, $inserted_announcement );
 	

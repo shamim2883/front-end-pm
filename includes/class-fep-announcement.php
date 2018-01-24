@@ -31,7 +31,7 @@ class Fep_Announcement
 		
 		$menu = Fep_Menu::init()->get_menu();
 		if( ! empty( $menu['announcements'] ) ){
-			add_filter( 'posts_where' , array( $this, 'posts_where' ), 99, 2 );
+			//add_filter( 'posts_where' , array( $this, 'posts_where' ), 99, 2 );
 			add_filter('fep_filter_switch_announcements', array($this, 'announcement_box'));
 			add_filter('fep_filter_switch_view_announcement', array($this, 'view_announcement'));
 			add_action( 'fep_posted_bulk_announcement_bulk_action', array($this, 'bulk_action') );
@@ -135,15 +135,20 @@ function get_user_announcements()
 			'post_parent' => 0,
 			'posts_per_page' => fep_get_option('announcements_page',15),
 			'paged'	=> !empty($_GET['feppage']) ? absint($_GET['feppage']): 1,
-			'meta_query' => array(
+		 );
+		 $args['meta_query'][] = array(
+ 			'relation' => 'OR',
 				array(
 					'key' => '_fep_participant_roles',
 					'value' => wp_get_current_user()->roles,
 					'compare' => 'IN'
-				)
-				
-			)
-		 );
+				),
+ 				array(
+ 					'key' => '_fep_author',
+ 					'value' => $user_id,
+ 					'compare' => '='
+ 				),
+ 		);
 		$args['meta_query'][] = array(
 			'relation' => 'OR',
 				array(
@@ -161,10 +166,6 @@ function get_user_announcements()
 		 
 		 if( ! $user_id )
 			$args['post__in'] = array(0);
-			
-		if( $user_id && apply_filters( 'fep_filter_announcement_include_own', true ) ){
-			$args['fep_announcement_include_own'] = true;
-		}
 		 
 		 switch( $filter ) {
 		 	case 'after-i-registered' :
@@ -228,15 +229,20 @@ function get_user_announcement_count( $value = 'all', $force = false, $user_id =
 			'post_status' => 'publish',
 			'post_parent' => 0,
 			'posts_per_page' => -1,
-			'meta_query' => array(
+		 );
+		 $args['meta_query'][] = array(
+ 			'relation' => 'OR',
 				array(
 					'key' => '_fep_participant_roles',
 					'value' => get_userdata( $user_id )->roles,
 					'compare' => 'IN'
-				)
-				
-			)
-		 );
+				),
+ 				array(
+ 					'key' => '_fep_author',
+ 					'value' => $user_id,
+ 					'compare' => '='
+ 				),
+ 		);
 		 $args['meta_query'][] = array(
 			'relation' => 'OR',
 				array(
@@ -250,10 +256,6 @@ function get_user_announcement_count( $value = 'all', $force = false, $user_id =
 					'compare' => 'NOT LIKE'
 				),
 		);
-		if( apply_filters( 'fep_filter_announcement_include_own', true ) ){
-			$args['fep_announcement_include_own'] = true;
-			$args['suppress_filters'] = false;
-		}
 		$args = apply_filters( 'fep_announcement_count_query_args', $args);
 		
 		 $announcements = get_posts( $args );

@@ -138,7 +138,7 @@ class Fep_Update
 				$require = true;
 			}
 		}
-		if( version_compare( $prev_ver, '5.1', '<' ) ) {
+		if( version_compare( $prev_ver, '6.4', '<' ) ) {
 			$require = true;
 		}
 		
@@ -168,6 +168,10 @@ class Fep_Update
 		
 		if( version_compare( $prev_ver, '5.1', '<' ) ) {
 			$this->update_version_51();
+		}
+		
+		if( version_compare( $prev_ver, '6.4', '<' ) ) {
+			$this->update_version_64();
 		}
 		
 		do_action( 'fep_plugin_manual_update', $prev_ver );
@@ -317,6 +321,53 @@ class Fep_Update
 		$response = array(
 			//'update'  		=> 'continue',
 			'message'	=> __('Messages meta updated', 'front-end-pm'),
+			'custom_int'        => 0,
+			'custom_str'		=> ''
+		);
+		wp_send_json( $response );
+	}
+	
+	function update_version_64(){
+		$updated = fep_get_option( 'v64', 0, 'fep_updated_versions' );
+		if( $updated )
+			return;
+		$custom_int   = isset( $_POST['custom_int'] )   ? absint( $_POST['custom_int'] )  : 0;
+		
+		ignore_user_abort( true );
+		if ( ! ini_get( 'safe_mode' ) )
+			@set_time_limit( 300 );
+			
+		$args = array(
+			'post_type' => 'fep_announcement',
+			'posts_per_page' => 100,
+			'post_status'    => 'any',
+			'meta_query' => array(
+				array(
+					'key' => '_fep_author',
+					'compare' => 'NOT EXISTS'
+				)
+			)
+		 );
+		 $announcements = get_posts( $args );
+		 $custom_int = $custom_int + count( $announcements );
+		 
+		 if( $announcements && !is_wp_error($announcements) ) {
+			 foreach( $announcements as $announcement ) {
+				 add_post_meta( $announcement->ID, '_fep_author', $announcement->post_author, true);
+			 }
+			 $response = array(
+	 			//'update'  		=> 'continue',
+	 			'message'	=> sprintf(_n('%s announcement', '%s announcements', $custom_int, 'front-end-pm'), number_format_i18n( $custom_int ) ) . ' ' . __( 'author updated', 'front-end-pm'),
+	 			'custom_int'        => $custom_int,
+	 			'custom_str'		=> ''
+	 		);
+	 		wp_send_json( $response );
+		 }		
+		
+		fep_update_option( 'v64', 1, 'fep_updated_versions' );
+		$response = array(
+			//'update'  		=> 'continue',
+			'message'	=> __('Announcement author updated', 'front-end-pm'),
 			'custom_int'        => 0,
 			'custom_str'		=> ''
 		);
