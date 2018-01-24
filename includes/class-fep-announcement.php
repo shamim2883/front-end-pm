@@ -222,13 +222,14 @@ function get_user_announcement_count( $value = 'all', $force = false, $user_id =
 	
 	$user_meta = get_user_meta( $user_id, '_fep_user_announcement_count', true );
 	
-	if( false === $user_meta || $force || !isset( $user_meta['total'] ) || !isset( $user_meta['read'] )|| !isset( $user_meta['unread'] ) ) {
+	if( false === $user_meta || $force || !isset( $user_meta['unread'] ) ) {
 	
 		$args = array(
 			'post_type' => 'fep_announcement',
 			'post_status' => 'publish',
 			'post_parent' => 0,
 			'posts_per_page' => -1,
+			'fields' => 'ids',
 		 );
 		 $args['meta_query'][] = array(
  			'relation' => 'OR',
@@ -256,42 +257,25 @@ function get_user_announcement_count( $value = 'all', $force = false, $user_id =
 					'compare' => 'NOT LIKE'
 				),
 		);
+		$args['meta_query'][] = array(
+			'relation' => 'OR',
+				array(
+					'key' => '_fep_read_by',
+					'compare' => 'NOT EXISTS'
+				),
+				array(
+					'key' => '_fep_read_by',
+					'value' => serialize($user_id),
+					'compare' => 'NOT LIKE'
+				),
+		);
+
 		$args = apply_filters( 'fep_announcement_count_query_args', $args);
 		
 		 $announcements = get_posts( $args );
 		 
-		 $total_count 		= 0;
-		 $read_count 		= 0;
-		 $unread_count 		= 0;
-		 $after_i_registered_count = 0;
-		 
-		 if( $announcements && !is_wp_error($announcements) ) {
-			 foreach( $announcements as $announcement ) {
-		
-			 	$total_count++;
-				
-			 	$read_by = get_post_meta( $announcement->ID, '_fep_read_by', true );
-			
-				if( is_array( $read_by ) && in_array( $user_id, $read_by ) ) {
-					$read_count++;
-				} else {
-					$unread_count++;
-				}
-				$user_registered = strtotime(fep_get_userdata( $user_id, 'user_registered', 'id' ));
-					
-				if( $user_registered < strtotime( $announcement->post_date ) ) {
-					$after_i_registered_count++;
-				}
-				
-			 }
-			}
-
-		 
 		 $user_meta = array(
-			'total' => $total_count,
-			'read' => $read_count,
-			'unread' => $unread_count,
-			'after-i-registered' => $after_i_registered_count
+			'unread' => count( $announcements ),
 		);
 		update_user_meta( $user_id, '_fep_user_announcement_count', $user_meta );
 	}
@@ -431,9 +415,9 @@ function get_column_content($column)
 	{		
 		  $g_filter = ! empty( $_GET['fep-filter'] ) ? $_GET['fep-filter'] : '';
 		  
-		  $total_announcements = $this->get_user_announcement_count('total');
-		  
 		  $announcements = $this->get_user_announcements();
+		  
+		  $total_announcements = $announcements->found_posts;
 		  
 		  $template = fep_locate_template( 'announcement_box.php');
 		  
