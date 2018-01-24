@@ -758,15 +758,13 @@ function fep_sort_by_priority( $a, $b ) {
 
 	
 function fep_pagination( $total = null, $per_page = null, $list_class = 'fep-pagination' ) {
-
-	$filter = ! empty( $_GET['fep-filter'] ) ? $_GET['fep-filter'] : 'total';
 	
- 	if( null === $total ) {
-		$total = fep_get_user_message_count($filter);
-	}
+	$total = apply_filters( 'fep_pagination_total', $total);
+	
 	if( null === $per_page ) {
 		$per_page = fep_get_option('messages_page',15);
 	}
+	$per_page = apply_filters( 'fep_pagination_per_page', $per_page);
 		
     $last       = ceil( absint($total) / absint($per_page) );
 	
