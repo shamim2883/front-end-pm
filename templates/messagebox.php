@@ -5,12 +5,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 echo fep_info_output();
-/*
-if( ! $total_message ) {
+
+if( ! fep_get_user_message_count('total') ) {
 	echo "<div class='fep-error'>".apply_filters('fep_filter_messagebox_empty', __("No messages found.", 'front-end-pm'), $action)."</div>";
 	return;
 }
-*/
+
 do_action('fep_display_before_messagebox', $action);
 	  
 	  	?><div class="fep-messagebox-search-form-div">
