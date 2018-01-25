@@ -34,7 +34,7 @@
 {
 	color: black;
 	background-color: #FFEBE8;
-	position: absolute;
+	position: relative;
 	border-color: #C00;
 	width: 100%;
 	text-align: center;
@@ -42,8 +42,7 @@
 	font-weight: bold;
 	border-width: 1px;
 	border-style: solid;
-	padding: 0.6em;
-	margin: 15px 0;
+	padding: 12px;
 	-moz-border-radius: 3px;
 	-khtml-border-radius: 3px;
 	-webkit-border-radius: 3px;
@@ -52,6 +51,22 @@
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 	z-index: 999999;
+}
+.fep-notification-bar p
+{
+	margin: 0;
+}
+.fep-notification-bar .fep-notice-dismiss
+{
+	background: none;
+	color: black;
+	border: 0;
+	padding: 12px;
+	position: absolute;
+	right: 10px;
+	top: 0;
+	font-size: 24px;
+	cursor: pointer;
 }
 .fep-font-red { color: #FF0000; }
 

@@ -226,7 +226,7 @@ add_action('wp_enqueue_scripts', 'fep_enqueue_scripts');
 function fep_enqueue_scripts()
     {
 	
-	wp_register_style( 'fep-common-style', FEP_PLUGIN_URL . 'assets/css/common-style.css', array(), '6.2' );
+	wp_register_style( 'fep-common-style', FEP_PLUGIN_URL . 'assets/css/common-style.css', array(), '6.4' );
 	wp_register_style( 'fep-style', FEP_PLUGIN_URL . 'assets/css/style.css', array(), '6.1' );
 	wp_register_style( 'fep-tokeninput-style', FEP_PLUGIN_URL . 'assets/css/token-input-facebook.css' );
 
@@ -1237,6 +1237,9 @@ function fep_send_message_transition_post_status( $new_status, $old_status, $pos
 		foreach( $participants as $participant ) 
 		{
 			delete_user_meta( $participant, '_fep_user_message_count' );
+			if( $participant != $post->post_author ){
+				delete_user_meta( $participant, '_fep_notification_dismiss' );
+			}
 		}
 	}
 }
@@ -1426,11 +1429,14 @@ function fep_notification_div() {
 	$unread_ann_count = fep_get_new_announcement_number();
 	$sa = sprintf(_n('%s announcement', '%s announcements', $unread_ann_count, 'front-end-pm'), number_format_i18n($unread_ann_count) );
 	
-	$class = 'fep_hide_if_both_zero';
-	if( !$unread_count && !$unread_ann_count )
-	$class .= ' fep-hide';
+	$class = 'fep-notification-bar';
+	if( !$unread_count && !$unread_ann_count ){
+		$class .= ' fep-hide';
+	} elseif( get_user_meta( get_current_user_id(), '_fep_notification_dismiss', true ) ){
+		$class .= ' fep-hide';
+	}
 	
-	$show = '<div id="fep-notification-bar" class="'. $class . '">';
+	$show = '<div id="fep-notification-bar" class="'. $class . '"><p>';
 	$show .= __("You have", 'front-end-pm');
 	
 	$class = 'fep_unread_message_count_hide_if_zero';
@@ -1453,6 +1459,8 @@ function fep_notification_div() {
 		
 	$show .= ' ';
 	$show .= __('unread', 'front-end-pm');
+	$show .= '</p>';
+	$show .= '<button aria-label="'. esc_attr( 'Dismiss notice', 'front-end-pm' ).'" class="fep-notice-dismiss">×</button>';
 	$show .= '</div>';
 		
 	echo apply_filters('fep_header_notification', $show);

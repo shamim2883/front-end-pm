@@ -45,6 +45,11 @@
 			} else {
 				jQuery('.fep_hide_if_both_zero').hide();
 			}
+			if ( response['notification_bar'] ){ 
+				jQuery('.fep-notification-bar').show();
+			} else{
+				jQuery('.fep-notification-bar').hide();
+			}
 			
 			if( fep_notification_script.show_in_title == "1" ){
 				fep_show_count_in_title( response['message_unread_count'], response['message_unread_count_i18n'] );
@@ -80,4 +85,14 @@ jQuery(document).ready(function(){
 		fep_notification_ajax_call();
 	}
 	setInterval(fep_notification_ajax_call, parseInt(fep_notification_script.interval, 10) );
+	
+	jQuery('.fep-notification-bar .fep-notice-dismiss').on('click', function(){
+		jQuery(this).parent().hide('slow');
+		var data = {
+			action: 'fep_notification_dismiss',
+			token: fep_notification_script.nonce
+		};
+					
+		jQuery.get(fep_notification_script.ajaxurl, data );
+	});
 });

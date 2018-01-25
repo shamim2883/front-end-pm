@@ -105,6 +105,9 @@ function recalculate_user_stats( $new_status, $old_status, $post ){
 	if( 'publish' == $new_status || 'publish' == $old_status ){
 		delete_metadata( 'user', 0, '_fep_user_announcement_count', '', true );
 	}
+	if( 'publish' == $new_status ){
+		delete_metadata( 'user', 0, '_fep_notification_dismiss', '', true );
+	}
 }
 
 function set_user_role( $user_id, $role, $old_roles ){

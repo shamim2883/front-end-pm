@@ -23,6 +23,7 @@ class Fep_Ajax
 			add_action('wp_ajax_fep_users_ajax', array($this, 'fep_users_ajax' ) );
 			add_action('wp_ajax_fep_notification_ajax', array($this, 'fep_notification_ajax' ) );
 			add_action('wp_ajax_nopriv_fep_notification_ajax', array($this, 'fep_notification_ajax' ) );
+			add_action('wp_ajax_fep_notification_dismiss', array($this, 'fep_notification_dismiss' ) );
 			
 			if ( fep_get_option( 'block_other_users', 1 ) ) {
 				add_action('wp_ajax_fep_block_unblock_users_ajax', array($this, 'fep_block_unblock_users_ajax' ) );
@@ -140,18 +141,27 @@ class Fep_Ajax
 			$mgs_unread_count 		= fep_get_new_message_number();
 			$mgs_total_count 		= fep_get_user_message_count( 'total' );
 			$ann_unread_count 		= fep_get_new_announcement_number();
+			$dismiss				= get_user_meta( get_current_user_id(), '_fep_notification_dismiss', true );
 			
 			$ret = array(
 				'message_unread_count'				=> $mgs_unread_count,
 				'message_unread_count_i18n'			=> number_format_i18n( $mgs_unread_count ),
 				'message_unread_count_text'			=> sprintf(_n('%s message', '%s messages', $mgs_unread_count, 'front-end-pm'), number_format_i18n($mgs_unread_count) ),
-				//'message_total_count'				=> $mgs_total_count,
+				'message_total_count'				=> $mgs_total_count,
 				'message_total_count_i18n'			=> number_format_i18n( $mgs_total_count ),
 				'announcement_unread_count'			=> $ann_unread_count,
 				'announcement_unread_count_i18n'	=> number_format_i18n( $ann_unread_count ),
 				'announcement_unread_count_text'	=> sprintf(_n('%s announcement', '%s announcements', $ann_unread_count, 'front-end-pm'), number_format_i18n($ann_unread_count) ),
+				'notification_bar'			=> ( !($mgs_unread_count && $ann_unread_count) || $dismiss ) ? 0 : 1,
 			);
 			wp_send_json( $ret );
+		}
+		die;
+	}
+	
+	function fep_notification_dismiss(){
+		if ( check_ajax_referer( 'fep-notification', 'token', false )) {
+			update_user_meta( get_current_user_id(), '_fep_notification_dismiss', 1 );
 		}
 		die;
 	}
