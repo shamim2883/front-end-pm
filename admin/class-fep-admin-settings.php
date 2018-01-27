@@ -20,6 +20,7 @@ class Fep_Admin_Settings
     function actions_filters()
     {
 		add_action('admin_menu', array($this, 'addAdminPage'));
+		add_action('admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action('admin_init', array($this, 'settings_output'));
 		add_filter('plugin_action_links_' . plugin_basename( FEP_PLUGIN_FILE ), array( $this, 'add_settings_link' ) );
 		add_action('fep_action_before_admin_options_save', array($this, 'recalculate_user_message_count'), 10, 2 );
@@ -33,6 +34,14 @@ class Fep_Admin_Settings
 		add_submenu_page('edit.php?post_type=fep_message', 'Front End PM - ' .__('Extensions','front-end-pm'), __('Extensions','front-end-pm'), $admin_cap, 'fep_extensions', array($this, "extensions_page"));
 	
     }
+	
+	function admin_enqueue_scripts(){
+		if( isset($_GET['page']) && 'fep_settings' == $_GET['page'] ){
+			wp_enqueue_style( 'wp-color-picker' );
+			wp_enqueue_script( 'fep-admin', FEP_PLUGIN_URL . 'assets/js/admin.js', array( 'jquery', 'wp-color-picker' ), '6.4', true );
+		}
+	}
+	
 	function recalculate_user_message_count( $settings, $tab ){
 	
 		if( 'message' == $tab && fep_get_message_view() != $settings['message_view'] ) {
@@ -201,6 +210,96 @@ class Fep_Admin_Settings
 				'class'	=> '',
 				'label' => __( 'Remove Data on Uninstall?', 'front-end-pm' ),
 				'description' => '<div style="color:red">'. sprintf(__( 'Check this box if you would like %s to completely remove all of its data when the plugin is deleted.', 'front-end-pm' ), fep_is_pro() ? 'Front End PM PRO' : 'Front End PM' ). '</div>'
+				),
+			'bg_color'	=> array(
+				'type'	=>	'color_picker',
+				//'class'	=> 'fep-color-picker',
+				'section'	=> 'appearance',
+				'value' => fep_get_option('bg_color','#ffffff'),
+				'default_value' => '#ffffff',
+				'priority'	=> 5,
+				'label' => __( 'Background Color', 'front-end-pm' ),
+				),
+			'text_color'	=> array(
+				'type'	=>	'color_picker',
+				//'class'	=> 'fep-color-picker',
+				'section'	=> 'appearance',
+				'value' => fep_get_option('text_color','#000000'),
+				'default_value' => '#000000',
+				'priority'	=> 10,
+				'label' => __( 'Text Color', 'front-end-pm' ),
+				),
+			'link_color'	=> array(
+				'type'	=>	'color_picker',
+				//'class'	=> 'fep-color-picker',
+				'section'	=> 'appearance',
+				'value' => fep_get_option('link_color','#000080'),
+				'default_value' => '#000080',
+				'priority'	=> 20,
+				'label' => __( 'Link Color', 'front-end-pm' ),
+				),
+			'btn_bg_color'	=> array(
+				'type'	=>	'color_picker',
+				//'class'	=> 'fep-color-picker',
+				'section'	=> 'appearance',
+				'value' => fep_get_option('btn_bg_color','#F0FCFF'),
+				'default_value' => '#F0FCFF',
+				'priority'	=> 25,
+				'label' => __( 'Button Color', 'front-end-pm' ),
+				),
+			'btn_text_color'	=> array(
+				'type'	=>	'color_picker',
+				//'class'	=> 'fep-color-picker',
+				'section'	=> 'appearance',
+				'value' => fep_get_option('btn_text_color','#000000'),
+				'default_value' => '#000000',
+				'priority'	=> 30,
+				'label' => __( 'Button Text Color', 'front-end-pm' ),
+				),
+			'active_btn_bg_color'	=> array(
+				'type'	=>	'color_picker',
+				//'class'	=> 'fep-color-picker',
+				'section'	=> 'appearance',
+				'value' => fep_get_option('active_btn_bg_color','#D3EEF5'),
+				'default_value' => '#D3EEF5',
+				'priority'	=> 35,
+				'label' => __( 'Active Button Color', 'front-end-pm' ),
+				),
+			'active_btn_text_color'	=> array(
+				'type'	=>	'color_picker',
+				//'class'	=> 'fep-color-picker',
+				'section'	=> 'appearance',
+				'value' => fep_get_option('active_btn_text_color','#000000'),
+				'default_value' => '#000000',
+				'priority'	=> 40,
+				'label' => __( 'Active Button Text Color', 'front-end-pm' ),
+				),
+			'odd_color'	=> array(
+				'type'	=>	'color_picker',
+				//'class'	=> 'fep-color-picker',
+				'section'	=> 'appearance',
+				'value' => fep_get_option('odd_color','#F2F7FC'),
+				'default_value' => '#F2F7FC',
+				'priority'	=> 45,
+				'label' => __( 'Odd Messages Color', 'front-end-pm' ),
+				),
+			'even_color'	=> array(
+				'type'	=>	'color_picker',
+				//'class'	=> 'fep-color-picker',
+				'section'	=> 'appearance',
+				'value' => fep_get_option('even_color','#FAFAFA'),
+				'default_value' => '#FAFAFA',
+				'priority'	=> 50,
+				'label' => __( 'Even Messages Color', 'front-end-pm' ),
+				),
+			'mgs_heading_color'	=> array(
+				'type'	=>	'color_picker',
+				//'class'	=> 'fep-color-picker',
+				'section'	=> 'appearance',
+				'value' => fep_get_option('mgs_heading_color','#F2F7FC'),
+				'default_value' => '#F2F7FC',
+				'priority'	=> 50,
+				'label' => __( 'Messages Heading Color', 'front-end-pm' ),
 				),
 			//Recipient
 			'show_autosuggest'	=> array(
@@ -393,7 +492,7 @@ class Fep_Admin_Settings
 								'key'			=> $key,
 								'type'			=> $type,
 								'name'			=> $key,
-								'class'			=> ($type == 'number' ) ? 'small-text' : 'regular-text', //sanitize_html_class()
+								'class'			=> ($type == 'number' ) ? 'small-text' : 'regular-text',
 								'id'			=> $key,
 								'label'			=> '',
 								'cb_label'		=> '',
@@ -450,9 +549,7 @@ class Fep_Admin_Settings
 		 if ( ! empty( $field['maxlength'] ) ) $attrib .= 'maxlength = "' . absint( $field['maxlength'] ) . '" ';
 		 
 		 if ( ! empty( $field['class'] ) ){
-			$field['class'] = explode( ' ', $field['class'] );
-			$field['class'] = array_map( 'sanitize_html_class', $field['class'] );
-			$field['class'] = implode( ' ', array_filter( $field['class'] ) );
+			$field['class'] = fep_sanitize_html_class( $field['class'] );
 		}
 		 
 		switch( $field['type'] ) {
@@ -654,6 +751,10 @@ class Fep_Admin_Settings
 					'tab_title'			=> __('General', 'front-end-pm'),
 					'priority'			=> 5
 					),
+				'appearance'	=> array(
+					'tab_title'			=> __('Appearance', 'front-end-pm'),
+					'priority'			=> 6,
+				),
 				'recipient'	=> array(
 					'tab_title'			=> __('Recipient', 'front-end-pm'),
 					'priority'			=> 7
