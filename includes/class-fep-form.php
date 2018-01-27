@@ -602,7 +602,7 @@ public function form_field_output( $where = 'newmessage', $errors= '', $value = 
 		
 		$attr = array();
 		foreach ( $form_attr as $k => $v ) {
-			$attr[] = $k . '="' . $v . '"';
+			$attr[] = $k . '="' . esc_attr( $v ) . '"';
 		}
 		
 	ob_start();
