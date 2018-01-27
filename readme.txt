@@ -5,7 +5,7 @@ Donate link: https://www.paypal.me/hasanshamim
 Requires at least: 4.4
 Tested up to: 4.9
 Requires PHP: 5.3
-Stable tag: 6.3
+Stable tag: 6.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,8 +105,18 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 5. Admin settings page.
 6. Messagebox settings.
 7. Security settings.
+8. Appearance settings.
 
 == Changelog ==
+
+= 6.4 =
+
+* Templates updated (announcement box, message box)
+* trigger fep_notification when ajax notification updated
+* header notification now dismissible
+* Now messages, buttons etc colors can be changed from settings page 
+* New classes added in form fields  
+* Performance improved
 
 = 6.3 =
 
