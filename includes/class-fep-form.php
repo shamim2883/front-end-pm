@@ -581,7 +581,7 @@ public function form_field_output( $where = 'newmessage', $errors= '', $value = 
 	  
 		$form_attr = array(
 			'method' => 'post',
-			'class' => 'fep-form'
+			'class' => "fep-form fep-form-{$where}"
 			);
 		
 		if( 'settings' == $where ) {
