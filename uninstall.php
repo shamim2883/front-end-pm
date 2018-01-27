@@ -33,6 +33,7 @@ if( fep_get_option( 'delete_data_on_uninstall', false ) ) {
 	delete_metadata( 'user', 0, 'FEP_user_options', '', true );
 	delete_metadata( 'user', 0, '_fep_user_message_count', '', true );
 	delete_metadata( 'user', 0, '_fep_user_announcement_count', '', true );
+	delete_metadata( 'user', 0, '_fep_notification_dismiss', '', true );
 	
 	$roles = array( 'administrator', 'editor' );
 	$caps = fep_get_plugin_caps();
