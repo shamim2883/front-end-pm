@@ -22,6 +22,7 @@ class Fep_Admin_Settings
 		add_action('admin_menu', array($this, 'addAdminPage'));
 		add_action('admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action('admin_init', array($this, 'settings_output'));
+		add_action( 'admin_notices', array( $this, 'notice_review' ) );
 		add_filter('plugin_action_links_' . plugin_basename( FEP_PLUGIN_FILE ), array( $this, 'add_settings_link' ) );
 		add_action('fep_action_before_admin_options_save', array($this, 'recalculate_user_message_count'), 10, 2 );
     }
@@ -36,8 +37,12 @@ class Fep_Admin_Settings
     }
 	
 	function admin_enqueue_scripts(){
-		if( isset($_GET['page']) && 'fep_settings' == $_GET['page'] ){
+		if( isset($_GET['tab']) && 'appearance' == $_GET['tab'] ){
 			wp_enqueue_style( 'wp-color-picker' );
+			wp_enqueue_script( 'wp-color-picker' );
+		}
+		
+		if( isset($_GET['post_type']) && 'fep_message' == $_GET['post_type'] ){
 			wp_enqueue_script( 'fep-admin', FEP_PLUGIN_URL . 'assets/js/admin.js', array( 'jquery', 'wp-color-picker' ), '6.4', true );
 		}
 	}
@@ -910,6 +915,42 @@ function fep_admin_sidebar()
 						</ul></div>
 					</div>
 				</div>';
+	}
+	
+	/**
+	 * Admin notices for review
+	 *
+	 * @access  public
+	 * @return  void
+	 */
+	public function notice_review() {
+	
+		if( ! current_user_can('manage_options') )
+		return;
+		
+		if( fep_is_pro() )
+		return;
+		
+		if( ! isset($_GET['post_type']) || 'fep_message' != $_GET['post_type'] )
+		return;
+		
+		if ( fep_get_option( 'dismissed-review' ) )
+		return;
+		
+		$dismissed_time = get_user_option( 'fep_review_notice_dismiss');
+		
+		if( $dismissed_time && time() < ( $dismissed_time + WEEK_IN_SECONDS )  )
+		return;
+		
+		?><div class="notice notice-info fep-review-notice">
+			<p><?php printf(__( 'like %s plugin? Please consider review in WordPress.org and give 5&#9733; rating.', 'front-end-pm' ), 'Front End PM'); ?></p>
+			<p>
+				<a href="https://wordpress.org/support/plugin/front-end-pm/reviews/?filter=5#new-post" class="button button-secondary fep-review-notice-dismiss" data-fep_click="sure" target="_blank" rel="noopener"><?php _e( 'Sure, deserve it', 'front-end-pm' ); ?></a>
+				<button class="button-secondary fep-review-notice-dismiss" data-fep_click="later"><?php _e( 'Maybe later', 'front-end-pm' ); ?></button>
+				<button class="button-secondary fep-review-notice-dismiss" data-fep_click="did"><?php _e( 'Already did', 'front-end-pm' ); ?></button>
+			</p>
+		</div>
+		<?php
 	}
 	
 function add_settings_link( $links ) {

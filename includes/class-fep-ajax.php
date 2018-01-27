@@ -24,6 +24,7 @@ class Fep_Ajax
 			add_action('wp_ajax_fep_notification_ajax', array($this, 'fep_notification_ajax' ) );
 			add_action('wp_ajax_nopriv_fep_notification_ajax', array($this, 'fep_notification_ajax' ) );
 			add_action('wp_ajax_fep_notification_dismiss', array($this, 'fep_notification_dismiss' ) );
+			add_action('wp_ajax_fep_review_notice_dismiss', array($this, 'fep_review_notice_dismiss' ) );
 			
 			if ( fep_get_option( 'block_other_users', 1 ) ) {
 				add_action('wp_ajax_fep_block_unblock_users_ajax', array($this, 'fep_block_unblock_users_ajax' ) );
@@ -162,6 +163,17 @@ class Fep_Ajax
 	function fep_notification_dismiss(){
 		if ( check_ajax_referer( 'fep-notification', 'token', false )) {
 			update_user_meta( get_current_user_id(), '_fep_notification_dismiss', 1 );
+		}
+		die;
+	}
+	
+	function fep_review_notice_dismiss(){
+		if( !empty($_POST['fep_click']) && current_user_can('manage_options') ){
+			if( 'later' == $_POST['fep_click'] ){
+				update_user_option( get_current_user_id(), 'fep_review_notice_dismiss', time() );
+			} elseif( in_array( $_POST['fep_click'], array( 'sure', 'did' ) ) ){
+				fep_update_option( 'dismissed-review', time() );
+			}
 		}
 		die;
 	}
