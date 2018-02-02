@@ -82,12 +82,31 @@ class Fep_Admin_Settings
 				'options'	=> $pages,
 				'description' => __( 'Must have <code>[front-end-pm]</code> in content.', 'front-end-pm' )					
 				),
+			'message_view'	=> array(
+				'type'	=>	'select',
+				'value' => fep_get_message_view(),
+				'priority'	=> 3,
+				//'section'	=> 'message',
+				'label' => __( 'Message view', 'front-end-pm' ),
+				'description' => ( 'threaded' == fep_get_message_view() ) ? '' : __( 'This setting change will redirect you to update page for database update.', 'front-end-pm' ),
+				'options'	=> array(
+					'threaded'	=> __( 'Threaded', 'front-end-pm' ),
+					'individual'	=> __( 'Individual', 'front-end-pm' )
+					)					
+				),
 			'messages_page'	=> array(
 				'type'	=>	'number',
 				'value' => fep_get_option('messages_page',15),
 				'priority'	=> 4,
 				'label' => __('Messages to show per page', 'front-end-pm'),
 				'description' => __( 'Messages to show per page', 'front-end-pm' )
+				),
+			'announcements_page'	=> array(
+				'type'	=>	'number',
+				'value' => fep_get_option('announcements_page',15),
+				'priority'	=> 5,
+				'label' => __('Announcements per page', 'front-end-pm'),
+				'description' => __( 'Announcements to show per page', 'front-end-pm' )
 				),
 					
 			'user_page'	=> array(
@@ -182,23 +201,6 @@ class Fep_Admin_Settings
 				'label' => __( 'Show Directory', 'front-end-pm' ),
 				'cb_label' => __( 'Show Directory in front end?', 'front-end-pm' ),
 				'description' => __( 'Always shown to Admins.', 'front-end-pm' )
-				),
-					
-			'show_notification'	=> array(
-				'type'	=>	'checkbox',
-				'value' => fep_get_option('show_notification', 1),
-				'priority'	=> 28,
-				'class'	=> '',
-				'label' => __( 'Show notification', 'front-end-pm' ),
-				'cb_label' => __( 'Show site wide notification in header?', 'front-end-pm' ),
-				),
-			'show_unread_count_in_title'	=> array(
-				'type'	=>	'checkbox',
-				'value' => fep_get_option('show_unread_count_in_title', 1),
-				'priority'	=> 29,
-				'class'	=> '',
-				'label' => __( 'Show count', 'front-end-pm' ),
-				'cb_label' => __( 'Show unread message count in website title?', 'front-end-pm' ),
 				),
 					
 			'show_branding'	=> array(
@@ -319,56 +321,9 @@ class Fep_Admin_Settings
 				),
 				
 			//Message
-			'message_view'	=> array(
-				'type'	=>	'select',
-				'value' => fep_get_message_view(),
-				'priority'	=> 5,
-				'section'	=> 'message',
-				'label' => __( 'Message view', 'front-end-pm' ),
-				'description' => ( 'threaded' == fep_get_message_view() ) ? '' : __( 'This setting change will redirect you to update page for database update.', 'front-end-pm' ),
-				'options'	=> array(
-					'threaded'	=> __( 'Threaded', 'front-end-pm' ),
-					'individual'	=> __( 'Individual', 'front-end-pm' )
-					)					
-				),
+			
 				
 			//Announcement
-			
-			'announcements_page'	=> array(
-				'type'	=>	'number',
-				'value' => fep_get_option('announcements_page',15),
-				'priority'	=> 5,
-				'section'	=> 'announcement',
-				'label' => __('Announcements per page', 'front-end-pm'),
-				'description' => __( 'Announcements to show per page', 'front-end-pm' )
-				),
-				
-			'notify_ann'	=> array(
-				'type'	=>	'checkbox',
-				'value' => fep_get_option('notify_ann', '1' ),
-				'priority'	=> 10,
-				'class'	=> '',
-				'section'	=> 'announcement',
-				'label' => __( 'Send email?', 'front-end-pm' ),
-				'cb_label' => __( 'Send email to all users when a new announcement is published?', 'front-end-pm' )
-				),
-			'ann_to'	=> array(
-				'type'	=>	'email',
-				'value' => fep_get_option('ann_to', get_bloginfo('admin_email')),
-				'priority'	=> 20,
-				'section'	=> 'announcement',
-				'label' => __( 'Valid email address for "to" field of announcement email', 'front-end-pm' ),
-				'description' => __( 'All users email will be in "Bcc" field.', 'front-end-pm' )
-				),
-			'add_ann_frontend'	=> array(
-				'type'	=>	'checkbox',
-				'value' => fep_get_option('add_ann_frontend',0),
-				'priority'	=> 25,
-				'section'	=> 'announcement',
-				'class'	=> '',
-				'label' => __( 'Add Announcement', 'front-end-pm' ),
-				'cb_label' => __( 'Can permitted users add Announcement from frontend?', 'front-end-pm' ),
-				),
 						
 			//Email Settings
 			
@@ -400,6 +355,23 @@ class Fep_Admin_Settings
 				'section'	=> 'emails',
 				'label' => __( 'From Email', 'front-end-pm' ),
 				'description' => __( 'All email send by Front End PM plugin will have this email address as sender.', 'front-end-pm' )
+				),
+			'notify_ann'	=> array(
+				'type'	=>	'checkbox',
+				'value' => fep_get_option('notify_ann', '1' ),
+				'priority'	=> 20,
+				'class'	=> '',
+				'section'	=> 'emails',
+				'label' => __( 'Send email?', 'front-end-pm' ),
+				'cb_label' => __( 'Send email to all users when a new announcement is published?', 'front-end-pm' )
+				),
+			'ann_to'	=> array(
+				'type'	=>	'email',
+				'value' => fep_get_option('ann_to', get_bloginfo('admin_email')),
+				'priority'	=> 25,
+				'section'	=> 'emails',
+				'label' => __( 'Valid email address for "to" field of announcement email', 'front-end-pm' ),
+				'description' => __( 'All users email will be in "Bcc" field.', 'front-end-pm' )
 				),
 				
 			//Security
@@ -460,6 +432,35 @@ class Fep_Admin_Settings
 				'class'	=> '',
 				'label' => __( 'Block other users', 'front-end-pm' ),
 				'cb_label' => __( 'Can user block other users?', 'front-end-pm' ),
+				),
+			'add_ann_frontend'	=> array(
+				'type'	=>	'checkbox',
+				'value' => fep_get_option('add_ann_frontend',0),
+				'priority'	=> 35,
+				'section'	=> 'security',
+				'class'	=> '',
+				'label' => __( 'Add Announcement', 'front-end-pm' ),
+				'cb_label' => __( 'Can permitted users add Announcement from frontend?', 'front-end-pm' ),
+				),
+				
+			//Notification
+			'show_notification'	=> array(
+				'type'	=>	'checkbox',
+				'value' => fep_get_option('show_notification', 1),
+				'priority'	=> 5,
+				'section'	=> 'notification',
+				'class'	=> '',
+				'label' => __( 'Show notification', 'front-end-pm' ),
+				'cb_label' => __( 'Show site wide notification in header?', 'front-end-pm' ),
+				),
+			'show_unread_count_in_title'	=> array(
+				'type'	=>	'checkbox',
+				'value' => fep_get_option('show_unread_count_in_title', 1),
+				'priority'	=> 10,
+				'section'	=> 'notification',
+				'class'	=> '',
+				'label' => __( 'Show count', 'front-end-pm' ),
+				'cb_label' => __( 'Show unread message count in website title?', 'front-end-pm' ),
 				),
 					
 			);
@@ -764,14 +765,18 @@ class Fep_Admin_Settings
 					'tab_title'			=> __('Recipient', 'front-end-pm'),
 					'priority'			=> 7
 					),
+					/*
 				'message'	=> array(
 					'tab_title'			=> __('Message', 'front-end-pm'),
 					'priority'			=> 10
 					),
+					*/
+					/*
 				'announcement'	=> array(
 					'tab_title'			=> __('Announcement', 'front-end-pm'),
 					'priority'			=> 15
 					),
+					*/
 				'emails'	=> array(
 					'tab_title'			=> __('Emails', 'front-end-pm'),
 					'priority'			=> 20
@@ -780,12 +785,22 @@ class Fep_Admin_Settings
 					'tab_title'			=> __('Security', 'front-end-pm'),
 					'priority'			=> 25
 					),
+				'misc'	=> array(
+					'tab_title'			=> __('Misc', 'front-end-pm'),
+					'priority'			=> 27
+					),
+				'notification'	=> array(
+					'section_title'			=> __('Notification', 'front-end-pm'),
+					'section_page'		=> 'fep_settings_misc',
+					'priority'			=> 10,
+					'tab_output'		=> false
+				),
 				'message_box'	=> array(
 					'section_title'			=> __('Message Box', 'front-end-pm'),
-					'section_page'		=> 'fep_settings_message',
+					'section_page'		=> 'fep_settings_misc',
 					'priority'			=> 15,
 					'tab_output'		=> false
-					)
+				),
 							
 				);
 							
