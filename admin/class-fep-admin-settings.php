@@ -462,6 +462,24 @@ class Fep_Admin_Settings
 				'label' => __( 'Show count', 'front-end-pm' ),
 				'cb_label' => __( 'Show unread message count in website title?', 'front-end-pm' ),
 				),
+			'show_unread_count_in_desktop'	=> array(
+				'type'	=>	'checkbox',
+				'value' => fep_get_option('show_unread_count_in_desktop', 1),
+				'priority'	=> 15,
+				'section'	=> 'notification',
+				'class'	=> '',
+				'label' => __( 'Show desktop notification', 'front-end-pm' ),
+				'cb_label' => __( 'Show desktop notification for new messages and announcements?', 'front-end-pm' ),
+				),
+			'play_sound'	=> array(
+				'type'	=>	'checkbox',
+				'value' => fep_get_option('play_sound', 1),
+				'priority'	=> 20,
+				'section'	=> 'notification',
+				'class'	=> '',
+				'label' => __( 'Play Sound', 'front-end-pm' ),
+				'cb_label' => __( 'Play notification sound on message and announcement received?', 'front-end-pm' ),
+				),
 					
 			);
 				

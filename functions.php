@@ -268,19 +268,29 @@ function fep_enqueue_scripts()
 			) 
 		);
 		
-	wp_register_script( 'fep-notification-script', FEP_PLUGIN_URL . 'assets/js/notification.js', array( 'jquery' ), '6.1', true );
+	wp_register_script( 'fep-notification-script', FEP_PLUGIN_URL . 'assets/js/notification.js', array( 'jquery' ), '7.1', true );
 	$call_on_ready = ( isset($_GET['fepaction']) &&
 		( ( $_GET['fepaction'] == 'viewmessage' && fep_get_new_message_number() ) || ( $_GET['fepaction'] == 'view_announcement' && fep_get_new_announcement_number() ) ) 
 		) ? '1' : '0';
 	wp_localize_script( 'fep-notification-script', 'fep_notification_script', 
-			array( 
+			apply_filters( 'fep_filter_notification_script_localize', array( 
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
 				'nonce' => wp_create_nonce('fep-notification'),
 				'interval' => apply_filters( 'fep_filter_ajax_notification_interval', MINUTE_IN_SECONDS * 1000 ),
 				'skip' => apply_filters( 'fep_filter_skip_notification_call', 2 ), //How many times notification ajax call will be skipped if browser tab not opened
 				'show_in_title'	=> fep_get_option( 'show_unread_count_in_title', '1' ),
+				'show_in_desktop'	=> fep_get_option( 'show_unread_count_in_desktop', '1' ),
 				'call_on_ready'	=> apply_filters( 'fep_filter_notification_call_on_ready', $call_on_ready ),
-			) 
+				'play_sound'	=> fep_get_option( 'play_sound', '1' ),
+				'sound_url'	=> FEP_PLUGIN_URL . 'assets/audio/plucky.mp3',
+				'icon_url'	=> FEP_PLUGIN_URL . 'assets/images/desktop-notification-32.png',
+				'mgs_notification_title'=> __('New Message.', 'front-end-pm'),
+				'mgs_notification_body'	=> __('You have received a new message.', 'front-end-pm'),
+				'mgs_notification_url'	=> fep_query_url( 'messagebox' ),
+				'ann_notification_title'=> __('New Announcement.', 'front-end-pm'),
+				'ann_notification_body'	=> __('You have received a new announcement.', 'front-end-pm'),
+				'ann_notification_url'	=> fep_query_url( 'announcements' ),
+			))
 		);
 	
 	
@@ -740,10 +750,15 @@ function fep_format_date( $date, $d = '' )
 			$h_time = __( 'Unpublished', 'front-end-pm' );
 		} else {
 			$m_time = $post->post_date;
-			$time = strtotime( $post->post_date_gmt );
+			//$time = strtotime( $post->post_date_gmt );
+			$time = get_post_time( 'G', true, $post, false );
 			
 			if ( ( abs( $t_diff = time() - $time ) ) < DAY_IN_SECONDS ) {
-				$h_time = sprintf( __( '%s ago', 'front-end-pm' ), human_time_diff( $time ) );
+				if ( $t_diff < 0 ) {
+					$h_time = sprintf( __( '%s from now', 'front-end-pm' ), human_time_diff( $time ) );
+				} else {
+					$h_time = sprintf( __( '%s ago', 'front-end-pm' ), human_time_diff( $time ) );
+				}
 			} else {
 				$h_time = mysql2date( get_option( 'date_format' ). ' '.get_option( 'time_format' ), $m_time );
 			}

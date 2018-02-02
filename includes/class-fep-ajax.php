@@ -137,14 +137,24 @@ class Fep_Ajax
 	}
 	
 	function fep_notification_ajax() {
-
-		if ( check_ajax_referer( 'fep-notification', 'token', false )) {
+		
+		if ( check_ajax_referer( 'fep-notification', 'token', false ) && is_user_logged_in() ) {
 			$mgs_unread_count 		= fep_get_new_message_number();
 			$mgs_total_count 		= fep_get_user_message_count( 'total' );
 			$ann_unread_count 		= fep_get_new_announcement_number();
 			$dismiss				= get_user_meta( get_current_user_id(), '_fep_notification_dismiss', true );
+			$prev					= get_user_meta( get_current_user_id(), '_fep_notification_prev', true );
 			
-			$ret = array(
+			$new = array(
+				'message'		=> $mgs_unread_count,
+				'announcement'	=> $ann_unread_count,
+			);
+			update_user_meta( get_current_user_id(), '_fep_notification_prev', $new );
+			
+			if( !is_array( $prev ) )
+			$prev = array();
+			
+			$return = array(
 				'message_unread_count'				=> $mgs_unread_count,
 				'message_unread_count_i18n'			=> number_format_i18n( $mgs_unread_count ),
 				'message_unread_count_text'			=> sprintf(_n('%s message', '%s messages', $mgs_unread_count, 'front-end-pm'), number_format_i18n($mgs_unread_count) ),
@@ -153,11 +163,27 @@ class Fep_Ajax
 				'announcement_unread_count'			=> $ann_unread_count,
 				'announcement_unread_count_i18n'	=> number_format_i18n( $ann_unread_count ),
 				'announcement_unread_count_text'	=> sprintf(_n('%s announcement', '%s announcements', $ann_unread_count, 'front-end-pm'), number_format_i18n($ann_unread_count) ),
-				'notification_bar'			=> ( !($mgs_unread_count && $ann_unread_count) || $dismiss ) ? 0 : 1,
+				'notification_bar'					=> ( (! $mgs_unread_count && ! $ann_unread_count) || $dismiss ) ? 0 : 1,
+				'message_unread_count_prev'			=> empty($prev['message']) ? 0 : absint($prev['message']),
+				'announcement_unread_count_prev'	=> empty($prev['announcement']) ? 0 : absint($prev['announcement']),
 			);
-			wp_send_json( $ret );
+		} else {
+			$return = array(
+				'message_unread_count'				=> 0,
+				'message_unread_count_i18n'			=> number_format_i18n( 0 ),
+				'message_unread_count_text'			=> sprintf(_n('%s message', '%s messages', 0, 'front-end-pm'), number_format_i18n(0) ),
+				'message_total_count'				=> 0,
+				'message_total_count_i18n'			=> number_format_i18n( 0 ),
+				'announcement_unread_count'			=> 0,
+				'announcement_unread_count_i18n'	=> number_format_i18n( 0 ),
+				'announcement_unread_count_text'	=> sprintf(_n('%s announcement', '%s announcements', 0, 'front-end-pm'), number_format_i18n(0) ),
+				'notification_bar'					=> 0,
+				'message_unread_count_prev'			=> 0,
+				'announcement_unread_count_prev'	=> 0,
+			);
 		}
-		die;
+		$return = apply_filters( 'fep_filter_notification_response', $return );
+		wp_send_json( $return );
 	}
 	
 	function fep_notification_dismiss(){
