@@ -66,8 +66,8 @@ if( $messages->have_posts() ) {
 				<?php } ?>
 			<div id="fep-message-<?php the_ID(); ?>" class="<?php echo fep_sanitize_html_class( $per_mgs_class ); ?>">
 				<div class="fep-message-title fep-message-title-<?php the_ID(); ?>">
-					<span class="author"><?php the_author_meta('display_name'); ?></span>
-					<span class="date"><?php the_time(); ?></span>
+					<div class="author"><?php the_author_meta('display_name'); ?></div>
+					<div class="date"><?php the_time(); ?></div>
 				</div>
 				<div class="<?php echo fep_sanitize_html_class( $content_class ); ?>">
 					<?php the_content(); ?>

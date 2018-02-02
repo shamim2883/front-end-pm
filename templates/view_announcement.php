@@ -14,7 +14,7 @@ if( $announcement->have_posts() ) {
 	?>
 	 <div class="fep-per-message">
 		<div class="fep-message-title"><?php the_title(); ?>
-			<span class="date"><?php the_time(); ?></span>
+			<div class="date"><?php the_time(); ?></div>
 		</div>
 		<div class="fep-message-content">
 			<?php the_content(); ?>
