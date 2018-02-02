@@ -32,32 +32,41 @@ class Fep_Attachment
     }
 	
 	
-function upload_attachment( $message_id, $message, $inserted_message ) {
-    if ( !isset( $_FILES['fep_upload'] ) ) {
-        return false;
-    }
-	add_filter('upload_dir', array($this, 'upload_dir'), 99 );
-	
-    $fields = (int) fep_get_option('attachment_no', 4);
-
-    for ($i = 0; $i < $fields; $i++) {
-        $tmp_name = isset( $_FILES['fep_upload']['tmp_name'][$i] ) ? basename( $_FILES['fep_upload']['tmp_name'][$i] ) : '' ;
-
-            if ( $tmp_name ) {
-                $upload = array(
-                    'name' => $_FILES['fep_upload']['name'][$i],
-                    'type' => $_FILES['fep_upload']['type'][$i],
-                    'tmp_name' => $_FILES['fep_upload']['tmp_name'][$i],
-                    'error' => $_FILES['fep_upload']['error'][$i],
-                    'size' => $_FILES['fep_upload']['size'][$i]
-                );
-
-                $this->upload_file( $upload, $message_id, $inserted_message );
-            }//file exists
-        }// end for
+	function upload_attachment( $message_id, $message, $inserted_message ) {
+		$field = 'fep_upload';
 		
-	remove_filter('upload_dir', array($this, 'upload_dir'), 99 );
-}
+	    if ( !isset( $_FILES[ $field ] ) || ! is_array( $_FILES[ $field ] ) ) {
+	        return false;
+	    }
+		if ( empty( $_FILES[ $field ]['tmp_name'] ) || ! is_array( $_FILES[ $field ]['tmp_name'] ) ) {
+	        return false;
+	    }
+		add_filter('upload_dir', array($this, 'upload_dir'), 99 );
+		
+	    $fields = (int) fep_get_option('attachment_no', 4);
+		
+		$i = 0;
+	    foreach( $_FILES[ $field ]['tmp_name'] as $key => $tmp_name ) {
+
+	        if ( $tmp_name ) {
+	            $upload = array(
+	                'name' 		=> $_FILES[ $field ]['name'][ $key ],
+	                'type' 		=> $_FILES[ $field ]['type'][ $key ],
+	                'tmp_name' 	=> $_FILES[ $field ]['tmp_name'][ $key ],
+	                'error' 	=> $_FILES[ $field ]['error'][ $key ],
+	                'size' 		=> $_FILES[ $field ]['size'][ $key ]
+	            );
+
+	            $this->upload_file( $upload, $message_id, $inserted_message );
+				
+				if( ++$i >= $fields )
+					break;
+					
+	        }//file exists
+	    }// end foreach
+			
+		remove_filter('upload_dir', array($this, 'upload_dir'), 99 );
+	}
 
 	function upload_dir($upload) {
 	/* Append year/month folders if that option is set */
@@ -90,7 +99,7 @@ function upload_file( $upload_data, $message_id, $inserted_message ) {
 	
     $movefile = wp_handle_upload( $upload_data, array('test_form' => false) );
 
-    if ($message_id && $movefile['type']&& $movefile['url'] && $movefile['file']) {
+    if ($message_id && !empty($movefile['type']) && $movefile['url'] && $movefile['file']) {
 		
 		// Prepare an array of post data for the attachment.
 		$attachment = array(

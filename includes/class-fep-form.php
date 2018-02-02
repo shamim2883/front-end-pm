@@ -532,15 +532,26 @@ function field_output( $field, $errors )
 
 					$size_limit = (int) wp_convert_hr_to_bytes(fep_get_option('attachment_size','4MB'));
 					$fields = (int) fep_get_option('attachment_no', 4);
+					
+					if( ! isset( $_FILES[ $field['name'] ] )
+						|| !is_array( $_FILES[ $field['name'] ] )
+						|| empty( $_FILES[ $field['name'] ]['tmp_name'] )
+						|| !is_array( $_FILES[ $field['name'] ]['tmp_name'] ) )
+						break;
+					
+					if( $fields < count( $_FILES[ $field['name'] ]['tmp_name'] ) ){
+						$errors->add('AttachmentCount', sprintf( __( 'Maximum %s allowed', 'front-end-pm' ), sprintf(_n('%s file', '%s files', $fields, 'front-end-pm'), number_format_i18n( $fields ) ) ) );
+						break;
+					}
 				
-					for ($i = 0; $i < $fields; $i++) {
-						$tmp_name = isset( $_FILES[$field['name']]['tmp_name'][$i] ) ? basename( $_FILES[$field['name']]['tmp_name'][$i] ) : '' ;
-						$file_name = isset( $_FILES[$field['name']]['name'][$i] ) ? basename( $_FILES[$field['name']]['name'][$i] ) : '' ;
+					foreach( $_FILES[ $field['name'] ]['tmp_name'] as $key => $tmp_name ) {
+						
+						$file_name = isset( $_FILES[$field['name']]['name'][ $key ] ) ? basename( $_FILES[$field['name']]['name'][ $key ] ) : '' ;
 				
 						//if file is uploaded
 						if ( $tmp_name ) {
-							$attach_type = wp_check_filetype( $file_name );
-							$attach_size = $_FILES[$field['name']]['size'][$i];
+							$attach_type = wp_check_filetype( $file_name, $mime );
+							$attach_size = $_FILES[ $field['name'] ]['size'][ $key ];
 				
 							//check file size
 							if ( $attach_size > $size_limit ) {
@@ -548,11 +559,11 @@ function field_output( $field, $errors )
 							}
 				
 							//check file type
-							if ( !in_array( $attach_type['type'], $mime ) ) {
+							if ( empty( $attach_type['type'] ) ) {
 								$errors->add('AttachmentType', sprintf(__( "Invalid attachment file type. Allowed Types are (%s)", 'front-end-pm' ),implode(', ',array_keys($mime))));
 							}
-						} // if $filename
-					}// endfor
+						} // if $tmp_name
+					}// endforeach
 					break;
 					
 				default :
