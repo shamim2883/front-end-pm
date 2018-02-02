@@ -204,8 +204,7 @@
 	font-weight:bold;
 	/* background-color:#F2F7FC; */
 	border-radius: 10px;
-	padding-left:10px;
-	padding-right:10px;
+	padding:10px;
 	margin-bottom:5px;
 	-webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -231,10 +230,13 @@
 {
 	text-align:right;
 	padding-left:10px;
-	width: 100%;
-	display:block;
 	font-weight: normal;
 	font-size:12px
+}
+.fep-per-message .fep-message-title
+{
+	display: flex;
+	justify-content: space-between;
 }
 .fep-avatar-p {
     position: relative;

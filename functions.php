@@ -226,8 +226,8 @@ add_action('wp_enqueue_scripts', 'fep_enqueue_scripts');
 function fep_enqueue_scripts()
     {
 	
-	wp_register_style( 'fep-common-style', FEP_PLUGIN_URL . 'assets/css/common-style.css', array(), '6.4' );
-	wp_register_style( 'fep-style', FEP_PLUGIN_URL . 'assets/css/style.css', array(), '6.4' );
+	wp_register_style( 'fep-common-style', FEP_PLUGIN_URL . 'assets/css/common-style.css', array(), '7.1' );
+	wp_register_style( 'fep-style', FEP_PLUGIN_URL . 'assets/css/style.css', array(), '7.1' );
 	wp_register_style( 'fep-tokeninput-style', FEP_PLUGIN_URL . 'assets/css/token-input-facebook.css' );
 
 	if( fep_page_id() ) {
