@@ -53,7 +53,11 @@ do_action('fep_display_before_announcementbox');
 			?></div><?php
 			echo fep_pagination( $total_announcements, fep_get_option('announcements_page', 15) );
 		} else {
-			?><div class="fep-error"><?php _e('No announcements found. Try different filter.', 'front-end-pm'); ?></div><?php 
+			if( !$g_filter || 'show-all' == $g_filter ){
+				?><div class="fep-error"><?php _e('No announcements found.', 'front-end-pm'); ?></div><?php	
+			} else {
+				?><div class="fep-error"><?php _e('No announcements found. Try different filter.', 'front-end-pm'); ?></div><?php
+			}
 		}
 		?></form><?php 
 		wp_reset_postdata();
