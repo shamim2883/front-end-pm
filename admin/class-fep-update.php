@@ -66,6 +66,12 @@ class Fep_Update
 			
 			fep_update_option( $options );
 		}
+		if( version_compare( $prev_ver, '7.1', '<' ) ){
+			delete_metadata( 'user', 0, 'FEP_user_options', '', true );
+			delete_metadata( 'user', 0, '_fep_user_message_count', '', true );
+			delete_metadata( 'user', 0, '_fep_user_announcement_count', '', true );
+			delete_metadata( 'user', 0, '_fep_notification_dismiss', '', true );
+		}
 	}
 	
 	function sections( $tabs)
@@ -209,7 +215,7 @@ class Fep_Update
 				foreach( $announcements as $announcement ){
 					$this->insert_announcement( $announcement );
 				}
-				delete_metadata( 'user', 0, '_fep_user_announcement_count', '', true );
+				delete_metadata( 'user', 0, $wpdb->get_blog_prefix() . '_fep_user_announcement_count', '', true );
 				
 				$custom_int = $custom_int + count( $announcements );
 				
@@ -249,8 +255,8 @@ class Fep_Update
 			}
 		}
 		
-		delete_metadata( 'user', 0, '_fep_user_message_count', '', true );
-		delete_metadata( 'user', 0, '_fep_user_announcement_count', '', true );
+		delete_metadata( 'user', 0, $wpdb->get_blog_prefix() . '_fep_user_message_count', '', true );
+		delete_metadata( 'user', 0, $wpdb->get_blog_prefix() . '_fep_user_announcement_count', '', true );
 		
 		fep_update_option( 'v41', 1, 'fep_updated_versions' );
 		$response = array(
@@ -375,7 +381,7 @@ class Fep_Update
 	}
 	
 	function individual_to_threaded(){
-		//global $wpdb;
+		global $wpdb;
 		
 		$custom_int   = isset( $_POST['custom_int'] )   ? absint( $_POST['custom_int'] )  : 0;
 		
@@ -433,7 +439,7 @@ class Fep_Update
 			);
 			wp_send_json( $response );
 		 }
-		delete_metadata( 'user', 0, '_fep_user_message_count', '', true );
+		delete_metadata( 'user', 0, $wpdb->get_blog_prefix() . '_fep_user_message_count', '', true );
 		update_option( '_fep_message_view_changed', 0 );
 	}
 	

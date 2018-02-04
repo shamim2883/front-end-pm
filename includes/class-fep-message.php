@@ -80,7 +80,7 @@ function recalculate_user_stats( $postid )
 	{
 		foreach( $participants as $participant ) 
 		{
-			delete_user_meta( $participant, '_fep_user_message_count' );
+			delete_user_option( $participant, '_fep_user_message_count' );
 		}
 	}
 }
@@ -136,7 +136,7 @@ function recalculate_participants_stats()
 		if( is_array( $participants ) ) {
 			foreach( $participants as $participant ) 
 			{
-				delete_user_meta( $participant, '_fep_user_message_count' );
+				delete_user_option( $participant, '_fep_user_message_count' );
 			}
 		}
 	}
@@ -159,7 +159,7 @@ function user_message_count( $value = 'all', $force = false, $user_id = false )
 		}
 	}
 	
-	$user_meta = get_user_meta( $user_id, '_fep_user_message_count', true );
+	$user_meta = get_user_option( '_fep_user_message_count', $user_id );
 	
 	if( false === $user_meta || $force || !isset( $user_meta['total'] ) || !isset( $user_meta['unread'] ) ) {
 	
@@ -204,7 +204,7 @@ function user_message_count( $value = 'all', $force = false, $user_id = false )
 			'total' => $total_count,
 			'unread' => $unread_count,
 		);
-		update_user_meta( $user_id, '_fep_user_message_count', $user_meta );
+		update_user_option( $user_id, '_fep_user_message_count', $user_meta );
 	}
 	if( isset($user_meta[$value]) ) {
 		return $user_meta[$value];
@@ -364,7 +364,7 @@ function bulk_action( $action, $ids = null ) {
 	$message = '';
 	
 	if( $count ) {
-		delete_user_meta( get_current_user_id(), '_fep_user_message_count' );
+		delete_user_option( get_current_user_id(), '_fep_user_message_count' );
 		
 			$message = sprintf(_n('%s message', '%s messages', $count, 'front-end-pm'), number_format_i18n($count) );
 			$message .= ' ';

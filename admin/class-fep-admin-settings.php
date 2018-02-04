@@ -48,10 +48,11 @@ class Fep_Admin_Settings
 	}
 	
 	function recalculate_user_message_count( $settings, $tab ){
-	
+		global $wpdb;
+		
 		if( 'message' == $tab && fep_get_message_view() != $settings['message_view'] ) {
 			if( 'threaded' == fep_get_message_view() ){
-				delete_metadata( 'user', 0, '_fep_user_message_count', '', true );
+				delete_metadata( 'user', 0, $wpdb->get_blog_prefix() . '_fep_user_message_count', '', true );
 			} else {
 				update_option( '_fep_message_view_changed', 1 );
 				delete_metadata( 'post', 0, '_fep_last_reply_by', '', true );
@@ -975,7 +976,7 @@ function fep_admin_sidebar()
 		if( $dismissed_time && time() < ( $dismissed_time + WEEK_IN_SECONDS )  )
 		return;
 		
-		?><div class="notice notice-info fep-review-notice">
+		?><div class="notice notice-info inline fep-review-notice">
 			<p><?php printf(__( 'like %s plugin? Please consider review in WordPress.org and give 5&#9733; rating.', 'front-end-pm' ), 'Front End PM'); ?></p>
 			<p>
 				<a href="https://wordpress.org/support/plugin/front-end-pm/reviews/?filter=5#new-post" class="button button-secondary fep-review-notice-dismiss" data-fep_click="sure" target="_blank" rel="noopener"><?php _e( 'Sure, deserve it', 'front-end-pm' ); ?></a>

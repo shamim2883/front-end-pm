@@ -9,7 +9,7 @@ if( $announcement->have_posts() ) {
 		$announcement->the_post();
 	
 	if( fep_make_read() ) {
-		delete_user_meta( get_current_user_id(), '_fep_user_announcement_count' );
+		delete_user_option( get_current_user_id(), '_fep_user_announcement_count' );
 	}
 	?>
 	 <div class="fep-per-message">

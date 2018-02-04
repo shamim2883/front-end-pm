@@ -97,22 +97,23 @@ class Fep_Announcement
 		}
 	
 function recalculate_user_stats( $new_status, $old_status, $post ){
+	global $wpdb;
 	
 	if ( 'fep_announcement' != $post->post_type || $old_status === $new_status ) {
 		return;
 	}
 	
 	if( 'publish' == $new_status || 'publish' == $old_status ){
-		delete_metadata( 'user', 0, '_fep_user_announcement_count', '', true );
+		delete_metadata( 'user', 0, $wpdb->get_blog_prefix() . '_fep_user_announcement_count', '', true );
 	}
 	if( 'publish' == $new_status ){
-		delete_metadata( 'user', 0, '_fep_notification_dismiss', '', true );
+		delete_metadata( 'user', 0, $wpdb->get_blog_prefix() . '_fep_notification_dismiss', '', true );
 	}
 }
 
 function set_user_role( $user_id, $role, $old_roles ){
 	
-	delete_user_meta( $user_id, '_fep_user_announcement_count' );
+	delete_user_option( $user_id, '_fep_user_announcement_count' );
 }
 
 function get_announcement( $id )
@@ -223,7 +224,7 @@ function get_user_announcement_count( $value = 'all', $force = false, $user_id =
 		}
 	}
 	
-	$user_meta = get_user_meta( $user_id, '_fep_user_announcement_count', true );
+	$user_meta = get_user_option( '_fep_user_announcement_count', $user_id );
 	
 	if( false === $user_meta || $force || !isset( $user_meta['unread'] ) ) {
 	
@@ -280,7 +281,7 @@ function get_user_announcement_count( $value = 'all', $force = false, $user_id =
 		 $user_meta = array(
 			'unread' => count( $announcements ),
 		);
-		update_user_meta( $user_id, '_fep_user_announcement_count', $user_meta );
+		update_user_option( $user_id, '_fep_user_announcement_count', $user_meta );
 	}
 	if( isset($user_meta[$value]) ) {
 		return $user_meta[$value];
@@ -311,7 +312,7 @@ function bulk_action( $action, $ids = null ) {
 	$message = '';
 	
 	if( $count ) {
-		delete_user_meta( get_current_user_id(), '_fep_user_announcement_count' );
+		delete_user_option( get_current_user_id(), '_fep_user_announcement_count' );
 		
 		if( 'delete' == $action ){
 			$message = sprintf(_n('%s announcement', '%s announcements', $count, 'front-end-pm'), number_format_i18n($count) );

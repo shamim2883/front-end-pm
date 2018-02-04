@@ -16,6 +16,9 @@ function fep_get_option( $option, $default = '', $section = 'FEP_admin_options' 
 	
     $options = get_option( $section );
 	
+	if( ! is_array( $options ) )
+		$options = array();
+	
 	$is_default = false;
 
     if ( isset( $options[$option] ) ) {
@@ -971,7 +974,7 @@ function fep_make_read( $parent = false, $post_id = false, $user_id = false )
 			$return = add_post_meta( $post_id, '_fep_parent_read_by_'. $user_id, time(), true );
 		}
 		if( $return ) {
-		 delete_user_meta( $user_id, '_fep_user_message_count' );
+		 delete_user_option( $user_id, '_fep_user_message_count' );
 		 	return true;
 		} else {
 			return false;
@@ -1190,7 +1193,7 @@ function fep_add_message_participants( $message_id, $message, $inserted_message 
 				if( $participant != $inserted_message->post_author ){
 					fep_undelete_message( $inserted_message->post_parent, $participant);
 					delete_post_meta( $inserted_message->post_parent, '_fep_parent_read_by_'. $participant );
-					delete_user_meta( $participant, '_fep_user_message_count' );
+					delete_user_option( $participant, '_fep_user_message_count' );
 				}
 			}
 		}		
@@ -1202,19 +1205,19 @@ function fep_add_message_participants( $message_id, $message, $inserted_message 
 					
 					if( ! in_array( $participant, fep_get_participants( $message_id ) )){
 						add_post_meta( $message_id, '_fep_participants', $participant );
-						delete_user_meta( $participant, '_fep_user_message_count' );
+						delete_user_option( $participant, '_fep_user_message_count' );
 					}
 				}
 			} else {
 				if( ! in_array( $message['message_to_id'], fep_get_participants( $message_id ) )){
 					add_post_meta( $message_id, '_fep_participants', $message['message_to_id'] );
-					delete_user_meta( $message['message_to_id'], '_fep_user_message_count' );
+					delete_user_option( $message['message_to_id'], '_fep_user_message_count' );
 				}
 			}
 		}		
 		if( ! in_array( $inserted_message->post_author, fep_get_participants( $message_id ) )){
 			add_post_meta( $message_id, '_fep_participants', $inserted_message->post_author );
-			delete_user_meta( $inserted_message->post_author, '_fep_user_message_count' );
+			delete_user_option( $inserted_message->post_author, '_fep_user_message_count' );
 		}
 			
 		fep_make_read( true, $message_id, $inserted_message->post_author );
@@ -1268,9 +1271,9 @@ function fep_send_message_transition_post_status( $new_status, $old_status, $pos
 
 		foreach( $participants as $participant ) 
 		{
-			delete_user_meta( $participant, '_fep_user_message_count' );
+			delete_user_option( $participant, '_fep_user_message_count' );
 			if( $participant != $post->post_author ){
-				delete_user_meta( $participant, '_fep_notification_dismiss' );
+				delete_user_option( $participant, '_fep_notification_dismiss' );
 			}
 		}
 	}
@@ -1464,7 +1467,7 @@ function fep_notification_div() {
 	$class = 'fep-notification-bar';
 	if( !$unread_count && !$unread_ann_count ){
 		$class .= ' fep-hide';
-	} elseif( get_user_meta( get_current_user_id(), '_fep_notification_dismiss', true ) ){
+	} elseif( get_user_option( '_fep_notification_dismiss' ) ){
 		$class .= ' fep-hide';
 	}
 	
