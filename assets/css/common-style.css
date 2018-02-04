@@ -105,4 +105,19 @@
 {
 	display: none;
 }
+.fep-form textarea
+{
+	height: 200px;
+}
+.fep-form label
+{
+	display:block;
+	clear:both;
+}
+.fep-form .description
+{
+	font-weight: normal;
+	font-size: 90%;
+	font-style: italic;
+}
 
