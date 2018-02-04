@@ -5,7 +5,7 @@ Donate link: https://www.paypal.me/hasanshamim
 Requires at least: 4.4
 Tested up to: 4.9
 Requires PHP: 5.3
-Stable tag: 6.4
+Stable tag: 7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -44,6 +44,8 @@ Front End PM is a Private Messaging system to your WordPress site.This is full f
 * Users can privately message one another
 * Threaded messages/Individual message
 * Ability to embed things into messages like YouTube, Photobucket, Flickr, Wordpress TV, more.
+* Notification sound.
+* Desktop notification.
 * Admins can send a public announcement for all users to see or to perticular role(s).
 * Admins can set the max amount of messages a user can keep in his/her box per role basis. This is helpful for keeping Database sizes down.
 * Admins can set how many messages to show per page in the message box.
@@ -108,6 +110,20 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 8. Appearance settings.
 
 == Changelog ==
+
+= 7.1 =
+
+* New: Notification sound.
+* New: Desktop notification.
+* New: "Misc" settings tab added in back-end settings page.
+* New: fep_filter_notification_script_localize added.
+* New: fep_filter_notification_response added.
+* Fix: Header notification sometimes did not show.
+* Fix: Multisite shows wrong message count sometimes.
+* Fix: Sometimes shows wrong time in some server.
+* Some templates changes
+* Some CSS changes.
+* pot file updated.
 
 = 6.4 =
 
