@@ -60,7 +60,7 @@
 			}
 			if( fep_notification_script.play_sound == "1"
 			&& ( response['message_unread_count'] || response['announcement_unread_count'] )
-		  	&& ( response['message_unread_count'] != response['message_unread_count_prev'] || response['announcement_unread_count'] != response['announcement_unread_count_prev'] ) ){
+		  	&& ( response['message_unread_count'] > response['message_unread_count_prev'] || response['announcement_unread_count'] > response['announcement_unread_count_prev'] ) ){
 				fep_sound.play();
 			}
 			jQuery(document).trigger( 'fep_notification', response );
@@ -114,13 +114,13 @@
 		
 		//Multiple notification in same time create issue in Firefox. So we will show only message OR announcement notification
 		if( response['message_unread_count']
-		&& response['message_unread_count'] != response['message_unread_count_prev'] ){
+		&& response['message_unread_count'] > response['message_unread_count_prev'] ){
 			title = fep_notification_script.mgs_notification_title;
 			body = fep_notification_script.mgs_notification_body;
 			link = fep_notification_script.mgs_notification_url;
 		}
 		else if( response['announcement_unread_count']
-		&& response['announcement_unread_count'] != response['announcement_unread_count_prev'] ){
+		&& response['announcement_unread_count'] > response['announcement_unread_count_prev'] ){
 			title = fep_notification_script.ann_notification_title;
 			body = fep_notification_script.ann_notification_body;
 			link = fep_notification_script.ann_notification_url;
