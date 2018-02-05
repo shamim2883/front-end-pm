@@ -2,7 +2,7 @@
 	var fep_sound = new Audio( fep_notification_script.sound_url );
 	function fep_notification_ajax_call(){
 		
-		if ( document.hidden ) {
+		if ( document.hidden || document.msHidden || document.mozHidden || document.webkitHidden ) {
 			if( fep_notification_block_count < parseInt(fep_notification_script.skip, 10) ){
 				fep_notification_block_count++;
 				return;				
@@ -93,24 +93,25 @@
 		//console.log( response );
 		// Let's check if the browser supports notifications
 		if( "Notification" in window ){
-			if( Notification.permission === 'default' ){
+			if( Notification.permission === 'denied' ){
+				//denied, so nothing to do
+			} else if( Notification.permission === 'default' ) {
 				Notification.requestPermission();
 				if( Notification.permission === 'granted' ) {
 					fep_desktop_notification_show( response );
 				}
-			} else if( Notification.permission === 'granted' ) {
+			} else {
 				fep_desktop_notification_show( response );
 			}
-		} else if( "mozNotification" in navigator ){
+		} else if( "webkitNotifications" in window ) {
+            fep_desktop_notification_show( response );
+        } else if( "mozNotification" in navigator ){
 			fep_desktop_notification_show( response );
 		}
 	}
 	function fep_desktop_notification_show( response ){
 		
-		if (!("Notification" in window) && !("mozNotification" in navigator)) {
-			return false;
-		}
-		var title, body, link;
+		var title, body, link, notification;
 		
 		//Multiple notification in same time create issue in Firefox. So we will show only message OR announcement notification
 		if( response['message_unread_count']
@@ -128,7 +129,7 @@
 			return false;
 		}
 		if( "Notification" in window ){
-			var notification = new Notification(
+			notification = new Notification(
 				title, {
 					body: body,
 					icon: fep_notification_script.icon_url
@@ -140,8 +141,12 @@
 			notification.onerror = function ( event ) {
 				
 			};
-		} else if( "mozNotification" in navigator ){
-			navigator.mozNotification.createNotification(title, body, fep_notification_script.icon_url).show();
+		} else if( "webkitNotifications" in window ) {
+            notification = window.webkitNotifications.createNotification(fep_notification_script.icon_url, title, body);
+            notification.show();
+        } else if( "mozNotification" in navigator ){
+			notification = navigator.mozNotification.createNotification(title, body, fep_notification_script.icon_url);
+			notification.show();
 		}
 	}
 

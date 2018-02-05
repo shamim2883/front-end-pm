@@ -271,7 +271,7 @@ function fep_enqueue_scripts()
 			) 
 		);
 		
-	wp_register_script( 'fep-notification-script', FEP_PLUGIN_URL . 'assets/js/notification.js', array( 'jquery' ), '7.1', true );
+	wp_register_script( 'fep-notification-script', FEP_PLUGIN_URL . 'assets/js/notification.js', array( 'jquery' ), '7.2', true );
 	$call_on_ready = ( isset($_GET['fepaction']) &&
 		( ( $_GET['fepaction'] == 'viewmessage' && fep_get_new_message_number() ) || ( $_GET['fepaction'] == 'view_announcement' && fep_get_new_announcement_number() ) ) 
 		) ? '1' : '0';
