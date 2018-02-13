@@ -24,7 +24,11 @@ class Fep_Admin_Settings
 		add_action('admin_init', array($this, 'settings_output'));
 		add_action( 'admin_notices', array( $this, 'notice_review' ) );
 		add_filter('plugin_action_links_' . plugin_basename( FEP_PLUGIN_FILE ), array( $this, 'add_settings_link' ) );
-		add_action('fep_action_before_admin_options_save', array($this, 'recalculate_user_message_count'), 10, 2 );
+		
+		add_action('add_option_FEP_admin_options', array($this, 'after_option_save'), 99 );
+		add_action('update_option_FEP_admin_options', array($this, 'after_option_save'), 99 );
+		
+		add_action('fep_action_after_admin_options_save', array($this, 'recalculate_user_message_count'), 10, 2 );
     }
 
     function addAdminPage()
@@ -47,17 +51,39 @@ class Fep_Admin_Settings
 		}
 	}
 	
-	function recalculate_user_message_count( $settings, $tab ){
+	function recalculate_user_message_count( $old_value, $tab ){
 		global $wpdb;
 		
-		if( 'message' == $tab && fep_get_message_view() != $settings['message_view'] ) {
-			if( 'threaded' == fep_get_message_view() ){
+		if( isset( $old_value['message_view'] ) && fep_get_message_view() != $old_value['message_view'] ) {
+			if( 'threaded' != fep_get_message_view() ){
 				delete_metadata( 'user', 0, $wpdb->get_blog_prefix() . '_fep_user_message_count', '', true );
 			} else {
 				update_option( '_fep_message_view_changed', 1 );
 				delete_metadata( 'post', 0, '_fep_last_reply_by', '', true );
 			}
 		}
+	}
+	
+	function after_option_save( $old_value ){
+		global $wp_settings_sections;
+		
+		if( ! is_array( $old_value ) ){
+			$old_value = array();
+		}
+		$tab = 'general';
+		$is_settings_page = false;
+		
+		if( ! empty( $_POST['_wp_http_referer'] ) ){
+		
+			wp_parse_str( $_POST['_wp_http_referer'], $referrer );
+
+			$tab       = !empty( $referrer['tab'] ) ? $referrer['tab'] : 'general';
+			
+			if( isset( $referrer['page'] ) && 'fep_settings' == $referrer['page'] && ! empty( $wp_settings_sections['fep_settings_' . $tab] ) ){
+				$is_settings_page = true;
+			}
+		}
+		do_action( 'fep_action_after_admin_options_save', $old_value, $tab, $is_settings_page );
 	}
 	
 	public function form_fields( $section = 'general' )
@@ -750,6 +776,7 @@ class Fep_Admin_Settings
 		
 		$settings = apply_filters( 'fep_filter_before_admin_options_save', $settings, $tab );
 		
+		//Do not use this action hook 
 		do_action( 'fep_action_before_admin_options_save', $settings, $tab );
 
 		return $settings;
