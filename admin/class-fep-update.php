@@ -68,9 +68,12 @@ class Fep_Update
 		}
 		if( version_compare( $prev_ver, '7.1', '<' ) ){
 			delete_metadata( 'user', 0, 'FEP_user_options', '', true );
-			delete_metadata( 'user', 0, '_fep_user_message_count', '', true );
+			//delete_metadata( 'user', 0, '_fep_user_message_count', '', true );
 			delete_metadata( 'user', 0, '_fep_user_announcement_count', '', true );
 			delete_metadata( 'user', 0, '_fep_notification_dismiss', '', true );
+		}
+		if( version_compare( $prev_ver, '7.2', '<' ) ){
+			delete_metadata( 'user', 0, '_fep_user_message_count', '', true );
 		}
 	}
 	
