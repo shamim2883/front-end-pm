@@ -8,7 +8,9 @@
 // Exit if accessed directly.
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) exit;
 
-include_once( 'functions.php' );
+if( ! function_exists( 'fep_get_option' ) ){
+	include_once( 'functions.php' );
+}
 
 global $wpdb;
 
