@@ -520,6 +520,10 @@ class Fep_Admin_Settings
 					);
 					
 		}
+		
+		if(! fep_get_option('page_id', 0 )){
+			$fields['page_id']['description'] = $fields['page_id']['description'] . '<br/><a class="button-secondary" href="'. esc_url( add_query_arg( array( 'post_title' => 'Front End PM', 'content' => '[front-end-pm]' ), admin_url('post-new.php?post_type=page') ) ).'">' . __( 'Create Page',  'front-end-pm' ) . '</a>';
+		}
 				
 		$fields = apply_filters( 'fep_settings_fields', $fields );
 
