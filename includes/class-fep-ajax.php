@@ -138,7 +138,7 @@ class Fep_Ajax
 	
 	function fep_notification_ajax() {
 		
-		if ( check_ajax_referer( 'fep-notification', 'token', false ) && is_user_logged_in() ) {
+		if ( is_user_logged_in() && check_ajax_referer( 'fep-notification', 'token', false ) ) {
 			$mgs_unread_count 		= fep_get_new_message_number();
 			$mgs_total_count 		= fep_get_user_message_count( 'total' );
 			$ann_unread_count 		= fep_get_new_announcement_number();
