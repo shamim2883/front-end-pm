@@ -39,7 +39,7 @@ class Fep_Directory
 	function directory()
     {
 		if ( ! fep_current_user_can( 'access_directory') ) {
-	  		echo "<div class='fep-error'>".__("You do not have permission to access directory!", 'front-end-pm')."</div>";
+	  		echo apply_filters( 'fep_directory_output', '<div class="fep-error">'.__('You do not have permission to access directory!', 'front-end-pm').'</div>' );
 			return;
 	  	}
 		$g_filter = ! empty( $_GET['fep-filter'] ) ? $_GET['fep-filter'] : '';

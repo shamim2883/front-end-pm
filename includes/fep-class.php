@@ -33,7 +33,7 @@ if (!class_exists("fep_main_class"))
 	  
 	  if ( ! fep_current_user_can('access_message') ){
 	  
-	  	return "<div class='fep-error'>".__("You do not have permission to access message system", 'front-end-pm')."</div>";
+	  	return apply_filters('fep_main_shortcode_output', '<div class="fep-error">'.__("You do not have permission to access message system", 'front-end-pm').'</div>' );
 	  }
 	  
 	  $atts = shortcode_atts( array(
