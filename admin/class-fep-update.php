@@ -45,7 +45,7 @@ class Fep_Update
 		$options['userrole_access'] = $roles;
 		$options['userrole_new_message'] = $roles;
 		$options['userrole_reply'] = $roles;
-		$options['plugin_version'] = FEP_PLUGIN_VERSION;
+		$options['plugin_version'] = get_option( 'FEP_admin_options' ) ? '3.3' : FEP_PLUGIN_VERSION;
 		$options['page_id'] = $id;
 		
 		fep_update_option( $options );
@@ -130,7 +130,7 @@ class Fep_Update
 		if( isset( $_GET['tab'] ) && 'update' == $_GET['tab'] ) {
 			return;
 		}
-		$prev_ver = fep_get_option( 'plugin_version', '4.1' );
+		$prev_ver = fep_get_option( 'plugin_version', '3.3' );
 	
 		if( version_compare( $prev_ver, FEP_PLUGIN_VERSION, '=' ) && apply_filters( 'fep_update_enable_version_check', true ) ) {
 			return;
