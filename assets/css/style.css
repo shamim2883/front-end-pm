@@ -26,6 +26,7 @@
 	margin: 5px;
 	padding: 0;
 	vertical-align: top;
+	display: inline-block;
 }
 
 /*Content styling*/
