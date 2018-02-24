@@ -232,12 +232,10 @@ function fep_enqueue_scripts()
 	wp_register_style( 'fep-common-style', FEP_PLUGIN_URL . 'assets/css/common-style.css', array(), '7.1' );
 	wp_register_style( 'fep-style', FEP_PLUGIN_URL . 'assets/css/style.css', array(), '7.1' );
 	wp_register_style( 'fep-tokeninput-style', FEP_PLUGIN_URL . 'assets/css/token-input-facebook.css' );
-
-	if( fep_page_id() ) {
-		if( is_page( fep_page_id() ) || is_single( fep_page_id() ) ) {
-			wp_enqueue_style( 'fep-style' );
-		}
-	} else {
+	
+	if( 'always' == fep_get_option('load_css','only_in_message_page') ){
+		wp_enqueue_style( 'fep-style' );
+	} elseif( 'only_in_message_page' == fep_get_option('load_css','only_in_message_page') && fep_page_id() && ( is_page( fep_page_id() ) || is_single( fep_page_id() ) ) ){
 		wp_enqueue_style( 'fep-style' );
 	}
 	wp_enqueue_style( 'fep-common-style' );

@@ -245,6 +245,19 @@ class Fep_Admin_Settings
 				'label' => __( 'Remove Data on Uninstall?', 'front-end-pm' ),
 				'description' => '<div style="color:red">'. sprintf(__( 'Check this box if you would like %s to completely remove all of its data when the plugin is deleted.', 'front-end-pm' ), fep_is_pro() ? 'Front End PM PRO' : 'Front End PM' ). '</div>'
 				),
+			'load_css'	=> array(
+				'type'	=>	'select',
+				'section'	=> 'appearance',
+				'value' => fep_get_option('load_css','only_in_message_page'),
+				'priority'	=> 2,
+				'label' => __( 'Load CSS file', 'front-end-pm' ),
+				'description' => __('Select when you want to load CSS file of this plugin', 'front-end-pm' ),
+				'options'	=> array(
+					'always'				=> __( 'Always', 'front-end-pm' ),
+					'only_in_message_page'	=> __( 'Only in message page', 'front-end-pm' ),
+					'never'					=> __( 'Never', 'front-end-pm' ),
+					)					
+				),
 			'bg_color'	=> array(
 				'type'	=>	'color_picker',
 				//'class'	=> 'fep-color-picker',
