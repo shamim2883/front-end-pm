@@ -342,6 +342,10 @@ function fep_query_url( $action, $arg = array() ) {
 	return apply_filters( 'fep_query_url_filter', $url, $args );
 }
 
+function fep_query_url_raw( $action, $arg = array() ) {
+	return esc_url_raw( fep_query_url_without_esc( $action, $arg ) );
+}
+
 function fep_query_url_without_esc( $action, $arg = array() ) {
       
 	$args = array( 'fepaction' => $action );
