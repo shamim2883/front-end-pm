@@ -627,11 +627,35 @@ function fep_get_userdata($data, $need = 'ID', $type = 'slug' )
 		
 		$user = get_user_by( $type , $data);
 		
-		if ( $user && in_array($need, array('ID', 'user_login', 'display_name', 'user_email', 'user_nicename', 'user_registered' )))
+		if ( $user )
 			return $user->$need;
 		else
 			return '';
 	}
+	
+function fep_user_name( $id ){
+	$which = apply_filters( 'fep_filter_show_which_name', 'display_name' );
+	
+	switch( $which ){
+		case 'first_last_name':
+			$name = fep_get_userdata( $id, 'first_name', 'id' ) . ' ' . fep_get_userdata( $id, 'last_name', 'id' );
+		break;
+		case 'last_first_name':
+			$name = fep_get_userdata( $id, 'last_name', 'id' ) . ' ' . fep_get_userdata( $id, 'first_name', 'id' );
+		break;
+		case 'first_name':
+		case 'last_name':
+		case 'user_login':
+		case 'user_nicename':
+			$name = fep_get_userdata( $id, $which, 'id' );
+		break;
+		case 'display_name':
+		default:
+			$name = fep_get_userdata( $id, 'display_name', 'id' );
+		break;
+	}
+	return apply_filters( 'fep_filter_user_name', $name, $id );
+}
 
 function fep_get_user_message_count( $value = 'all', $force = false, $user_id = false )
 {
