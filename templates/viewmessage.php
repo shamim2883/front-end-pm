@@ -53,9 +53,9 @@ if( $messages->have_posts() ) {
 												
 						if( get_current_user_id() != $participant && fep_get_option( 'block_other_users', 1 ) ){
 							$block_unblock_text = fep_is_user_blocked_for_user( get_current_user_id(), $participant ) ? __("Unblock", "front-end-pm") : __("Block", "front-end-pm");
-							$par[] = fep_get_userdata( $participant, 'display_name', 'id' ) . '(<a href="#" class="fep_block_unblock_user" data-user_id="' . $participant . '">'. $block_unblock_text . '</a>)';
+							$par[] = fep_user_name( $participant ) . '(<a href="#" class="fep_block_unblock_user" data-user_id="' . $participant . '">'. $block_unblock_text . '</a>)';
 						} else {
-							$par[] = fep_get_userdata( $participant, 'display_name', 'id' );
+							$par[] = fep_user_name( $participant );
 						}
 					} ?>
 				<div class="fep-per-message fep-per-message-top fep-per-message-<?php the_ID(); ?>">
@@ -66,7 +66,7 @@ if( $messages->have_posts() ) {
 				<?php } ?>
 			<div id="fep-message-<?php the_ID(); ?>" class="<?php echo fep_sanitize_html_class( $per_mgs_class ); ?>">
 				<div class="fep-message-title fep-message-title-<?php the_ID(); ?>">
-					<div class="author"><?php the_author_meta('display_name'); ?></div>
+					<div class="author"><?php echo fep_user_name( get_the_author_meta('ID') ); ?></div>
 					<div class="date"><?php the_time(); ?></div>
 				</div>
 				<div class="<?php echo fep_sanitize_html_class( $content_class ); ?>">

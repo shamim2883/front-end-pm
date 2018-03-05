@@ -1398,12 +1398,12 @@ function fep_autosuggestion_ajax() {
 
 	$args = array(
 					'search' => "*{$searchq}*",
-					'search_columns' => array( 'display_name' ),
+					'search_columns' => array( 'user_login', 'display_name' ),
 					'exclude' => array( $user_ID ),
 					'number' => 5,
 					'orderby' => 'display_name',
 					'order' => 'ASC',
-					'fields' => array( 'display_name', 'user_nicename' )
+					'fields' => array( 'ID', 'display_name', 'user_nicename' )
 		);
 	
 	$args = apply_filters ('fep_autosuggestion_arguments', $args );
@@ -1420,7 +1420,7 @@ if(strlen($searchq)>0)
 		{
 				
 				?>
-				<li><a href="#" onClick="fep_fill_autosuggestion('<?php echo $user->user_nicename; ?>','<?php echo $user->display_name; ?>');return false;"><?php echo $user->display_name; ?></a></li>
+				<li><a href="#" onClick="fep_fill_autosuggestion('<?php echo $user->user_nicename; ?>','<?php echo fep_user_name($user->ID); ?>');return false;"><?php echo fep_user_name($user->ID); ?></a></li>
 				<?php
 			
 		}

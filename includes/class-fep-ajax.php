@@ -43,7 +43,7 @@ class Fep_Ajax
 			
 			$args = array(
 					'search' => "*{$searchq}*",
-					'search_columns' => array( 'display_name' ),
+					'search_columns' => array( 'user_login', 'display_name' ),
 					'exclude' => array( $user_ID ),
 					'number' => 5,
 					'orderby' => 'display_name',
@@ -63,7 +63,7 @@ class Fep_Ajax
 				{
 					foreach( $users as $user)
 					{	
-						$display = apply_filters( 'fep_autosuggestion_user_name', $user->display_name, $user->ID );
+						$display = fep_user_name($user->ID);
 						
 						?><li><a href="#" onClick="fep_fill_autosuggestion('<?php echo $user->user_nicename; ?>','<?php echo $display; ?>');return false;"><?php echo $display; ?></a></li><?php
 					}
@@ -88,7 +88,7 @@ class Fep_Ajax
 		
 		$args = array(
 			'search' => "*{$searchq}*",
-			'search_columns' => array( 'display_name' ),
+			'search_columns' => array( 'user_login', 'display_name' ),
 			'exclude' => $exclude,
 			'number' => 10,
 			'orderby' => 'display_name',
@@ -109,7 +109,7 @@ class Fep_Ajax
 			{
 				$ret[] = array(
 						'id'	=> $user->ID,
-						'name'	=>  $user->display_name
+						'name'	=>  fep_user_name($user->ID)
 					);
 			}
 		}

@@ -112,7 +112,7 @@ class FEP_text_widget extends WP_Widget {
 		$show_announcement = isset( $instance['show_announcement'] ) ? $instance['show_announcement'] : false;
 		
 		if ( $show_messagebox || $show_announcement ){
-			echo __('Welcome', 'front-end-pm') . ' ' . fep_get_userdata( $user_ID, 'display_name', 'id' ). '<br />';
+			echo __('Welcome', 'front-end-pm') . ' ' . fep_user_name( $user_ID ). '<br />';
 			
 			echo __('You have', 'front-end-pm');
 		

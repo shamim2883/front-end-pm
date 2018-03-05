@@ -148,7 +148,7 @@ class Fep_Directory
 				 echo get_avatar( $user->ID, 55 );
 			break;
 			case 'name' :
-				echo $user->display_name;
+				echo fep_user_name( $user->ID );
 			break;
 			case 'block_unblock' :
 			wp_enqueue_script( 'fep-block-unblock-script');

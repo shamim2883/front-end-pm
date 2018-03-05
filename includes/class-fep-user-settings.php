@@ -91,10 +91,10 @@ class Fep_User_Settings
 			
 			$users = array();
 			foreach( fep_get_blocked_users_for_user() as $id ) {
-				if( $display_name = fep_get_userdata( $id, 'display_name', 'id' ) ) {
+				if( $name = fep_user_name( $id ) ) {
 					$users[] = array(
 						'id' => $id,
-						'name' => $display_name
+						'name' => $name
 						);
 				}
 			}

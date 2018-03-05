@@ -498,7 +498,7 @@ function get_column_content($column)
 					echo '<div class="fep-avatar-more-60" title="' . __('More users', 'front-end-pm') . '"></div>';
 					break;
 				} 
-				?><div class="fep-avatar-<?php echo $count; ?>"><?php echo get_avatar( $p, 60, '', '', array( 'extra_attr'=> 'title="'. fep_get_userdata( $p, 'display_name', 'ID' ) . '"') ); ?></div><?php
+				?><div class="fep-avatar-<?php echo $count; ?>"><?php echo get_avatar( $p, 60, '', '', array( 'extra_attr'=> 'title="'. fep_user_name( $p ) . '"') ); ?></div><?php
 				$count++;
 			}
 			if( ! $participants && $group = get_post_meta( get_the_ID(), '_fep_group', true ) ){
@@ -507,7 +507,7 @@ function get_column_content($column)
 		echo '</div>';
 		break;
 		case 'author' :
-			?><span class="fep-message-author"><?php the_author_meta('display_name'); ?></span><span class="fep-message-date"><?php the_time(); ?></span><?php
+			?><span class="fep-message-author"><?php echo fep_user_name( get_the_author_meta('ID') ); ?></span><span class="fep-message-date"><?php the_time(); ?></span><?php
 		break;
 		case 'title' :
 			if( ! fep_is_read( true ) ) {

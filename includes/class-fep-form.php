@@ -258,7 +258,7 @@ function field_output( $field, $errors )
 					
 					if( ! empty( $field['posted-value' ] ) ) {
 						$message_to = fep_get_userdata( $field['posted-value' ], 'user_nicename' );
-						$message_top = fep_get_userdata( $message_to, 'display_name' );
+						$message_top = fep_user_name( fep_get_userdata( $message_to, 'ID' ) );
 					} elseif( $to ){
 						$support = array(
 							'nicename' 	=> true,
@@ -271,16 +271,16 @@ function field_output( $field, $errors )
 							
 						if ( !empty( $support['nicename'] ) && $user = fep_get_userdata( $to, 'user_nicename' ) ) {
 							$message_to = $user;
-							$message_top = fep_get_userdata( $user, 'display_name');
+							$message_top = fep_user_name( fep_get_userdata( $user, 'ID') );
 						} elseif( is_numeric( $to ) && !empty( $support['id'] ) && $user = fep_get_userdata( $to, 'user_nicename', 'id' ) ) {
 							$message_to = $user;
-							$message_top = fep_get_userdata( $user, 'display_name');
+							$message_top = fep_user_name( fep_get_userdata( $user, 'ID') );
 						} elseif ( is_email( $to ) && !empty( $support['email'] ) && $user = fep_get_userdata( $to, 'user_nicename', 'email' ) ) {
 							$message_to = $user;
-							$message_top = fep_get_userdata( $user, 'display_name');
+							$message_top = fep_user_name( fep_get_userdata( $user, 'ID') );
 						} elseif ( !empty( $support['login'] ) && $user = fep_get_userdata( $to, 'user_nicename', 'login' ) ) {
 							$message_to = $user;
-							$message_top = fep_get_userdata( $user, 'display_name');
+							$message_top = fep_user_name( fep_get_userdata( $user, 'ID') );
 						} else {
 							$message_to = '';
 							$message_top = '';
@@ -474,7 +474,7 @@ function field_output( $field, $errors )
 							if( $to && get_current_user_id() != $to) {
 								$_POST['message_to_id'][] = $to;
 								if ( ! fep_current_user_can('send_new_message_to', $to ) ) {
-									$errors->add( $field['id'] .'-permission' , sprintf(__("%s does not want to receive messages!", 'front-end-pm'), fep_get_userdata( $to, 'display_name', 'id')));
+									$errors->add( $field['id'] .'-permission' , sprintf(__("%s does not want to receive messages!", 'front-end-pm'), fep_user_name( $to )));
 								}
 							} else {
 								$errors->add( $field['id'] , sprintf(__('Invalid receiver "%s".', "front-end-pm"), $pre ) );
@@ -484,7 +484,7 @@ function field_output( $field, $errors )
 					  	$to = $_POST['message_to_id'] = fep_get_userdata( $preTo ); //return ID;
 						if( $to && get_current_user_id() != $to) {
 							if ( ! fep_current_user_can('send_new_message_to', $to ) ) {
-								$errors->add( $field['id'] .'-permission', sprintf(__("%s does not want to receive messages!", 'front-end-pm'), fep_get_userdata( $to, 'display_name', 'id')));
+								$errors->add( $field['id'] .'-permission', sprintf(__("%s does not want to receive messages!", 'front-end-pm'), fep_user_name( $to )));
 							}
 						} else {
 							$errors->add( $field['id'] , sprintf(__('Invalid receiver "%s".', "front-end-pm"), $preTo ) );

@@ -73,7 +73,7 @@ class Fep_Emails
 			$subject =  get_bloginfo("name").': '.__('New Message', 'front-end-pm');
 			$message = __('You have received a new message in', 'front-end-pm'). "\r\n";
 			$message .= get_bloginfo("name")."\r\n";
-			$message .= sprintf(__("From: %s", 'front-end-pm'), fep_get_userdata( $post->post_author, 'display_name', 'id') ). "\r\n";
+			$message .= sprintf(__("From: %s", 'front-end-pm'), fep_user_name( $post->post_author ) ). "\r\n";
 			$message .= sprintf(__("Subject: %s", 'front-end-pm'),  $post->post_title ). "\r\n";
 			$message .= __('Please Click the following link to view full Message.', 'front-end-pm')."\r\n";
 			$message .= fep_query_url('messagebox')."\r\n";
