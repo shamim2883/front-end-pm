@@ -474,7 +474,7 @@ function field_output( $field, $errors )
 							if( $to && get_current_user_id() != $to) {
 								$_POST['message_to_id'][] = $to;
 								if ( ! fep_current_user_can('send_new_message_to', $to ) ) {
-									$errors->add( $field['id'] , sprintf(__("%s does not want to receive messages!", 'front-end-pm'), fep_get_userdata( $to, 'display_name', 'id')));
+									$errors->add( $field['id'] .'-permission' , sprintf(__("%s does not want to receive messages!", 'front-end-pm'), fep_get_userdata( $to, 'display_name', 'id')));
 								}
 							} else {
 								$errors->add( $field['id'] , sprintf(__('Invalid receiver "%s".', "front-end-pm"), $pre ) );
@@ -484,7 +484,7 @@ function field_output( $field, $errors )
 					  	$to = $_POST['message_to_id'] = fep_get_userdata( $preTo ); //return ID;
 						if( $to && get_current_user_id() != $to) {
 							if ( ! fep_current_user_can('send_new_message_to', $to ) ) {
-								$errors->add( $field['id'] , sprintf(__("%s does not want to receive messages!", 'front-end-pm'), fep_get_userdata( $to, 'display_name', 'id')));
+								$errors->add( $field['id'] .'-permission', sprintf(__("%s does not want to receive messages!", 'front-end-pm'), fep_get_userdata( $to, 'display_name', 'id')));
 							}
 						} else {
 							$errors->add( $field['id'] , sprintf(__('Invalid receiver "%s".', "front-end-pm"), $preTo ) );
