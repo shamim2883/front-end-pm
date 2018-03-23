@@ -4,10 +4,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+$box_class = 'fep-box-size';
+
 if ( $max_total && (( $max_total * 90 )/ 100 ) <= $total_count  ) {
-	$class = ' class="fep-font-red"';
-} else {
-	$class = '';
+	$box_class .= ' fep-font-red';
 }
 
 ?>
@@ -30,7 +30,7 @@ if ( $max_total && (( $max_total * 90 )/ 100 ) <= $total_count  ) {
 					printf(_n('%s announcement', '%s announcements', $unread_ann_count, 'front-end-pm'), number_format_i18n($unread_ann_count) ); 
 					?></span> <?php _e('unread', 'front-end-pm'); ?>
 				</div>
-				<div<?php echo $class; ?>><?php 
+				<div class="<?php echo $box_class; ?>"><?php 
 					_e('Message box size', 'front-end-pm');?>: <?php 
 					printf(__('%1$s of %2$s', 'front-end-pm'),
 					'<span class="fep_total_message_count">' . number_format_i18n($total_count) . '</span>',
