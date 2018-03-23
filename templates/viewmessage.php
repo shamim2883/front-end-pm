@@ -5,6 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $i = 0;
+global $more;
 
 if( $messages->have_posts() ) {
 	wp_enqueue_script( 'fep-replies-show-hide' );
@@ -18,6 +19,8 @@ if( $messages->have_posts() ) {
 			$i++;
 			
 			$messages->the_post();
+			$more = 1; //show all message content after <!--more--> tag also
+			
 			$read_class = ( $hide_read && fep_is_read() ) ? ' fep-hide-if-js' : '';
 			$content_class = array();
 			$content_class[] = 'fep-message-content';

@@ -4,9 +4,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+global $more;
+
 if( $announcement->have_posts() ) {
 	while ( $announcement->have_posts() ) { 
 		$announcement->the_post();
+		$more = 1; //show all message content after <!--more--> tag also
 	
 	if( fep_make_read() ) {
 		delete_user_option( get_current_user_id(), '_fep_user_announcement_count' );
