@@ -394,7 +394,7 @@ function get_column_content($column)
 
 		break;
 		case 'fep-cb' :
-			?><input type="checkbox" name="fep-message-cb[]" value="<?php echo get_the_ID(); ?>" /><?php
+			?><input type="checkbox" class="fep-cb" name="fep-message-cb[]" value="<?php echo get_the_ID(); ?>" /><?php
 		break;
 		case 'date' :
 			?><span class="fep-message-date"><?php the_time(); ?></span><?php

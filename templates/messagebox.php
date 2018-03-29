@@ -46,7 +46,10 @@ do_action('fep_display_before_messagebox', $action);
 				</div>
 			</div>
 		</div>
-		<?php if( $messages->have_posts() ) { ?>
+		<?php if( $messages->have_posts() ) {
+			wp_enqueue_script( 'fep-cb-check-uncheck-all' ); ?>
+			<div class="fep-cb-check-uncheck-all-div"><label><input type="checkbox" class="fep-cb-check-uncheck-all" /><?php _e('Check/Uncheck all', 'front-end-pm'); ?></label></div>
+			
 		<div id="fep-table" class="fep-table fep-odd-even"><?php
 			while ( $messages->have_posts() ) { 
 				$messages->the_post(); ?>

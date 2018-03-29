@@ -482,7 +482,7 @@ function get_column_content($column)
 
 		break;
 		case 'fep-cb' :
-			?><input type="checkbox" name="fep-message-cb[]" value="<?php echo get_the_ID(); ?>" /><?php
+			?><input type="checkbox" class="fep-cb" name="fep-message-cb[]" value="<?php echo get_the_ID(); ?>" /><?php
 		break;
 		case 'avatar' :
 			$participants = fep_get_participants( get_the_ID() );

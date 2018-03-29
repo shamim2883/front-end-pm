@@ -46,7 +46,10 @@ do_action('fep_display_before_directory' );
 				</div>
 			</div>
 		</div>
-		<?php if( $user_query->get_results() ) { ?>
+		<?php if( $user_query->get_results() ) { 
+			wp_enqueue_script( 'fep-cb-check-uncheck-all' ); ?>
+			<div class="fep-cb-check-uncheck-all-div"><label><input type="checkbox" class="fep-cb-check-uncheck-all" /><?php _e('Check/Uncheck all', 'front-end-pm'); ?></label></div>
+			
 		<div id="fep-table" class="fep-table fep-odd-even"><?php
 			foreach( $user_query->get_results() as $user ) { ?>
 					<div id="fep-directory-<?php echo $user->ID; ?>" class="fep-table-row"><?php
