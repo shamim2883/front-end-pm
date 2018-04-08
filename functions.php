@@ -2016,3 +2016,9 @@ function fep_pre_get_document_title( $title ){
 	return $title;
 }
 
+function fep_is_func_disabled( $function ) {
+	$disabled = explode( ',',  ini_get( 'disable_functions' ) );
+
+	return in_array( $function, $disabled );
+}
+
