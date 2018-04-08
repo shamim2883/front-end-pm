@@ -206,8 +206,8 @@ class Fep_Update
 		
 		ignore_user_abort( true );
 
-		if ( ! ini_get( 'safe_mode' ) )
-		@set_time_limit( 300 );
+		if ( ! fep_is_func_disabled( 'set_time_limit' ) )
+		set_time_limit( 0 );
 		
 		$custom_int   = isset( $_POST['custom_int'] )    ? absint( $_POST['custom_int'] )           	: 0;
 		$custom_str = isset( $_POST['custom_str'] )      ? sanitize_text_field($_POST['custom_str']): 'messages';
@@ -279,8 +279,8 @@ class Fep_Update
 		$custom_int   = isset( $_POST['custom_int'] )        ? absint( $_POST['custom_int'] )           	: 0;
 		
 		ignore_user_abort( true );
-		if ( ! ini_get( 'safe_mode' ) )
-			@set_time_limit( 300 );
+		if ( ! fep_is_func_disabled( 'set_time_limit' ) )
+		set_time_limit( 0 );
 		
 		if( ! fep_get_option( 'v51-part-1', 0, 'fep_updated_versions' ) ){
 			global $wpdb;
@@ -343,8 +343,8 @@ class Fep_Update
 		$custom_int   = isset( $_POST['custom_int'] )   ? absint( $_POST['custom_int'] )  : 0;
 		
 		ignore_user_abort( true );
-		if ( ! ini_get( 'safe_mode' ) )
-			@set_time_limit( 300 );
+		if ( ! fep_is_func_disabled( 'set_time_limit' ) )
+		set_time_limit( 0 );
 			
 		$args = array(
 			'post_type' => 'fep_announcement',
@@ -389,8 +389,8 @@ class Fep_Update
 		$custom_int   = isset( $_POST['custom_int'] )   ? absint( $_POST['custom_int'] )  : 0;
 		
 		ignore_user_abort( true );
-		if ( ! ini_get( 'safe_mode' ) )
-			@set_time_limit( 300 );
+		if ( ! fep_is_func_disabled( 'set_time_limit' ) )
+		set_time_limit( 0 );
 			
 		$args = array(
 			'post_type' => 'fep_message',
