@@ -1031,17 +1031,17 @@ function fep_admin_sidebar()
 		<?php
 	}
 	
-function add_settings_link( $links ) {
-	//add settings link in plugins page
-	$settings_link = '<a href="' . admin_url( 'edit.php?post_type=fep_message&page=fep_settings' ) . '">' .__( 'Settings', 'front-end-pm' ) . '</a>';
-	array_unshift( $links, $settings_link );
-	
-	return $links;
-}
+	function add_settings_link( $links ) {
+		//add settings link in plugins page
+		$settings_link = '<a href="' . admin_url( 'edit.php?post_type=fep_message&page=fep_settings' ) . '">' .__( 'Settings', 'front-end-pm' ) . '</a>';
+		array_unshift( $links, $settings_link );
+		
+		return $links;
+	}
 
-function extensions_page(){
-	include( FEP_PLUGIN_DIR. 'admin/extensions.php' );
-}
+	function extensions_page(){
+		include( FEP_PLUGIN_DIR. 'admin/extensions.php' );
+	}
 
   } //END CLASS
 
