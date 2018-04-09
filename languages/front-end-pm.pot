@@ -5,9 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: "
-"Front End PM 7.4\n"
+"Front End PM 8.1\n"
 "POT-Creation-Date: "
-"2018-03-06 21:45+0600\n"
+"2018-04-08 13:04+0600\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Your "
 "Name <you@example.com>\n"
@@ -591,7 +591,7 @@ msgstr ""
 #: admin/class-fep-admin-settings.php:1024
 #, php-format
 msgid ""
-"like %s plugin? Please "
+"Like %s plugin? Please "
 "consider review in "
 "WordPress.org and give "
 "5&#9733; rating."
@@ -1019,8 +1019,8 @@ msgid ""
 msgstr ""
 
 #: admin/class-fep-update.php:369
-#: functions.php:1462
-#: functions.php:1495
+#: functions.php:1463
+#: functions.php:1496
 #: includes/class-fep-ajax.php:165
 #: includes/class-fep-ajax.php:179
 #: includes/class-fep-announcement.php:318
@@ -1105,37 +1105,37 @@ msgid ""
 "try again."
 msgstr ""
 
-#: functions.php:439
-#: functions.php:1684
+#: functions.php:440
+#: functions.php:1685
 msgid "Error"
 msgstr ""
 
-#: functions.php:779
+#: functions.php:780
 msgid "Unpublished"
 msgstr ""
 
-#: functions.php:787
+#: functions.php:788
 #, php-format
 msgid "%s from now"
 msgstr ""
 
-#: functions.php:789
+#: functions.php:790
 #, php-format
 msgid "%s ago"
 msgstr ""
 
-#: functions.php:1163
+#: functions.php:1164
 msgid "RE:"
 msgstr ""
 
-#: functions.php:1429
+#: functions.php:1430
 #: includes/class-fep-ajax.php:71
 #: includes/class-fep-user-settings.php:111
 msgid "No matches found"
 msgstr ""
 
-#: functions.php:1457
-#: functions.php:1492
+#: functions.php:1458
+#: functions.php:1493
 #: includes/class-fep-ajax.php:160
 #: includes/class-fep-ajax.php:174
 #: includes/class-fep-message.php:369
@@ -1147,28 +1147,28 @@ msgid_plural "%s messages"
 msgstr[0] ""
 msgstr[1] ""
 
-#: functions.php:1465
-#: functions.php:1505
+#: functions.php:1466
+#: functions.php:1506
 #: includes/fep-widgets.php:117
 #: templates/header.php:25
 msgid "You have"
 msgstr ""
 
-#: functions.php:1471
-#: functions.php:1517
+#: functions.php:1472
+#: functions.php:1518
 #: includes/fep-widgets.php:131
 #: templates/header.php:28
 msgid "and"
 msgstr ""
 
-#: functions.php:1477
-#: functions.php:1526
+#: functions.php:1478
+#: functions.php:1527
 #: includes/fep-widgets.php:143
 #: templates/header.php:31
 msgid "unread"
 msgstr ""
 
-#: functions.php:1757
+#: functions.php:1758
 #: templates/newmessage_form.php:10
 msgid ""
 "You do not have "
@@ -1176,8 +1176,8 @@ msgid ""
 "message!"
 msgstr ""
 
-#: functions.php:1767
-#: functions.php:1797
+#: functions.php:1768
+#: functions.php:1798
 #: includes/fep-class.php:134
 #: includes/fep-class.php:162
 msgid ""
@@ -1185,8 +1185,8 @@ msgid ""
 "sent."
 msgstr ""
 
-#: functions.php:1769
-#: functions.php:1799
+#: functions.php:1770
+#: functions.php:1800
 #: includes/fep-class.php:136
 #: includes/fep-class.php:164
 msgid ""
@@ -1195,8 +1195,8 @@ msgid ""
 "admin moderation."
 msgstr ""
 
-#: functions.php:1772
-#: functions.php:1802
+#: functions.php:1773
+#: functions.php:1803
 #: includes/class-fep-announcement.php:83
 #: includes/fep-class.php:139
 #: includes/fep-class.php:167
@@ -1205,7 +1205,7 @@ msgid ""
 "try again."
 msgstr ""
 
-#: functions.php:1787
+#: functions.php:1788
 #: templates/reply_form.php:10
 msgid ""
 "You do not have "
@@ -1213,7 +1213,7 @@ msgid ""
 "to this message!"
 msgstr ""
 
-#: functions.php:1817
+#: functions.php:1818
 #: includes/class-fep-form.php:450
 #: includes/class-fep-form.php:455
 #: includes/fep-class.php:180
@@ -1227,7 +1227,7 @@ msgstr ""
 #: includes/class-fep-directory.php:99
 #: includes/class-fep-directory.php:128
 #: includes/class-fep-directory.php:161
-#: templates/viewmessage.php:55
+#: templates/viewmessage.php:58
 msgid "Block"
 msgstr ""
 
@@ -1235,7 +1235,7 @@ msgstr ""
 #: includes/class-fep-directory.php:100
 #: includes/class-fep-directory.php:128
 #: includes/class-fep-directory.php:159
-#: templates/viewmessage.php:55
+#: templates/viewmessage.php:58
 msgid "Unblock"
 msgstr ""
 
@@ -1321,7 +1321,7 @@ msgid "Title"
 msgstr ""
 
 #: includes/class-fep-announcement.php:444
-#: templates/view_announcement.php:27
+#: templates/view_announcement.php:30
 msgid ""
 "You do not have "
 "permission to view this "
@@ -1884,7 +1884,7 @@ msgid "unlimited"
 msgstr ""
 
 #: includes/fep-class.php:336
-#: templates/viewmessage.php:90
+#: templates/viewmessage.php:93
 msgid ""
 "You do not have "
 "permission to view this "
@@ -1959,12 +1959,18 @@ msgstr ""
 msgid "Apply"
 msgstr ""
 
-#: templates/announcement_box.php:57
+#: templates/announcement_box.php:44
+#: templates/directory.php:51
+#: templates/messagebox.php:51
+msgid "Check/Uncheck all"
+msgstr ""
+
+#: templates/announcement_box.php:60
 msgid ""
 "No announcements found."
 msgstr ""
 
-#: templates/announcement_box.php:59
+#: templates/announcement_box.php:62
 msgid ""
 "No announcements found. "
 "Try different filter."
@@ -1974,7 +1980,7 @@ msgstr ""
 msgid "Search Users"
 msgstr ""
 
-#: templates/directory.php:62
+#: templates/directory.php:65
 msgid ""
 "No users found. Try "
 "different filter."
@@ -1997,7 +2003,7 @@ msgstr ""
 msgid "Search Messages"
 msgstr ""
 
-#: templates/messagebox.php:63
+#: templates/messagebox.php:66
 msgid ""
 "No messages found. Try "
 "different filter."
@@ -2016,10 +2022,10 @@ msgid ""
 "message to this receiver!"
 msgstr ""
 
-#: templates/viewmessage.php:63
+#: templates/viewmessage.php:66
 msgid "Participants"
 msgstr ""
 
-#: templates/viewmessage.php:64
+#: templates/viewmessage.php:67
 msgid "Toggle Messages"
 msgstr ""
