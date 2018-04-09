@@ -36,7 +36,7 @@ Front End PM is a Private Messaging system to your WordPress site.This is full f
 
 * If you want paid support you can contact with me through [Front End PM paid support](https://www.shamimsplugins.com/contact-us/?utm_campaign=wordpress&utm_source=readme&utm_medium=description)
 
-[youtube http://www.youtube.com/watch?v=SHKHTIlzr3w]
+[youtube https://www.youtube.com/watch?v=gd6vLF__KnM]
 
 **Features**
 
