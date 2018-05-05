@@ -5,7 +5,7 @@ Donate link: https://www.shamimsplugins.com/products/front-end-pm-pro/?utm_campa
 Requires at least: 4.4
 Tested up to: 4.9.4
 Requires PHP: 5.4
-Stable tag: 8.1
+Stable tag: 8.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -110,6 +110,12 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 8. Appearance settings.
 
 == Changelog ==
+
+= 8.2 =
+
+* Notification email now sent after all default data added to message.
+* Email hook priority change so that it is fired after all other hooks.
+* Attachment processing hook changed. now process further up.
 
 = 8.1 =
 
