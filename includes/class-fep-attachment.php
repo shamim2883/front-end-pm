@@ -25,14 +25,18 @@ class Fep_Attachment
 	
 	add_action ('before_delete_post', array($this, 'delete_attachments') );
 	
-	if ( '1' == fep_get_option('allow_attachment', 1)) {
-		add_action ('fep_action_message_after_send', array($this, 'upload_attachment'), 10, 3 );
-		add_action ('fep_action_announcement_after_added', array($this, 'upload_attachment'), 10, 3 );
+	if ( fep_get_option( 'allow_attachment', 1 ) && ! is_admin() ) {
+		add_action ('transition_post_status', array($this, 'upload_attachment'), 10, 3 );
+		//add_action ('fep_action_announcement_after_added', array($this, 'upload_attachment'), 10, 3 );
 		}
     }
 	
 	
-	function upload_attachment( $message_id, $message, $inserted_message ) {
+	function upload_attachment( $new_status, $old_status, $post ) {
+		if ( ! in_array( $post->post_type, array( 'fep_message', 'fep_announcement' ) ) ) {
+			return false;
+		}
+		
 		$field = 'fep_upload';
 		
 	    if ( !isset( $_FILES[ $field ] ) || ! is_array( $_FILES[ $field ] ) ) {
@@ -57,7 +61,7 @@ class Fep_Attachment
 	                'size' 		=> $_FILES[ $field ]['size'][ $key ]
 	            );
 
-	            $this->upload_file( $upload, $message_id, $inserted_message );
+	            $this->upload_file( $upload, $post->ID, $post );
 				
 				if( ++$i >= $fields )
 					break;
