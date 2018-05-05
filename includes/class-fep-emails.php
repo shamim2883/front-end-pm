@@ -25,14 +25,14 @@ class Fep_Emails
 			return;
 
 		//add_action ('publish_fep_message', array($this, 'publish_send_email'), 10, 2);
-		add_action ('transition_post_status', array($this, 'publish_send_email'), 10, 3);
-		add_action( 'fep_save_message', array($this, 'save_send_email'), 20, 2 ); //after '_fep_participants' meta saved, if from Back End
-		add_action( 'fep_action_message_after_send', array($this, 'save_send_email'), 20, 2 ); //Front End
+		add_action ('transition_post_status', array($this, 'publish_send_email'), 99, 3);
+		add_action( 'fep_save_message', array($this, 'save_send_email'), 99, 2 ); //after '_fep_participants' meta saved, if from Back End
+		add_action( 'fep_action_message_after_send', array($this, 'save_send_email'), 99, 2 ); //Front End
 		
 		if ( '1' == fep_get_option('notify_ann', '1' ) ){
-			add_action ('transition_post_status', array($this, 'publish_notify_users'), 10, 3);
-			add_action( 'fep_save_announcement', array($this, 'save_notify_users'), 20 ); //after '_fep_participant_roles' meta saved
-			add_action( 'fep_action_announcement_after_added', array($this, 'save_notify_users'), 20 ); //Front End
+			add_action ('transition_post_status', array($this, 'publish_notify_users'), 99, 3);
+			add_action( 'fep_save_announcement', array($this, 'save_notify_users'), 99 ); //after '_fep_participant_roles' meta saved
+			add_action( 'fep_action_announcement_after_added', array($this, 'save_notify_users'), 99 ); //Front End
 		}
     }
 	
