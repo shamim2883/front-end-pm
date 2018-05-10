@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if( ! empty( $heading )){
-?><h2><?php echo $heading; ?></h2><?php
+?><h2><?php esc_html_e( $heading ); ?></h2><?php
 }
 
 if ( ! fep_current_user_can( 'send_new_message_to', $to_id ) ) {
