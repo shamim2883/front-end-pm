@@ -87,13 +87,13 @@ class Fep_Shortcodes
 		return '<a href="' . fep_query_url('newmessage', array( 'fep_to' => $atts['to'], 'message_title' => $atts['subject'], 'fep_mr_to' => $atts['fep_mr_to'] ) ) . '" class="' . esc_attr( $atts['class'] ) . '">' . esc_html( $atts['text'] ) . '</a>';
 	}
 	
-	function new_message_form( $atts, $content = null ){
+	function new_message_form( $atts, $content = null, $tag = '' ){
 		$atts = shortcode_atts( array(
 				'to'			=> '{current-post-author}',
 				'subject' 		=> '',
 				'ajax'			=> '1',
 				'heading'		=> __('Contact','front-end-pm' )
-			), $atts, 'fep_shortcode_new_message_form' );
+			), $atts, $tag );
 			
 			if( '{current-post-author}' == $atts['to'] ){
 				$atts['to'] = get_the_author_meta('user_nicename');
@@ -118,8 +118,11 @@ class Fep_Shortcodes
 			
 			$to_id = fep_get_userdata( $to );
 			
-			if( ! fep_current_user_can('send_new_message_to', $to_id ) )
-				return '';
+			if( ! is_user_logged_in() ){
+				return apply_filters( 'fep_filter_shortcode_new_message_form', "<div class='fep-error'>".sprintf(__('You must <a href="%s">login</a> to contact', 'front-end-pm'), wp_login_url( get_permalink() ) )."</div>", $atts );
+			} elseif( ! fep_current_user_can('send_new_message_to', $to_id ) ){
+				return apply_filters( 'fep_filter_shortcode_new_message_form', "<div class='fep-error'>".sprintf(__('You cannot send message to %s', 'front-end-pm'), fep_user_name( $to_id ) )."</div>", $atts );
+			}
 			
 			if( ! empty( $ajax )){
 				wp_enqueue_script( 'fep-shortcode-newmessage' );
@@ -131,7 +134,7 @@ class Fep_Shortcodes
 	  
 		  ob_start();
 		  include( $template );
-		  return ob_get_clean();
+		  return apply_filters( 'fep_filter_shortcode_new_message_form', ob_get_clean(), $atts );
 	}
 	
 	function fep_form_attribute( $form_attr, $where ){
