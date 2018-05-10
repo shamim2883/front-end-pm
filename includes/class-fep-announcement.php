@@ -447,7 +447,6 @@ function view_announcement()
       $announcement = $this->get_announcement( $id );
 
 	  $template = fep_locate_template( 'view_announcement.php');
-		return ob_get_clean();
 	  
 	  $parse_shortcode = apply_filters( 'fep_announcement_parse_shortcodes', false );
 	  if( ! $parse_shortcode ){
@@ -462,6 +461,7 @@ function view_announcement()
 	  if( ! $parse_shortcode ){
 		  $shortcode_tags = $fep_shortcode_tags; //reset shortcode tags
 	  }
+	  return apply_filters( 'fep_filter_view_announcement', $return, $id );
     }
 
 	
