@@ -49,13 +49,14 @@ class Fep_Shortcodes
 		return fep_get_new_announcement_button( $atts );
 	}
 	
-	function message_to( $atts, $content = null ) {
+	function message_to( $atts, $content = null, $tag = '' ) {
 		$atts = shortcode_atts( array(
 				'to'		=> '{current-post-author}',
 				'subject'		=> '{current-post-title}',
 				'text'		=> __('Contact','front-end-pm' ),
-				'class'		=> 'fep-button'
-			), $atts, 'fep_shortcode_message_to' );
+				'class'		=> 'fep-button',
+				'fep_mr_to'	=> false, //Comma separated list of user ids (used in PRO version)
+			), $atts, $tag );
 			
 			if( '{current-post-author}' == $atts['to'] ){
 				$atts['to'] = get_the_author_meta('user_nicename');
@@ -80,10 +81,10 @@ class Fep_Shortcodes
 				$atts['subject'] = false;
 			}
 			
-			if( empty( $atts['to'] ) )
+			if( empty( $atts['to'] ) && empty( $atts['fep_mr_to'] ) )
 				return '';
 	
-		return '<a href="' . fep_query_url('newmessage', array( 'fep_to' => $atts['to'], 'message_title' => $atts['subject'] ) ) . '" class="' . esc_attr( $atts['class'] ) . '">' . esc_html( $atts['text'] ) . '</a>';
+		return '<a href="' . fep_query_url('newmessage', array( 'fep_to' => $atts['to'], 'message_title' => $atts['subject'], 'fep_mr_to' => $atts['fep_mr_to'] ) ) . '" class="' . esc_attr( $atts['class'] ) . '">' . esc_html( $atts['text'] ) . '</a>';
 	}
 	
 	function new_message_form( $atts, $content = null ){
