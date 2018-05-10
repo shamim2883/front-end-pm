@@ -460,6 +460,8 @@ function fep_get_new_message_button( $args = array() ){
 			'class'				=> 'fep-font-red',
 		) );
 	
+	$args['class'] = fep_sanitize_html_class( $args['class'] );
+	
 	$new = fep_get_new_message_number();
 	
 	if( empty( $args['ajax'] ) ){
@@ -528,6 +530,8 @@ function fep_get_new_announcement_button( $args = array() ){
 			'ajax'				=> '1',
 			'class'				=> 'fep-font-red',
 		) );
+		
+	$args['class'] = fep_sanitize_html_class( $args['class'] );
 	
 	$new = fep_get_new_announcement_number();
 	
