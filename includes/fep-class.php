@@ -341,7 +341,6 @@ function view_message()
 		$messages = fep_get_message_with_replies( $id );
 
 		$template = fep_locate_template( 'viewmessage.php');
-	  return ob_get_clean();
 		
 		$parse_shortcode = apply_filters( 'fep_message_parse_shortcodes', false );
 		if( ! $parse_shortcode ){
@@ -357,6 +356,7 @@ function view_message()
 			$shortcode_tags = $fep_shortcode_tags; //reset shortcode tags
 		}
 
+		return apply_filters( 'fep_filter_viewmessage', $return, $id );
     }
 
 /******************************************MAIN DISPLAY END******************************************/
