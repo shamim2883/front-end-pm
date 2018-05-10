@@ -432,7 +432,7 @@ function get_column_content($column)
 
 function view_announcement()
     {
-      global $post;
+      global $shortcode_tags;
 
 	  if( isset( $_GET['fep_id'] ) ){
 	  	$id = absint( $_GET['fep_id'] );
@@ -447,10 +447,21 @@ function view_announcement()
       $announcement = $this->get_announcement( $id );
 
 	  $template = fep_locate_template( 'view_announcement.php');
-		  
-		ob_start();
-		include( $template );
 		return ob_get_clean();
+	  
+	  $parse_shortcode = apply_filters( 'fep_announcement_parse_shortcodes', false );
+	  if( ! $parse_shortcode ){
+		  $fep_shortcode_tags = $shortcode_tags;
+		  $shortcode_tags = array(); //We will not parse shortcode in our content
+	  }
+
+	  ob_start();
+	  include( $template );
+	  $return = ob_get_clean();
+	  
+	  if( ! $parse_shortcode ){
+		  $shortcode_tags = $fep_shortcode_tags; //reset shortcode tags
+	  }
     }
 
 	

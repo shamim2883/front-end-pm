@@ -324,7 +324,7 @@ function new_message(){
 	
 function view_message()
     {
-      global $wpdb, $user_ID, $post;
+      global $shortcode_tags;
 
 	  if( isset( $_GET['fep_id'] ) ){
 	  	$id = absint( $_GET['fep_id'] );
@@ -336,15 +336,26 @@ function view_message()
 	  	return "<div class='fep-error'>".__("You do not have permission to view this message!", 'front-end-pm')."</div>";
 	  }
 	  
-	  	$parent_id = fep_get_parent_id( $id );
-	
+		$parent_id = fep_get_parent_id( $id );
+
 		$messages = fep_get_message_with_replies( $id );
-	
+
 		$template = fep_locate_template( 'viewmessage.php');
-	  
-	  ob_start();
-	  include( $template );
 	  return ob_get_clean();
+		
+		$parse_shortcode = apply_filters( 'fep_message_parse_shortcodes', false );
+		if( ! $parse_shortcode ){
+			$fep_shortcode_tags = $shortcode_tags;
+			$shortcode_tags = array(); //We will not parse shortcode in our content
+		}
+
+		ob_start();
+		include( $template );
+		$return = ob_get_clean();
+		
+		if( ! $parse_shortcode ){
+			$shortcode_tags = $fep_shortcode_tags; //reset shortcode tags
+		}
 
     }
 
