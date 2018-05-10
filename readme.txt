@@ -3,9 +3,9 @@ Contributors: shamim51
 Tags: front end pm,front-end-pm,pm,private message,personal message,front end,frontend pm,frontend,message,widget,plugin,sidebar,shortcode,page,email,mail,contact form, secure contact form, simple contact form
 Donate link: https://www.shamimsplugins.com/products/front-end-pm-pro/?utm_campaign=wordpress&utm_source=readme_pro&utm_medium=donate
 Requires at least: 4.4
-Tested up to: 4.9.4
+Tested up to: 4.9.5
 Requires PHP: 5.4
-Stable tag: 8.2
+Stable tag: 8.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -110,6 +110,15 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 8. Appearance settings.
 
 == Changelog ==
+
+= 8.3 =
+
+* Security Update
+* Now we do not parse shortcode in message and announcement content (has filter to re-enable this).
+* New: fep_filter_viewmessage added
+* New: fep_filter_view_announcement added
+* New: fep_filter_shortcode_new_message_form added
+* Now show error for fep_shortcode_new_message_form if user cannot send message to "to" user
 
 = 8.2 =
 
@@ -414,6 +423,10 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 * Initial release.
 
 == Upgrade Notice ==
+
+= 8.3 =
+
+* Security Update
 
 = 6.3 =
 
