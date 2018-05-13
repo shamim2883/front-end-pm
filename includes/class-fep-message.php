@@ -144,7 +144,7 @@ class Fep_Message {
 						'compare'=> '=',
 					),
 					array(
-						'key'		=> '_fep_delete_by_'. $user_id,
+						'key'		=> '_fep_delete_by_' . $user_id,
 						//'value'	=> $id,
 						'compare'	=> 'NOT EXISTS',
 					),
@@ -196,7 +196,7 @@ class Fep_Message {
 					'compare'=> '=',
 				),
 				array(
-					'key'		=> '_fep_delete_by_'. $user_id,
+					'key'		=> '_fep_delete_by_' . $user_id,
 					//'value'	=> $id,
 					'compare'	=> 'NOT EXISTS',
 				),
@@ -235,27 +235,27 @@ class Fep_Message {
 				break;
 			case 'archive':
 				$args['meta_query'][] = array(
-					'key'		=> '_fep_archived_by_'. $user_id,
+					'key'		=> '_fep_archived_by_' . $user_id,
 					//'value'	=> $user_id,
 					'compare'	=> 'EXISTS',
 				);
 				break;
 			case 'read':
 				$args['meta_query'][] = array(
-					'key'		=> '_fep_parent_read_by_'. $user_id,
+					'key'		=> '_fep_parent_read_by_' . $user_id,
 					//'value'	=> $user_id,
 					'compare'	=> 'EXISTS',
 				);
 				break;
 			case 'unread':
 				$args['meta_query'][] = array(
-					'key'		=> '_fep_parent_read_by_'. $user_id,
+					'key'		=> '_fep_parent_read_by_' . $user_id,
 					//'value'	=> $user_id,
 					'compare'	=> 'NOT EXISTS',
 				);
 				break;
 			default:
-				$args = apply_filters( 'fep_message_query_args_'. $filter, $args, $user_id );
+				$args = apply_filters( 'fep_message_query_args_' . $filter, $args, $user_id );
 				break;
 		}
 		$args = apply_filters( 'fep_message_query_args', $args, $user_id );
@@ -391,7 +391,7 @@ class Fep_Message {
 	function get_table_filters() {
 		$filters = array(
 			'show-all'	=> __( 'Show all', 'front-end-pm' ),
-			'inbox'		=> __( 'Inbox', 'front-end-pm '),
+			'inbox'		=> __( 'Inbox', 'front-end-pm ' ),
 			'sent'		=> __( 'Sent', 'front-end-pm' ),
 			'read'		=> __( 'Read', 'front-end-pm' ),
 			'unread'	=> __( 'Unread', 'front-end-pm' ),
@@ -432,7 +432,7 @@ class Fep_Message {
 						echo '<div class="fep-avatar-more-60" title="' . __( 'More users', 'front-end-pm' ) . '"></div>';
 						break;
 					} 
-					?><div class="fep-avatar-<?php echo $count; ?>"><?php echo get_avatar( $p, 60, '', '', array( 'extra_attr'=> 'title="'. fep_user_name( $p ) . '"') ); ?></div><?php
+					?><div class="fep-avatar-<?php echo $count; ?>"><?php echo get_avatar( $p, 60, '', '', array( 'extra_attr'=> 'title="' . fep_user_name( $p ) . '"' ) ); ?></div><?php
 					$count++;
 				}
 				if ( ! $participants && $group = get_post_meta( get_the_ID(), '_fep_group', true ) ) {
@@ -460,4 +460,3 @@ class Fep_Message {
 	}
 } //END CLASS
 add_action( 'wp_loaded', array( Fep_Message::init(), 'actions_filters' ) );
-?>
