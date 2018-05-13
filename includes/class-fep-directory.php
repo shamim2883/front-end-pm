@@ -14,7 +14,7 @@ class Fep_Directory {
 	}
 
 	function actions_filters() {
-		if ( fep_current_user_can( 'access_directory') ) {
+		if ( fep_current_user_can( 'access_directory' ) ) {
 			add_filter( 'fep_menu_buttons', array( $this, 'menu' ) );
 			add_action( 'fep_switch_directory', array( $this, 'directory' ) );
 			add_action( 'fep_posted_bulk_directory_bulk_action', array( $this, 'bulk_action' ) );
@@ -159,7 +159,7 @@ class Fep_Directory {
 	}
 
 	function bulk_action( $action, $ids = null ) {
-		if( null === $ids ) {
+		if ( null === $ids ) {
 			$ids = ! empty( $_POST['fep-directory-cb'] ) ? $_POST['fep-directory-cb'] : array();
 		}
 		if ( ! $action || ! $ids || ! is_array( $ids ) ) {
@@ -193,4 +193,3 @@ class Fep_Directory {
 	}
 } //END CLASS
 add_action( 'wp_loaded', array( Fep_Directory::init(), 'actions_filters' ) );
-?>
