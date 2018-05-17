@@ -141,8 +141,8 @@ class Fep_Admin_Settings
 				'type'	=>	'number',
 				'value' => fep_get_option('user_page',50),
 				'priority'	=> 6,
-				'label' => __( 'Maximum user per page in Directory', 'front-end-pm' ),
-				'description' => __( 'Maximum user per page in Directory', 'front-end-pm' )
+				'label' => __( 'Maximum users per page in directory', 'front-end-pm' ),
+				'description' => __( 'Maximum users per page in directory', 'front-end-pm' )
 				),
 					
 			'time_delay'	=> array(
@@ -168,8 +168,8 @@ class Fep_Admin_Settings
 				'label' => __( 'Editor Type', 'front-end-pm' ),
 				//'description' => __( 'Admin alwayes have Wp Editor.', 'front-end-pm' ),
 				'options'	=> array(
-					'wp_editor'	=> __( 'Wp Editor', 'front-end-pm' ),
-					'teeny'	=> __( 'Wp Editor (Teeny)', 'front-end-pm' ),
+					'wp_editor'	=> __( 'WP Editor', 'front-end-pm' ),
+					'teeny'	=> __( 'WP Editor (Teeny)', 'front-end-pm' ),
 					'textarea'	=> __( 'Textarea', 'front-end-pm' )
 					)						
 				),
@@ -1053,4 +1053,3 @@ function fep_admin_sidebar()
   } //END CLASS
 
 add_action('init', array(Fep_Admin_Settings::init(), 'actions_filters'));
-
