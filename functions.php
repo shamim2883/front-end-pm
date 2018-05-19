@@ -666,7 +666,7 @@ function fep_get_parent_id( $id ) {
 	return $parent;
 }
 
-add_filter( 'the_time', 'fep_format_date', 10, 2 ) ;
+add_filter( 'the_time', 'fep_format_date', 10, 2 );
 function fep_format_date( $date, $d = '' ) {
 	global $post;
 	if ( is_admin() || ! in_array( get_post_type(), apply_filters( 'fep_post_types_for_time', array( 'fep_message', 'fep_announcement' ) ) ) ) {
