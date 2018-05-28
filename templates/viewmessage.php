@@ -25,11 +25,11 @@ if ( $messages->have_posts() ) {
 			$per_mgs_class[] = 'fep-per-message';
 			$per_mgs_class[] = 'fep-per-message-' . get_the_ID();
 			//$per_mgs_class[] = 'fep-per-message-' . get_the_author_meta('ID' );
-			if ( get_current_user_id() == get_the_author_meta('ID' ) ) {
+			if ( get_current_user_id() == get_the_author_meta( 'ID' ) ) {
 				$content_class[] = 'fep-message-content-own';
 				$per_mgs_class[] = 'fep-per-message-own';
 			}
-			if ( fep_is_user_admin( get_the_author_meta('ID' ) ) ) {
+			if ( fep_is_user_admin( get_the_author_meta( 'ID' ) ) ) {
 				$content_class[] = 'fep-message-content-admin';
 				$per_mgs_class[] = 'fep-per-message-admin';
 			}
@@ -38,8 +38,7 @@ if ( $messages->have_posts() ) {
 				//$per_mgs_class[] = 'fep-hide-if-js';
 			}
 			fep_make_read(); 
-			fep_make_read( true ); ?>
-			<?php
+			fep_make_read( true );
 			if ( $i === 1 ) {
 				$participants = fep_get_participants( get_the_ID() );
 				$par = array();
