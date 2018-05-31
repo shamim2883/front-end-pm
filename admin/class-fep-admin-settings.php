@@ -88,7 +88,7 @@ class Fep_Admin_Settings {
 				'priority'	 => 2,
 				'label'		 => __( 'Front End PM Page', 'front-end-pm' ),
 				'options'	 => $pages,
-				'description'=> __( 'The page must have <code>[front-end-pm]</code> code in content.', 'front-end-pm' ),
+				'description'=> sprintf( __( 'The page must have %s shortcode in content.', 'front-end-pm' ), '<code>[front-end-pm]</code>' ),
 			),
 			'message_view' => array(
 				'type'		 => 'select',
@@ -320,7 +320,8 @@ class Fep_Admin_Settings {
 				'priority'		=> 50,
 				'label'			=> __( 'Messages Heading Color', 'front-end-pm' ),
 			),
-			'show_autosuggest' => array( //Recipient
+			//Recipient Settings
+			'show_autosuggest' => array(
 				'type'		 => 'checkbox',
 				'value'		 => fep_get_option( 'show_autosuggest', 1 ),
 				'priority'	 => 5,
@@ -377,7 +378,8 @@ class Fep_Admin_Settings {
 				'label'		 => __( 'Valid email address for "to" field of announcement email', 'front-end-pm' ),
 				'description'=> __( 'All users email will be in "Bcc" field.', 'front-end-pm' ),
 			),
-			'userrole_access' => array( //Security
+			//Security Settings
+			'userrole_access' => array(
 				'type'		 => 'checkbox',
 				'value'		 => fep_get_option( 'userrole_access', array() ),
 				'priority'	 => 5,
@@ -442,7 +444,8 @@ class Fep_Admin_Settings {
 				'label'		=> __( 'Add Announcement', 'front-end-pm' ),
 				'cb_label'	=> __( 'Can permitted users add Announcement from front end?', 'front-end-pm' ),
 			),
-			'show_notification' => array( //Notification
+			//Notification Settings
+			'show_notification' => array(
 				'type'		=> 'checkbox',
 				'value'		=> fep_get_option( 'show_notification', 1 ),
 				'priority'	=> 5,
@@ -634,7 +637,7 @@ class Fep_Admin_Settings {
 			case 'number':
 				$sanitized = absint( $value );
 				break;
-			case 'textare':
+			case 'textarea':
 			case 'wp_editor':
 			case 'teeny':
 				$sanitized = wp_kses_post( $value );
@@ -858,14 +861,14 @@ class Fep_Admin_Settings {
 				<div style="text-align:center;margin:auto">
 					<p>Some useful links are bellow to work with this plugin.</p>
 					<ul>
-					<li><a href="https://www.shamimsplugins.com/docs/front-end-pm-pro/getting-started-2/email-piping/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">' . __( 'Email Piping', 'front-end-pm' ) . '</a></li>
-					<li><a href="https://www.shamimsplugins.com/docs/front-end-pm-pro/getting-started-2/multiple-recipients/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">' . __( 'Multiple Recipient', 'front-end-pm' ) . '</a></li>
-					<li><a href="https://www.shamimsplugins.com/docs/front-end-pm-pro/getting-started-2/only-admin/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">' . __( 'Only Admin', 'front-end-pm' ) . '</a></li>
-					<li><a href="https://www.shamimsplugins.com/docs/front-end-pm-pro/getting-started-2/group-messaging/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">' . __( 'Group Messaging', 'front-end-pm' ) . '</a></li>
-					<li><a href="https://www.shamimsplugins.com/docs/front-end-pm-pro/getting-started-2/email-beautify/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">' . __( 'Email Beautify', 'front-end-pm' ) . '</a></li>
-					<li><a href="https://www.shamimsplugins.com/docs/front-end-pm-pro/getting-started-2/read-receipt/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">' . __( 'Read Receipt', 'front-end-pm' ) . '</a></li>
-					<li><a href="https://www.shamimsplugins.com/docs/front-end-pm-pro/getting-started-2/role-to-role-block/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">' . __( 'Role to Role Block', 'front-end-pm' ) . '</a></li>
-					<li><a href="https://www.shamimsplugins.com/products/front-end-pm-pro/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank"><strong>' . __( 'View More', 'front-end-pm' ) . '</strong></a></li>
+						<li><a href="https://www.shamimsplugins.com/docs/front-end-pm-pro/getting-started-2/email-piping/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">' . __( 'Email Piping', 'front-end-pm' ) . '</a></li>
+						<li><a href="https://www.shamimsplugins.com/docs/front-end-pm-pro/getting-started-2/multiple-recipients/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">' . __( 'Multiple Recipient', 'front-end-pm' ) . '</a></li>
+						<li><a href="https://www.shamimsplugins.com/docs/front-end-pm-pro/getting-started-2/only-admin/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">' . __( 'Only Admin', 'front-end-pm' ) . '</a></li>
+						<li><a href="https://www.shamimsplugins.com/docs/front-end-pm-pro/getting-started-2/group-messaging/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">' . __( 'Group Messaging', 'front-end-pm' ) . '</a></li>
+						<li><a href="https://www.shamimsplugins.com/docs/front-end-pm-pro/getting-started-2/email-beautify/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">' . __( 'Email Beautify', 'front-end-pm' ) . '</a></li>
+						<li><a href="https://www.shamimsplugins.com/docs/front-end-pm-pro/getting-started-2/read-receipt/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">' . __( 'Read Receipt', 'front-end-pm' ) . '</a></li>
+						<li><a href="https://www.shamimsplugins.com/docs/front-end-pm-pro/getting-started-2/role-to-role-block/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank">' . __( 'Role to Role Block', 'front-end-pm' ) . '</a></li>
+						<li><a href="https://www.shamimsplugins.com/products/front-end-pm-pro/?utm_campaign=admin&utm_source=sidebar&utm_medium=pro" target="_blank"><strong>' . __( 'View More', 'front-end-pm' ) . '</strong></a></li>
 					</ul>
 				</div>
 			</div><!-- .inside -->
