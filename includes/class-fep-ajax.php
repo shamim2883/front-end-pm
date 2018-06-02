@@ -27,10 +27,12 @@ class Fep_Ajax {
 
 	function fep_autosuggestion_ajax() {
 		global $user_ID;
+
 		if ( ! fep_get_option( 'show_autosuggest', 1 ) && ! fep_is_user_admin() ) {
 			die();
 		}
 		if ( check_ajax_referer( 'fep-autosuggestion', 'token', false ) ) {
+
 			$searchq = $_POST['searchBy'];
 			$args = array(
 				'search'		=> "*{$searchq}*",
@@ -63,6 +65,7 @@ class Fep_Ajax {
 
 	function fep_users_ajax() {
 		global $user_ID;
+
 		if ( check_ajax_referer( 'fep_users_ajax', 'token', false ) ) {
 			$searchq = $_POST['q'];
 			$exclude = empty( $_POST['x'] ) ? array() : explode( ',', $_POST['x'] );
@@ -98,6 +101,7 @@ class Fep_Ajax {
 		if ( check_ajax_referer( 'fep-block-unblock-script', 'token', false ) && ! empty( $_POST['user_id'] ) ) {
 			$user_id = absint( $_POST['user_id'] );
 			if ( fep_is_user_blocked_for_user( get_current_user_id(), $user_id ) ) {
+
 				fep_unblock_users_for_user( $user_id );
 				$return = __( 'Block', 'front-end-pm' );
 			} else {
@@ -117,11 +121,13 @@ class Fep_Ajax {
 			$ann_unread_count	= fep_get_new_announcement_number();
 			$dismiss			= get_user_option( '_fep_notification_dismiss' );
 			$prev				= get_user_option( '_fep_notification_prev' );
+
 			$new = array(
 				'message'		=> $mgs_unread_count,
 				'announcement'	=> $ann_unread_count,
 			);
 			update_user_option( get_current_user_id(), '_fep_notification_prev', $new );
+			
 			if ( !is_array( $prev ) ) {
 				$prev = array();
 			}
@@ -151,6 +157,7 @@ class Fep_Ajax {
 				'notification_bar'				=> 0,
 				'message_unread_count_prev'		=> 0,
 				'announcement_unread_count_prev'=> 0,
+
 			);
 		}
 		$return = apply_filters( 'fep_filter_notification_response', $return );
@@ -158,6 +165,7 @@ class Fep_Ajax {
 	}
 
 	function fep_notification_dismiss() {
+
 		if ( check_ajax_referer( 'fep-notification', 'token', false ) ) {
 			update_user_option( get_current_user_id(), '_fep_notification_dismiss', 1 );
 		}
@@ -170,10 +178,12 @@ class Fep_Ajax {
 			if ( 'later' == $_POST['fep_click'] ) {
 				update_user_option( get_current_user_id(), 'fep_review_notice_dismiss', time() );
 			} elseif ( in_array( $_POST['fep_click'], array( 'sure', 'did' ) ) ) {
+
 				fep_update_option( 'dismissed-review', time() );
 			}
 		}
 		die;
 	}
 } //END CLASS
+
 add_action( 'init', array( Fep_Ajax::init(), 'actions_filters' ) );
