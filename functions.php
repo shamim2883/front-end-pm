@@ -1470,7 +1470,7 @@ function fep_locate_template( $template_names, $load = false, $require_once = tr
 		if ( empty( $template_name ) ) {
 			continue;
 		}
-		if ( strpos( $template_name, ' ../' ) !== false || strpos( $template_name, ' ..\\' ) !== false ) {
+		if ( strpos( $template_name, '../' ) !== false || strpos( $template_name, '..\\' ) !== false ) {
 			continue;
 		}
 		foreach ( $locations as $location ) {
