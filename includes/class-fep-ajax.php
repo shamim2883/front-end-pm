@@ -174,7 +174,6 @@ class Fep_Ajax {
 
 	function fep_review_notice_dismiss() {
 		if ( ! empty( $_POST['fep_click'] ) && current_user_can( 'manage_options' ) ) {
-		if ( ! empty( $_POST['fep_click'] ) && current_user_can( 'manage_options' ) ) {
 			if ( 'later' == $_POST['fep_click'] ) {
 				update_user_option( get_current_user_id(), 'fep_review_notice_dismiss', time() );
 			} elseif ( in_array( $_POST['fep_click'], array( 'sure', 'did' ) ) ) {

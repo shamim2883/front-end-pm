@@ -1712,7 +1712,7 @@ function fep_show_unread_count_in_title( $title ) {
 		wp_enqueue_script( 'fep-notification-script' );
 		if ( $count = fep_get_new_message_number() ) {
 			$count = number_format_i18n( $count );
-			$title['title'] = "( $count) " . $title['title'];
+			$title['title'] = "($count) " . $title['title'];
 		}
 	}
 	return $title;
@@ -1724,7 +1724,7 @@ function fep_pre_get_document_title( $title ) {
 		wp_enqueue_script( 'fep-notification-script' );
 		if ( $count = fep_get_new_message_number() ) {
 			$count = number_format_i18n( $count );
-			$title = "( $count) " . $title;
+			$title = "($count) " . $title;
 		}
 	}
 	return $title;

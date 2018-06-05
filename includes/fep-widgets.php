@@ -213,7 +213,7 @@ class FEP_empty_widget extends WP_Widget {
 		}
 		$show_help = isset( $instance['show_help'] ) ? $instance['show_help'] : false;
 		if ( $show_help ) {
-			_e( 'Use <code>add_action( \'fep_empty_widget_' . {$this->number} . '\', \'your_function\' );</code> to hook to ONLY this widget where \'your_function\' is your callback function.', 'front-end-pm' );
+			_e( 'Use <code>add_action( \'fep_empty_widget_' . $this->number . '\', \'your_function\' );</code> to hook to ONLY this widget where \'your_function\' is your callback function.', 'front-end-pm' );
 			_e( '<br />Use <code>add_action(\'fep_empty_widget\', \'your_function\' );</code> to hook to all FEP Empty widget where \'your_function\' is your callback function', 'front-end-pm' );
 		}
 		do_action( 'fep_empty_widget_' . $this->number );

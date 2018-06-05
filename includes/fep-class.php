@@ -148,7 +148,7 @@ if ( ! class_exists( 'fep_main_class' ) ) {
 					if ( ! $posted_bulk_action ) {
 						return;
 					}
-					$token = ! empty( $_POST['token'] ) ? $_POST['token'] : ''
+					$token = ! empty( $_POST['token'] ) ? $_POST['token'] : '';
 					if ( ! fep_verify_nonce( $token, 'bulk_action' ) ) {
 						fep_errors()->add( 'token', __( 'Invalid Token. Please try again!', 'front-end-pm' ) );
 						return;
