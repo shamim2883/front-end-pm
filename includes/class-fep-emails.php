@@ -91,7 +91,7 @@ class Fep_Emails
 			
 			
 			fep_add_email_filters();
-			
+			apply_filters('fep_notification_event', $postid, $post);
 			foreach( $participants as $participant ) 
 			{
 				if( $participant == $post->post_author )
