@@ -29,7 +29,7 @@ class Fep_Menu {
 			$menu .= sprintf( '<a id="%1$s" class="%2$s" href="%3$s">%4$s</a>',
 				$menu_array['id'],
 				fep_sanitize_html_class( $class ),
-				fep_query_url( $menu_array['action'] ),
+				$menu_array['url'] ? esc_url( $menu_array['url'] ) : fep_query_url( $menu_array['action'] ),
 				strip_tags( $menu_array['title'], '<span>' )
 			);
 		}
@@ -65,6 +65,7 @@ class Fep_Menu {
 			$defaults = array(
 				'title'			=> '',
 				'action'		=> $key,
+				'url'			=> '',
 				'id'			=> 'fep-menu-' . $key,
 				'class'			=> 'fep-button',
 				'active-class'	=> 'fep-button-active',
