@@ -6,6 +6,30 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Fep_Attachment {
 	private static $instance;
+	public $icons;
+	
+	private function __construct(){
+		$this->icons = apply_filters( 'fep_filter_attachment_icons',
+			array(
+				'code' => 'c|cc|h|js|class', 
+				'xml' => 'xml', 
+				'excel' => 'xla|xls|xlsx|xlt|xlw|xlam|xlsb|xlsm|xltm', 
+				'word' => 'docx|dotx|docm|dotm', 
+				'image' => 'png|gif|jpg|jpeg|jpe|jp|bmp|tif|tiff', 
+				'psd' => 'psd', 
+				'ai' => 'ai', 
+				'archive' => 'zip|rar|gz|gzip|tar|7z',
+				'text' => 'txt|asc|nfo', 
+				'powerpoint' => 'pot|pps|ppt|pptx|ppam|pptm|sldm|ppsm|potm', 
+				'pdf' => 'pdf', 
+				'html' => 'htm|html|css', 
+				'video' => 'avi|asf|asx|wax|wmv|wmx|divx|flv|mov|qt|mpeg|mpg|mpe|mp4|m4v|ogv|mkv', 
+				'documents' => 'odt|odp|ods|odg|odc|odb|odf|wp|wpd|rtf',
+				'audio' => 'mp3|m4a|m4b|wav|ra|ram|ogg|oga|mid|midi|wma|mka',
+				'icon' => 'ico',
+			)
+		);
+	}
 	
 	public static function init() {
 		if( ! self::$instance instanceof self ) {
@@ -116,12 +140,35 @@ class Fep_Attachment {
 		$attachment_ids = fep_get_attachments( get_the_ID(), 'ids' );
 	
 		if ( $attachment_ids ) {
-			echo '<hr /><strong>' . __( 'Attachments', 'front-end-pm' ) . ':</strong><br />';
+			echo '<div class="fep-attachments">';
+			echo '<div class="fep-attachments-heading">' . __( 'Attachments', 'front-end-pm' ) . '</div>';
+			
 			foreach ( $attachment_ids as $attachment_id ){
+				echo '<div class="fep-attachment fep-attachment-' . $attachment_id . '">';
 				$name = basename( wp_get_attachment_url( $attachment_id ) );
-				echo '<a href="' . fep_query_url( 'download', array( 'fep_id' => $attachment_id, 'token' => wp_create_nonce( 'download_' . $attachment_id ) ) ) . '" title="' . sprintf( __( 'Download %s', 'front-end-pm' ), esc_attr( $name ) ) . '">' . esc_html( $name ) . '</a><br />';
-			} 
+				
+				echo apply_filters( 'fep_filter_attachment_icon', '<span class="fep-attachment-icon fep-attachment-icon-' . $this->icon( $attachment_id ) . '"></span>' );
+				
+				echo apply_filters( 'fep_filter_attachment_download_link', '<a href="' . fep_query_url( 'download', array( 'fep_id' => $attachment_id, 'token' => wp_create_nonce( 'download_' . $attachment_id ) ) ) . '" title="' . sprintf( __( 'Download %s', 'front-end-pm' ), esc_attr( $name ) ) . '">' . esc_html( $name ) . '</a>', $attachment_id );
+				
+				echo '</div>';
+			}
+			echo '</div>';
 		}
+	}
+	
+	function icon( $attachment_id ){
+		$file = get_attached_file( $attachment_id );
+		$ext = pathinfo( $file, PATHINFO_EXTENSION );
+		
+		foreach ( $this->icons as $icon => $extensions ) {
+			$extensions = explode( '|', $extensions );
+			
+			if( in_array( $ext, $extensions ) ){
+				return $icon;
+			}
+		}
+		return 'default';
 	}
 
 	function download_file(){
