@@ -299,16 +299,17 @@ class Fep_Cpt {
 		}
 		if ( $column_name == 'participants' ) {
 			$participants = fep_get_participants( $post_ID );
-			
+			$out = '';
 			if( $participants ) {
 				foreach( $participants as $participant ) {
-				
-					if( $participant != $post->post_author )
-					echo '<a href="'. get_edit_user_link( $participant ) .'" target="_blank">'. esc_attr( fep_user_name( $participant ) ) .'</a><br />';
+					if( $participant != $post->post_author ){
+						$out .= '<a href="'. get_edit_user_link( $participant ) .'" target="_blank">'. esc_attr( fep_user_name( $participant ) ) .'</a><br />';
+					}
 				}
 			} else {
-				_e( 'No Participants', 'front-end-pm' );
+				$out .= __('No Participants', 'front-end-pm');
 			}
+			echo apply_filters( 'fep_filter_cpt_display_participants', $out );
 		}
 	}
 	function sortable_column( $columns ) {
