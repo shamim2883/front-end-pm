@@ -147,7 +147,7 @@ class Fep_Attachment {
 				echo '<div class="fep-attachment fep-attachment-' . $attachment_id . '">';
 				$name = basename( wp_get_attachment_url( $attachment_id ) );
 				
-				echo apply_filters( 'fep_filter_attachment_icon', '<span class="fep-attachment-icon fep-attachment-icon-' . $this->icon( $attachment_id ) . '"></span>' );
+				echo apply_filters( 'fep_filter_attachment_icon', '<span class="fep-attachment-icon fep-attachment-icon-' . $this->icon( $attachment_id ) . '"></span>', $attachment_id );
 				
 				echo apply_filters( 'fep_filter_attachment_download_link', '<a href="' . fep_query_url( 'download', array( 'fep_id' => $attachment_id, 'token' => wp_create_nonce( 'download_' . $attachment_id ) ) ) . '" title="' . sprintf( __( 'Download %s', 'front-end-pm' ), esc_attr( $name ) ) . '">' . esc_html( $name ) . '</a>', $attachment_id );
 				
