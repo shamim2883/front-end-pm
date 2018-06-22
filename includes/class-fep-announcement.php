@@ -145,6 +145,9 @@ class Fep_Announcement {
 		if ( ! $user_id ) {
 			$args['post__in'] = array(0);
 		}
+		if ( ! empty( $_GET['fep-search'] ) ) {
+			$args['s'] = $_GET['fep-search'];
+		}
 		switch ( $filter ) {
 			case 'after-i-registered':
 				$args['date_query'] = array( 'after' => fep_get_userdata( $user_id, 'user_registered', 'id' ) );

@@ -12,7 +12,14 @@ if( ! $total_announcements ) {
 */
 do_action( 'fep_display_before_announcementbox' );
 ?>
-<form class="fep-message-table form" method="post" action="">
+<div class="fep-announcementbox-search-form-div">
+	<form id="fep-announcementbox-search-form" action="">
+		<input type="hidden" name="fepaction" value="announcements" />
+		<input type="search" name="fep-search" class="fep-announcementbox-search-form-field" value="<?php echo isset( $_GET['fep-search'] ) ? esc_attr( $_GET['fep-search'] ): ""; ?>" placeholder="<?php _e( 'Search Announcements', 'front-end-pm'); ?>" />
+		<input type="hidden" name="feppage" value="1" />
+	</form>
+</div>
+<form class="fep-announcement-table form" method="post" action="">
 	<div class="fep-table fep-action-table">
 		<div>
 			<div class="fep-bulk-action">
@@ -50,7 +57,7 @@ do_action( 'fep_display_before_announcementbox' );
 			<?php
 			while ( $announcements->have_posts() ) { 
 				$announcements->the_post(); ?>
-				<div id="fep-message-<?php echo get_the_ID(); ?>" class="fep-table-row">
+				<div id="fep-announcement-<?php echo get_the_ID(); ?>" class="fep-table-row">
 					<?php foreach ( Fep_Announcement::init()->get_table_columns() as $column => $display ) : ?>
 						<div class="fep-column fep-column-<?php echo $column; ?>"><?php Fep_Announcement::init()->get_column_content( $column ); ?></div>
 					<?php endforeach; ?>
