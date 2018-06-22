@@ -33,7 +33,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<div class="links">
 					<?php if ( function_exists( str_replace( '-', '_', $slug ) . '_activate' ) ) : ?>
 						<a class="button button-disabled" href="<?php echo add_query_arg( array( 'utm_campaign' => 'admin', 'utm_source' => 'extensions', 'utm_medium' => 'installed' ), $extension->url ); ?>" target="_blank"><?php _e( 'Installed', 'front-end-pm' ); ?></a>
-					<?php : else : ?>
+					<?php else : ?>
 						<a class="button" href="<?php echo add_query_arg( array( 'utm_campaign' => 'admin', 'utm_source' => 'extensions', 'utm_medium' => 'view_details' ), $extension->url ); ?>" target="_blank"><?php _e( 'View Details', 'front-end-pm' ); ?></a>
 					<?php endif; ?>
 				</div>
