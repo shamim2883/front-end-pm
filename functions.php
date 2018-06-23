@@ -773,18 +773,20 @@ function fep_current_user_can( $cap, $id = false ) {
 		case 'send_new_message_to':
 			if ( is_numeric( $id ) ) {
 				// $id == user ID
-				if ( $id && $id != get_current_user_id() && fep_current_user_can( 'access_message' ) && fep_current_user_can( 'send_new_message' ) && fep_get_user_option( 'allow_messages', 1, $id ) && ! fep_is_user_blocked_for_user( $id ) ) {
+				if ( $id && $id != get_current_user_id() && fep_current_user_can( 'access_message' ) && fep_current_user_can( 'send_new_message' ) && ( fep_is_user_whitelisted() || ( fep_get_user_option( 'allow_messages', 1, $id ) && ! fep_is_user_blocked_for_user( $id ) ) ) ) {
 					$can = true;
 				}
 				// $id == user_nicename
 				// Backward compability ( do not use )
-			} elseif ( $id && $id != fep_get_userdata( get_current_user_id(), 'user_nicename', 'id' ) && fep_current_user_can( 'access_message' ) && fep_current_user_can( 'send_new_message' ) && fep_get_user_option( 'allow_messages', 1, fep_get_userdata( $id ) ) && ! fep_is_user_blocked_for_user( fep_get_userdata( $id ) ) ) {
+			} elseif ( $id && $id != fep_get_userdata( get_current_user_id(), 'user_nicename', 'id' ) && fep_current_user_can( 'access_message' ) && fep_current_user_can( 'send_new_message' ) && ( fep_is_user_whitelisted() || ( fep_get_user_option( 'allow_messages', 1, fep_get_userdata( $id ) ) && ! fep_is_user_blocked_for_user( fep_get_userdata( $id ) ) ) ) ) {
 				$can = true;
 			}
 			break;
 		case 'send_reply':
 			if ( ! $id || ( ! in_array( get_current_user_id(), fep_get_participants( $id ) ) && ! fep_is_user_admin() ) || get_post_status ( $id ) != 'publish' ) {
-			} elseif ( fep_is_user_whitelisted() || fep_is_user_admin() || array_intersect( fep_get_option( 'userrole_reply', array() ), $roles ) || ( ! $roles && $no_role_access ) ) {
+			} elseif ( fep_is_user_whitelisted() || fep_is_user_admin() ){
+				$can = true;
+			} elseif( array_intersect( fep_get_option( 'userrole_reply', array() ), $roles ) || ( ! $roles && $no_role_access ) ) {
 				$can = true;
 				$participants = fep_get_participants( $id );
 				foreach ( $participants as $participant ) {
@@ -806,7 +808,7 @@ function fep_current_user_can( $cap, $id = false ) {
 			}
 			break;
 		case 'access_directory':
-			if ( fep_is_user_admin() || fep_get_option( 'show_directory', 1 ) ) {
+			if ( fep_is_user_admin() || fep_is_user_whitelisted() || fep_get_option( 'show_directory', 1 ) ) {
 				$can = true;
 			}
 			break;
