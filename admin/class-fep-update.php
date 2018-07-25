@@ -14,15 +14,80 @@ class Fep_Update {
 	}
 
 	function actions_filters() {
-		add_filter( 'fep_admin_settings_tabs', array( $this, 'sections' ) );
-		add_filter( 'fep_settings_fields', array( $this, 'fields' ) );
-		add_action( 'fep_admin_settings_field_output_update', array( $this, 'field_output' ) );
+		if( ! is_admin() ){
+			return;
+		}
 		add_action( 'admin_enqueue_scripts', array( $this, 'fep_update_script' ) );
-		add_action( 'wp_ajax_fep_update_ajax', array( $this, 'ajax' ) );
+		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+		add_action( 'admin_notices', array( $this, 'notice_delete_all' ) );
+		add_action( 'admin_post_fep_delete_all', array( $this, 'delete_all' ) );
+		
 		add_action( 'admin_init', array( $this, 'install' ), 20 );
 		add_action( 'admin_init', array( $this, 'message_view_changed' ), 25 );
 		add_action( 'admin_init', array( $this, 'auto_update' ), 30 );
+		
+		add_action( 'wp_ajax_fep_update_ajax', array( $this, 'ajax' ) );
 		add_action( 'fep_plugin_update', array( $this, 'update' ) );
+	}
+	
+	function fep_update_script() {
+		wp_register_script( 'fep_update_script', FEP_PLUGIN_URL . 'assets/js/fep_update_script.js', array( 'jquery' ), FEP_PLUGIN_VERSION, true );
+	}
+	
+	function admin_menu(){
+		add_submenu_page( null, 'Front End PM - ' . __( 'Update', 'front-end-pm' ), __( 'Update', 'front-end-pm' ), apply_filters( 'fep_admin_cap', 'manage_options' ), 'fep_update', array( $this, 'update_page' ) );
+	}
+	
+	function update_page() {
+		wp_enqueue_script( 'fep_update_script' );
+		?>
+		<div class="wrap">
+			<h2><?php printf(__( '%s update', 'front-end-pm' ), fep_is_pro() ? 'Front End PM PRO' : 'Front End PM' ); ?></h2>
+			<noscript><p><em><?php _e( 'You must enable Javascript in order to proceed!', 'front-end-pm' ) ?></em></p></noscript>
+			<div id="fep-update-warning">
+				<strong><?php _e( 'DO NOT close this window. This may take a while.', 'front-end-pm' ); ?></strong>
+			</div>
+			<div>
+				<img src="<?php echo FEP_PLUGIN_URL; ?>assets/images/loading.gif" class="fep-ajax-img hidden" />
+			</div>
+			<div>
+				<button class="fep-start-update button-primary hide-if-no-js"><?php _e( 'Start Update', 'front-end-pm' ); ?></button>
+			</div>
+			<div id="fep-ajax-response"></div>
+		</div>
+		<?php
+	}
+	
+	public function notice_delete_all() {
+		if( ! current_user_can( 'manage_options' ) || ! get_option( '_fep_can_delete_all' ) ){
+			return;
+		}
+		?>
+		<div class="notice notice-info">
+			<p><?php printf( __( 'You can now safely delete %s previous version messages and announcements.', 'front-end-pm' ), fep_is_pro() ? 'Front End PM PRO' : 'Front End PM' ); ?></p>
+			<p>
+				<a href="<?php echo wp_nonce_url( add_query_arg( 'action', 'fep_delete_all', admin_url( 'admin-post.php' ) ), 'fep_delete_all' ); ?>" class="button button-primary"><?php _e( 'Proceed', 'front-end-pm' ); ?></a>
+			</p>
+		</div>
+		<?php
+	}
+	
+	function delete_all(){
+		global $wpdb;
+
+		if( ! current_user_can( 'manage_options' ) || ! get_option( '_fep_can_delete_all' ) ){
+			wp_die( __( 'Invalid request!', 'front-end-pm' ) );
+		}
+		if( ! wp_verify_nonce( $_GET['_wpnonce'], 'fep_delete_all' ) ){
+			wp_die( __( 'Invalid nonce!', 'front-end-pm' ) );
+		}
+		
+		$wpdb->query( "DELETE $wpdb->posts, $wpdb->postmeta FROM $wpdb->posts LEFT JOIN $wpdb->postmeta ON ({$wpdb->posts}.ID = {$wpdb->postmeta}.post_id) WHERE {$wpdb->posts}.post_type IN ('fep_message', 'fep_announcement')" );
+		
+		update_option( '_fep_can_delete_all', 0 );
+		
+		wp_safe_redirect( admin_url() );
+		exit;
 	}
 
 	function install() {
@@ -36,10 +101,10 @@ class Fep_Update {
 		$options['userrole_access'] = $roles;
 		$options['userrole_new_message'] = $roles;
 		$options['userrole_reply'] = $roles;
-		$options['plugin_version'] = get_option( 'FEP_admin_options' ) ? '3.3' : FEP_PLUGIN_VERSION;
+		$options['plugin_version'] = get_option( 'FEP_admin_options' ) ? '4.0' : FEP_PLUGIN_VERSION;
 		$options['page_id'] = $id;
 		fep_update_option( $options );
-		fep_add_caps_to_roles();
+		//fep_add_caps_to_roles();
 		$this->create_htaccess();
 	}
 
@@ -55,49 +120,6 @@ class Fep_Update {
 			$options['show_autosuggest'] = fep_get_option( 'hide_autosuggest', 0 ) ? 0 : 1;
 			fep_update_option( $options );
 		}
-		if ( version_compare( $prev_ver, '7.1', '<' ) ) {
-			delete_metadata( 'user', 0, 'FEP_user_options', '', true );
-			//delete_metadata( 'user', 0, '_fep_user_message_count', '', true );
-			delete_metadata( 'user', 0, '_fep_user_announcement_count', '', true );
-			delete_metadata( 'user', 0, '_fep_notification_dismiss', '', true );
-		}
-		if ( version_compare( $prev_ver, '7.2', '<' ) ) {
-			delete_metadata( 'user', 0, '_fep_user_message_count', '', true );
-		}
-	}
-
-	function sections( $tabs ) {
-		$tabs['update'] = array(
-			'priority'	=> 45,
-			'tab_title'	=> __( 'Update', 'front-end-pm' ),
-		);
-		return $tabs;
-	}
-
-	function fields( $fields ) {
-		$fields['update'] = array(
-			'type'		=> 'update',
-			'section'	=> 'update',
-			'label'		=> __( 'Update', 'front-end-pm' ),
-		);
-		return $fields;
-	}
-
-	function field_output( $field ) {
-		wp_enqueue_script( 'fep_update_script' );
-		?>
-		<div id="fep-update-warning">
-			<strong><?php _e( 'DO NOT close this window. This may take several minutes, please be patient.', 'front-end-pm' ); ?></strong>
-		</div>
-		<div>
-			<img src="<?php echo FEP_PLUGIN_URL; ?>assets/images/loading.gif" class="fep-ajax-img" style="display:none;" />
-		</div>
-		<div id="fep-ajax-response"></div>
-		<?php
-	}
-
-	function fep_update_script() {
-		wp_register_script( 'fep_update_script', FEP_PLUGIN_URL . 'assets/js/fep_update_script.js', array( 'jquery' ), '4.9', true );
 	}
 
 	function message_view_changed() {
@@ -112,7 +134,7 @@ class Fep_Update {
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 			return;
 		}
-		if ( isset( $_GET['tab'] ) && 'update' == $_GET['tab'] ) {
+		if ( isset( $_GET['page'] ) && 'fep_update' == $_GET['page'] ) {
 			return;
 		}
 		$prev_ver = fep_get_option( 'plugin_version', '3.3' );
@@ -120,43 +142,54 @@ class Fep_Update {
 			return;
 		}
 		$require = false;
-		global $wpdb;
-		if ( $wpdb->get_var( "SHOW TABLES LIKE '". FEP_MESSAGES_TABLE . "'" ) == FEP_MESSAGES_TABLE ) {
-			if ( ! $wpdb->get_var( 'SELECT COUNT(*) FROM ' . FEP_MESSAGES_TABLE . ' WHERE id IS NOT NULL LIMIT 1' ) ) {
-				//$wpdb->query( 'DROP TABLE IF EXISTS ' . FEP_MESSAGES_TABLE );
-				//$wpdb->query( 'DROP TABLE IF EXISTS ' . FEP_META_TABLE );
-			} else {
-				$require = true;
-			}
-		}
-		if ( version_compare( $prev_ver, '6.4', '<' ) ) {
+
+		if ( version_compare( $prev_ver, '10.0.0', '<' ) ) {
 			$require = true;
 		}
 		if ( apply_filters( 'fep_require_manual_update', $require, $prev_ver ) ) {
-			$redirect = add_query_arg( array(
-				'post_type'	=> 'fep_message',
-				'page'		=> 'fep_settings',
-				'tab'		=> 'update',
-				//'fep_update'	=> 'start',
-			), admin_url( 'edit.php' ) );
-			wp_redirect( $redirect ); /* exit; */ // No need to exit. There may have other action after this from other plugin.
+			add_action( 'admin_notices', array( $this, 'notice_update' ) );
 		} else {
 			do_action( 'fep_plugin_auto_update', $prev_ver );
 			do_action( 'fep_plugin_update', $prev_ver );
 			fep_update_option( 'plugin_version', FEP_PLUGIN_VERSION );
 		}
 	}
+	
+	public function notice_update() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		if ( isset( $_GET['page'] ) && 'fep_update' == $_GET['page'] ) {
+			return;
+		}
+		?>
+		<div class="notice notice-info">
+			<p><?php printf( __( '%s needs to update.', 'front-end-pm' ), fep_is_pro() ? 'Front End PM PRO' : 'Front End PM' ); ?></p>
+			<p>
+				<a href="<?php echo add_query_arg( 'page', 'fep_update', admin_url( 'admin.php' ) ); ?>" class="button button-primary"><?php _e( 'Proceed', 'front-end-pm' ); ?></a>
+			</p>
+		</div>
+		<?php
+	}
 
 	function ajax() {
 		$prev_ver = fep_get_option( 'plugin_version', '3.3' );
 		if ( version_compare( $prev_ver, '4.1', '<' ) ) {
-			$this->update_version_41();
+			//$this->update_version_41();
+			$response = array(
+				'update'	=> 'completed',
+				'message'	=> __( 'You cannot update from your current version.', 'front-end-pm' ),
+			);
+			wp_send_json( $response );
 		}
 		if ( version_compare( $prev_ver, '5.1', '<' ) ) {
 			$this->update_version_51();
 		}
 		if ( version_compare( $prev_ver, '6.4', '<' ) ) {
-			$this->update_version_64();
+			//$this->update_version_64();
+		}
+		if ( version_compare( $prev_ver, '10.1.1', '<' ) ) {
+			$this->update_version_1011();
 		}
 		do_action( 'fep_plugin_manual_update', $prev_ver );
 		do_action( 'fep_plugin_update', $prev_ver );
@@ -168,14 +201,37 @@ class Fep_Update {
 		wp_send_json( $response );
 	}
 
-	function update_version_41() {
-		$updated = fep_get_option( 'v41', 0, 'fep_updated_versions' );
+	function update_version_51() {
+		$updated = fep_get_option( 'v51', 0, 'fep_updated_versions' );
 		if ( $updated ) {
 			return;
 		}
+		$custom_int = isset( $_POST['custom_int'] ) ? absint( $_POST['custom_int'] ) : 0;
+		ignore_user_abort( true );
+		if ( ! fep_is_func_disabled( 'set_time_limit' ) ) {
+			set_time_limit( 0 );
+		}
 		global $wpdb;
-		if ( $wpdb->get_var( "SHOW TABLES LIKE '". FEP_MESSAGES_TABLE . "'" ) != FEP_MESSAGES_TABLE ) {
-			return fep_update_option( 'v41', 1, 'fep_updated_versions' );
+		$wpdb->query( "UPDATE $wpdb->postmeta SET meta_key = REPLACE( meta_key, '_message_key', '_fep_message_key' ) WHERE meta_key = '_message_key'" );
+		$wpdb->query( "UPDATE $wpdb->postmeta SET meta_key = REPLACE( meta_key, '_participant_roles', '_fep_participant_roles' ) WHERE meta_key = '_participant_roles'" );
+		$wpdb->query( "UPDATE $wpdb->postmeta SET meta_key = REPLACE( meta_key, '_participants', '_fep_participants' ) WHERE meta_key = '_participants'" );
+
+		fep_update_option( 'v51', 1, 'fep_updated_versions' );
+		$response = array(
+			//'update'	=> 'continue',
+			'message'	=> __( 'Messages meta updated', 'front-end-pm' ),
+			'custom_int'=> 0,
+			'custom_str'=> '',
+		);
+		wp_send_json( $response );
+	}
+	
+	function update_version_1011() {
+		global $wpdb;
+		
+		$updated = fep_get_option( 'v1011', 0, 'fep_updated_versions' );
+		if ( $updated ) {
+			return;
 		}
 		ignore_user_abort( true );
 		if ( ! fep_is_func_disabled( 'set_time_limit' ) ) {
@@ -183,13 +239,80 @@ class Fep_Update {
 		}
 		$custom_int = isset( $_POST['custom_int'] ) ? absint( $_POST['custom_int'] ) : 0;
 		$custom_str = isset( $_POST['custom_str'] ) ? sanitize_text_field( $_POST['custom_str']) : 'messages';
+		
+		if ( ! fep_get_option( 'v1011-part-1', 0, 'fep_updated_versions' ) ) {			
+			delete_metadata( 'user', 0, $wpdb->get_blog_prefix() . 'FEP_user_options', '', true );
+			delete_metadata( 'user', 0, $wpdb->get_blog_prefix() . '_fep_user_message_count', '', true );
+			delete_metadata( 'user', 0, $wpdb->get_blog_prefix() . '_fep_user_announcement_count', '', true );
+			delete_metadata( 'user', 0, $wpdb->get_blog_prefix() . '_fep_notification_dismiss', '', true );
+			
+			$wp_roles = wp_roles();
+			$roles = $wp_roles->get_names();
+			$roles = array_keys( $roles );
+			
+			$caps = array(
+				'delete_published_fep_messages'	=> 1,
+				'delete_private_fep_messages'	=> 1,
+				'delete_others_fep_messages'	=> 1,
+				'delete_fep_messages'			=> 1,
+				'publish_fep_messages'			=> 1,
+				'read_private_fep_messages'		=> 1,
+				'edit_private_fep_messages'		=> 1,
+				'edit_others_fep_messages'		=> 1,
+				'edit_fep_messages'				=> 1,
+				'edit_published_fep_messages'	=> 1,
+				'create_fep_messages'			=> 1,
+				
+				'delete_published_fep_announcements'=> 1,
+				'delete_private_fep_announcements'	=> 1,
+				'delete_others_fep_announcements'	=> 1,
+				'delete_fep_announcements'			=> 1,
+				'publish_fep_announcements'			=> 1,
+				'read_private_fep_announcements'	=> 1,
+				'edit_private_fep_announcements'	=> 1,
+				'edit_others_fep_announcements'		=> 1,
+				'edit_fep_announcements'			=> 1,
+				'edit_published_fep_announcements'	=> 1,
+				'create_fep_announcements'			=> 1,
+			);
+			foreach( $roles as $role ) {
+				$role_obj = get_role( $role );
+				if ( ! $role_obj ) {
+					continue;
+				}
+				foreach( $caps as $cap => $val ) {
+					$role_obj->remove_cap( $cap );
+				}
+			}
+			
+			fep_update_option( 'v1011-part-1', 1, 'fep_updated_versions' );
+			
+			$response = array(
+				//'update'	=> 'continue',
+				'message'	=> __( 'Old style user meta deleted.', 'front-end-pm' ),
+				'custom_int'=> $custom_int,
+				'custom_str'=> $custom_str,
+			);
+			wp_send_json( $response );
+		}
+
 		if ( 'announcements' == $custom_str ) {
-			$announcements = $this->get_announcements( 0, 25 );
+			$args = array(
+				'post_type'		=> 'fep_announcement',
+				'posts_per_page'=> 50,
+				'post_status'	=> 'any',
+				'meta_query'	=> array(
+					array(
+						'key'		=> '_fep_new_id',
+						'compare'	=> 'NOT EXISTS',
+					),
+				),
+			);
+			$announcements = get_posts( $args );
 			if ( $announcements ) {
 				foreach ( $announcements as $announcement ) {
 					$this->insert_announcement( $announcement );
 				}
-				delete_metadata( 'user', 0, $wpdb->get_blog_prefix() . '_fep_user_announcement_count', '', true );
 				$custom_int = $custom_int + count( $announcements );
 				$response = array(
 					//'update'	=> 'continue',
@@ -200,12 +323,24 @@ class Fep_Update {
 				wp_send_json( $response );
 			}
 		} else {
-			$messages = $this->get_messages( 0, 25 );
+			$args = array(
+				'post_type'		=> 'fep_message',
+				'posts_per_page'=> 25,
+				'post_status'	=> 'any',
+				'post_parent'	=> 0,
+				'meta_query'	=> array(
+					array(
+						'key'		=> '_fep_new_id',
+						'compare'	=> 'NOT EXISTS',
+					),
+				),
+			);
+			$messages = get_posts( $args );
 			if ( $messages ) {
 				foreach ( $messages as $message ) {
-					$this->insert_message( $message );
+					$custom_int += $this->insert_message( $message );
 				}
-				$custom_int = $custom_int + count( $messages );
+				//$custom_int = $custom_int + count( $messages );
 				$response = array(
 					//'update'	=> 'continue',
 					'message'	=> sprintf( _n( '%s message updated', '%s messages updated', $custom_int, 'front-end-pm' ), number_format_i18n( $custom_int ) ),
@@ -223,114 +358,13 @@ class Fep_Update {
 				wp_send_json( $response );
 			}
 		}
-		delete_metadata( 'user', 0, $wpdb->get_blog_prefix() . '_fep_user_message_count', '', true );
-		delete_metadata( 'user', 0, $wpdb->get_blog_prefix() . '_fep_user_announcement_count', '', true );
-		fep_update_option( 'v41', 1, 'fep_updated_versions' );
+		
+		update_option( '_fep_can_delete_all', 1 );
+		
+		fep_update_option( 'v1011', 1, 'fep_updated_versions' );
 		$response = array(
 			//'update'	=> 'continue',
 			'message'	=> __( 'All messages and announcements updated', 'front-end-pm' ),
-			'custom_int'=> 0,
-			'custom_str'=> '',
-		);
-		wp_send_json( $response );
-	}
-
-	function update_version_51() {
-		$updated = fep_get_option( 'v51', 0, 'fep_updated_versions' );
-		if ( $updated ) {
-			return;
-		}
-		$custom_int = isset( $_POST['custom_int'] ) ? absint( $_POST['custom_int'] ) : 0;
-		ignore_user_abort( true );
-		if ( ! fep_is_func_disabled( 'set_time_limit' ) ) {
-			set_time_limit( 0 );
-		}
-		if ( ! fep_get_option( 'v51-part-1', 0, 'fep_updated_versions' ) ) {
-			global $wpdb;
-			$wpdb->query( "UPDATE $wpdb->postmeta SET meta_key = REPLACE( meta_key, '_message_key', '_fep_message_key' ) WHERE meta_key = '_message_key'" );
-			$wpdb->query( "UPDATE $wpdb->postmeta SET meta_key = REPLACE( meta_key, '_participant_roles', '_fep_participant_roles' ) WHERE meta_key = '_participant_roles'" );
-			$wpdb->query( "UPDATE $wpdb->postmeta SET meta_key = REPLACE( meta_key, '_participants', '_fep_participants' ) WHERE meta_key = '_participants'" );
-			fep_update_option( 'v51-part-1', 1, 'fep_updated_versions' );
-			$response = array(
-				//'update'	=> 'continue',
-				'message'	=> __( 'Messages meta updated', 'front-end-pm' ),
-				'custom_int'=> 0,
-				'custom_str'=> '',
-			);
-			wp_send_json( $response );
-		}
-		if ( 'threaded' != fep_get_message_view() ) {
-			fep_update_option( 'v51-part-2', 1, 'fep_updated_versions' );
-		}
-		if ( ! fep_get_option( 'v51-part-2', 0, 'fep_updated_versions' ) ) {
-			$this->individual_to_threaded();
-			fep_update_option( 'v51-part-2', 1, 'fep_updated_versions' );
-			$response = array(
-				//'update'	=> 'continue',
-				'message'	=> __( 'Messages meta updated', 'front-end-pm' ),
-				'custom_int'=> 0,
-				'custom_str'=> '',
-			);
-			wp_send_json( $response );
-		}
-		foreach ( array( 'administrator', 'editor' ) as $role ) {
-			$role_obj = get_role( $role );
-			if ( !$role_obj ) {
-				continue;
-			}
-			$role_obj->add_cap( 'create_fep_messages' );
-			$role_obj->add_cap( 'edit_published_fep_messages' );
-			$role_obj->add_cap( 'edit_published_fep_announcements' );
-		}
-		fep_update_option( 'v51', 1, 'fep_updated_versions' );
-		$response = array(
-			//'update'	=> 'continue',
-			'message'	=> __( 'Messages meta updated', 'front-end-pm' ),
-			'custom_int'=> 0,
-			'custom_str'=> '',
-		);
-		wp_send_json( $response );
-	}
-
-	function update_version_64() {
-		$updated = fep_get_option( 'v64', 0, 'fep_updated_versions' );
-		if ( $updated ) {
-			return;
-		}
-		$custom_int = isset( $_POST['custom_int'] ) ? absint( $_POST['custom_int'] ) : 0;
-		ignore_user_abort( true );
-		if ( ! fep_is_func_disabled( 'set_time_limit' ) ) {
-			set_time_limit( 0 );
-		}
-		$args = array(
-			'post_type'		=> 'fep_announcement',
-			'posts_per_page'=> 100,
-			'post_status'	=> 'any',
-			'meta_query'	=> array(
-				array(
-					'key'		=> '_fep_author',
-					'compare'	=> 'NOT EXISTS',
-				),
-			),
-		);
-		$announcements = get_posts( $args );
-		$custom_int = $custom_int + count( $announcements );
-		if ( $announcements && !is_wp_error( $announcements) ) {
-			foreach ( $announcements as $announcement ) {
-				add_post_meta( $announcement->ID, '_fep_author', $announcement->post_author, true );
-			}
-			$response = array(
-				//'update'	=> 'continue',
-				'message'	=> sprintf( _n( '%s announcement', '%s announcements', $custom_int, 'front-end-pm' ), number_format_i18n( $custom_int ) ) . ' ' . __( 'author updated', 'front-end-pm' ),
-				'custom_int'=> $custom_int,
-				'custom_str'=> '',
-			);
-			wp_send_json( $response );
-		}		
-		fep_update_option( 'v64', 1, 'fep_updated_versions' );
-		$response = array(
-			//'update'	=> 'continue',
-			'message'	=> __( 'Announcement author updated', 'front-end-pm' ),
 			'custom_int'=> 0,
 			'custom_str'=> '',
 		);
@@ -345,40 +379,45 @@ class Fep_Update {
 			set_time_limit( 0 );
 		}
 		$args = array(
-			'post_type'		=> 'fep_message',
-			'post_status'	=> 'publish',
-			'post_parent'	=> 0,
-			//'fields'		=> 'ids',
-			'posts_per_page'=> 50,
-			'meta_query'	=> array(
-				array(
-					'key'		=> '_fep_last_reply_by',
-					'compare'	=> 'NOT EXISTS',
-				),
-			),
+			'mgs_type'		=> 'message',
+			'mgs_parent'	=> 0,
+			'mgs_status'	=> 'publish',
+			'per_page'		=> 50,
+			'orderby'		=> 'mgs_created',
+			'mgs_last_reply_by' => 0,
 		);
-		$posts = get_posts( $args );
-		if ( $posts ) {
+		$messages = fep_get_messages( $args );
+		if ( $messages ) {
 			$child_args = array(
-				'post_type'		=> 'fep_message',
-				'post_status'	=> 'publish',
-				'posts_per_page'=> 1,
+				'mgs_type'		=> 'message',
+				'mgs_status'	=> 'publish',
+				'fields'		=> array( 'mgs_author', 'mgs_content', 'mgs_created' ),
+				'per_page'		=> 1,
+				'orderby'		=> 'mgs_created',
+				'order'			=> 'DESC',
 			);
-			foreach ( $posts as $post ) {
-				$child_args['post_parent'] = $post->ID;
-				$child = get_posts( $child_args );
+
+			foreach ( $messages as $message ) {
+				$child_args['mgs_parent'] = $message->mgs_id;
+				$child = fep_get_messages( $child_args );
+				$new_args = [];
+				
 				if ( $child && ! empty( $child[0] ) ) {
-					update_post_meta( $post->ID, '_fep_last_reply_by', $child[0]->post_author );
-					update_post_meta( $post->ID, '_fep_last_reply_id', $child[0]->ID );
-					update_post_meta( $post->ID, '_fep_last_reply_time', strtotime( $child[0]->post_date_gmt ) );
-					//$wpdb->update( $wpdb->posts, array( 'post_modified' => $child[0]->post_date, 'post_modified_gmt' => $child[0]->post_date_gmt ), array( 'ID' => $post->ID ) );
+					$new_args = [
+						'mgs_last_reply_by' => $child[0]->mgs_author,
+						'mgs_last_reply_excerpt' => fep_get_the_excerpt_from_content( $child[0]->mgs_content ),
+						'mgs_last_reply_time' => $child[0]->mgs_created,
+					];
 				} else {
-					add_post_meta( $post->ID, '_fep_last_reply_by', $post->post_author, true );
-					add_post_meta( $post->ID, '_fep_last_reply_id', $post->ID, true );
-					add_post_meta( $post->ID, '_fep_last_reply_time', strtotime( $post->post_date_gmt ), true );
+					$new_args = [
+						'mgs_last_reply_by' => $message->mgs_author,
+						'mgs_last_reply_excerpt' => fep_get_the_excerpt_from_content( $message->mgs_content ),
+						'mgs_last_reply_time' => $message->mgs_created,
+					];
 				}
+				$message->update( $new_args );
 			}
-			$custom_int = $custom_int + count( $posts );
+			$custom_int = $custom_int + count( $messages );
 			$response = array(
 				//'update'	=> 'continue',
 				'message'	=> sprintf( _n( '%s message meta updated', '%s messages meta updated', $custom_int, 'front-end-pm' ), number_format_i18n( $custom_int ) ),
@@ -387,154 +426,205 @@ class Fep_Update {
 			);
 			wp_send_json( $response );
 		}
-		delete_metadata( 'user', 0, $wpdb->get_blog_prefix() . '_fep_user_message_count', '', true );
+		delete_metadata( 'user', 0, '_fep_user_message_count', '', true );
 		update_option( '_fep_message_view_changed', 0 );
 	}
 
 	function insert_announcement( $announcement ) {
 		$arr = array(
-			'post_title'	=> $announcement->message_title,
-			'post_content'	=> $announcement->message_contents,
-			'post_author'	=> $announcement->from_user,
-			'post_date'		=> $announcement->send_date,
-			'post_type'		=> 'fep_announcement',
-			'post_status'	=> 'publish',
+			'mgs_parent'            => $announcement->post_parent,
+			'mgs_author'            => $announcement->post_author,
+			'mgs_created'           => $announcement->post_date_gmt,
+			'mgs_title'             => $announcement->post_title,
+			'mgs_content'           => $announcement->post_content,
+			'mgs_last_reply_excerpt'=> fep_get_the_excerpt_from_content( 100, $announcement->post_content ),
+			'mgs_type'              => 'announcement',
+			'mgs_status'            => $announcement->post_status,	
 		);
-		if ( ! $ann_id = wp_insert_post( $arr) ) {
+		
+		$mgs_obj = new FEP_Message;
+		$ann_id = $mgs_obj->insert( $arr );
+		
+		if( ! $ann_id ){
 			return;
 		}
-		add_post_meta( $ann_id, '_fep_import_from_table', time(), true );
-		foreach ( array_keys( get_editable_roles() ) as $role ) {
-			add_post_meta( $ann_id, '_fep_participant_roles', $role );
-		}
-		$seen = $this->get_announcement_meta( $announcement->id );
-		$seen = maybe_unserialize( $seen );
-		if ( $seen && is_array( $seen ) ) {
-			add_post_meta( $ann_id, '_fep_read_by', $seen, true );
-		}
-		$deleted = $this->get_announcement_meta( $announcement->id, 'announcement_deleted_user_id' );
-		$deleted = maybe_unserialize( $deleted );
-		if ( $deleted && is_array( $deleted) ) {
-			$deleted = array_flip( $deleted );
-			foreach ( $deleted as $del_user_id => $v ) {
-				$deleted[ $del_user_id ] = time();
+		add_post_meta( $announcement->ID, '_fep_new_id', $ann_id );
+		fep_add_meta( $ann_id, '_fep_email_sent', get_post_meta( $announcement->ID, '_fep_email_sent', true ) );
+		
+		$roles = get_post_meta( $announcement->ID, '_fep_participant_roles' );
+		
+		if ( $roles ) {
+			$user_ids = get_users( [ 'fields' => 'ids', 'role__in' => $roles ] );
+			$user_ids[] = $mgs_obj->mgs_author;
+			$user_ids = array_unique( $user_ids );
+			
+			$new_participants = [];
+			$read_by = get_post_meta( $announcement->ID, '_fep_read_by', true );
+			if( ! is_array( $read_by ) ){
+				$read_by = [];
+			} else {
+				$read_by = array_flip( $read_by );
 			}
-			add_post_meta( $ann_id, '_fep_deleted_by', $deleted, true );
+			$deleted_by = get_post_meta( $announcement->ID, '_fep_deleted_by', true );
+			if ( ! is_array( $deleted_by ) ) {
+				$deleted_by = array();
+			}
+			
+			foreach( $user_ids as $participant ){
+				$new_participants[] = [
+					'mgs_participant' => $participant,
+					'mgs_read' => isset( $read_by[ $participant ] ) ? $read_by[ $participant ] : 0,
+					'mgs_parent_read' => isset( $read_by[ $participant ] ) ? $read_by[ $participant ] : 0,
+					'mgs_deleted' => isset( $deleted_by[ $participant ] ) ? $deleted_by[ $participant ] : 0,
+					'mgs_archived' => 0,
+				];
+			}
+			if( $new_participants ){
+				$mgs_obj->insert_participants( $new_participants );
+			}
+			
+			foreach( $roles as $role ){
+				fep_add_meta( $ann_id, '_fep_participant_roles', $role );
+			}
 		}
-		$this->insert_attachment( $ann_id, $announcement->id, $announcement->from_user );
-		$this->delete_message( $announcement->id );
+		
+		$this->insert_attachment( $announcement->ID, $mgs_obj );
 	}
-
+	
 	function insert_message( $message ) {
 		$arr = array(
-			'message_title'		=> $message->message_title,
-			'message_content'	=> $message->message_contents,
-			'fep_parent_id'		=> 0,
-			'message_to_id'		=> $message->to_user,
+			'mgs_parent'            => 0,
+			'mgs_author'            => $message->post_author,
+			'mgs_created'           => $message->post_date_gmt,
+			'mgs_title'             => $message->post_title,
+			'mgs_content'           => $message->post_content,
+			'mgs_type'              => 'message',
+			'mgs_status'            => $message->post_status,	
 		);
-		$override = array(
-		'post_author'	=> $message->from_user,
-		'post_date'		=> $message->send_date,
-		);
-		if ( $message_id = fep_send_message( $arr, $override ) ) {
-			if ( 1 == $message->status ) {
-				fep_make_read( true, $message_id, $message->to_user );
-			}
-			if ( 1 == $message->from_del ) {
-				add_post_meta( $message_id, '_fep_delete_by_'. $message->from_user, time(), true ); // No time from previous version
-			} elseif ( 1 == $message->to_del ) {
-				add_post_meta( $message_id, '_fep_delete_by_'. $message->to_user, time(), true );
-			}
-			add_post_meta( $message_id, '_fep_import_from_table', time(), true );
-			$this->insert_attachment( $message_id, $message->id, $message->from_user );
-			$this->insert_replies( $message_id, $message->id );
-			$this->delete_message( $message->id );
+		if( 'threaded' == fep_get_message_view() ){
+			$arr['mgs_last_reply_by'] = get_post_meta( $message->ID, '_fep_last_reply_by', true );
+			$arr['mgs_last_reply_excerpt'] = fep_get_the_excerpt_from_content( 100, get_post_field('post_content', get_post_meta( $message->ID, '_fep_last_reply_id', true ) ) );
+			$arr['mgs_last_reply_time'] = get_post_field('post_date_gmt', get_post_meta( $message->ID, '_fep_last_reply_id', true ) );
 		}
+		$mgs_obj = new FEP_Message;
+		$message_id = $mgs_obj->insert( $arr );
+		
+		if( ! $message_id ){
+			return 0;
+		}
+		$count = 1;
+		
+		add_post_meta( $message->ID, '_fep_new_id', $message_id, true );
+		fep_add_meta( $message_id, '_fep_email_sent', get_post_meta( $message->ID, '_fep_email_sent', true ) );
+		
+		$this->insert_participants( $message->ID, $mgs_obj );
+		$this->insert_attachment( $message->ID, $mgs_obj );
+		$count += $this->insert_replies( $message->ID, $mgs_obj );
+		//$this->delete_message( $message->id );
+		return $count;
 	}
 
-	function insert_attachment( $message_id, $message_prev_id, $author ) {
-		if ( ! $attachments = $this->get_attachments( $message_prev_id ) ) {
-			return;
-		}
-		foreach ( $attachments as $attachment ) {
-			$unserialized_file = maybe_unserialize( $attachment->field_value );
-			if ( $unserialized_file['type'] && $unserialized_file['url'] && $unserialized_file['file'] ) {
-				$att = array( // Prepare an array of post data for the attachment.
-					'guid'			=> $unserialized_file['url'], 
-					'post_mime_type'=> $unserialized_file['type'],
-					'post_title'	=> preg_replace( '/\.[^.]+$/', '', basename( $unserialized_file['url'] ) ),
-					'post_content'	=> '',
-					'post_author'	=> $author,
-					'post_status'	=> 'inherit',
-				);
-				wp_insert_attachment( $att, $unserialized_file['file'], $message_id ); // Insert the attachment.
-			}
-		}
-	}
-
-	function insert_replies( $message_id, $message_prev_id ) {
-		if ( ! $replies = $this->get_replies( $message_prev_id ) ) {
-			return;
+	function insert_replies( $message_id, $mgs_obj ) {
+		$args = array(
+			'post_type'		=> 'fep_message',
+			'posts_per_page'=> -1,
+			'post_status'	=> 'any',
+			'post_parent'	=> $message_id,
+		);
+		
+		if ( ! $replies = get_posts( $args ) ) {
+			return 0;
 		}
 		foreach ( $replies as $reply ) {
 			$arr = array(
-				'message_title'		=> $reply->message_title,
-				'message_content'	=> $reply->message_contents,
-				'fep_parent_id'		=> $message_id,
+				'mgs_parent'            => $mgs_obj->mgs_id,
+				'mgs_author'            => $reply->post_author,
+				'mgs_created'           => $reply->post_date_gmt,
+				'mgs_title'             => $reply->post_title,
+				'mgs_content'           => $reply->post_content,
+				'mgs_type'              => 'message',
+				'mgs_status'            => $reply->post_status,	
 			);
-			$override = array(
-				'post_author'	=> $reply->from_user,
-				'post_date'		=> $reply->send_date,
-			);
-			if ( $reply_id = fep_send_message( $arr, $override ) ) {
-				$this->insert_attachment( $reply_id, $reply->id, $reply->from_user );
-				$this->delete_message( $reply->id );
+			if( 'threaded' != fep_get_message_view() ){
+				$arr['mgs_last_reply_by'] = $reply->post_author;
+				$arr['mgs_last_reply_excerpt'] = fep_get_the_excerpt_from_content( 100, $reply->post_content );
+				$arr['mgs_last_reply_time'] = $reply->post_date_gmt;
 			}
+			$reply_obj = new FEP_Message;
+			$reply_id = $reply_obj->insert( $arr );
+
+			if ( $reply_id ) {
+				add_post_meta( $reply->ID, '_fep_new_id', $reply_id, true );
+				fep_add_meta( $reply_id, '_fep_email_sent', get_post_meta( $reply->ID, '_fep_email_sent', true ) );
+				$this->insert_participants( $reply->ID, $reply_obj );
+				$this->insert_attachment( $reply->ID, $reply_obj );
+			}
+		}
+		return count( $replies );
+	}
+	
+	function insert_attachment( $message_id, $mgs_obj ) {
+		$args = array(
+			'post_type'		=> 'attachment',
+			'posts_per_page'=> -1,
+			'post_status'	=> 'any',
+			'post_parent'	=> $message_id,
+		);
+		if ( ! $attachments = get_posts( $args ) ) {
+			return;
+		}
+		$new_attachments = [];
+		
+		foreach ( $attachments as $attachment ) {
+			$new_attachments[] = [
+				'att_mime' => $attachment->post_mime_type,
+				'att_file' => get_attached_file( $attachment->ID ),
+				'att_status' => in_array( $attachment->post_status, [ 'publish', 'inherit' ] ) ? 'publish' : $attachment->post_status,
+			];
+		}
+		if( $new_attachments ){
+			$mgs_obj->insert_attachments( $new_attachments );
+		}	
+	}
+	
+	function insert_participants( $message_id, $mgs_obj ){
+		if( 'threaded' == fep_get_message_view() && $mgs_obj->mgs_parent ){
+			$participants = get_post_meta( wp_get_post_parent_id( $message_id ), '_fep_participants' );
+		} else {
+			$participants = get_post_meta( $message_id, '_fep_participants' );
+		}
+		$new_participants = [];
+		$read_by = get_post_meta( $message_id, '_fep_read_by', true );
+		if( ! is_array( $read_by ) ){
+			$read_by = [];
+		} else {
+			$read_by = array_flip( $read_by );
+		}
+		
+		foreach( $participants as $participant ){
+			$args = [
+				'mgs_participant' => $participant,
+				'mgs_read' => isset( $read_by[ $participant ] ) ? $read_by[ $participant ] : 0,
+				'mgs_deleted' => get_post_meta( $message_id, '_fep_delete_by_' . $participant, true ),
+				'mgs_archived' => get_post_meta( $message_id, '_fep_archived_by_' . $participant, true ),
+			];
+			if( 'threaded' == fep_get_message_view() && $mgs_obj->mgs_parent ){
+				$args['mgs_parent_read'] = get_post_meta( wp_get_post_parent_id( $message_id ), '_fep_parent_read_by_' . $participant, true );
+			} else {
+				$args['mgs_parent_read'] = get_post_meta( $message_id, '_fep_parent_read_by_' . $participant, true );
+			}
+			$new_participants[] = $args;
+		}
+		if( $new_participants ){
+			$mgs_obj->insert_participants( $new_participants );
 		}
 	}
 
-	function delete_message( $message_id ) {
-		global $wpdb;
-		$wpdb->query( $wpdb->prepare( "DELETE FROM " . FEP_MESSAGES_TABLE . " WHERE id = %d", $message_id ) );
-		$wpdb->query( $wpdb->prepare( "DELETE FROM " . FEP_META_TABLE . " WHERE message_id = %d", $message_id ) );
-	}
-
-	function get_messages( $start, $end ) {
-		global $wpdb;
-		return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . FEP_MESSAGES_TABLE . " WHERE parent_id = %d AND (status = 0 OR status = 1) ORDER BY last_date DESC LIMIT %d, %d", 0, $start, $end ) );
-	}
-
-	function get_messages_count() {
-		global $wpdb;
-		return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM " . FEP_MESSAGES_TABLE . " WHERE parent_id = %d AND (status = 0 OR status = 1) ORDER BY last_date DESC", 0 ) );
-	}
-
-	function get_replies( $parent ) {
-		global $wpdb;
-		return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM ".FEP_MESSAGES_TABLE . " WHERE parent_id = %d AND (status = 0 OR status = 1) ORDER BY last_date DESC", $parent ) );
-	}
-	function get_attachments( $message_id ) {
-		global $wpdb;
-		return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . FEP_META_TABLE . " WHERE message_id = %d AND field_name = %s", $message_id, 'attachment' ) );
-	}
-	
-	function get_announcements( $start, $end ) {
-		global $wpdb;
-		return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . FEP_MESSAGES_TABLE . " WHERE status = %d LIMIT %d, %d", 2, $start, $end ) );
-	}
-
-	function get_announcements_count() {
-		global $wpdb;
-		return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM " . FEP_MESSAGES_TABLE . " WHERE status = %d", 2 ) );
-	}
-
-	function get_announcement_meta( $id, $meta = 'announcement_seen_user_id' ) {
-		global $wpdb;
-		return $wpdb->get_var( $wpdb->prepare( "SELECT field_value FROM " . FEP_META_TABLE . " WHERE message_id = %d AND field_name = %s LIMIT 1", $id, $meta ) );
-	}
-
 	function create_htaccess() {
+		add_filter( 'upload_dir', array( Fep_Attachment::init(), 'upload_dir' ), 99 );
 		$wp_upload_dir = wp_upload_dir();
+		remove_filter( 'upload_dir', array( Fep_Attachment::init(), 'upload_dir' ), 99 );
+		
 		$upload_path = $wp_upload_dir['basedir'] . '/front-end-pm';
 		$htaccess_path = $upload_path . '/.htaccess';
 
@@ -550,39 +640,5 @@ class Fep_Update {
 	}
 } //END CLASS
 
-add_action( 'admin_init', array( Fep_Update::init(), 'actions_filters' ) );
-function fep_insert_dummy_message() {
-	global $wpdb;
-	for( $i = 0; $i < 3000; $i++ ) {
-		$from = rand( 1, 5 );
-		$wpdb->insert( FEP_MESSAGES_TABLE, array(
-			'from_user'			=> $from,
-			'to_user'			=> rand( 1, 5 ),
-			'message_title'		=> 'this is title',
-			'message_contents'	=> 'this is message',
-			'parent_id'			=> 0,
-			'last_sender'		=> $from,
-			'send_date'			=> current_time( 'mysql' ),
-			'last_date'			=> current_time( 'mysql' ),
-			'status'			=> rand( 0, 2 ),
-		),
-		array( '%d', '%d', '%s', '%s', '%d', '%d', '%s', '%s', '%d' ) );
-	}
-}
+add_action( 'init', array( Fep_Update::init(), 'actions_filters' ) );
 
-function fep_insert_dummy_message2() {
-	global $wpdb;
-	for( $i = 0; $i < 3000; $i++ ) {
-		$wpdb->insert( $wpdb->posts, array(
-			'post_author'	=> rand( 1, 5 ),
-			'post_date_gmt'	=> current_time( 'mysql' ),
-			'post_title'	=> 'this is title post',
-			'post_content'	=> 'this is message post',
-			'post_parent'	=> 0,
-			'post_status'	=> 'publish',
-			'post_type'		=> 'fep_message',
-		),
-		array( '%d', '%s', '%s', '%s', '%d', '%s', '%s' ) );
-	}
-}
-//add_action( 'wp_loaded', 'fep_insert_dummy_message2' );

@@ -59,24 +59,6 @@ if ( ! class_exists( 'fep_main_class' ) ) {
 					case 'viewmessage':
 						$out .= $this->view_message();
 						break;
-					/*
-					// See Fep_User_Settings Class
-					case ( 'settings' == $switch && ! empty( $menu['settings'] ) ):
-						$out .= $this->user_settings();
-						break;
-					*/
-					/*
-					// See Fep_Announcement Class
-					case 'announcements':
-						$out .= Fep_Announcement::init()->announcement_box();
-						break;
-					case 'view_announcement':
-						$out .= Fep_Announcement::init()->view_announcement();
-						break;
-					*/
-					//case 'directory': // See Fep_Directory Class
-						//$out .= $this->directory();
-						// break;
 					case 'messagebox':
 					default: //Message box is shown by Default
 						$out .= $this->fep_message_box();
@@ -89,115 +71,6 @@ if ( ! class_exists( 'fep_main_class' ) ) {
 				$out = '<div class="fep-error">' . sprintf( __( 'You must <a href="%s">login</a> to view your message.', 'front-end-pm' ), wp_login_url( get_permalink() ) ) . '</div>';
 			}
 			return apply_filters( 'fep_main_shortcode_output', $out);
-		}
-
-		function Posted() {
-			_deprecated_function( __FUNCTION__, '4.9', 'fep_form_posted()' );
-			$action = ! empty( $_POST['fep_action'] ) ? $_POST['fep_action'] : '';
-			if ( ! $action ) {
-				return;
-			}
-			switch( $action ) {
-				case has_action( "fep_posted_action_{$action}" ):
-					do_action( "fep_posted_action_{$action}", $this );
-					break;
-				case 'newmessage':
-					if ( ! fep_current_user_can( 'send_new_message' ) ) {
-						return;
-					}
-					Fep_Form::init()->validate_form_field();
-					if ( 0 == count( fep_errors()->get_error_messages() ) ) {
-						if ( $message_id = fep_send_message() ) {
-							$message = get_post( $message_id );
-							if ( 'publish' == $message->post_status ) {
-								fep_success()->add( 'publish', __( 'Message successfully sent.', 'front-end-pm' ) );
-							} else {
-								fep_success()->add( 'pending', __( 'Message successfully sent and waiting for admin moderation.', 'front-end-pm' ) );
-							}
-						} else {
-							fep_errors()->add( 'undefined', __( 'Something wrong. Please try again.', 'front-end-pm' ) );
-						}
-					}
-					break;
-				case 'reply':
-					if ( isset( $_GET['fep_id'] ) ) {
-						$pID = absint( $_GET['fep_id'] );
-					} else {
-						$pID = ! empty( $_GET['id'] ) ? absint( $_GET['id'] ) : 0;
-					}
-					$parent_id = fep_get_parent_id( $pID );
-					if ( ! fep_current_user_can( 'send_reply', $parent_id ) ) {
-						return;
-					}
-					Fep_Form::init()->validate_form_field( 'reply' );
-					if ( 0 == count( fep_errors()->get_error_messages() ) ) {
-						if ( $message_id = fep_send_message() ) {
-							$message = get_post( $message_id );
-							if ( 'publish' == $message->post_status ) {
-								fep_success()->add( 'publish', __( 'Message successfully sent.', 'front-end-pm' ) );
-							} else {
-								fep_success()->add( 'pending', __( 'Message successfully sent and waiting for admin moderation.', 'front-end-pm' ) );
-							}
-						} else {
-							fep_errors()->add( 'undefined', __( 'Something wrong. Please try again.', 'front-end-pm' ) );
-						}
-					}
-					break;
-				case 'bulk_action':
-					$posted_bulk_action = ! empty( $_POST['fep-bulk-action'] ) ? $_POST['fep-bulk-action'] : '';
-					if ( ! $posted_bulk_action ) {
-						return;
-					}
-					$token = ! empty( $_POST['token'] ) ? $_POST['token'] : '';
-					if ( ! fep_verify_nonce( $token, 'bulk_action' ) ) {
-						fep_errors()->add( 'token', __( 'Invalid Token. Please try again!', 'front-end-pm' ) );
-						return;
-					}
-					if ( $bulk_action_return = Fep_Message::init()->bulk_action( $posted_bulk_action ) ) {
-						fep_success()->add( 'success', $bulk_action_return );
-					}
-					break;
-				case 'announcement_bulk_action':
-					$posted_bulk_action = ! empty( $_POST['fep-bulk-action'] ) ? $_POST['fep-bulk-action'] : '';
-					if ( ! $posted_bulk_action ) {
-						return;
-					}
-					$token = ! empty( $_POST['token'] ) ? $_POST['token'] : '';
-					if ( ! fep_verify_nonce( $token, 'announcement_bulk_action' ) ) {
-						fep_errors()->add( 'token', __( 'Invalid Token. Please try again!', 'front-end-pm' ) );
-						return;
-					}
-					if ( $bulk_action_return = Fep_Announcement::init()->bulk_action( $posted_bulk_action ) ) {
-						fep_success()->add( 'success', $bulk_action_return );
-					}
-					break;
-				case 'settings':
-					add_action ( 'fep_action_form_validated', array( $this, 'settings_save' ), 10, 2 );
-					Fep_Form::init()->validate_form_field( 'settings' );
-					if ( 0 == count( fep_errors()->get_error_messages() ) ) {
-						fep_success()->add( 'saved', __( 'Settings successfully saved.', 'front-end-pm' ) );
-					}
-					break;
-				default:
-					do_action( 'fep_posted_action', $this );
-					break;
-			}
-		}
-
-		function settings_save( $where, $fields ) {
-			_deprecated_function( __FUNCTION__, '4.9', 'fep_user_settings_save()' );
-			if ( 'settings' != $where ) {
-				return;
-			}
-			if ( ! $fields || ! is_array( $fields ) ) {
-				return;
-			}
-			$settings = array();
-			foreach( $fields as $field ) {
-				$settings[ $field['name'] ] = $field['posted-value'];
-			}
-			$settings = apply_filters( 'fep_filter_user_settings_before_save', $settings );
-			update_user_option( get_current_user_id(), 'FEP_user_options', $settings); 
 		}
 
 		function Header() {
@@ -236,20 +109,13 @@ if ( ! class_exists( 'fep_main_class' ) ) {
 				// $total_message = fep_get_user_message_count( 'total' );
 			}
 			if ( false === $messages ) {
-				$messages = Fep_Message::init()->user_messages( $action );
-				$total_message = Fep_Message::init()->found_messages;
+				$messages = Fep_Messages::init()->user_messages( $action );
+				$total_message = $messages->total_messages;
 			}
-			$template = fep_locate_template( 'messagebox.php' );
+			$template = fep_locate_template( 'box-message.php' );
 			ob_start();
 			include( $template );
 			return apply_filters( 'fep_messagebox', ob_get_clean(), $action);
-		}
-
-		function user_settings() {
-			$template = fep_locate_template( 'settings.php' );
-			ob_start();
-			include( $template );
-			return ob_get_clean();
 		}
 
 		function new_message() {
@@ -260,29 +126,27 @@ if ( ! class_exists( 'fep_main_class' ) ) {
 		}
 
 		function view_message() {
-			global $shortcode_tags;
+			
 			if ( isset( $_GET['fep_id'] ) ) {
 				$id = absint( $_GET['fep_id'] );
 			} else {
 				$id = ! empty( $_GET['id'] ) ? absint( $_GET['id'] ) : 0;
 			}
-			if ( ! $id || ! fep_current_user_can( 'view_message', $id ) ) {
+			if ( ! $id || ! is_numeric( $id )) {
+				return '<div class="fep-error">' . __( 'You do not have permission to view this message!', 'front-end-pm' ) . '</div>';
+			}
+			$messages = Fep_Messages::init()->get_message_with_replies( $id );
+			
+			if ( ! fep_current_user_can( 'view_message', $id ) ) {
 				return '<div class="fep-error">' . __( 'You do not have permission to view this message!', 'front-end-pm' ) . '</div>';
 			}
 			$parent_id = fep_get_parent_id( $id );
-			$messages = fep_get_message_with_replies( $id );
-			$template = fep_locate_template( 'viewmessage.php' );
-			$parse_shortcode = apply_filters( 'fep_message_parse_shortcodes', false );
-			if ( ! $parse_shortcode ) {
-				$fep_shortcode_tags = $shortcode_tags;
-				$shortcode_tags = array(); // We will not parse shortcode in our content
-			}
+			$template = fep_locate_template( 'view-message.php' );
+
 			ob_start();
 			include( $template );
 			$return = ob_get_clean();
-			if ( ! $parse_shortcode ) {
-				$shortcode_tags = $fep_shortcode_tags; // reset shortcode tags
-			}
+
 			return apply_filters( 'fep_filter_viewmessage', $return, $id );
 		}
 		/******************************************MAIN DISPLAY END******************************************/

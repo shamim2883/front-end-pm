@@ -23,7 +23,7 @@ do_action( 'fep_display_before_messagebox', $action ); ?>
 			<div class="fep-bulk-action">
 				<select name="fep-bulk-action">
 					<option value=""><?php _e( 'Bulk action', 'front-end-pm' ); ?></option>
-					<?php foreach ( Fep_Message::init()->get_table_bulk_actions() as $bulk_action => $bulk_action_display ) : ?>
+					<?php foreach ( Fep_Messages::init()->get_table_bulk_actions() as $bulk_action => $bulk_action_display ) : ?>
 						<option value="<?php echo $bulk_action; ?>"><?php echo $bulk_action_display; ?></option>
 					<?php endforeach; ?>
 				</select>
@@ -35,23 +35,23 @@ do_action( 'fep_display_before_messagebox', $action ); ?>
 			<div class="fep-loading-gif-div"></div>
 			<div class="fep-filter">
 				<select onchange="if (this.value) window.location.href=this.value">
-					<?php foreach ( Fep_Message::init()->get_table_filters() as $filter => $filter_display ) : ?>
+					<?php foreach ( Fep_Messages::init()->get_table_filters() as $filter => $filter_display ) : ?>
 						<option value="<?php echo esc_url( add_query_arg( array( 'fep-filter' => $filter, 'feppage' => false ) ) ); ?>" <?php selected($g_filter, $filter);?>><?php echo $filter_display; ?></option>
 					<?php endforeach; ?>
 				</select>
 			</div>
 		</div>
 	</div>
-	<?php if ( $messages->have_posts() ) {
+	<?php if ( $messages->have_messages() ) {
 		wp_enqueue_script( 'fep-cb-check-uncheck-all' ); ?>
 		<div class="fep-cb-check-uncheck-all-div"><label><input type="checkbox" class="fep-cb-check-uncheck-all" /><?php _e( 'Check/Uncheck all', 'front-end-pm' ); ?></label></div>
 		<div id="fep-table" class="fep-table fep-odd-even">
 			<?php
-			while ( $messages->have_posts() ) { 
-				$messages->the_post(); ?>
-				<div id="fep-message-<?php the_ID(); ?>" class="fep-table-row">
-					<?php foreach ( Fep_Message::init()->get_table_columns() as $column => $display ) : ?>
-						<div class="fep-column fep-column-<?php echo $column; ?>"><?php Fep_Message::init()->get_column_content($column); ?></div>
+			while( $messages->have_messages() ) {
+				$messages->the_message(); ?>
+				<div id="fep-message-<?php echo fep_get_the_id(); ?>" class="fep-table-row">
+					<?php foreach ( Fep_Messages::init()->get_table_columns() as $column => $display ) : ?>
+						<div class="fep-column fep-column-<?php echo $column; ?>"><?php Fep_Messages::init()->get_column_content( $column ); ?></div>
 					<?php endforeach; ?>
 				</div>
 				<?php
@@ -63,5 +63,5 @@ do_action( 'fep_display_before_messagebox', $action ); ?>
 	} else {
 		?><div class="fep-error"><?php _e( 'No messages found. Try different filter.', 'front-end-pm' ); ?></div><?php 
 	}
-?></form><?php 
-wp_reset_postdata();
+?></form><?php
+

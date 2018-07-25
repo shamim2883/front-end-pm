@@ -111,6 +111,15 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 
 == Changelog ==
 
+= 10.0.1.beta1 =
+
+* Breaking changes, If you have custom code or template changes for this plugin, make sure they are compatible with current version.
+* highly performance improved
+* use own database table instead of CPT
+* build in caching mechanism
+* Some template changes
+* no more WP_Post object inside template. Now FEP_Message object
+
 = 8.4.1 =
 
 * send message, reply and access directory now have permission to whitelist users

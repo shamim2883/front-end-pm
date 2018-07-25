@@ -28,28 +28,29 @@ class Fep_Admin_Settings {
 
 	function addAdminPage() {
 		$admin_cap = apply_filters( 'fep_admin_cap', 'manage_options' );
-		add_submenu_page( 'edit.php?post_type=fep_message', 'Front End PM - ' . __( 'Settings', 'front-end-pm' ), __( 'Settings', 'front-end-pm' ), $admin_cap, 'fep_settings', array( $this, 'settings_page' ) );
-		add_submenu_page( 'edit.php?post_type=fep_message', 'Front End PM - ' . __( 'Extensions', 'front-end-pm' ), __( 'Extensions', 'front-end-pm' ), $admin_cap, 'fep_extensions', array( $this, 'extensions_page' ) );
+		
+		add_submenu_page( 'fep-all-messages', 'Front End PM - ' . __( 'Settings', 'front-end-pm' ), __( 'Settings', 'front-end-pm' ), $admin_cap, 'fep_settings', array( $this, 'settings_page' ) );
+		
+		add_submenu_page( 'fep-all-messages', 'Front End PM - ' . __( 'Extensions', 'front-end-pm' ), __( 'Extensions', 'front-end-pm' ), $admin_cap, 'fep_extensions', array( $this, 'extensions_page' ) );
 	}
 
 	function admin_enqueue_scripts() {
 		if ( isset( $_GET['tab'] ) && 'appearance' == $_GET['tab'] ) {
 			wp_enqueue_style( 'wp-color-picker' );
-			wp_enqueue_script( 'wp-color-picker' );
+			//wp_enqueue_script( 'wp-color-picker' );
 		}
-		if ( isset( $_GET['post_type'] ) && 'fep_message' == $_GET['post_type'] ) {
-			wp_enqueue_script( 'fep-admin', FEP_PLUGIN_URL . 'assets/js/admin.js', array( 'jquery', 'wp-color-picker' ), '6.4', true );
-		}
+		wp_enqueue_script( 'fep-admin', FEP_PLUGIN_URL . 'assets/js/admin.js', array( 'jquery', 'wp-color-picker' ), '6.4', true );
 	}
 
 	function recalculate_user_message_count( $old_value, $tab ) {
 		global $wpdb;
 		if ( isset( $old_value['message_view'] ) && fep_get_message_view() != $old_value['message_view'] ) {
 			if ( 'threaded' != fep_get_message_view() ) {
-				delete_metadata( 'user', 0, $wpdb->get_blog_prefix() . '_fep_user_message_count', '', true );
+				delete_metadata( 'user', 0, '_fep_user_message_count', '', true );
 			} else {
 				update_option( '_fep_message_view_changed', 1 );
-				delete_metadata( 'post', 0, '_fep_last_reply_by', '', true );
+				//delete_metadata( 'post', 0, '_fep_last_reply_by', '', true );
+				$wpdb->update( FEP_MESSAGE_TABLE, [ 'mgs_last_reply_by' => 0 ], [ 'mgs_type' => 'message'], ['%d'] );
 			}
 		}
 	}
@@ -80,7 +81,7 @@ class Fep_Admin_Settings {
 		foreach ( get_pages( array( 'hierarchical' => 0 ) ) as $page ) {
 			$pages[ $page->ID ] = $page->post_title;
 		}
-			$fields = array(
+		$fields = array(
 			//General Settings
 			'page_id' => array(
 				'type'		 => 'select',
@@ -130,13 +131,6 @@ class Fep_Admin_Settings {
 				'label'		 => __( 'Time delay', 'front-end-pm' ),
 				'description'=> __( 'Time delay between two sent messages by a user in minutes (0 = no delay required).', 'front-end-pm' ),
 			),
-			'custom_css' => array(
-				'type'		 => 'textarea',
-				'value'		 => fep_get_option( 'custom_css' ),
-				'priority'	 => 10,
-				'label'		 => __( 'Custom CSS', 'front-end-pm' ),
-				'description'=> __( 'Add or override.', 'front-end-pm' ),
-			),
 			'editor_type' => array(
 				'type'		=> 'select',
 				'value'		=> fep_get_option( 'editor_type', 'wp_editor' ),
@@ -155,10 +149,7 @@ class Fep_Admin_Settings {
 				'priority'	 => 14,
 				'label'		 => __( 'Parent Message Status', 'front-end-pm' ),
 				'description'=> __( 'Parent Message status when sent from front end.', 'front-end-pm' ),
-				'options'	 => array(
-					'publish' => __( 'Publish', 'front-end-pm' ),
-					'pending' => __( 'Pending', 'front-end-pm' ),
-				),
+				'options'	 => fep_get_statuses( 'message' ),
 			),
 			'reply_post_status'	=> array(
 				'type'		 => 'select',
@@ -166,10 +157,15 @@ class Fep_Admin_Settings {
 				'priority'	 => 16,
 				'label'		 => __( 'Reply Message Status', 'front-end-pm' ),
 				'description'=> __( 'Reply Message status when sent from front end.', 'front-end-pm' ),
-				'options'	 => array(
-					'publish' => __( 'Publish', 'front-end-pm' ),
-					'pending' => __( 'Pending', 'front-end-pm' ),
-				),
+				'options'	 => fep_get_statuses( 'message' ),
+			),
+			'att_status'	=> array(
+				'type'		 => 'select',
+				'value'		 => fep_get_option( 'att_status', 'publish' ),
+				'priority'	 => 16,
+				'label'		 => __( 'Attachment Default Status', 'front-end-pm' ),
+				'description'=> __( 'Only publish attachments will show to users', 'front-end-pm' ),
+				'options'	 => fep_get_statuses( 'attachment' ),
 			),
 			'allow_attachment' => array(
 				'type'		=> 'checkbox',
@@ -229,6 +225,14 @@ class Fep_Admin_Settings {
 					'only_in_message_page'	=> __( 'Only in message page', 'front-end-pm' ),
 					'never'					=> __( 'Never', 'front-end-pm' ),
 				),
+			),
+			'custom_css' => array(
+				'type'		 => 'textarea',
+				'section'	=> 'appearance',
+				'value'		 => fep_get_option( 'custom_css' ),
+				'priority'	 => 3,
+				'label'		 => __( 'Custom CSS', 'front-end-pm' ),
+				'description'=> __( 'Add or override.', 'front-end-pm' ),
 			),
 			'bg_color' => array(
 				'type'			=> 'color_picker',
@@ -673,7 +677,7 @@ class Fep_Admin_Settings {
 			return $value;
 		}
 		global $wp_settings_sections;
-		wp_parse_str( $_POST['_wp_http_referer'], $referrer );
+		wp_parse_str( parse_url( $_POST['_wp_http_referer'], PHP_URL_QUERY ), $referrer );
 		$tab = ! empty( $referrer['tab'] ) ? $referrer['tab'] : 'general';
 		if ( empty( $referrer['page'] ) || 'fep_settings' != $referrer['page'] ) {
 			return $value;
@@ -776,7 +780,6 @@ class Fep_Admin_Settings {
 	function settings_page() {
 		$active_tab = ! empty( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'general';
 		$args = array(
-			'post_type'	=> 'fep_message',
 			'page'		=> 'fep_settings',
 		);
 		?>
@@ -784,11 +787,6 @@ class Fep_Admin_Settings {
 			<div id="poststuff">
 				<div id="post-body" class="metabox-holder columns-2">
 					<div id="post-body-content">
-						<?php
-						/* if ( ! fep_is_pro() ) { ?>
-						<div><a href="https://wordpress.org/support/plugin/front-end-pm/reviews/?filter=5#new-post" target="_blank">like this plugin? Please consider review in WordPress.org and give 5&#9733; rating.</a></div>
-						<?php } */
-						?>
 						<h2 class="nav-tab-wrapper">
 							<?php
 							foreach ( $this->tabs() as $key => $tab ) :
@@ -797,7 +795,7 @@ class Fep_Admin_Settings {
 								}
 								$args['tab'] = $tab['tab_slug'];
 								?>
-								<a href="<?php echo esc_url( add_query_arg( $args, admin_url( 'edit.php' ) ) ); ?>" class="nav-tab<?php if ( $active_tab == $tab['tab_slug'] ) echo ' nav-tab-active'; ?>"><?php echo $tab['tab_title']; ?></a>
+								<a href="<?php echo esc_url( add_query_arg( $args, admin_url( 'admin.php' ) ) ); ?>" class="nav-tab<?php if ( $active_tab == $tab['tab_slug'] ) echo ' nav-tab-active'; ?>"><?php echo $tab['tab_title']; ?></a>
 							<?php endforeach; ?>
 						</h2>
 						<div id="tab_container">
@@ -888,13 +886,10 @@ class Fep_Admin_Settings {
 		if ( fep_is_pro() ) {
 			return;
 		}
-		if ( ! isset( $_GET['post_type'] ) || 'fep_message' != $_GET['post_type'] ) {
-			return;
-		}
 		if ( fep_get_option( 'dismissed-review' ) ) {
 			return;
 		}
-		$dismissed_time = get_user_option( 'fep_review_notice_dismiss' );
+		$dismissed_time = get_user_meta( get_current_user_id(), 'fep_review_notice_dismiss', true );
 		if ( $dismissed_time && time() < ( $dismissed_time + WEEK_IN_SECONDS ) ) {
 			return;
 		}
@@ -912,7 +907,7 @@ class Fep_Admin_Settings {
 
 	function add_settings_link( $links ) {
 		//add settings link in plugins page
-		$settings_link = '<a href="' . admin_url( 'edit.php?post_type=fep_message&page=fep_settings' ) . '">' . __( 'Settings', 'front-end-pm' ) . '</a>';
+		$settings_link = '<a href="' . admin_url( 'admin.php?page=fep_settings' ) . '">' . __( 'Settings', 'front-end-pm' ) . '</a>';
 		array_unshift( $links, $settings_link );
 		return $links;
 	}

@@ -56,7 +56,7 @@ class Fep_Directory {
 			'paged'		=> ! empty( $_GET['feppage']) ? absint( $_GET['feppage'] ): 1,
 			'orderby'	=> 'display_name',
 			'order'		=> 'ASC',
-			'fields'	=> array( 'ID', 'display_name', 'user_nicename' ),
+			'fields'	=> 'all_with_meta',
 		);
 		if ( ! empty( $_GET['fep-search'] ) ) {
 			$args['search'] = '*' . $_GET['fep-search'] . '*';

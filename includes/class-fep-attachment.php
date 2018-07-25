@@ -39,35 +39,35 @@ class Fep_Attachment {
 	}
 	
 	function actions_filters() {
-		//add_action ( 'fep_display_after_parent_message', array( $this, 'display_attachment' ) );
-		add_action( 'fep_display_after_message', array( $this, 'display_attachment' ) );
-		add_action( 'fep_display_after_announcement', array( $this, 'display_attachment' ) );
+		add_action( 'fep_display_after_message', array( $this, 'display_attachment' ), 99 );
+		add_action( 'fep_display_after_announcement', array( $this, 'display_attachment' ), 99 );
 		add_action( 'template_redirect', array( $this, 'download_file' ) );
-		add_action( 'before_delete_post', array( $this, 'delete_attachments' ) );
 		
-		if ( fep_get_option( 'allow_attachment', 1 ) && ! is_admin() ) {
-			add_action( 'transition_post_status', array( $this, 'upload_attachment' ), 10, 3 );
-			//add_action( 'fep_action_announcement_after_added', array( $this, 'upload_attachment' ), 10, 3 );
+		if ( fep_get_option( 'allow_attachment', 1 ) ) {
+			add_action( 'fep_action_message_after_send', array( $this, 'upload_attachment' ), 10, 3 );
+			add_action( 'fep_action_announcement_after_added', array( $this, 'upload_attachment' ), 10, 3 );
 		}
 	}
 	
 	
-	function upload_attachment( $new_status, $old_status, $post ) {
-		if ( ! in_array( $post->post_type, array( 'fep_message', 'fep_announcement' ) ) ) {
-			return false;
-		}
+	function upload_attachment( $message_id, $message, $inserted_message ) {
+
 		$field = 'fep_upload';
 		
-		if ( ! isset( $_FILES[ $field ] ) || ! is_array( $_FILES[ $field ] ) ) {
+		if ( ! $message_id || ! isset( $_FILES[ $field ] ) || ! is_array( $_FILES[ $field ] ) ) {
 			return false;
 		}
 		if ( empty( $_FILES[ $field ]['tmp_name'] ) || ! is_array( $_FILES[ $field ]['tmp_name'] ) ) {
 			return false;
 		}
+		if ( ! function_exists( 'wp_handle_upload' ) ) require_once( ABSPATH . 'wp-admin/includes/file.php' );
+		
 		add_filter( 'upload_dir', array( $this, 'upload_dir' ), 99 );
 		
 		$fields = (int) fep_get_option( 'attachment_no', 4 );
 		$i = 0;
+		$attachments = array();
+		
 		foreach( $_FILES[ $field ]['tmp_name'] as $key => $tmp_name ) {
 			if ( $tmp_name ) {
 				$upload = array(
@@ -77,79 +77,74 @@ class Fep_Attachment {
 					'error' 	=> $_FILES[ $field ]['error'][ $key ],
 					'size' 		=> $_FILES[ $field ]['size'][ $key ],
 				);
-				$this->upload_file( $upload, $post->ID, $post );
+				if( ( $movefile = wp_handle_upload( $upload, array( 'test_form' => false ) ) ) && ! empty( $movefile['file'] ) ){
+					$attachments[] = array(
+						'att_mime' => $movefile['type'],
+						'att_file' => _wp_relative_upload_path( $movefile['file'] ),
+					);
+				}
 				if( ++$i >= $fields )
 					break;
 			}
+		}
+		if( $attachments ){
+			$inserted_message->insert_attachments( $attachments );
 		}
 			
 		remove_filter( 'upload_dir', array( $this, 'upload_dir' ), 99 );
 	}
 
 	function upload_dir( $upload ) {
-		/* Append year/month folders if that option is set */
-		$subdir = '';
-		if ( get_option( 'uploads_use_yearmonth_folders' ) ) {
-			$time = current_time( 'mysql' );
-			$y = substr( $time, 0, 4 );
-			$m = substr( $time, 5, 2 );
-
-			$subdir = "/$y/$m";    
+		if( is_multisite() ){
+			$siteurl = get_option( 'siteurl' );
+			$upload_path = trim( get_option( 'upload_path' ) );
+		 
+			if ( empty( $upload_path ) || 'wp-content/uploads' == $upload_path ) {
+				$dir = WP_CONTENT_DIR . '/uploads';
+			} elseif ( 0 !== strpos( $upload_path, ABSPATH ) ) {
+				// $dir is absolute, $upload_path is (maybe) relative to ABSPATH
+				$dir = path_join( ABSPATH, $upload_path );
+			} else {
+				$dir = $upload_path;
+			}
+		 
+			if ( !$url = get_option( 'upload_url_path' ) ) {
+				if ( empty($upload_path) || ( 'wp-content/uploads' == $upload_path ) || ( $upload_path == $dir ) )
+					$url = WP_CONTENT_URL . '/uploads';
+				else
+					$url = trailingslashit( $siteurl ) . $upload_path;
+			}
+			$upload['basedir'] = $dir;
+			$upload['baseurl'] = $url;
 		}
-		$upload['subdir']	= '/front-end-pm' . $subdir;
+		
+		$upload['subdir']	= '/front-end-pm' . $upload['subdir'];
 		$upload['path']		= $upload['basedir'] . $upload['subdir'];
 		$upload['url']		= $upload['baseurl'] . $upload['subdir'];
+		
 		return $upload;
 	}
 
-	/**
-	 * Generic function to upload a file
-	 *
-	 * @since 3.3
-	 * @param array $upload_data
-	 * @param int $message_id
-	 * @return bool
-	 */
-	function upload_file( $upload_data, $message_id, $inserted_message ) {
-
-		if ( ! function_exists( 'wp_handle_upload' ) ) require_once( ABSPATH . 'wp-admin/includes/file.php' );
-		$movefile = wp_handle_upload( $upload_data, array( 'test_form' => false ) );
-
-		if ( $message_id && !empty( $movefile['type']) && $movefile['url'] && $movefile['file'] ) {
-			
-			// Prepare an array of post data for the attachment.
-			$attachment = array(
-				'guid'           => $movefile['url'], 
-				'post_mime_type' => $movefile['type'],
-				'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $movefile['url'] ) ),
-				'post_content'   => '',
-				'post_author'	=> $inserted_message->post_author,
-				'post_status'    => 'inherit',
-			);
-			// Insert the attachment.
-			$attach_id = wp_insert_attachment( $attachment, $movefile['file'], $message_id );
-			
-			if ( $attach_id ){
-				return true;
-			}
+	function display_attachment( $i ) {
+		$message = fep_get_current_message();
+		if( ! $message ){
+			return '';
 		}
-		return false;
-	}
-
-	function display_attachment() {
-		$attachment_ids = fep_get_attachments( get_the_ID(), 'ids' );
 	
-		if ( $attachment_ids ) {
+		if ( $attachments = $message->get_attachments() ) {
 			echo '<div class="fep-attachments">';
 			echo '<div class="fep-attachments-heading">' . __( 'Attachments', 'front-end-pm' ) . '</div>';
 			
-			foreach ( $attachment_ids as $attachment_id ){
-				echo '<div class="fep-attachment fep-attachment-' . $attachment_id . '">';
-				$name = basename( wp_get_attachment_url( $attachment_id ) );
+			foreach ( $attachments as $attachment ){
+				if( 'publish' != $attachment->att_status ){
+					continue;
+				}
+				echo '<div class="fep-attachment fep-attachment-' . $attachment->att_id . '">';
+				$name = basename( $attachment->att_file );
 				
-				echo apply_filters( 'fep_filter_attachment_icon', '<span class="fep-attachment-icon fep-attachment-icon-' . $this->icon( $attachment_id ) . '"></span>', $attachment_id );
+				echo apply_filters( 'fep_filter_attachment_icon', '<span class="fep-attachment-icon fep-attachment-icon-' . $this->icon( $attachment->att_file ) . '"></span>', $attachment->att_id );
 				
-				echo apply_filters( 'fep_filter_attachment_download_link', '<a href="' . fep_query_url( 'download', array( 'fep_id' => $attachment_id, 'token' => wp_create_nonce( 'download_' . $attachment_id ) ) ) . '" title="' . sprintf( __( 'Download %s', 'front-end-pm' ), esc_attr( $name ) ) . '">' . esc_html( $name ) . '</a>', $attachment_id );
+				echo apply_filters( 'fep_filter_attachment_download_link', '<a href="' . fep_query_url( 'download', array( 'fep_id' => $attachment->att_id, 'fep_parent_id' => $attachment->mgs_id ) ) . '" title="' . sprintf( __( 'Download %s', 'front-end-pm' ), esc_attr( $name ) ) . '">' . esc_html( $name ) . '</a>', $attachment->att_id );
 				
 				echo '</div>';
 			}
@@ -157,8 +152,7 @@ class Fep_Attachment {
 		}
 	}
 	
-	function icon( $attachment_id ){
-		$file = get_attached_file( $attachment_id );
+	function icon( $file ){
 		$ext = pathinfo( $file, PATHINFO_EXTENSION );
 		
 		foreach ( $this->icons as $icon => $extensions ) {
@@ -173,63 +167,56 @@ class Fep_Attachment {
 
 	function download_file(){
 	
-		if ( empty( $_GET['fepaction']) || $_GET['fepaction'] != 'download' ){
+		if ( ! isset( $_GET['fepaction'] ) || ! in_array( $_GET['fepaction'], [ 'download', 'view-download' ] ) ){
 			return false;
 		}
-		if( isset( $_GET['fep_id'] ) ){
-			$id = absint( $_GET['fep_id'] );
-		} elseif( isset( $_GET['id'] ) ) {
-			$id = absint( $_GET['id'] );
-		} else {
-			$id = 0;
-		}
+		$id = isset( $_GET['fep_id'] ) ? absint( $_GET['fep_id'] ) : 0;
+		$mgs_id = isset( $_GET['fep_parent_id'] ) ? absint( $_GET['fep_parent_id'] ) : 0;
+
 		$token = ! empty( $_GET['token'] ) ? $_GET['token'] : '';
 	
-		if ( ! $id || ! wp_verify_nonce( $token, 'download_' . $id ) ){
-			wp_die(__( 'Invalid token', 'front-end-pm' ) );
+		if ( ! $id || ! $mgs_id ){
+			wp_die(__( 'No attachments found', 'front-end-pm' ) );
 		}
 		
-		if ( !fep_current_user_can( 'access_message' ) ){
+		if ( ! fep_current_user_can( 'access_message' ) ){
 			wp_die(__( 'No attachments found', 'front-end-pm' ) );
 		}
 	
-		if ( 'attachment' != get_post_type( $id ) || 'publish' != get_post_status ( $id ) ){
+		if ( 'publish' != fep_get_message_status( $mgs_id ) && ! fep_is_user_admin() ){
 			wp_die(__( 'No attachments found', 'front-end-pm' ) );
 		}
-	
-		if( 'threaded' == fep_get_message_view() ) {
-			$message_id = fep_get_parent_id( $id);
-		} else {
-			$message_id = wp_get_post_parent_id( $id);
-		}
-		$post_type = get_post_type( $message_id);
+		$attachment = FEP_Attachments::init()->get( $mgs_id, $id, 'any' );
 		
-		if( ! in_array( $post_type, array( 'fep_message', 'fep_announcement' ) ) ) {
+		if( ! $attachment || ( 'publish' != $attachment->att_status && ! fep_is_user_admin() ) ){
+			wp_die(__( 'No attachments found', 'front-end-pm' ) );
+		}
+
+		$message_type = fep_get_message_field( 'mgs_type', $mgs_id );
+		
+		if( 'message' == $message_type && ! fep_current_user_can( 'view_message', $mgs_id ) ) {
 			wp_die(__( 'You have no permission to download this attachment.', 'front-end-pm' ) );
-		} elseif( 'fep_message' == $post_type && ! fep_current_user_can( 'view_message', $message_id ) ) {
-			wp_die(__( 'You have no permission to download this attachment.', 'front-end-pm' ) );
-		} elseif( 'fep_announcement' == $post_type && ! fep_current_user_can( 'view_announcement', $message_id ) ) {
+		} elseif( 'announcement' == $message_type && ! fep_current_user_can( 'view_announcement', $mgs_id ) ) {
 			wp_die(__( 'You have no permission to download this attachment.', 'front-end-pm' ) );
 		}
-			  
+		
+		$attachment_path = $this->absulate_path( $attachment->att_file );
+		$attachment_name = basename( $attachment_path );
 	
-		$attachment_type = get_post_mime_type( $id );
-		$attachment_url = wp_get_attachment_url( $id );
-		$attachment_path = get_attached_file( $id );
-		$attachment_name = basename( $attachment_url );
-	
-		if( !file_exists( $attachment_path ) ){
-			wp_delete_attachment( $id );
+		if( ! file_exists( $attachment_path ) ){
+			//wp_delete_attachment( $id );
 			wp_die( __( 'Attachment already deleted', 'front-end-pm' ) );
 		}
 		
+		if( 'download' == $_GET['fepaction'] ){
+			header( "Content-Description: File Transfer" );
+			header( "Content-Transfer-Encoding: binary" );
+			header( "Content-Disposition: attachment; filename=\"$attachment_name\"" );
+			nocache_headers();
+		}
 		
-		header( "Content-Description: File Transfer" );
-		header( "Content-Transfer-Encoding: binary" );
-		header( "Content-Type: $attachment_type", true, 200 );
-		header( "Content-Disposition: attachment; filename=\"$attachment_name\"" );
+		header( "Content-Type: {$attachment->att_mime}", true, 200 );
 		header( "Content-Length: " . filesize( $attachment_path ) );
-		nocache_headers();
 		
 		//clean all levels of output buffering
 		while ( ob_get_level() ) {
@@ -239,16 +226,16 @@ class Fep_Attachment {
 		exit;
 	}
 	
-	function delete_attachments( $message_id ) {
-		if( ! in_array( get_post_type( $message_id ), array( 'fep_message', 'fep_announcement' ) ) ){
-			return false;
+	function absulate_path( $file ){
+		// If the file is relative, prepend upload dir.
+		add_filter( 'upload_dir', array( $this, 'upload_dir' ), 99 );
+		
+		if ( $file && 0 !== strpos( $file, '/' ) && ! preg_match( '|^.:\\\|', $file ) && ( ( $uploads = wp_get_upload_dir() ) && false === $uploads['error'] ) ) {
+			$file = $uploads['basedir'] . "/$file";
 		}
-		$attachment_ids = fep_get_attachments( $message_id, 'ids' );
-		if ( $attachment_ids ) {
-			foreach ( $attachment_ids as $attachment_id ){
-				wp_delete_attachment( $attachment_id ); 
-			} 
-		}
+		remove_filter( 'upload_dir', array( $this, 'upload_dir' ), 99 );
+		
+		return $file;
 	}
 } //END CLASS
 

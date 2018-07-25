@@ -287,7 +287,7 @@ class Fep_Form {
 						esc_attr( $field['name'] ),
 						esc_attr( $field['placeholder'] ),
 						$attrib,
-						esc_attr( $field['posted-value' ] )
+						esc_textarea( $field['posted-value' ] )
 					);
 					break;
 				case "wp_editor" :

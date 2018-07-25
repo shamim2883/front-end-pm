@@ -119,14 +119,14 @@ class Fep_Ajax {
 			$mgs_unread_count	= fep_get_new_message_number();
 			$mgs_total_count	= fep_get_user_message_count( 'total' );
 			$ann_unread_count	= fep_get_new_announcement_number();
-			$dismiss			= get_user_option( '_fep_notification_dismiss' );
-			$prev				= get_user_option( '_fep_notification_prev' );
+			$dismiss			= get_user_meta( get_current_user_id(), '_fep_notification_dismiss', true );
+			$prev				= get_user_meta( get_current_user_id(), '_fep_notification_prev', true );
 
 			$new = array(
 				'message'		=> $mgs_unread_count,
 				'announcement'	=> $ann_unread_count,
 			);
-			update_user_option( get_current_user_id(), '_fep_notification_prev', $new );
+			update_user_meta( get_current_user_id(), '_fep_notification_prev', $new );
 			
 			if ( !is_array( $prev ) ) {
 				$prev = array();
@@ -167,7 +167,7 @@ class Fep_Ajax {
 	function fep_notification_dismiss() {
 
 		if ( check_ajax_referer( 'fep-notification', 'token', false ) ) {
-			update_user_option( get_current_user_id(), '_fep_notification_dismiss', 1 );
+			update_user_meta( get_current_user_id(), '_fep_notification_dismiss', 1 );
 		}
 		die;
 	}
@@ -175,7 +175,7 @@ class Fep_Ajax {
 	function fep_review_notice_dismiss() {
 		if ( ! empty( $_POST['fep_click'] ) && current_user_can( 'manage_options' ) ) {
 			if ( 'later' == $_POST['fep_click'] ) {
-				update_user_option( get_current_user_id(), 'fep_review_notice_dismiss', time() );
+				update_user_meta( get_current_user_id(), 'fep_review_notice_dismiss', time() );
 			} elseif ( in_array( $_POST['fep_click'], array( 'sure', 'did' ) ) ) {
 
 				fep_update_option( 'dismissed-review', time() );

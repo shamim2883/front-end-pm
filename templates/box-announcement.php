@@ -44,7 +44,7 @@ do_action( 'fep_display_before_announcementbox' );
 			</div>
 		</div>
 	</div>
-	<?php if( $announcements->have_posts() ) {
+	<?php if( $announcements->have_messages() ) {
 		wp_enqueue_script( 'fep-cb-check-uncheck-all' );
 		?>
 		<div class="fep-cb-check-uncheck-all-div">
@@ -55,9 +55,9 @@ do_action( 'fep_display_before_announcementbox' );
 		</div>
 		<div id="fep-table" class="fep-table fep-odd-even">
 			<?php
-			while ( $announcements->have_posts() ) { 
-				$announcements->the_post(); ?>
-				<div id="fep-announcement-<?php echo get_the_ID(); ?>" class="fep-table-row">
+			while( $announcements->have_messages() ) {
+				$announcements->the_message(); ?>
+				<div id="fep-announcement-<?php echo fep_get_the_id(); ?>" class="fep-table-row">
 					<?php foreach ( Fep_Announcement::init()->get_table_columns() as $column => $display ) : ?>
 						<div class="fep-column fep-column-<?php echo $column; ?>"><?php Fep_Announcement::init()->get_column_content( $column ); ?></div>
 					<?php endforeach; ?>
@@ -78,4 +78,4 @@ do_action( 'fep_display_before_announcementbox' );
 	?>
 </form>
 <?php 
-wp_reset_postdata();
+
