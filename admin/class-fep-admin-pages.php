@@ -17,7 +17,7 @@ class Fep_Admin_Pages {
 	function actions_filters() {
 		add_action( 'admin_menu', array( $this, 'addAdminPage' ) );
 		add_action( 'admin_init', array( $this, 'admin_actions' ) );
-		add_filter( 'wp_privacy_personal_data_exporters', array( $this, 'data_exporters' ) );
+		add_filter( 'wp_privacy_personal_data_exporters', array( $this, 'register_data_exporter' ) );
 	}
 
 	function addAdminPage() {
@@ -358,26 +358,31 @@ class Fep_Admin_Pages {
 		exit;
 	}
 	
-	function data_exporters( $exporters ){
-		$exporters['front-end-pm'] = array(
-			'exporter_friendly_name' => fep_is_pro() ? 'Front End PM PRO' : 'Front End PM',
-			'callback' => array( $this, 'exporter_callback' ),
+	function register_data_exporter( $exporters ){
+		$exporters['front-end-pm-messages'] = array(
+			'exporter_friendly_name' => sprintf( __( '%s Messages', 'front-end-pm' ), fep_is_pro() ? 'Front End PM PRO' : 'Front End PM' ),
+			'callback'               => array( $this, 'data_exporter_messages' ),
+		);
+		$exporters['front-end-pm-announcements'] = array(
+			'exporter_friendly_name' => sprintf( __( '%s Announcements', 'front-end-pm' ), fep_is_pro() ? 'Front End PM PRO' : 'Front End PM' ),
+			'callback'               => array( $this, 'data_exporter_announcements' ),
 		);
 		return $exporters;
 	}
 	
-	function exporter_callback( $email_address, $page = 1 ) {
+	function data_exporter_messages( $email_address, $page = 1 ) {
+		$user_id = (int) fep_get_userdata( $email_address, 'ID', 'email' );
 		$args = array(
 			'mgs_type'   => 'message',
 			'paged'      => (int) $page,
 			'per_page'   => 100,
 			'mgs_status' => 'any',
-			'mgs_author' => (int) fep_get_userdata( $email_address, 'ID', 'email' ),
+			'mgs_author' => $user_id,
 		);
 		$messages     = fep_get_messages( $args );
 		$export_items = array();
 
-		if ( $messages ) {
+		if ( $user_id && $messages ) {
 			foreach ( $messages as $message ) {
 				$att_urls = [];
 				if ( $attachments = $message->get_attachments( false, 'any' ) ) {
@@ -416,6 +421,70 @@ class Fep_Admin_Pages {
 					'group_id'    => 'fep_message',
 					'group_label' => __( 'Messages', 'front-end-pm' ),
 					'item_id'     => "fep_message-{$message->mgs_id}",
+					'data'        => $data,
+				);
+			}
+			$done = false;
+		} else {
+			$done = true;
+		}
+		return array(
+			'data' => $export_items,
+			'done' => $done,
+		);
+	}
+	
+	function data_exporter_announcements( $email_address, $page = 1 ) {
+		$user_id = (int) fep_get_userdata( $email_address, 'ID', 'email' );
+		$args = array(
+			'mgs_type'   => 'announcement',
+			'paged'      => (int) $page,
+			'per_page'   => 100,
+			'mgs_status' => 'any',
+			'mgs_author' => $user_id,
+		);
+		$announcements = fep_get_messages( $args );
+		$export_items  = array();
+
+		if ( $user_id && $announcements ) {
+			foreach ( $announcements as $announcement ) {
+				$att_urls = [];
+				if ( $attachments = $announcement->get_attachments( false, 'any' ) ) {
+					foreach ( $attachments as $attachment ) {
+						$att_urls[] = apply_filters( 'fep_filter_attachment_download_link', '<a href="' .
+							fep_query_url( 'download', array(
+								'fep_id'        => $attachment->att_id,
+								'fep_parent_id' => $attachment->mgs_id,
+							) )
+						. '">' . esc_html( basename( $attachment->att_file ) ) . '</a>', $attachment->att_id );
+					}
+				}
+
+				$data = array(
+					array(
+						'name'  => __( 'Date', 'front-end-pm' ),
+						'value' => mysql2date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), get_date_from_gmt( $announcement->mgs_created ) ),
+					),
+					array(
+						'name'  => __( 'Title', 'front-end-pm' ),
+						'value' => $announcement->mgs_title,
+					),
+					array(
+						'name'  => __( 'Content', 'front-end-pm' ),
+						'value' => $announcement->mgs_content,
+					),
+				);
+				if ( $att_urls ) {
+					$data[] = [
+						'name'  => __( 'Attachments', 'front-end-pm' ),
+						'value' => implode( '<br>', $att_urls ),
+					];
+				}
+
+				$export_items[] = array(
+					'group_id'    => 'fep_announcement',
+					'group_label' => __( 'Announcements', 'front-end-pm' ),
+					'item_id'     => "fep_announcement-{$announcement->mgs_id}",
 					'data'        => $data,
 				);
 			}
