@@ -361,12 +361,12 @@ class Fep_Admin_Pages {
 	function data_exporters( $exporters ){
 		$exporters['front-end-pm'] = array(
 			'exporter_friendly_name' => fep_is_pro() ? 'Front End PM PRO' : 'Front End PM',
-			'callback' => array( $this, 'plugin_exporter' ),
+			'callback' => array( $this, 'exporter_callback' ),
 		);
 		return $exporters;
 	}
 	
-	function plugin_exporter( $email_address, $page = 1 ) {
+	function exporter_callback( $email_address, $page = 1 ) {
 		$args = array(
 			'mgs_type'   => 'message',
 			'paged'      => (int) $page,
