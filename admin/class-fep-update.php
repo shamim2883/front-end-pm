@@ -225,7 +225,7 @@ class Fep_Update {
 
 		fep_update_option( 'v51', 1, 'fep_updated_versions' );
 		$response = array(
-			//'update'	=> 'continue',
+			'update'	=> 'continue',
 			'message'	=> __( 'Messages meta updated', 'front-end-pm' ),
 			'custom_int'=> 0,
 			'custom_str'=> '',
@@ -295,7 +295,7 @@ class Fep_Update {
 			fep_update_option( 'v1011-part-1', 1, 'fep_updated_versions' );
 			
 			$response = array(
-				//'update'	=> 'continue',
+				'update'	=> 'continue',
 				'message'	=> __( 'Old style user meta deleted.', 'front-end-pm' ),
 				'custom_int'=> $custom_int,
 				'custom_str'=> $custom_str,
@@ -322,7 +322,7 @@ class Fep_Update {
 				}
 				$custom_int = $custom_int + count( $announcements );
 				$response = array(
-					//'update'	=> 'continue',
+					'update'	=> 'continue',
 					'message'	=> sprintf( _n( '%s announcement updated', '%s announcements updated', $custom_int, 'front-end-pm' ), number_format_i18n( $custom_int ) ),
 					'custom_int'=> $custom_int,
 					'custom_str'=> $custom_str,
@@ -349,7 +349,7 @@ class Fep_Update {
 				}
 				//$custom_int = $custom_int + count( $messages );
 				$response = array(
-					//'update'	=> 'continue',
+					'update'	=> 'continue',
 					'message'	=> sprintf( _n( '%s message updated', '%s messages updated', $custom_int, 'front-end-pm' ), number_format_i18n( $custom_int ) ),
 					'custom_int'=> $custom_int,
 					'custom_str'=> $custom_str,
@@ -357,7 +357,7 @@ class Fep_Update {
 				wp_send_json( $response );
 			} else {
 				$response = array(
-					//'update'	=> 'continue',
+					'update'	=> 'continue',
 					'message'	=> __( 'All messages updated', 'front-end-pm' ),
 					'custom_int'=> 0,
 					'custom_str'=> 'announcements',
@@ -370,7 +370,7 @@ class Fep_Update {
 		
 		fep_update_option( 'v1011', 1, 'fep_updated_versions' );
 		$response = array(
-			//'update'	=> 'continue',
+			'update'	=> 'continue',
 			'message'	=> __( 'All messages and announcements updated', 'front-end-pm' ),
 			'custom_int'=> 0,
 			'custom_str'=> '',
@@ -426,7 +426,7 @@ class Fep_Update {
 			}
 			$custom_int = $custom_int + count( $messages );
 			$response = array(
-				//'update'	=> 'continue',
+				'update'	=> 'continue',
 				'message'	=> sprintf( _n( '%s message meta updated', '%s messages meta updated', $custom_int, 'front-end-pm' ), number_format_i18n( $custom_int ) ),
 				'custom_int'=> $custom_int,
 				'custom_str'=> '',

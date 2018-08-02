@@ -1,37 +1,36 @@
 jQuery( document ).ready( function( $ ) {
 	function fep_update( custom_str, custom_int ) {
-		$( '.fep-ajax-img' ).show();
-		var data = {
-			action: 'fep_update_ajax',
-			custom_str : custom_str,
-			custom_int : custom_int
-		};
-		$.post( ajaxurl, data, function ( response ) {
-			if ( response['message'].length ) {
-				$( '#fep-ajax-response' ).append( response['message'] + '<br />' );
-			}
-			if ( 'completed' == response['update'] ) {
-				//jQuery( '#fep-ajax-response' ).html( 'Update completed.' );
+		$.ajax({
+				url: ajaxurl,
+				method: 'post',
+				dataType: 'json',
+				data: {
+					action: 'fep_update_ajax',
+					custom_str : custom_str,
+					custom_int : custom_int
+				}
+		}).done( function( response ) {
+			if ( 'completed' == response.update ) {
 				$( '.fep-ajax-img' ).hide();
 				$( '#fep-update-warning' ).hide();
-				$( '#fep-ajax-response' ).html( response['message'] );
-				//document.location.href = 'index.php'; // Redirect to the dashboard
+				$( '#fep-ajax-response' ).html( response.message );
 			} else {
-				fep_update( response['custom_str'], response['custom_int'] );
+				if ( response.message.length ) {
+					$( '#fep-ajax-response' ).append( response.message + '<br />' );
+				}
+				setTimeout( fep_update( response.custom_str, response.custom_int ) );
 			}
-		}, 'json')
-		.fail( function() {
-			$( '#fep-ajax-response' ).html( 'Refresh this page and try again.' );
+		}).fail( function() {
 			$( '.fep-ajax-img' ).hide();
 			$( '#fep-update-warning' ).hide();
-		})
-		.complete(function() {
-			//jQuery( '.fep-ajax-img' ).hide();
+			$( '#fep-ajax-response' ).html( 'Refresh this page and try again.' );
 		});
 	}
 	// Trigger upgrades
 	$( '.fep-start-update' ).click( function(e) {
 		e.preventDefault();
+		e.stopPropagation();
+		$( '.fep-ajax-img' ).show();
 		$(this).hide();
 		fep_update( '', 0 );
 	});
