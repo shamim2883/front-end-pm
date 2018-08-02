@@ -173,6 +173,13 @@ class Fep_Update {
 	}
 
 	function ajax() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			$response = array(
+				'update'  => 'completed',
+				'message' => __( 'You do not have permission to trigger update.', 'front-end-pm' ),
+			);
+			wp_send_json( $response );
+		}
 		$prev_ver = fep_get_option( 'plugin_version', '3.3' );
 		if ( version_compare( $prev_ver, '4.1', '<' ) ) {
 			//$this->update_version_41();
