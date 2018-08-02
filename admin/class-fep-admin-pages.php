@@ -372,7 +372,7 @@ class Fep_Admin_Pages {
 			'paged'      => (int) $page,
 			'per_page'   => 100,
 			'mgs_status' => 'any',
-			'mgs_author' => fep_get_userdata( $email_address, 'ID', 'email' ),
+			'mgs_author' => (int) fep_get_userdata( $email_address, 'ID', 'email' ),
 		);
 		$messages     = fep_get_messages( $args );
 		$export_items = array();
