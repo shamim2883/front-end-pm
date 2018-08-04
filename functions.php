@@ -906,13 +906,13 @@ function fep_delete_message( $mgs_id, $user_id = 0 ) {
 			break;
 		}
 	}
-	if ( $return && $should_delete_from_db ) {
+	if ( $should_delete_from_db ) {
 		$args = [
 			'mgs_id' => $mgs_id,
 			'per_page' => 0, //unlimited
 			'mgs_status' => 'any',
 		];
-		if( 'threaded' == fep_get_message_view() ){
+		if( 'threaded' == fep_get_message_view() && apply_filters( 'fep_erase_replies_if_threaded', true ) ){
 			$args['include_child'] = true;
 		}
 		$messages = fep_get_messages( $args );
@@ -1016,17 +1016,11 @@ function fep_send_message_transition_post_status( $new_status, $old_status, $mes
 	if ( 'message' != $message->mgs_type ) {
 		return;
 	}
-	if ( 'publish' == $new_status && 'threaded' == fep_get_message_view() ) {
-		if ( $message->mgs_parent ) {
-			fep_update_reply_info( $message->mgs_parent );
-			FEP_Participants::init()->unmark( $message->mgs_parent, false, [ 'delete' => true ] );
-		}
-	} elseif ( 'publish' == $old_status && 'threaded' == fep_get_message_view() ) {
-		if ( $message->mgs_parent ) {
-			fep_update_reply_info( $message->mgs_parent );
-		}
-	}
+
 	if ( 'publish' == $new_status || 'publish' == $old_status ) {
+		if( 'threaded' === fep_get_message_view() && $message->mgs_parent ) {
+			fep_update_reply_info( $message->mgs_parent );
+		}
 		$participants = fep_get_participants( $message->mgs_id );
 		foreach ( $participants as $participant ) {
 			delete_user_meta( $participant, '_fep_user_message_count' );
