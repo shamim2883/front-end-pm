@@ -18,6 +18,7 @@ class Fep_Admin_Pages {
 		add_action( 'admin_menu', array( $this, 'addAdminPage' ) );
 		add_action( 'admin_init', array( $this, 'admin_actions' ) );
 		add_filter( 'wp_privacy_personal_data_exporters', array( $this, 'register_data_exporter' ) );
+		add_filter( 'wp_privacy_personal_data_erasers', array( $this, 'register_data_eraser' ) );
 	}
 
 	function addAdminPage() {
@@ -233,7 +234,7 @@ class Fep_Admin_Pages {
 						'mgs_status' => 'any',
 						'mgs_type' => ( 'fep-all-announcements' == $_REQUEST['page'] ) ? 'announcement' : 'message',
 					];
-					if( 'threaded' == fep_get_message_view() ){
+					if( 'threaded' == fep_get_message_view() && apply_filters( 'fep_erase_replies_if_threaded', true ) ){
 						$args['include_child'] = true;
 					}
 					$messages = fep_get_messages( $args );
@@ -256,7 +257,7 @@ class Fep_Admin_Pages {
 						'mgs_status' => 'any',
 						'mgs_type' => ( 'fep-all-announcements' == $_REQUEST['page'] ) ? 'announcement' : 'message',
 					];
-					if( 'threaded' == fep_get_message_view() ){
+					if( 'threaded' == fep_get_message_view() && apply_filters( 'fep_erase_replies_if_threaded', true ) ){
 						$args['include_child'] = true;
 					}
 					$messages = fep_get_messages( $args );
@@ -372,6 +373,12 @@ class Fep_Admin_Pages {
 	
 	function data_exporter_messages( $email_address, $page = 1 ) {
 		$user_id = (int) fep_get_userdata( $email_address, 'ID', 'email' );
+		if ( ! $user_id || ! fep_get_option( 'export_messages', 1 ) ) {
+			return array(
+				'data' => [],
+				'done' => true,
+			);
+		}
 		$args = array(
 			'mgs_type'   => 'message',
 			'paged'      => (int) $page,
@@ -382,7 +389,7 @@ class Fep_Admin_Pages {
 		$messages     = fep_get_messages( $args );
 		$export_items = array();
 
-		if ( $user_id && $messages ) {
+		if ( $messages ) {
 			foreach ( $messages as $message ) {
 				$att_urls = [];
 				if ( $attachments = $message->get_attachments( false, 'any' ) ) {
@@ -436,6 +443,12 @@ class Fep_Admin_Pages {
 	
 	function data_exporter_announcements( $email_address, $page = 1 ) {
 		$user_id = (int) fep_get_userdata( $email_address, 'ID', 'email' );
+		if ( ! $user_id || ! fep_get_option( 'export_announcements', 1 ) ) {
+			return array(
+				'data' => [],
+				'done' => true,
+			);
+		}
 		$args = array(
 			'mgs_type'   => 'announcement',
 			'paged'      => (int) $page,
@@ -446,7 +459,7 @@ class Fep_Admin_Pages {
 		$announcements = fep_get_messages( $args );
 		$export_items  = array();
 
-		if ( $user_id && $announcements ) {
+		if ( $announcements ) {
 			foreach ( $announcements as $announcement ) {
 				$att_urls = [];
 				if ( $attachments = $announcement->get_attachments( false, 'any' ) ) {
@@ -495,6 +508,183 @@ class Fep_Admin_Pages {
 		return array(
 			'data' => $export_items,
 			'done' => $done,
+		);
+	}
+	
+	function register_data_eraser( $erasers ) {
+		$erasers['front-end-pm-messages'] = array(
+			'eraser_friendly_name' => sprintf( __( '%s Messages', 'front-end-pm' ), fep_is_pro() ? 'Front End PM PRO' : 'Front End PM' ),
+			'callback'             => array( $this, 'data_eraser_messages' ),
+		);
+		$erasers['front-end-pm-replies'] = array(
+			'eraser_friendly_name' => sprintf( __( '%s Replies', 'front-end-pm' ), fep_is_pro() ? 'Front End PM PRO' : 'Front End PM' ),
+			'callback'             => array( $this, 'data_eraser_replies' ),
+		);
+		$erasers['front-end-pm-announcements'] = array(
+			'eraser_friendly_name' => sprintf( __( '%s Announcements', 'front-end-pm' ), fep_is_pro() ? 'Front End PM PRO' : 'Front End PM' ),
+			'callback'             => array( $this, 'data_eraser_announcements' ),
+		);
+		return $erasers;
+	}
+	
+	function data_eraser_messages( $email_address, $page = 1 ) {
+		$user_id = (int) fep_get_userdata( $email_address, 'ID', 'email' );
+		if ( ! $user_id || 'none' === fep_get_option( 'erase_messages', 'anonymize' ) ) {
+			return array(
+				'items_removed'  => false,
+				'items_retained' => false,
+				'messages'       => array(),
+				'done'           => true,
+			);
+		}
+		$args = array(
+			'mgs_type'   => 'message',
+			'paged'      => (int) $page,
+			'per_page'   => 25,
+			'mgs_status' => 'any',
+			'mgs_parent' => 0,
+			'mgs_author' => $user_id,
+		);
+		$messages       = fep_get_messages( $args );
+		$return_mgs     = array();
+		$items_removed  = false;
+		$items_retained = false;
+
+		if ( $messages ) {
+			foreach ( $messages as $message ) {
+				if ( 'erase' === fep_get_option( 'erase_messages', 'anonymize' ) ) {
+					if( 'threaded' == fep_get_message_view() && apply_filters( 'fep_erase_replies_if_threaded', true ) ){
+						$args2 = [
+							'mgs_id' => $message->mgs_id,
+							'include_child' => true,
+							'per_page' => 0, //unlimited
+							'mgs_status' => 'any',
+							'mgs_type' => 'message',
+						];
+						$messages2 = fep_get_messages( $args2 );
+						foreach( $messages2 as $message2 ){
+							$message2->delete();
+						}
+					} else {
+						$message->delete();
+					}
+				} else {
+					$update_args = array(
+						'mgs_title'   => wp_privacy_anonymize_data( 'text', $message->mgs_title ),
+						'mgs_content' => wp_privacy_anonymize_data( 'longtext', $message->mgs_content ),
+					);
+					$message->update( $update_args );
+					fep_update_reply_info( $message->mgs_id );
+				}
+			}
+			$items_removed = true;
+			$done          = false;
+		} else {
+			$done = true;
+		}
+		return array(
+			'items_removed'  => $items_removed,
+			'items_retained' => $items_retained,
+			'messages'       => $return_mgs,
+			'done'           => $done,
+		);
+	}
+	
+	function data_eraser_replies( $email_address, $page = 1 ) {
+		$user_id = (int) fep_get_userdata( $email_address, 'ID', 'email' );
+		if ( ! $user_id || 'none' === fep_get_option( 'erase_replies', 'erase' ) ) {
+			return array(
+				'items_removed'  => false,
+				'items_retained' => false,
+				'messages'       => array(),
+				'done'           => true,
+			);
+		}
+		$args = array(
+			'mgs_type'   => 'message',
+			'paged'      => (int) $page,
+			'per_page'   => 50,
+			'mgs_status' => 'any',
+			'mgs_parent_not_in' => array( 0 ),
+			'mgs_author' => $user_id,
+		);
+		$messages       = fep_get_messages( $args );
+		$return_mgs     = array();
+		$items_removed  = false;
+		$items_retained = false;
+
+		if ( $messages ) {
+			foreach ( $messages as $message ) {
+				$parent = $message->mgs_parent;
+				
+				if ( 'erase' === fep_get_option( 'erase_replies', 'erase' ) ) {
+					$message->delete();
+				} else {
+					$update_args = array(
+						'mgs_title'   => wp_privacy_anonymize_data( 'text', $message->mgs_title ),
+						'mgs_content' => wp_privacy_anonymize_data( 'longtext', $message->mgs_content ),
+					);
+					$message->update( $update_args );
+				}
+				fep_update_reply_info( $parent );
+			}
+			$items_removed = true;
+			$done          = false;
+		} else {
+			$done = true;
+		}
+		return array(
+			'items_removed'  => $items_removed,
+			'items_retained' => $items_retained,
+			'messages'       => $return_mgs,
+			'done'           => $done,
+		);
+	}
+	
+	function data_eraser_announcements( $email_address, $page = 1 ) {
+		$user_id = (int) fep_get_userdata( $email_address, 'ID', 'email' );
+		if ( ! $user_id || 'none' === fep_get_option( 'erase_announcements', 'erase' ) ) {
+			return array(
+				'items_removed'  => false,
+				'items_retained' => false,
+				'messages'       => array(),
+				'done'           => true,
+			);
+		}
+		$args = array(
+			'mgs_type'   => 'announcement',
+			'paged'      => (int) $page,
+			'per_page'   => 50,
+			'mgs_status' => 'any',
+			'mgs_author' => $user_id,
+		);
+		$announcements  = fep_get_messages( $args );
+		$messages = array();
+		$items_removed  = false;
+		$items_retained = false;
+
+		if ( $announcements ) {
+			foreach ( $announcements as $announcement ) {
+				if ( 'erase' === fep_get_option( 'erase_announcements', 'erase' ) ) {
+					$announcement->delete();
+				} else {
+					$update_args = array(
+						'mgs_title'   => wp_privacy_anonymize_data( 'text', $announcement->mgs_title ),
+						'mgs_content' => wp_privacy_anonymize_data( 'longtext', $announcement->mgs_content ),
+					);
+					$announcement->update( $update_args );
+				}
+			}
+			$items_removed = true;
+			$done = false;
+		} else {
+			$done = true;
+		}
+		return array(
+			'items_removed'  => $items_removed,
+			'items_retained' => $items_retained,
+			'messages'       => $messages,
+			'done'           => $done,
 		);
 	}
 } //END CLASS
