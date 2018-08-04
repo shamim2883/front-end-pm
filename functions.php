@@ -919,17 +919,6 @@ function fep_delete_message( $mgs_id, $user_id = 0 ) {
 	return $return;
 }
 
-function fep_undelete_message( $mgs_id, $user_id = 0 ) {
-	if ( ! $user_id ) {
-		$user_id = get_current_user_id();
-	}
-	if ( ! $mgs_id || ! $user_id ) {
-		return false;
-	}
-
-	return FEP_Participants::init()->unmark( $mgs_id, $user_id, [ 'delete' => true ] );
-}
-
 function fep_send_message( $message = null, $override = array() ) {
 	if ( null === $message ) {
 		$message = $_POST;
