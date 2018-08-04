@@ -763,14 +763,18 @@ function fep_current_user_can( $cap, $id = false ) {
 			}
 			break;
 		case 'send_reply':
-			if ( ! $id || ( ! in_array( get_current_user_id(), fep_get_participants( $id ) ) && ! fep_is_user_admin() ) || fep_get_message_status( $id ) != 'publish' ) {
+			if ( ! $id || fep_get_message_status( $id ) != 'publish' || ( ! in_array( get_current_user_id(), fep_get_participants( $id ) ) && ! fep_is_user_admin() ) ) {
 			} elseif ( fep_is_user_whitelisted() || fep_is_user_admin() ){
 				$can = true;
 			} elseif( array_intersect( fep_get_option( 'userrole_reply', array() ), $roles ) || ( ! $roles && $no_role_access ) ) {
 				$can = true;
-				$participants = fep_get_participants( $id );
+				$participants = FEP_Participants::init()->get( $id );
 				foreach ( $participants as $participant ) {
-					if ( fep_is_user_blocked_for_user( $participant ) ) {
+					if ( fep_is_user_blocked_for_user( $participant->mgs_participant ) ) {
+						$can = false;
+						break;
+					}
+					if ( $participant->mgs_deleted ) {
 						$can = false;
 						break;
 					}
