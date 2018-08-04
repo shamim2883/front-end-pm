@@ -50,7 +50,7 @@ class Fep_Admin_Settings {
 			} else {
 				update_option( '_fep_message_view_changed', 1 );
 				//delete_metadata( 'post', 0, '_fep_last_reply_by', '', true );
-				$wpdb->update( FEP_MESSAGE_TABLE, [ 'mgs_last_reply_by' => 0 ], [ 'mgs_type' => 'message'], ['%d'] );
+				$wpdb->update( FEP_MESSAGE_TABLE, [ 'mgs_last_reply_by' => 0 ], [ 'mgs_type' => 'message', 'mgs_parent' => 0 ], ['%d'], [ '%s', '%d'] );
 			}
 		}
 	}
