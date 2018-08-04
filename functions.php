@@ -848,10 +848,8 @@ function fep_make_read( $parent = false, $mgs_id = false, $user_id = false ) {
 	return $return;
 }
 
-function fep_get_the_excerpt_from_content( $count = 100, $excerpt = false ) {
-	if ( false === $excerpt ) {
-		$excerpt = fep_get_the_excerpt();
-	}
+function fep_get_the_excerpt_from_content( $count = 100, $excerpt = '' ) {
+
 	$excerpt = strip_shortcodes( $excerpt );
 	$excerpt = wp_strip_all_tags( $excerpt );
 	$excerpt = substr( $excerpt, 0, $count );
@@ -1574,7 +1572,11 @@ function fep_get_the_content( $mgs_id = 0 ){
 }
 
 function fep_get_the_excerpt( $mgs_id = 0 ){
-	$excerpt = fep_get_message_field( 'mgs_last_reply_excerpt', $mgs_id );
+	if( 'threaded' === fep_get_message_view() ){
+		$excerpt = fep_get_message_field( 'mgs_last_reply_excerpt', $mgs_id );
+	} else {
+		$excerpt = fep_get_the_excerpt_from_content( 100, fep_get_message_field( 'mgs_content', $mgs_id ) );
+	}
 	
 	return apply_filters( 'fep_get_the_excerpt', $excerpt, $mgs_id );
 }
