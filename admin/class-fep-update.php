@@ -392,37 +392,12 @@ class Fep_Update {
 			'per_page'		=> 50,
 			'orderby'		=> 'mgs_created',
 			'mgs_last_reply_by' => 0,
+			'fields'		=> array( 'mgs_id' ),
 		);
 		$messages = fep_get_messages( $args );
 		if ( $messages ) {
-			$child_args = array(
-				'mgs_type'		=> 'message',
-				'mgs_status'	=> 'publish',
-				'fields'		=> array( 'mgs_author', 'mgs_content', 'mgs_created' ),
-				'per_page'		=> 1,
-				'orderby'		=> 'mgs_created',
-				'order'			=> 'DESC',
-			);
-
-			foreach ( $messages as $message ) {
-				$child_args['mgs_parent'] = $message->mgs_id;
-				$child = fep_get_messages( $child_args );
-				$new_args = [];
-				
-				if ( $child && ! empty( $child[0] ) ) {
-					$new_args = [
-						'mgs_last_reply_by' => $child[0]->mgs_author,
-						'mgs_last_reply_excerpt' => fep_get_the_excerpt_from_content( $child[0]->mgs_content ),
-						'mgs_last_reply_time' => $child[0]->mgs_created,
-					];
-				} else {
-					$new_args = [
-						'mgs_last_reply_by' => $message->mgs_author,
-						'mgs_last_reply_excerpt' => fep_get_the_excerpt_from_content( $message->mgs_content ),
-						'mgs_last_reply_time' => $message->mgs_created,
-					];
-				}
-				$message->update( $new_args );
+			foreach ( $messages as $mgs_id ) {
+				fep_update_reply_info( $mgs_id );
 			}
 			$custom_int = $custom_int + count( $messages );
 			$response = array(
