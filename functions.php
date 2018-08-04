@@ -633,6 +633,34 @@ function fep_get_parent_id( $id ) {
 	return $id;
 }
 
+function fep_update_reply_info( $mgs_id ) {
+	$updated = false;
+	
+	if ( ! $mgs_id || ! is_numeric( $mgs_id ) ) {
+		return $updated;
+	}
+	$args = array(
+		'mgs_type'      => 'message',
+		'mgs_status'    => 'publish',
+		'per_page'      => 1,
+		'mgs_id'        => $mgs_id,
+		'include_child' => true,
+		'orderby'       => 'mgs_created',
+		'order'         => 'DESC',
+	);
+	$messages = fep_get_messages( $args );
+	if ( $messages && ! empty( $messages[0] ) && $message = FEP_Message::get_instance( $mgs_id ) ) {
+		$updated = $message->update(
+			array(
+				'mgs_last_reply_by'      => $messages[0]->mgs_author,
+				'mgs_last_reply_excerpt' => fep_get_the_excerpt_from_content( 100, $messages[0]->mgs_content ),
+				'mgs_last_reply_time'    => $messages[0]->mgs_created,
+			)
+		);
+	}
+	return $updated;
+}
+
 function fep_format_date( $date ) {
 
 	if ( '0000-00-00 00:00:00' === $date ) {
@@ -998,42 +1026,13 @@ function fep_send_message_transition_post_status( $new_status, $old_status, $mes
 		return;
 	}
 	if ( 'publish' == $new_status && 'threaded' == fep_get_message_view() ) {
-		if( $message->mgs_parent && $parent_message = FEP_Message::get_instance( $message->mgs_parent ) ){
-			$parent_message->update(
-				array(
-					'mgs_last_reply_by' => $message->mgs_author,
-					'mgs_last_reply_excerpt' => fep_get_the_excerpt_from_content( 100, $message->mgs_content ),
-					'mgs_last_reply_time' => $message->mgs_created,
-				)
-			);
+		if ( $message->mgs_parent ) {
+			fep_update_reply_info( $message->mgs_parent );
 			FEP_Participants::init()->unmark( $message->mgs_parent, false, [ 'delete' => true ] );
 		}
 	} elseif ( 'publish' == $old_status && 'threaded' == fep_get_message_view() ) {
-		if( $message->mgs_parent && $parent_message = FEP_Message::get_instance( $message->mgs_parent ) ){
-			$child_args = array(
-				'mgs_type'		=> 'message',
-				'mgs_status'	=> 'publish',
-				'per_page'=> 1,
-				'mgs_parent'	=> $message->mgs_parent,
-			);
-			$child = fep_get_messages( $child_args );
-			if ( $child && ! empty( $child[0] ) ) {
-				$parent_message->update(
-					array(
-						'mgs_last_reply_by' => $child[0]->mgs_author,
-						'mgs_last_reply_excerpt' => fep_get_the_excerpt_from_content( 100, $child[0]->mgs_content ),
-						'mgs_last_reply_time' => $child[0]->mgs_created,
-					)
-				);
-			} else {
-				$parent_message->update(
-					array(
-						'mgs_last_reply_by' => $parent_message->mgs_author,
-						'mgs_last_reply_excerpt' => fep_get_the_excerpt_from_content( 100, $parent_message->mgs_content ),
-						'mgs_last_reply_time' => $parent_message->mgs_created,
-					)
-				);
-			}
+		if ( $message->mgs_parent ) {
+			fep_update_reply_info( $message->mgs_parent );
 		}
 	}
 	if ( 'publish' == $new_status || 'publish' == $old_status ) {
