@@ -574,6 +574,7 @@ class Fep_Admin_Pages {
 						'mgs_content' => wp_privacy_anonymize_data( 'longtext', $message->mgs_content ),
 					);
 					$message->update( $update_args );
+					FEP_Attachments::init()->delete( $message->mgs_id );
 					fep_update_reply_info( $message->mgs_id );
 				}
 			}
@@ -625,6 +626,7 @@ class Fep_Admin_Pages {
 						'mgs_content' => wp_privacy_anonymize_data( 'longtext', $message->mgs_content ),
 					);
 					$message->update( $update_args );
+					FEP_Attachments::init()->delete( $message->mgs_id );
 				}
 				fep_update_reply_info( $parent );
 			}
@@ -673,6 +675,7 @@ class Fep_Admin_Pages {
 						'mgs_content' => wp_privacy_anonymize_data( 'longtext', $announcement->mgs_content ),
 					);
 					$announcement->update( $update_args );
+					FEP_Attachments::init()->delete( $announcement->mgs_id );
 				}
 			}
 			$items_removed = true;
