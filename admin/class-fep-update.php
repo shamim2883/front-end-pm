@@ -527,11 +527,6 @@ class Fep_Update {
 				'mgs_type'              => 'message',
 				'mgs_status'            => $reply->post_status,	
 			);
-			if( 'threaded' != fep_get_message_view() ){
-				$arr['mgs_last_reply_by'] = $reply->post_author;
-				$arr['mgs_last_reply_excerpt'] = fep_get_the_excerpt_from_content( 100, $reply->post_content );
-				$arr['mgs_last_reply_time'] = $reply->post_date_gmt;
-			}
 			$reply_obj = new FEP_Message;
 			$reply_id = $reply_obj->insert( $arr );
 

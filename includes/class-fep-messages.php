@@ -360,14 +360,11 @@ class Fep_Messages {
 				}
 				break;
 			case 'author':
-				?><span class="fep-message-author"><?php echo fep_user_name( fep_get_message_field( 'mgs_author' ) ); ?></span><span class="fep-message-date">
-					<?php
-						if( 'threaded' === fep_get_message_view() ){
-							echo fep_get_the_date( 'updated' );
-						} else {
-							echo fep_get_the_date( 'created' );
-						}
-					?></span><?php
+				if( 'threaded' === fep_get_message_view() ){
+					?><span class="fep-message-author"><?php echo fep_user_name( fep_get_message_field( 'mgs_last_reply_by' ) ); ?></span><span class="fep-message-date"><?php echo fep_get_the_date( 'mgs_last_reply_time' ); ?></span><?php
+				} else {
+					?><span class="fep-message-author"><?php echo fep_user_name( fep_get_message_field( 'mgs_author' ) ); ?></span><span class="fep-message-date"><?php echo fep_get_the_date( 'created' ); ?></span><?php
+				}
 				break;
 			case 'title':
 				if ( ! fep_is_read( true ) ) {

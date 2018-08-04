@@ -954,7 +954,7 @@ function fep_send_message( $message = null, $override = array() ) {
 	if ( $override && is_array( $override ) ) {
 		$post = wp_parse_args( $override, $post );
 	}
-	if( ! $post['post_parent'] ){
+	if( ! $post['post_parent'] && 'threaded' === fep_get_message_view() ){
 		$post['mgs_last_reply_by'] = $post['post_author'];
 		$post['mgs_last_reply_excerpt'] = fep_get_the_excerpt_from_content( 100, $post['post_content'] );
 		$post['mgs_last_reply_time'] = $post['mgs_created'];
@@ -1051,11 +1051,6 @@ function fep_add_announcement( $announcement = null, $override = array() ) {
 
 	if ( $override && is_array( $override ) ) {
 		$post = wp_parse_args( $override, $post );
-	}
-	if( empty( $post['post_parent'] ) ){
-		$post['mgs_last_reply_by'] = $post['post_author'];
-		$post['mgs_last_reply_excerpt'] = fep_get_the_excerpt_from_content( 100, $post['post_content'] );
-		$post['mgs_last_reply_time'] = $post['mgs_created'];
 	}
 	$post = apply_filters( 'fep_filter_announcement_after_override', $post, $announcement );
 	
@@ -1559,7 +1554,7 @@ function fep_get_the_content( $mgs_id = 0 ){
 }
 
 function fep_get_the_excerpt( $mgs_id = 0 ){
-	if( 'threaded' === fep_get_message_view() ){
+	if( 'threaded' === fep_get_message_view() && 'message' === fep_get_message_field( 'mgs_type', $mgs_id ) ){
 		$excerpt = fep_get_message_field( 'mgs_last_reply_excerpt', $mgs_id );
 	} else {
 		$excerpt = fep_get_the_excerpt_from_content( 100, fep_get_message_field( 'mgs_content', $mgs_id ) );
