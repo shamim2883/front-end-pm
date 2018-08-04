@@ -138,14 +138,22 @@ class Fep_Messages {
 		}
 		switch ( $filter ) {
 			case 'inbox':
-				$args['mgs_last_reply_by_not_in'] = [ $user_id ];
+				if ( 'threaded' == fep_get_message_view() ) {
+					$args['mgs_last_reply_by_not_in'] = [ $user_id ];
+				} else {
+					$args['mgs_author_not_in'] = [ $user_id ];
+				}
 				$args['participant_query'][] = array(
 					'mgs_participant' => $user_id,
 					'mgs_deleted' => false,
 				);
 				break;
 			case 'sent':
-				$args['mgs_last_reply_by'] = $user_id;
+				if ( 'threaded' == fep_get_message_view() ) {
+					$args['mgs_last_reply_by'] = $user_id;
+				} else {
+					$args['mgs_author'] = $user_id;
+				}
 				$args['participant_query'][] = array(
 					'mgs_participant' => $user_id,
 					'mgs_deleted' => false,
