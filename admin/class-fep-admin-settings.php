@@ -337,6 +337,60 @@ class Fep_Admin_Settings {
 			),
 			//Message
 			//Announcement
+			// Privacy
+			'export_messages' => array(
+				'type'		 => 'checkbox',
+				'value'		 => fep_get_option( 'export_messages', 1 ),
+				'priority'	 => 5,
+				'section'	 => 'privacy_export',
+				'class'		 => '',
+				'label'		 => __( 'Export Messages', 'front-end-pm' ),
+			),
+			'export_announcements' => array(
+				'type'		 => 'checkbox',
+				'value'		 => fep_get_option( 'export_announcements', 1 ),
+				'priority'	 => 5,
+				'section'	 => 'privacy_export',
+				'class'		 => '',
+				'label'		 => __( 'Export Announcements', 'front-end-pm' ),
+			),
+			'erase_messages' => array(
+				'type'		 => 'select',
+				'value'		 => fep_get_option( 'erase_messages', 'anonymize' ),
+				'priority'	 => 10,
+				'section'	 => 'privacy_erase',
+				'label'		 => __( 'Erase Messages', 'front-end-pm' ),
+				'description' => __( 'If set Erase and message view as threaded, then all replies of that message will also be erased regardless of sender and erase replies setup.', 'front-end-pm' ),
+				'options'	=> array(
+					'none'      => __( 'No Action', 'front-end-pm' ),
+					'erase'     => __( 'Erase', 'front-end-pm' ),
+					'anonymize' => __( 'Anonymize', 'front-end-pm' ),
+				),
+			),
+			'erase_replies' => array(
+				'type'		 => 'select',
+				'value'		 => fep_get_option( 'erase_replies', 'erase' ),
+				'priority'	 => 15,
+				'section'	 => 'privacy_erase',
+				'label'		 => __( 'Erase Replies', 'front-end-pm' ),
+				'options'	=> array(
+					'none'      => __( 'No Action', 'front-end-pm' ),
+					'erase'     => __( 'Erase', 'front-end-pm' ),
+					'anonymize' => __( 'Anonymize', 'front-end-pm' ),
+				),
+			),
+			'erase_announcements' => array(
+				'type'		 => 'select',
+				'value'		 => fep_get_option( 'erase_announcements', 'erase' ),
+				'priority'	 => 20,
+				'section'	 => 'privacy_erase',
+				'label'		 => __( 'Erase Announcements', 'front-end-pm' ),
+				'options'	=> array(
+					'none'      => __( 'No Action', 'front-end-pm' ),
+					'erase'     => __( 'Erase', 'front-end-pm' ),
+					'anonymize' => __( 'Anonymize', 'front-end-pm' ),
+				),
+			),
 			//Email Settings
 			'email_content_type' => array(
 				'type'		=> 'select',
@@ -734,6 +788,10 @@ class Fep_Admin_Settings {
 				'tab_title'	=> __( 'Announcement', 'front-end-pm' ),
 				'priority'	=> 15,
 			),*/
+			'privacy' => array(
+				'tab_title'	=> __( 'Privacy', 'front-end-pm' ),
+				'priority'	=> 16,
+			),
 			'emails' => array(
 				'tab_title'	=> __( 'Emails', 'front-end-pm' ),
 				'priority'	=> 20,
@@ -745,6 +803,18 @@ class Fep_Admin_Settings {
 			'misc' => array(
 				'tab_title'	=> __( 'Misc', 'front-end-pm' ),
 				'priority'	=> 27,
+			),
+			'privacy_export' => array(
+				'section_title'	=> __( 'Export', 'front-end-pm' ),
+				'section_page'	=> 'fep_settings_privacy',
+				'priority'		=> 10,
+				'tab_output'	=> false,
+			),
+			'privacy_erase' => array(
+				'section_title'	=> __( 'Erase', 'front-end-pm' ),
+				'section_page'	=> 'fep_settings_privacy',
+				'priority'		=> 15,
+				'tab_output'	=> false,
 			),
 			'notification' => array(
 				'section_title'	=> __( 'Notification', 'front-end-pm' ),
