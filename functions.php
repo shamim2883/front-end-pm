@@ -21,17 +21,17 @@ function fep_create_database(){
 			mgs_created datetime NOT NULL default '0000-00-00 00:00:00',
 			mgs_title text NOT NULL,
 			mgs_content mediumtext NOT NULL,
+			mgs_type varchar(20) NOT NULL DEFAULT 'message',
+			mgs_status varchar(20) NOT NULL DEFAULT 'pending',
 			mgs_last_reply_by bigint(20) unsigned NOT NULL default '0',
 			mgs_last_reply_time datetime NOT NULL default '0000-00-00 00:00:00',
 			mgs_last_reply_excerpt varchar(255) NOT NULL DEFAULT '',
-			mgs_type varchar(20) NOT NULL DEFAULT 'message',
-			mgs_status varchar(20) NOT NULL DEFAULT 'pending',
 			PRIMARY KEY  (mgs_id),
 			KEY mgs_parent (mgs_parent),
 			KEY mgs_author (mgs_author),
 			KEY mgs_created (mgs_created),
-			KEY mgs_last_reply_time (mgs_last_reply_time),
-			KEY type_status (mgs_type,mgs_status)
+			KEY type_status (mgs_type,mgs_status),
+			KEY mgs_last_reply_time (mgs_last_reply_time)
 		) $charset_collate;";
 		
 		$sql_perticipiants = "CREATE TABLE " . FEP_PARTICIPANT_TABLE . " (
@@ -80,14 +80,14 @@ function fep_create_database(){
 	}
 }
 
-require_once( FEP_PLUGIN_DIR . 'includes/class-fep-cache.php' );
-require_once( FEP_PLUGIN_DIR . 'includes/class-fep-message.php' );
-require_once( FEP_PLUGIN_DIR . 'includes/fep-message-meta.php' );
-require_once( FEP_PLUGIN_DIR . 'includes/class-fep-participants.php' );
-require_once( FEP_PLUGIN_DIR . 'includes/class-fep-attachments.php' );
-require_once( FEP_PLUGIN_DIR . 'includes/class-fep-message-query.php' );
-
 function fep_include_require_files() {
+	require_once( FEP_PLUGIN_DIR . 'includes/class-fep-cache.php' );
+	require_once( FEP_PLUGIN_DIR . 'includes/class-fep-message.php' );
+	require_once( FEP_PLUGIN_DIR . 'includes/fep-message-meta.php' );
+	require_once( FEP_PLUGIN_DIR . 'includes/class-fep-participants.php' );
+	require_once( FEP_PLUGIN_DIR . 'includes/class-fep-attachments.php' );
+	require_once( FEP_PLUGIN_DIR . 'includes/class-fep-message-query.php' );
+	
 	$fep_files = array(
 		'announcement' 	=> FEP_PLUGIN_DIR . 'includes/class-fep-announcement.php',
 		'attachment' 	=> FEP_PLUGIN_DIR . 'includes/class-fep-attachment.php',

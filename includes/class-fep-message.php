@@ -12,11 +12,11 @@ class FEP_Message {
 	public $mgs_created = '0000-00-00 00:00:00';
 	public $mgs_title = '';
 	public $mgs_content = '';
+	public $mgs_type = 'message';
+	public $mgs_status = 'publish';
 	public $mgs_last_reply_by = 0;
 	public $mgs_last_reply_time = '0000-00-00 00:00:00';
 	public $mgs_last_reply_excerpt = '';
-	public $mgs_type = 'message';
-	public $mgs_status = 'publish';
 	
 	public function __construct( $obj = '' ) {
 		if( is_object( $obj ) ){
@@ -71,11 +71,11 @@ class FEP_Message {
 			'mgs_last_reply_time'   => '%s',
 			'mgs_title'             => '%s',
 			'mgs_content'           => '%s',
+			'mgs_type'              => '%s',
+			'mgs_status'            => '%s',
 			'mgs_last_reply_by'     => '%d',
 			'mgs_last_reply_time'   => '%s',
 			'mgs_last_reply_excerpt'=> '%s',
-			'mgs_type'              => '%s',
-			'mgs_status'            => '%s',	
 		);
 	}
 	
