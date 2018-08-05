@@ -987,8 +987,6 @@ function fep_send_message( $message = null, $override = array() ) {
 		$message['message_to_id'][] = $new_message->mgs_author;
 		$new_message->insert_participants( $message['message_to_id'] );
 	}
-	FEP_Participants::init()->mark( $new_message->mgs_id, $new_message->mgs_author, ['read' => true, 'parent_read' => true ] );
-	
 	do_action( 'fep_action_message_after_send', $message_id, $message, $new_message );
 	
 	fep_status_change( 'new', $new_message );
@@ -1017,6 +1015,12 @@ function fep_send_message_transition_post_status( $new_status, $old_status, $mes
 		return;
 	}
 
+	if ( 'new' === $old_status ) {
+		if ( 'threaded' === fep_get_message_view() && $message->mgs_parent ) {
+			FEP_Participants::init()->unmark( $message->mgs_parent, false, [ 'parent_read' => true ] );
+		}
+		FEP_Participants::init()->mark( $message->mgs_id, $message->mgs_author, ['read' => true, 'parent_read' => true ] );
+	}
 	if ( 'publish' == $new_status || 'publish' == $old_status ) {
 		if( 'threaded' === fep_get_message_view() && $message->mgs_parent ) {
 			fep_update_reply_info( $message->mgs_parent );
