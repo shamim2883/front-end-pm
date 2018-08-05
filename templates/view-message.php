@@ -75,7 +75,7 @@ if ( $messages->have_messages() ) {
 			<?php
 		} ?>
 	</div><?php
-	include( fep_locate_template( 'reply_form.php' ) );
+	include( fep_locate_template( 'form-reply.php' ) );
 } else {
 	echo '<div class="fep-error">' . __( 'You do not have permission to view this message!', 'front-end-pm' ) . '</div>';
 }

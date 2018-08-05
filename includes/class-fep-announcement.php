@@ -48,7 +48,7 @@ class Fep_Announcement {
 	}
 
 	function new_announcement() {
-		$template = fep_locate_template( 'new_announcement_form.php' );
+		$template = fep_locate_template( 'form-announcement.php' );
 		ob_start();
 		include( $template );
 		return ob_get_clean();
@@ -93,7 +93,6 @@ class Fep_Announcement {
 			'orderby'		=>'mgs_created',
 			'order'			=> 'ASC',
 			'count_total'	=> false,
-			'queue_participants_cache' => false,
 		);
 		$args = apply_filters( 'fep_filter_get_announcement_with_replies', $args );
 		return new FEP_Message_Query( $args );

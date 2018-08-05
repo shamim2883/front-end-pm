@@ -119,7 +119,7 @@ if ( ! class_exists( 'fep_main_class' ) ) {
 		}
 
 		function new_message() {
-			$template = fep_locate_template( 'newmessage_form.php' );
+			$template = fep_locate_template( 'form-message.php' );
 			ob_start();
 			include( $template );
 			return ob_get_clean();

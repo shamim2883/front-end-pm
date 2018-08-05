@@ -34,7 +34,7 @@ class Fep_User_Settings {
 	}
 
 	function settings_form() {
-		$template = fep_locate_template( 'settings.php' );
+		$template = fep_locate_template( 'form-settings.php' );
 		ob_start();
 		include( $template );
 		return ob_get_clean();

@@ -115,7 +115,7 @@ class Fep_Shortcodes {
 			add_filter( 'fep_form_attribute', array( $this, 'fep_form_attribute' ), 10, 2 );
 			add_filter( 'fep_form_submit_button', array( $this, 'show_ajax_img' ), 10, 2 );
 		}
-		$template = fep_locate_template( 'shortcode_newmessage_form.php' );
+		$template = fep_locate_template( 'form-shortcode-message.php' );
 		ob_start();
 		include( $template );
 		return apply_filters( 'fep_filter_shortcode_new_message_form', ob_get_clean(), $atts );

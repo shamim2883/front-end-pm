@@ -205,7 +205,6 @@ class Fep_Messages {
 			'orderby'		=>'mgs_created',
 			'order'			=> 'ASC',
 			'count_total'	=> false,
-			'queue_participants_cache' => false,
 		);
 		if ( 'threaded' == fep_get_message_view() ) {
 			$args['include_child'] = true;
