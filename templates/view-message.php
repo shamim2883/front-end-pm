@@ -52,8 +52,8 @@ if ( $messages->have_messages() ) {
 				} ?>
 				<div class="fep-per-message fep-per-message-top fep-per-message-<?php echo fep_get_the_id(); ?>">
 					<div class="fep-message-title-heading"><?php echo fep_get_the_title(); ?></div>
-					<div class="fep-message-title-heading participants"><?php _e( 'Participants', 'front-end-pm' ); ?>: <?php echo apply_filters( 'fep_filter_display_participants', implode( ', ', $par ), $par, $participants ); ?></div>
-					<div class="fep-message-toggle-all fep-align-right"><?php _e( 'Toggle Messages', 'front-end-pm' ); ?></div>
+					<div class="fep-message-title-heading participants"><?php esc_html_e( 'Participants', 'front-end-pm' ); ?>: <?php echo apply_filters( 'fep_filter_display_participants', implode( ', ', $par ), $par, $participants ); ?></div>
+					<div class="fep-message-toggle-all fep-align-right"><?php esc_html_e( 'Toggle Messages', 'front-end-pm' ); ?></div>
 				</div>
 				<?php
 			} ?>
@@ -77,5 +77,5 @@ if ( $messages->have_messages() ) {
 	</div><?php
 	include( fep_locate_template( 'form-reply.php' ) );
 } else {
-	echo '<div class="fep-error">' . __( 'You do not have permission to view this message!', 'front-end-pm' ) . '</div>';
+	echo '<div class="fep-error">' . esc_html__( 'You do not have permission to view this message!', 'front-end-pm' ) . '</div>';
 }

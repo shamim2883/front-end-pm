@@ -32,5 +32,5 @@ if ( $announcements->have_messages() ) { ?>
 	</div><?php
 	//include( fep_locate_template( 'form-reply.php' ) );
 } else {
-	echo '<div class="fep-error">' . __( 'You do not have permission to view this announcement!', 'front-end-pm' ) . '</div>';
+	echo '<div class="fep-error">' . esc_html__( 'You do not have permission to view this announcement!', 'front-end-pm' ) . '</div>';
 }
