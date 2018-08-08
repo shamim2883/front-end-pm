@@ -162,7 +162,9 @@ class FEP_Attachments {
 		// If the file is relative, prepend upload dir.
 		$file = Fep_Attachment::init()->absulate_path( $file );
 		
-		wp_delete_file( $file );
+		if ( 0 === validate_file( $file ) ) {
+			wp_delete_file( $file );
+		}
 	}
 	
 } //END Class
