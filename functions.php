@@ -1018,6 +1018,7 @@ function fep_send_message_transition_post_status( $new_status, $old_status, $mes
 	if ( 'new' === $old_status ) {
 		if ( 'threaded' === fep_get_message_view() && $message->mgs_parent ) {
 			FEP_Participants::init()->unmark( $message->mgs_parent, false, [ 'parent_read' => true ] );
+			FEP_Participants::init()->mark( $message->mgs_parent, $message->mgs_author, [ 'parent_read' => true ] );
 		}
 		FEP_Participants::init()->mark( $message->mgs_id, $message->mgs_author, ['read' => true, 'parent_read' => true ] );
 	}
