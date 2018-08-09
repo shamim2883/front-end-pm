@@ -24,7 +24,7 @@ class Fep_Admin_Pages {
 	function addAdminPage() {
 		$admin_cap = apply_filters( 'fep_admin_cap', 'manage_options' );
 		
-		add_menu_page( __( 'Front End PM', 'front-end-pm' ), __( 'Front End PM', 'front-end-pm' ), $admin_cap, 'fep-all-messages', array( $this, 'all_messages' ), 'dashicons-email', 100 );
+		add_menu_page( __( 'Front End PM', 'front-end-pm' ), __( 'Front End PM', 'front-end-pm' ), $admin_cap, 'fep-all-messages', array( $this, 'all_messages' ), 'dashicons-email', 30 );
 		
 		add_submenu_page( 'fep-all-messages', 'Front End PM - ' . __( 'All Messages', 'front-end-pm' ), __( 'All Messages', 'front-end-pm' ), $admin_cap, 'fep-all-messages', array( $this, 'all_messages' ) );
 		
