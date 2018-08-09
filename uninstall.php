@@ -25,12 +25,17 @@ if ( is_array( $fep_options ) && ! empty( $fep_options['delete_data_on_uninstall
 	delete_metadata( 'user', 0, '_fep_user_announcement_count', '', true );
 	delete_metadata( 'user', 0, '_fep_notification_dismiss', '', true );
 
-	// Remove all database tables of Front End PM (if any)
-	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->base_prefix . 'fep_messages' );
-	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->base_prefix . 'fep_messagemeta' );
-	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->base_prefix . 'fep_participants' );
-	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->base_prefix . 'fep_attachments' );
-	
+	// Remove all database tables of Front End PM (if any).
+	$fep_tables = [
+		'message'      => defined( 'FEP_MESSAGE_TABLE' ) ? FEP_MESSAGE_TABLE : $wpdb->base_prefix . 'fep_messages',
+		'meta'         => defined( 'FEP_META_TABLE' ) ? FEP_META_TABLE : $wpdb->base_prefix . 'fep_messagemeta',
+		'participants' => defined( 'FEP_PARTICIPANT_TABLE' ) ? FEP_PARTICIPANT_TABLE : $wpdb->base_prefix . 'fep_participants',
+		'attachments'  => defined( 'FEP_ATTACHMENT_TABLE' ) ? FEP_ATTACHMENT_TABLE : $wpdb->base_prefix . 'fep_attachments',
+	];
+	foreach ( $fep_tables as $fep_table ) {
+		$wpdb->query( "DROP TABLE IF EXISTS $fep_table" );
+	}
+
 	function fep_recursive_remove_directory( $directory ) {
 		foreach ( glob( "{$directory}/*" ) as $file ) {
 			if ( is_dir( $file ) ) {
