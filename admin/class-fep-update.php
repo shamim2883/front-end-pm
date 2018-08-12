@@ -471,6 +471,7 @@ class Fep_Update {
 		}
 		
 		$this->insert_attachment( $announcement->ID, $mgs_obj );
+		$this->insert_meta( $announcement->ID, $ann_id );
 	}
 	
 	function insert_message( $message ) {
@@ -501,6 +502,7 @@ class Fep_Update {
 		
 		$this->insert_participants( $message->ID, $mgs_obj );
 		$this->insert_attachment( $message->ID, $mgs_obj );
+		$this->insert_meta( $message->ID, $message_id );
 		$count += $this->insert_replies( $message->ID, $mgs_obj );
 		//$this->delete_message( $message->id );
 		return $count;
@@ -535,6 +537,7 @@ class Fep_Update {
 				fep_add_meta( $reply_id, '_fep_email_sent', get_post_meta( $reply->ID, '_fep_email_sent', true ) );
 				$this->insert_participants( $reply->ID, $reply_obj );
 				$this->insert_attachment( $reply->ID, $reply_obj );
+				$this->insert_meta( $reply->ID, $reply_id );
 			}
 		}
 		return count( $replies );
@@ -594,6 +597,26 @@ class Fep_Update {
 		}
 		if( $new_participants ){
 			$mgs_obj->insert_participants( $new_participants );
+		}
+	}
+	
+	function insert_meta( $prev_id, $new_id ) {
+		if( ! $prev_id || ! is_numeric( $prev_id ) || ! $new_id || ! is_numeric( $new_id ) ) {
+			return false;
+		}
+		$meta = get_post_meta( $prev_id );
+		if ( ! $meta || ! is_array( $meta ) ) {
+			return false;
+		}
+		unset( $meta['_fep_read_by'], $meta['_fep_deleted_by'], $meta['_fep_participants'], $meta['_fep_participant_roles'], $meta['_fep_email_sent'], $meta['_fep_new_id'], $meta['_fep_last_reply_by'], $meta['_fep_last_reply_id'] );
+		
+		foreach ( $meta as $meta_key => $meta_values ) {
+			if ( 0 === strpos( $meta_key, '_fep_parent_read_by_' ) || 0 === strpos( $meta_key, '_fep_delete_by_' ) || 0 === strpos( $meta_key, '_fep_archived_by_' ) ) {
+				continue;
+			}
+			foreach ( $meta_values as $meta_value ) {
+				fep_add_meta( $new_id, $meta_key, $meta_value );
+			}
 		}
 	}
 
