@@ -64,7 +64,7 @@ class Fep_Update {
 		}
 		?>
 		<div class="notice notice-info">
-			<p><?php printf( __( 'You can now safely delete %s previous version messages and announcements.', 'front-end-pm' ), fep_is_pro() ? 'Front End PM PRO' : 'Front End PM' ); ?></p>
+			<p><?php printf( __( 'You can now safely delete %s legacy messages and announcements.', 'front-end-pm' ), fep_is_pro() ? 'Front End PM PRO' : 'Front End PM' ); ?></p>
 			<p>
 				<a href="<?php echo wp_nonce_url( add_query_arg( 'action', 'fep_delete_all', admin_url( 'admin-post.php' ) ), 'fep_delete_all' ); ?>" class="button button-primary"><?php _e( 'Proceed', 'front-end-pm' ); ?></a>
 			</p>
@@ -164,7 +164,7 @@ class Fep_Update {
 		}
 		?>
 		<div class="notice notice-info">
-			<p><?php printf( __( '%s needs to update.', 'front-end-pm' ), fep_is_pro() ? 'Front End PM PRO' : 'Front End PM' ); ?></p>
+			<p><?php printf( __( '%s needs to database update.', 'front-end-pm' ), fep_is_pro() ? 'Front End PM PRO' : 'Front End PM' ); ?></p>
 			<p>
 				<a href="<?php echo add_query_arg( 'page', 'fep_update', admin_url( 'admin.php' ) ); ?>" class="button button-primary"><?php _e( 'Proceed', 'front-end-pm' ); ?></a>
 			</p>
