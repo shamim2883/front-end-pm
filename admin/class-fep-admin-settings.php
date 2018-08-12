@@ -495,7 +495,7 @@ class Fep_Admin_Settings {
 			),
 			'add_ann_frontend' => array(
 				'type'		=> 'checkbox',
-				'value'		=> fep_get_option( 'add_ann_frontend', 0 ),
+				'value'		=> fep_get_option( 'add_ann_frontend', 1 ),
 				'priority'	=> 35,
 				'section'	=> 'security',
 				'class'		=> '',
