@@ -40,19 +40,26 @@ if ( $messages->have_messages() ) {
 				delete_user_meta( get_current_user_id(), '_fep_user_message_count' );
 			}
 			if ( $i === 1 ) {
-				$participants = fep_get_participants( fep_get_the_id() );
-				$par = array();
-				foreach ( $participants as $participant ) {
-					if ( get_current_user_id() != $participant && fep_get_option( 'block_other_users', 1 ) ) {
-						$block_unblock_text = fep_is_user_blocked_for_user( get_current_user_id(), $participant ) ? __( 'Unblock', 'front-end-pm' ) : __( 'Block', 'front-end-pm' );
-						$par[] = fep_user_name( $participant ) . '(<a href="#" class="fep_block_unblock_user" data-user_id="' . $participant . '">' . $block_unblock_text . '</a>)';
-					} else {
-						$par[] = fep_user_name( $participant );
-					}
-				} ?>
+				?>
 				<div class="fep-per-message fep-per-message-top fep-per-message-<?php echo fep_get_the_id(); ?>">
 					<div class="fep-message-title-heading"><?php echo fep_get_the_title(); ?></div>
-					<div class="fep-message-title-heading participants"><?php esc_html_e( 'Participants', 'front-end-pm' ); ?>: <?php echo apply_filters( 'fep_filter_display_participants', implode( ', ', $par ), $par, $participants ); ?></div>
+					<div class="fep-message-title-heading participants"><?php esc_html_e( 'Participants', 'front-end-pm' ); ?>: <?php
+					if( $group = apply_filters( 'fep_is_group_message', false, fep_get_the_id() ) ){
+						echo esc_html( $group );
+					} else {
+						$participants = fep_get_participants( fep_get_the_id() );
+						$par = array();
+						foreach ( $participants as $participant ) {
+							if ( get_current_user_id() != $participant && fep_get_option( 'block_other_users', 1 ) ) {
+								$block_unblock_text = fep_is_user_blocked_for_user( get_current_user_id(), $participant ) ? __( 'Unblock', 'front-end-pm' ) : __( 'Block', 'front-end-pm' );
+								$par[] = fep_user_name( $participant ) . '(<a href="#" class="fep_block_unblock_user" data-user_id="' . $participant . '">' . $block_unblock_text . '</a>)';
+							} else {
+								$par[] = fep_user_name( $participant );
+							}
+						}
+						echo apply_filters( 'fep_filter_display_participants', implode( ', ', $par ), $par, $participants );
+					}
+					?></div>
 					<div class="fep-message-toggle-all fep-align-right"><?php esc_html_e( 'Toggle Messages', 'front-end-pm' ); ?></div>
 				</div>
 				<?php

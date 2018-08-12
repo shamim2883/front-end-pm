@@ -1598,8 +1598,8 @@ function fep_participants_view( $mgs_id = 0 ) {
 			 echo translate_user_role( $wp_roles->roles[ $role ]['name'] ) .'<br />';
 		}
 	} elseif( 'message' == fep_get_message_field( 'mgs_type', $mgs_id ) ){
-		if( apply_filters( 'fep_is_group_message', false, $mgs_id ) ){
-			echo __( 'Group', 'front-end-pm') . ': ' . esc_html( implode( ', ', fep_get_meta( $mgs_id, '_fep_groups' ) ) );
+		if( $group = apply_filters( 'fep_is_group_message', false, $mgs_id ) ){
+			echo esc_html( $group );
 		} elseif( $recipients = fep_get_participants( fep_get_the_id( $mgs_id ) ) ){
 			foreach ( $recipients as $recipient ) {
 				if( fep_get_message_field( 'mgs_author', $mgs_id ) != $recipient )
