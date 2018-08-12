@@ -111,7 +111,7 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 
 == Changelog ==
 
-= 10.0.1.beta1 =
+= 10.0.1.rc1 =
 
 * Breaking changes, If you have custom code or template changes for this plugin, make sure they are compatible with current version.
 * highly performance improved

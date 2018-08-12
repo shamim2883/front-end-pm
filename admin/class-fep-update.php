@@ -143,7 +143,7 @@ class Fep_Update {
 		}
 		$require = false;
 
-		if ( version_compare( $prev_ver, '10.0.0', '<' ) ) {
+		if ( version_compare( $prev_ver, '10.0.1', '<' ) ) {
 			$require = true;
 		}
 		if ( apply_filters( 'fep_require_manual_update', $require, $prev_ver ) ) {
@@ -192,11 +192,8 @@ class Fep_Update {
 		if ( version_compare( $prev_ver, '5.1', '<' ) ) {
 			$this->update_version_51();
 		}
-		if ( version_compare( $prev_ver, '6.4', '<' ) ) {
-			//$this->update_version_64();
-		}
-		if ( version_compare( $prev_ver, '10.1.1', '<' ) ) {
-			$this->update_version_1011();
+		if ( version_compare( $prev_ver, '10.0.1', '<' ) ) {
+			$this->update_version_1001();
 		}
 		do_action( 'fep_plugin_manual_update', $prev_ver );
 		do_action( 'fep_plugin_update', $prev_ver );
@@ -233,10 +230,10 @@ class Fep_Update {
 		wp_send_json( $response );
 	}
 	
-	function update_version_1011() {
+	function update_version_1001() {
 		global $wpdb;
 		
-		$updated = fep_get_option( 'v1011', 0, 'fep_updated_versions' );
+		$updated = fep_get_option( 'v1001', 0, 'fep_updated_versions' );
 		if ( $updated ) {
 			return;
 		}
@@ -247,7 +244,7 @@ class Fep_Update {
 		$custom_int = isset( $_POST['custom_int'] ) ? absint( $_POST['custom_int'] ) : 0;
 		$custom_str = isset( $_POST['custom_str'] ) ? sanitize_text_field( $_POST['custom_str']) : 'messages';
 		
-		if ( ! fep_get_option( 'v1011-part-1', 0, 'fep_updated_versions' ) ) {			
+		if ( ! fep_get_option( 'v1001-part-1', 0, 'fep_updated_versions' ) ) {			
 			delete_metadata( 'user', 0, $wpdb->get_blog_prefix() . 'FEP_user_options', '', true );
 			delete_metadata( 'user', 0, $wpdb->get_blog_prefix() . '_fep_user_message_count', '', true );
 			delete_metadata( 'user', 0, $wpdb->get_blog_prefix() . '_fep_user_announcement_count', '', true );
@@ -292,7 +289,7 @@ class Fep_Update {
 				}
 			}
 			
-			fep_update_option( 'v1011-part-1', 1, 'fep_updated_versions' );
+			fep_update_option( 'v1001-part-1', 1, 'fep_updated_versions' );
 			
 			$response = array(
 				'update'	=> 'continue',
@@ -368,7 +365,7 @@ class Fep_Update {
 		
 		update_option( '_fep_can_delete_all', 1 );
 		
-		fep_update_option( 'v1011', 1, 'fep_updated_versions' );
+		fep_update_option( 'v1001', 1, 'fep_updated_versions' );
 		$response = array(
 			'update'	=> 'continue',
 			'message'	=> __( 'All messages and announcements updated', 'front-end-pm' ),

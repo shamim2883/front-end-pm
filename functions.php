@@ -597,7 +597,7 @@ function fep_get_replies( $id ) {
 
 function fep_get_attachments( $post_id = 0, $fields = '' ) {
 	if ( '' !== $fields ) {
-		_deprecated_argument( __FUNCTION__, '10.1.1' );
+		_deprecated_argument( __FUNCTION__, '10.0.1' );
 	}
 	if ( ! $post_id ) {
 		$post_id = fep_get_the_id();
