@@ -89,7 +89,7 @@ function fep_include_require_files() {
 	require_once( FEP_PLUGIN_DIR . 'includes/class-fep-message-query.php' );
 	
 	$fep_files = array(
-		'announcement' 	=> FEP_PLUGIN_DIR . 'includes/class-fep-announcement.php',
+		'announcement' 	=> FEP_PLUGIN_DIR . 'includes/class-fep-announcements.php',
 		'attachment' 	=> FEP_PLUGIN_DIR . 'includes/class-fep-attachment.php',
 		'directory' 	=> FEP_PLUGIN_DIR . 'includes/class-fep-directory.php',
 		'email' 		=> FEP_PLUGIN_DIR . 'includes/class-fep-emails.php',

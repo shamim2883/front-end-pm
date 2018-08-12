@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 //Announcement CLASS
-class Fep_Announcement {
+class FEP_Announcements {
 	private static $instance;
 	public static function init() {
 		if ( ! self::$instance instanceof self ) {
@@ -16,7 +16,7 @@ class Fep_Announcement {
 	function actions_filters() {
 		add_action( 'fep_transition_post_status', array( $this, 'recalculate_user_stats' ), 10, 3 );
 		add_filter( 'fep_menu_buttons', array( $this, 'menu' ) );
-		if ( fep_current_user_can( 'add_announcement' ) && fep_get_option( 'add_ann_frontend', 0 ) ) {
+		if ( fep_current_user_can( 'add_announcement' ) && fep_get_option( 'add_ann_frontend', 1 ) ) {
 			add_filter( 'fep_menu_buttons', array( $this, 'menu_new_announcement' ) );
 			add_filter( 'fep_filter_switch_new_announcement', array( $this, 'new_announcement' ) );
 			add_action( 'fep_posted_action_new_announcement', array( $this, 'fep_posted_action_new_announcement' ) );
@@ -318,4 +318,4 @@ class Fep_Announcement {
 		return apply_filters( 'fep_filter_view_announcement', $return, $id );
 	}
 } //END CLASS
-add_action( 'wp_loaded', array( Fep_Announcement::init(), 'actions_filters' ) );
+add_action( 'wp_loaded', array( FEP_Announcements::init(), 'actions_filters' ) );
