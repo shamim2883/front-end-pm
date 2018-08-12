@@ -30,6 +30,9 @@ class FEP_WP_List_Table extends WP_List_Table {
 
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
+			case has_filter( "fep_admin_table_column_content_{$column_name}" ):
+				$value = apply_filters( "fep_admin_table_column_content_{$column_name}", '', $item );
+				break;
 			case 'recipient_count':
 				$participants = $item->get_participants();
 				$value = count( $participants );
@@ -90,7 +93,7 @@ class FEP_WP_List_Table extends WP_List_Table {
 	}
 	
 	protected function column_recipients( $item ) {
-		fep_participants_view();
+		fep_participants_view( $item->mgs_id );
 	}
 
 	public function get_columns() {
@@ -110,7 +113,7 @@ class FEP_WP_List_Table extends WP_List_Table {
 			$columns['mgs_parent'] = __( 'Parent', 'front-end-pm' );
 		}
 
-		return apply_filters( 'fep_get_table_columns', $columns, $this->message_type );
+		return apply_filters( 'fep_admin_table_columns', $columns, $this->message_type );
 	}
 	
 	protected function get_sortable_columns() {
@@ -121,7 +124,7 @@ class FEP_WP_List_Table extends WP_List_Table {
 			'mgs_parent' 	=> [ 'mgs_parent', false ],
 		);
 
-		return apply_filters( 'fep_get_table_sortable_columns', $columns, $this->message_type );
+		return apply_filters( 'fep_admin_table_sortable_columns', $columns, $this->message_type );
 	}
 
 	public function get_bulk_actions( $which = '' ) {
