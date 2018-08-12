@@ -263,7 +263,7 @@ class Fep_Pro_Info {
 		$fields['eb_announcement_email_per_interval'] = array(
 			'type'		 => 'number',
 			'section'	 => 'eb_announcement',
-			'value'		 => fep_get_option( 'eb_announcement_email_per_interval', 100 ),
+			'value'		 => fep_get_option( 'eb_announcement_email_per_interval', 50 ),
 			'label'		 => __( 'Emails send per interval.', 'front-end-pm' ),
 			'description'=> __( 'Announcement emails send per interval.', 'front-end-pm' ),
 		);
