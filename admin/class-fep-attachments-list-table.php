@@ -8,7 +8,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
 
-class FEP_Attachments_WP_List_Table extends WP_List_Table {
+class FEP_Attachments_List_Table extends WP_List_Table {
 	
 	public function __construct() {
 		// Set parent defaults
@@ -26,6 +26,9 @@ class FEP_Attachments_WP_List_Table extends WP_List_Table {
 
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
+			case has_filter( "fep_admin_attachment_table_column_content_{$column_name}" ):
+				$value = apply_filters( "fep_admin_attachment_table_column_content_{$column_name}", '', $item );
+				break;
 			case 'att_name':
 				$value = esc_html( basename( $item->att_file ) );
 				break;
@@ -65,7 +68,7 @@ class FEP_Attachments_WP_List_Table extends WP_List_Table {
 			'mgs_id'        => __( 'Message id', 'front-end-pm' ),
 		);
 
-		return $columns;
+		return apply_filters( 'fep_admin_attachment_table_columns', $columns );
 	}
 	
 	protected function get_sortable_columns() {
@@ -75,7 +78,7 @@ class FEP_Attachments_WP_List_Table extends WP_List_Table {
 			'mgs_id'  	 => [ 'mgs_id', false ],
 		);
 
-		return $columns;
+		return apply_filters( 'fep_admin_attachment_table_sortable_columns', $columns );
 	}
 
 	public function get_bulk_actions( $which = '' ) {

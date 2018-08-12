@@ -88,7 +88,7 @@ class Fep_Admin_Pages {
 	}
 	
 	function all_attachments(){
-		$table = new FEP_Attachments_WP_List_Table();
+		$table = new FEP_Attachments_List_Table();
 		$table->prepare_items(); ?>
 		<div class="wrap">
 			<h1 class="wp-heading-inline"><?php

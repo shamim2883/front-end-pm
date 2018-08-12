@@ -106,7 +106,7 @@ function fep_include_require_files() {
 	}
 	if ( is_admin() ) {
 		$fep_files['table'] 			= FEP_PLUGIN_DIR . 'admin/class-fep-wp-list-table.php';
-		$fep_files['attachment-table'] 	= FEP_PLUGIN_DIR . 'admin/class-fep-attachments-wp-list-table.php';
+		$fep_files['attachment-table'] 	= FEP_PLUGIN_DIR . 'admin/class-fep-attachments-list-table.php';
 		$fep_files['admin-pages'] 		= FEP_PLUGIN_DIR . 'admin/class-fep-admin-pages.php';
 		$fep_files['settings'] 			= FEP_PLUGIN_DIR . 'admin/class-fep-admin-settings.php';
 		$fep_files['update'] 			= FEP_PLUGIN_DIR . 'admin/class-fep-update.php';
