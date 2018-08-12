@@ -22,7 +22,7 @@ class Fep_Update {
 		add_action( 'admin_notices', array( $this, 'notice_delete_all' ) );
 		add_action( 'admin_post_fep_delete_all', array( $this, 'delete_all' ) );
 		
-		add_action( 'admin_init', array( $this, 'install' ), 20 );
+		add_action( 'admin_init', array( $this, 'install' ), 5 );
 		add_action( 'admin_init', array( $this, 'message_view_changed' ), 25 );
 		add_action( 'admin_init', array( $this, 'auto_update' ), 30 );
 		
