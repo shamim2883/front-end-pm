@@ -576,7 +576,7 @@ function fep_get_user_message_count( $value = 'all', $force = false, $user_id = 
 }
 
 function fep_get_user_announcement_count( $value = 'all', $force = false, $user_id = false ) {
-	return Fep_Announcement::init()->get_user_announcement_count( $value, $force, $user_id );
+	return FEP_Announcements::init()->get_user_announcement_count( $value, $force, $user_id );
 }
 
 function fep_get_message( $id ) {
