@@ -931,7 +931,7 @@ function fep_send_message( $message = null, $override = array() ) {
 		$message['post_parent'] = absint( $message['fep_parent_id'] );
 		$message['post_status'] = fep_get_option( 'reply_post_status', 'publish' );
 		$message['message_title'] = __( 'RE:', 'front-end-pm' ). ' ' . wp_slash( fep_get_message_field( 'mgs_title', $message['post_parent'] ) );
-		$message['message_to_id'] = fep_get_participants( $message['post_parent'] );
+		$message['message_to_id'] = fep_get_participants( $message['post_parent'], true );
 	} else {
 		$message['post_status'] = fep_get_option( 'parent_post_status','publish' );
 		$message['post_parent'] = 0;
@@ -1381,12 +1381,12 @@ function fep_form_posted() {
 	}
 }
 
-function fep_get_participants( $message_id ) {
+function fep_get_participants( $message_id, $exclude_deleted = false ) {
 	if ( empty( $message_id ) || ! is_numeric( $message_id ) ) {
 		return array();
 	}
 
-	$participants = FEP_Participants::init()->get( $message_id );
+	$participants = FEP_Participants::init()->get( $message_id, false, $exclude_deleted );
 	$return = [];
 	
 	foreach( $participants as $participant ){
