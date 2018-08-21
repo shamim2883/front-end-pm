@@ -133,7 +133,7 @@ class Fep_Attachment {
 	
 		if ( $attachments = $message->get_attachments() ) {
 			echo '<div class="fep-attachments">';
-			echo '<div class="fep-attachments-heading">' . __( 'Attachments', 'front-end-pm' ) . '</div>';
+			echo '<div class="fep-attachments-heading">' . _n( 'Attachment', 'Attachments', count( $attachments ), 'front-end-pm' ) . '</div>';
 			
 			foreach ( $attachments as $attachment ){
 				if( 'publish' != $attachment->att_status ){
