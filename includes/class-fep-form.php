@@ -492,12 +492,14 @@ class Fep_Form {
 				$size_limit = (int) wp_convert_hr_to_bytes(fep_get_option( 'attachment_size','4MB' ) );
 				$fields = (int) fep_get_option( 'attachment_no', 4);
 				
-				if( ! isset( $_FILES[ $field['name'] ] )
-					|| !is_array( $_FILES[ $field['name'] ] )
-					|| empty( $_FILES[ $field['name'] ]['tmp_name'] )
-					|| !is_array( $_FILES[ $field['name'] ]['tmp_name'] ) )
+				if( ! isset( $_FILES[ $field['name'] ] ) || empty( $_FILES[ $field['name'] ]['tmp_name'] ) )
 					break;
 				
+				if( ! is_array( $_FILES[ $field['name'] ] ) || ! is_array( $_FILES[ $field['name'] ]['tmp_name'] ) ){
+					$errors->add( 'AttachmentNotArray', __( 'Invalid Attachment', 'front-end-pm' ) );
+					break;
+				}
+					
 				if( $fields < count( $_FILES[ $field['name'] ]['tmp_name'] ) ){
 					$errors->add( 'AttachmentCount', sprintf( __( 'Maximum %s allowed', 'front-end-pm' ), sprintf(_n( '%s file', '%s files', $fields, 'front-end-pm' ), number_format_i18n( $fields ) ) ) );
 					break;
