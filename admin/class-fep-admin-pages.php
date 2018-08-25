@@ -23,14 +23,15 @@ class Fep_Admin_Pages {
 
 	function addAdminPage() {
 		$admin_cap = apply_filters( 'fep_admin_cap', 'manage_options' );
+		$label = fep_is_pro() ? 'Front End PM PRO' : 'Front End PM';
 		
-		add_menu_page( __( 'Front End PM', 'front-end-pm' ), __( 'Front End PM', 'front-end-pm' ), $admin_cap, 'fep-all-messages', array( $this, 'all_messages' ), 'dashicons-email', 30 );
+		add_menu_page( $label, $label, $admin_cap, 'fep-all-messages', array( $this, 'all_messages' ), 'dashicons-email', 30 );
 		
-		add_submenu_page( 'fep-all-messages', 'Front End PM - ' . __( 'All Messages', 'front-end-pm' ), __( 'All Messages', 'front-end-pm' ), $admin_cap, 'fep-all-messages', array( $this, 'all_messages' ) );
+		add_submenu_page( 'fep-all-messages', "$label - " . __( 'All Messages', 'front-end-pm' ), __( 'All Messages', 'front-end-pm' ), $admin_cap, 'fep-all-messages', array( $this, 'all_messages' ) );
 		
-		add_submenu_page( 'fep-all-messages', 'Front End PM - ' . __( 'All Announcements', 'front-end-pm' ), __( 'All Announcements', 'front-end-pm' ), $admin_cap, 'fep-all-announcements', array( $this, 'all_announcements' ) );
+		add_submenu_page( 'fep-all-messages', "$label - " . __( 'All Announcements', 'front-end-pm' ), __( 'All Announcements', 'front-end-pm' ), $admin_cap, 'fep-all-announcements', array( $this, 'all_announcements' ) );
 		
-		add_submenu_page( 'fep-all-messages', 'Front End PM - ' . __( 'All Attachments', 'front-end-pm' ), __( 'All Attachments', 'front-end-pm' ), $admin_cap, 'fep-all-attachments', array( $this, 'all_attachments' ) );
+		add_submenu_page( 'fep-all-messages', "$label - " . __( 'All Attachments', 'front-end-pm' ), __( 'All Attachments', 'front-end-pm' ), $admin_cap, 'fep-all-attachments', array( $this, 'all_attachments' ) );
 	}
 	
 	function all_messages(){
