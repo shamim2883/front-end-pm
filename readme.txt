@@ -3,9 +3,9 @@ Contributors: shamim51
 Tags: front end pm,front-end-pm,pm,private message,personal message,front end,frontend pm,frontend,message,widget,plugin,sidebar,shortcode,page,email,mail,contact form, secure contact form, simple contact form
 Donate link: https://www.shamimsplugins.com/products/front-end-pm-pro/?utm_campaign=wordpress&utm_source=readme_pro&utm_medium=donate
 Requires at least: 4.4
-Tested up to: 4.9.6
+Tested up to: 4.9.8
 Requires PHP: 5.4
-Stable tag: 8.4.1
+Stable tag: 10.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,7 +105,7 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 
 == Changelog ==
 
-= 10.0.1.rc1 =
+= 10.1.1 =
 
 * Breaking changes, If you have custom code or template changes for this plugin, make sure they are compatible with current version.
 * highly performance improved
@@ -113,9 +113,13 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 * build in caching mechanism
 * Some template changes
 * no more WP_Post object inside template. Now FEP_Message object
+* privacy tab added in settings page.
 
 To view any previous version changelog see https://www.shamimsplugins.com/docs/category/front-end-pm/changelog/
 
 == Upgrade Notice ==
 
+= 10.1.1 =
 
+* Breaking changes, If you have custom code or template changes for this plugin, make sure they are compatible with current version.
+* use own database table instead of CPT

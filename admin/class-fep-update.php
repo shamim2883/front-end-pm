@@ -143,7 +143,7 @@ class Fep_Update {
 		}
 		$require = false;
 
-		if ( version_compare( $prev_ver, '10.0.1', '<' ) ) {
+		if ( version_compare( $prev_ver, '10.1.1', '<' ) ) {
 			$require = true;
 		}
 		if ( apply_filters( 'fep_require_manual_update', $require, $prev_ver ) ) {
@@ -192,8 +192,8 @@ class Fep_Update {
 		if ( version_compare( $prev_ver, '5.1', '<' ) ) {
 			$this->update_version_51();
 		}
-		if ( version_compare( $prev_ver, '10.0.1', '<' ) ) {
-			$this->update_version_1001();
+		if ( version_compare( $prev_ver, '10.1.1', '<' ) ) {
+			$this->update_version_1011();
 		}
 		do_action( 'fep_plugin_manual_update', $prev_ver );
 		do_action( 'fep_plugin_update', $prev_ver );
@@ -229,11 +229,11 @@ class Fep_Update {
 		);
 		wp_send_json( $response );
 	}
-	
-	function update_version_1001() {
+
+	function update_version_1011() {
 		global $wpdb;
-		
-		$updated = fep_get_option( 'v1001', 0, 'fep_updated_versions' );
+
+		$updated = fep_get_option( 'v1011', 0, 'fep_updated_versions' );
 		if ( $updated ) {
 			return;
 		}
@@ -243,8 +243,8 @@ class Fep_Update {
 		}
 		$custom_int = isset( $_POST['custom_int'] ) ? absint( $_POST['custom_int'] ) : 0;
 		$custom_str = isset( $_POST['custom_str'] ) ? sanitize_text_field( $_POST['custom_str']) : 'messages';
-		
-		if ( ! fep_get_option( 'v1001-part-1', 0, 'fep_updated_versions' ) ) {			
+
+		if ( ! fep_get_option( 'v1011-part-1', 0, 'fep_updated_versions' ) ) {
 			delete_metadata( 'user', 0, $wpdb->get_blog_prefix() . 'FEP_user_options', '', true );
 			delete_metadata( 'user', 0, $wpdb->get_blog_prefix() . '_fep_user_message_count', '', true );
 			delete_metadata( 'user', 0, $wpdb->get_blog_prefix() . '_fep_user_announcement_count', '', true );
@@ -288,9 +288,9 @@ class Fep_Update {
 					$role_obj->remove_cap( $cap );
 				}
 			}
-			
-			fep_update_option( 'v1001-part-1', 1, 'fep_updated_versions' );
-			
+
+			fep_update_option( 'v1011-part-1', 1, 'fep_updated_versions' );
+
 			$response = array(
 				'update'	=> 'continue',
 				'message'	=> __( 'Old style user meta deleted.', 'front-end-pm' ),
@@ -364,8 +364,8 @@ class Fep_Update {
 		}
 		
 		update_option( '_fep_can_delete_all', 1 );
-		
-		fep_update_option( 'v1001', 1, 'fep_updated_versions' );
+
+		fep_update_option( 'v1011', 1, 'fep_updated_versions' );
 		$response = array(
 			'update'	=> 'continue',
 			'message'	=> __( 'All messages and announcements updated', 'front-end-pm' ),
@@ -418,7 +418,7 @@ class Fep_Update {
 			'mgs_content'           => $announcement->post_content,
 			'mgs_last_reply_excerpt'=> fep_get_the_excerpt_from_content( 100, $announcement->post_content ),
 			'mgs_type'              => 'announcement',
-			'mgs_status'            => $announcement->post_status,	
+			'mgs_status'            => $announcement->post_status,
 		);
 		
 		$mgs_obj = new FEP_Message;
@@ -479,7 +479,7 @@ class Fep_Update {
 			'mgs_title'             => $message->post_title,
 			'mgs_content'           => $message->post_content,
 			'mgs_type'              => 'message',
-			'mgs_status'            => $message->post_status,	
+			'mgs_status'            => $message->post_status,
 		);
 		if( 'threaded' == fep_get_message_view() ){
 			$arr['mgs_last_reply_by'] = get_post_meta( $message->ID, '_fep_last_reply_by', true );
@@ -524,7 +524,7 @@ class Fep_Update {
 				'mgs_title'             => $reply->post_title,
 				'mgs_content'           => $reply->post_content,
 				'mgs_type'              => 'message',
-				'mgs_status'            => $reply->post_status,	
+				'mgs_status'            => $reply->post_status,
 			);
 			$reply_obj = new FEP_Message;
 			$reply_id = $reply_obj->insert( $arr );
@@ -561,7 +561,7 @@ class Fep_Update {
 		}
 		if( $new_attachments ){
 			$mgs_obj->insert_attachments( $new_attachments );
-		}	
+		}
 	}
 	
 	function insert_participants( $message_id, $mgs_obj ){

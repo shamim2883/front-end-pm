@@ -220,15 +220,15 @@ function fep_enqueue_scripts() {
 		wp_add_inline_style( 'fep-common-style', $custom_css );
 	}
 	wp_register_script( 'fep-script', FEP_PLUGIN_URL . 'assets/js/script.js', array( 'jquery' ), FEP_PLUGIN_VERSION, true );
-	wp_localize_script( 'fep-script', 'fep_script', 
-		array( 
+	wp_localize_script( 'fep-script', 'fep_script',
+		array(
 			'ajaxurl'	=> admin_url( 'admin-ajax.php' ),
 			'nonce'		=> wp_create_nonce( 'fep-autosuggestion' ),
-		) 
+		)
 	);
 	wp_register_script( 'fep-notification-script', FEP_PLUGIN_URL . 'assets/js/notification.js', array( 'jquery' ), FEP_PLUGIN_VERSION, true );
 	$call_on_ready = ( isset( $_GET['fepaction'] ) &&
-		( ( 'viewmessage' == $_GET['fepaction'] && fep_get_new_message_number() ) || ( 'view_announcement' == $_GET['fepaction'] && fep_get_new_announcement_number() ) ) 
+		( ( 'viewmessage' == $_GET['fepaction'] && fep_get_new_message_number() ) || ( 'view_announcement' == $_GET['fepaction'] && fep_get_new_announcement_number() ) )
 	) ? '1' : '0';
 	wp_localize_script( 'fep-notification-script', 'fep_notification_script',
 		apply_filters( 'fep_filter_notification_script_localize', array(
@@ -264,14 +264,14 @@ function fep_enqueue_scripts() {
 			'ajaxurl'		=> admin_url( 'admin-ajax.php' ),
 			'token'			=> wp_create_nonce( 'fep_message' ),
 			'refresh_text'	=> __( 'Refresh this page and try again. ', 'front-end-pm' ),
-		) 
+		)
 	);
 	wp_register_script( 'fep-tokeninput-script', FEP_PLUGIN_URL . 'assets/js/jquery.tokeninput.js', array( 'jquery' ), FEP_PLUGIN_VERSION, true );
 	wp_register_script( 'fep-block-unblock-script', FEP_PLUGIN_URL . 'assets/js/block-unblock.js', array( 'jquery' ), FEP_PLUGIN_VERSION, true );
 	wp_localize_script( 'fep-block-unblock-script', 'fep_block_unblock_script', array(
 			'ajaxurl'	=> admin_url( 'admin-ajax.php' ),
 			'token'		=> wp_create_nonce( 'fep-block-unblock-script' ),
-		) 
+		)
 	);
 	wp_register_script( 'fep-cb-check-uncheck-all', FEP_PLUGIN_URL . 'assets/js/check-uncheck-all.js', array( 'jquery' ), FEP_PLUGIN_VERSION, true );
 }
@@ -302,7 +302,7 @@ function fep_query_url_without_esc( $action, $arg = array() ) {
 		$url = add_query_arg( $args, get_permalink( fep_page_id() ) );
 	} else {
 		$url = add_query_arg( $args );
-	}	
+	}
 	return apply_filters( 'fep_query_url_without_esc_filter', $url, $args );
 }
 
@@ -580,7 +580,7 @@ function fep_get_user_announcement_count( $value = 'all', $force = false, $user_
 }
 
 function fep_get_message( $id ) {
-	return FEP_Message::get_instance( $id );	
+	return FEP_Message::get_instance( $id );
 }
 
 function fep_get_replies( $id ) {
@@ -597,7 +597,7 @@ function fep_get_replies( $id ) {
 
 function fep_get_attachments( $post_id = 0, $fields = '' ) {
 	if ( '' !== $fields ) {
-		_deprecated_argument( __FUNCTION__, '10.0.1' );
+		_deprecated_argument( __FUNCTION__, '10.1.1' );
 	}
 	if ( ! $post_id ) {
 		$post_id = fep_get_the_id();
@@ -803,7 +803,7 @@ function fep_current_user_can( $cap, $id = false ) {
 				$can = true;
 			}
 			break;
-		default :	
+		default :
 			$can = apply_filters( 'fep_current_user_can_' . $cap, $can, $cap, $id );
 			break;
 	}
@@ -1131,7 +1131,7 @@ function fep_footer_credit() {
 		$style = ' style="display:none;"';
 	}
 	echo '<div' . $style . '><a href="https://www.shamimsplugins.com/products/front-end-pm-pro/" target="_blank">Front End PM</a></div>';
-}	
+}
 
 function fep_notification_div() {
 	if ( ! fep_current_user_can( 'access_message' ) ) {
@@ -1439,7 +1439,7 @@ function fep_block_users_for_user( $user_ids, $userid = '' ) {
 	}
 	if ( ! $user_ids || ! is_array( $user_ids ) ) {
 		return 0;
-	}	
+	}
 	$blocked_users = fep_get_blocked_users_for_user( $userid = '' );
 	$need_block = array_diff( $user_ids, $blocked_users );
 	if ( $need_block ) {
@@ -1490,7 +1490,7 @@ function fep_show_unread_count_in_title( $title ) {
 	return $title;
 }
 
-function fep_pre_get_document_title( $title ) {	
+function fep_pre_get_document_title( $title ) {
 	if ( ! empty( $title ) && fep_get_option( 'show_unread_count_in_title', 1 ) && fep_current_user_can( 'access_message' ) ) {
 		wp_enqueue_script( 'fep-notification-script' );
 		if ( $count = fep_get_new_message_number() ) {
