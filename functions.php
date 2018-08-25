@@ -10,7 +10,7 @@ function fep_register_metadata_table(){
 
 function fep_create_database(){
 	global $wpdb;
-	$installed_ver = get_option( 'fep_db_version' );
+	$installed_ver = get_site_option( 'fep_db_version' );
 	if ( $installed_ver != FEP_DB_VERSION ) {
 		$charset_collate = $wpdb->get_charset_collate();
 
@@ -76,7 +76,7 @@ function fep_create_database(){
 		dbDelta( $sql_meta );
 		dbDelta( $sql_attachments );
 
-		update_option( 'fep_db_version', FEP_DB_VERSION );
+		update_site_option( 'fep_db_version', FEP_DB_VERSION );
 	}
 }
 
