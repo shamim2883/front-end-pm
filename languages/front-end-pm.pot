@@ -5,9 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: "
-"Front End PM 8.1\n"
+"Front End PM 10.1.1\n"
 "POT-Creation-Date: "
-"2018-04-08 13:04+0600\n"
+"2018-08-25 19:41+0600\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Your "
 "Name <you@example.com>\n"
@@ -47,207 +47,373 @@ msgstr ""
 "X-Poedit-Basepath: ..\n"
 "Language: en_US\n"
 "X-Generator: Poedit "
-"2.0.4\n"
+"2.0.6\n"
 "X-Poedit-"
 "SearchPath-0: .\n"
 
-#: admin/class-fep-admin-settings.php:38
-#: admin/class-fep-admin-settings.php:1036
-#: includes/class-fep-menu.php:56
-#: includes/class-fep-user-settings.php:35
+#: admin/class-fep-admin-pages.php:30
+msgid "All Messages"
+msgstr ""
+
+#: admin/class-fep-admin-pages.php:32
+msgid "All Announcements"
+msgstr ""
+
+#: admin/class-fep-admin-pages.php:34
+msgid "All Attachments"
+msgstr ""
+
+#: admin/class-fep-admin-pages.php:42
+#: admin/class-fep-admin-pages.php:430
+msgid "Messages"
+msgstr ""
+
+#: admin/class-fep-admin-pages.php:46
+#: admin/class-fep-admin-pages.php:73
+#: admin/class-fep-admin-pages.php:100
+#, php-format
+msgid ""
+"Search results for "
+"&#8220;%s&#8221;"
+msgstr ""
+
+#: admin/class-fep-admin-pages.php:50
+msgid "message"
+msgstr ""
+
+#: admin/class-fep-admin-pages.php:54
+#: admin/class-fep-admin-pages.php:81
+#: admin/class-fep-admin-pages.php:108
+msgid "Search"
+msgstr ""
+
+#: admin/class-fep-admin-pages.php:69
+#: admin/class-fep-admin-pages.php:500
+msgid "Announcements"
+msgstr ""
+
+#: admin/class-fep-admin-pages.php:77
+msgid "announcement"
+msgstr ""
+
+#: admin/class-fep-admin-pages.php:96
+#: admin/class-fep-admin-pages.php:423
+#: admin/class-fep-admin-pages.php:493
+msgid "Attachments"
+msgstr ""
+
+#: admin/class-fep-admin-pages.php:104
+msgid "attachment"
+msgstr ""
+
+#: admin/class-fep-admin-pages.php:143
+#: admin/class-fep-admin-pages.php:147
+#: admin/class-fep-admin-pages.php:230
+#: admin/class-fep-update.php:79
+msgid "Invalid request!"
+msgstr ""
+
+#: admin/class-fep-admin-pages.php:154
+#: admin/class-fep-admin-pages.php:176
+#: admin/class-fep-admin-pages.php:198
+#: admin/class-fep-admin-pages.php:253
+#: admin/class-fep-admin-pages.php:276
+#: admin/class-fep-admin-pages.php:292
+#: admin/class-fep-update.php:82
+msgid "Invalid nonce!"
+msgstr ""
+
+#: admin/class-fep-admin-pages.php:324
+#, php-format
+msgid "%1$s %2$s updated."
+msgid_plural ""
+"%1$s %2$ss updated."
+msgstr[0] ""
+msgstr[1] ""
+
+#: admin/class-fep-admin-pages.php:325
+#, php-format
+msgid ""
+"%1$s %2$s permanently "
+"deleted."
+msgid_plural ""
+"%1$s %2$ss permanently "
+"deleted."
+msgstr[0] ""
+msgstr[1] ""
+
+#: admin/class-fep-admin-pages.php:326
+#, php-format
+msgid ""
+"%1$s %2$s status changed."
+msgid_plural ""
+"%1$s %2$ss status "
+"changed."
+msgstr[0] ""
+msgstr[1] ""
+
+#: admin/class-fep-admin-pages.php:348
+#: admin/class-fep-admin-pages.php:354
+#: includes/fep-class.php:136
+#: includes/fep-class.php:141
+#: templates/view-message.php:87
+msgid ""
+"You do not have "
+"permission to view this "
+"message!"
+msgstr ""
+
+#: admin/class-fep-admin-pages.php:356
+#: includes/class-fep-announcements.php:305
+#: includes/class-fep-announcements.php:311
+#: templates/view-announcement.php:35
+msgid ""
+"You do not have "
+"permission to view this "
+"announcement!"
+msgstr ""
+
+#: admin/class-fep-admin-pages.php:365
+#: admin/class-fep-admin-pages.php:517
+#, php-format
+msgid "%s Messages"
+msgstr ""
+
+#: admin/class-fep-admin-pages.php:369
+#: admin/class-fep-admin-pages.php:525
+#, php-format
+msgid "%s Announcements"
+msgstr ""
+
+#: admin/class-fep-admin-pages.php:409
+#: admin/class-fep-admin-pages.php:479
+#: includes/class-fep-announcements.php:251
+msgid "Date"
+msgstr ""
+
+#: admin/class-fep-admin-pages.php:413
+#: admin/class-fep-pro-info.php:31
+#: admin/class-fep-wp-list-table.php:102
+#: includes/class-fep-form.php:54
+#: includes/class-fep-form.php:58
+#: templates/admin-view-message-announcement.php:12
+msgid "Subject"
+msgstr ""
+
+#: admin/class-fep-admin-pages.php:417
+#: admin/class-fep-admin-pages.php:487
+msgid "Content"
+msgstr ""
+
+#: admin/class-fep-admin-pages.php:483
+#: includes/class-fep-announcements.php:252
+#: includes/class-fep-messages.php:323
+msgid "Title"
+msgstr ""
+
+#: admin/class-fep-admin-pages.php:521
+#, php-format
+msgid "%s Replies"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:32
+#: admin/class-fep-admin-settings.php:980
+#: includes/class-fep-user-settings.php:29
 msgid "Settings"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:39
+#: admin/class-fep-admin-settings.php:34
 msgid "Extensions"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:96
+#: admin/class-fep-admin-settings.php:80
 msgid "Use Current Page"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:108
+#: admin/class-fep-admin-settings.php:90
 msgid "Front End PM Page"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:110
+#: admin/class-fep-admin-settings.php:92
+#, php-format
 msgid ""
-"Must have <code>[front-"
-"end-pm]</code> in "
-"content."
+"The page must have %s "
+"shortcode in content."
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:117
+#: admin/class-fep-admin-settings.php:99
 msgid "Message view"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:118
+#: admin/class-fep-admin-settings.php:100
 msgid ""
 "This setting change will "
 "redirect you to update "
 "page for database update."
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:120
+#: admin/class-fep-admin-settings.php:102
 msgid "Threaded"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:121
+#: admin/class-fep-admin-settings.php:103
 msgid "Individual"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:128
-#: admin/class-fep-admin-settings.php:129
-msgid ""
-"Messages to show per page"
+#: admin/class-fep-admin-settings.php:110
+msgid "Messages per page"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:135
+#: admin/class-fep-admin-settings.php:111
+msgid ""
+"Messages to show per "
+"page."
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:117
 msgid ""
 "Announcements per page"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:136
+#: admin/class-fep-admin-settings.php:118
 msgid ""
 "Announcements to show "
-"per page"
+"per page."
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:143
-#: admin/class-fep-admin-settings.php:144
+#: admin/class-fep-admin-settings.php:124
 msgid ""
-"Maximum user per page in "
-"Directory"
+"Maximum users per page "
+"in directory"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:151
+#: admin/class-fep-admin-settings.php:125
+msgid ""
+"Maximum users per page "
+"in directory."
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:131
 msgid "Time delay"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:152
+#: admin/class-fep-admin-settings.php:132
 msgid ""
 "Time delay between two "
-"messages send by a user "
-"in minutes (0 = No delay "
-"required)"
+"sent messages by a user "
+"in minutes (0 = no delay "
+"required)."
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:159
-msgid "Custom CSS"
-msgstr ""
-
-#: admin/class-fep-admin-settings.php:160
-msgid "add or override."
-msgstr ""
-
-#: admin/class-fep-admin-settings.php:167
+#: admin/class-fep-admin-settings.php:138
 msgid "Editor Type"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:170
-msgid "Wp Editor"
+#: admin/class-fep-admin-settings.php:141
+msgid "WP Editor"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:171
-msgid "Wp Editor (Teeny)"
+#: admin/class-fep-admin-settings.php:142
+msgid "WP Editor (Teeny)"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:172
+#: admin/class-fep-admin-settings.php:143
 msgid "Textarea"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:180
+#: admin/class-fep-admin-settings.php:150
 msgid ""
 "Parent Message Status"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:181
+#: admin/class-fep-admin-settings.php:151
 msgid ""
 "Parent Message status "
 "when sent from front end."
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:183
-#: admin/class-fep-admin-settings.php:195
-msgid "Publish"
-msgstr ""
-
-#: admin/class-fep-admin-settings.php:184
-#: admin/class-fep-admin-settings.php:196
-msgid "Pending"
-msgstr ""
-
-#: admin/class-fep-admin-settings.php:192
+#: admin/class-fep-admin-settings.php:158
 msgid ""
 "Reply Message Status"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:193
+#: admin/class-fep-admin-settings.php:159
 msgid ""
 "Reply Message status "
 "when sent from front end."
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:205
+#: admin/class-fep-admin-settings.php:166
+msgid ""
+"Attachment Default Status"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:167
+msgid ""
+"Only publish attachments "
+"will show to users"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:175
 msgid "Allow Attachment"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:206
+#: admin/class-fep-admin-settings.php:176
 msgid ""
 "Allow to attach "
 "attachment with message?"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:212
+#: admin/class-fep-admin-settings.php:182
 msgid ""
 "Maximum size of "
 "attachment"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:213
+#: admin/class-fep-admin-settings.php:183
 msgid ""
-"Use KB, MB or GB.(eg. "
-"4MB)"
+"Use KB, MB or GB (eg. "
+"4MB)."
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:219
+#: admin/class-fep-admin-settings.php:189
 msgid "Maximum attachments"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:220
+#: admin/class-fep-admin-settings.php:190
 msgid ""
 "Maximum Number of "
 "attachments a user can "
-"add with message"
+"add with message."
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:228
+#: admin/class-fep-admin-settings.php:197
 msgid "Show Directory"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:229
+#: admin/class-fep-admin-settings.php:198
 msgid ""
 "Show Directory in front "
 "end?"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:230
-#: admin/class-fep-admin-settings.php:360
+#: admin/class-fep-admin-settings.php:199
+#: admin/class-fep-admin-settings.php:336
 msgid ""
 "Always shown to Admins."
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:238
+#: admin/class-fep-admin-settings.php:206
 msgid ""
 "Show Branding Footer"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:245
+#: admin/class-fep-admin-settings.php:213
 msgid ""
 "Remove Data on Uninstall?"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:246
+#: admin/class-fep-admin-settings.php:214
 #, php-format
 msgid ""
 "Check this box if you "
@@ -257,168 +423,229 @@ msgid ""
 "is deleted."
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:253
+#: admin/class-fep-admin-settings.php:221
 msgid "Load CSS file"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:254
+#: admin/class-fep-admin-settings.php:222
 msgid ""
 "Select when you want to "
 "load CSS file of this "
-"plugin"
+"plugin."
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:256
+#: admin/class-fep-admin-settings.php:224
 msgid "Always"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:257
+#: admin/class-fep-admin-settings.php:225
 msgid ""
 "Only in message page"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:258
+#: admin/class-fep-admin-settings.php:226
 msgid "Never"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:268
+#: admin/class-fep-admin-settings.php:234
+msgid "Custom CSS"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:235
+msgid "Add or override."
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:244
 msgid "Background Color"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:277
+#: admin/class-fep-admin-settings.php:253
 msgid "Text Color"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:286
+#: admin/class-fep-admin-settings.php:262
 msgid "Link Color"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:295
+#: admin/class-fep-admin-settings.php:271
 msgid "Button Color"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:304
+#: admin/class-fep-admin-settings.php:280
 msgid "Button Text Color"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:313
+#: admin/class-fep-admin-settings.php:289
 msgid "Active Button Color"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:322
+#: admin/class-fep-admin-settings.php:298
 msgid ""
 "Active Button Text Color"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:331
+#: admin/class-fep-admin-settings.php:307
 msgid "Odd Messages Color"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:340
+#: admin/class-fep-admin-settings.php:316
 msgid "Even Messages Color"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:349
+#: admin/class-fep-admin-settings.php:325
 msgid ""
 "Messages Heading Color"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:358
+#: admin/class-fep-admin-settings.php:334
 msgid "Show Autosuggestion"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:359
+#: admin/class-fep-admin-settings.php:335
 msgid ""
 "Show Autosuggestion when "
 "typing recipient name?"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:375
-msgid "Email Content Type"
+#: admin/class-fep-admin-settings.php:347
+msgid "Export Messages"
 msgstr ""
 
+#: admin/class-fep-admin-settings.php:355
+msgid ""
+"Export Announcements"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:362
+msgid "Erase Messages"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:363
+msgid ""
+"If set Erase and message "
+"view as threaded, then "
+"all replies of that "
+"message will also be "
+"erased regardless of "
+"sender and erase replies "
+"setup."
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:365
 #: admin/class-fep-admin-settings.php:377
-msgid "HTML"
+#: admin/class-fep-admin-settings.php:389
+msgid "No Action"
 msgstr ""
 
+#: admin/class-fep-admin-settings.php:366
 #: admin/class-fep-admin-settings.php:378
-msgid "Plain Text"
+#: admin/class-fep-admin-settings.php:390
+#: admin/class-fep-admin-settings.php:814
+msgid "Erase"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:367
+#: admin/class-fep-admin-settings.php:379
+#: admin/class-fep-admin-settings.php:391
+msgid "Anonymize"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:375
+msgid "Erase Replies"
 msgstr ""
 
 #: admin/class-fep-admin-settings.php:387
+msgid "Erase Announcements"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:400
+msgid "Email Content Type"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:402
+msgid "HTML"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:403
+msgid "Plain Text"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:411
 msgid "From Name"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:388
+#: admin/class-fep-admin-settings.php:412
 msgid ""
-"All email send by Front "
+"All sent emails by Front "
 "End PM plugin will have "
 "this name as sender."
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:396
+#: admin/class-fep-admin-settings.php:419
 msgid "From Email"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:397
+#: admin/class-fep-admin-settings.php:420
 msgid ""
-"All email send by Front "
+"All sent emails by Front "
 "End PM plugin will have "
 "this email address as "
 "sender."
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:405
+#: admin/class-fep-admin-settings.php:428
 msgid "Send email?"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:406
+#: admin/class-fep-admin-settings.php:429
 msgid ""
 "Send email to all users "
 "when a new announcement "
 "is published?"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:413
+#: admin/class-fep-admin-settings.php:436
 msgid ""
 "Valid email address for "
 "\"to\" field of "
 "announcement email"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:414
+#: admin/class-fep-admin-settings.php:437
 msgid ""
 "All users email will be "
 "in \"Bcc\" field."
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:426
+#: admin/class-fep-admin-settings.php:447
 msgid ""
 "Who can access message "
 "system?"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:428
+#: admin/class-fep-admin-settings.php:449
 msgid ""
 "User must have access "
 "permission to send new "
 "message or reply."
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:438
+#: admin/class-fep-admin-settings.php:458
 msgid ""
-"Who can send new message?"
+"Who can send new "
+"messages?"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:448
-msgid "Who can send reply?"
+#: admin/class-fep-admin-settings.php:468
+msgid ""
+"Who can send replies?"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:456
+#: admin/class-fep-admin-settings.php:476
 msgid "Whitelist Username"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:457
+#: admin/class-fep-admin-settings.php:477
 msgid ""
 "Separated by comma. "
 "These users have all "
@@ -426,11 +653,11 @@ msgid ""
 "role also."
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:464
+#: admin/class-fep-admin-settings.php:484
 msgid "Blacklist Username"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:465
+#: admin/class-fep-admin-settings.php:485
 msgid ""
 "Separated by comma. "
 "These users have NO "
@@ -438,53 +665,54 @@ msgid ""
 "role also."
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:473
+#: admin/class-fep-admin-settings.php:493
 msgid "Block other users"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:474
+#: admin/class-fep-admin-settings.php:494
 msgid ""
 "Can user block other "
 "users?"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:482
-msgid "Add Announcement"
-msgstr ""
-
-#: admin/class-fep-admin-settings.php:483
-msgid ""
-"Can permitted users add "
-"Announcement from "
-"frontend?"
-msgstr ""
-
-#: admin/class-fep-admin-settings.php:493
-msgid "Show notification"
-msgstr ""
-
-#: admin/class-fep-admin-settings.php:494
-msgid ""
-"Show site wide "
-"notification in header?"
-msgstr ""
-
 #: admin/class-fep-admin-settings.php:502
-msgid "Show count"
+msgid "Add Announcement"
 msgstr ""
 
 #: admin/class-fep-admin-settings.php:503
 msgid ""
-"Show unread message "
+"Can permitted users add "
+"Announcement from front "
+"end?"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:512
+msgid "Show notification"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:513
+msgid ""
+"Show site wide "
+"notification in header "
+"site?"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:521
+msgid "Show count"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:522
+msgid ""
+"Show unread messages "
 "count in website title?"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:511
+#: admin/class-fep-admin-settings.php:530
 msgid ""
 "Show desktop notification"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:512
+#: admin/class-fep-admin-settings.php:531
 msgid ""
 "Show desktop "
 "notification for new "
@@ -492,103 +720,168 @@ msgid ""
 "announcements?"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:520
+#: admin/class-fep-admin-settings.php:539
 msgid "Play Sound"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:521
+#: admin/class-fep-admin-settings.php:540
 msgid ""
 "Play notification sound "
 "on message and "
 "announcement received?"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:532
+#: admin/class-fep-admin-settings.php:549
 #, php-format
 msgid ""
 "Max messages a %s can "
 "keep in box? (0 = "
-"Unlimited)"
+"unlimited)"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:538
+#: admin/class-fep-admin-settings.php:553
 msgid "Create Page"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:687
-#: includes/class-fep-form.php:392
+#: admin/class-fep-admin-settings.php:666
+#: includes/class-fep-form.php:384
 #, php-format
 msgid ""
 "No Function or Hook "
 "defined for %s field type"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:709
+#: admin/class-fep-admin-settings.php:682
 #, php-format
 msgid ""
 "Provide valid email "
 "address for %s"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:715
+#: admin/class-fep-admin-settings.php:688
 #, php-format
 msgid ""
 "Provide valid color for "
 "%s"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:736
-#: admin/class-fep-admin-settings.php:747
+#: admin/class-fep-admin-settings.php:708
+#: admin/class-fep-admin-settings.php:718
 #, php-format
 msgid ""
 "Invalid value for %s"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:820
+#: admin/class-fep-admin-settings.php:772
 msgid "General"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:824
+#: admin/class-fep-admin-settings.php:776
 msgid "Appearance"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:828
+#: admin/class-fep-admin-settings.php:780
+#: templates/admin-view-message-announcement.php:18
 msgid "Recipient"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:844
+#: admin/class-fep-admin-settings.php:792
+msgid "Privacy"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:796
 msgid "Emails"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:848
+#: admin/class-fep-admin-settings.php:800
 msgid "Security"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:852
+#: admin/class-fep-admin-settings.php:804
 msgid "Misc"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:856
+#: admin/class-fep-admin-settings.php:808
+msgid "Export"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:820
 msgid "Notification"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:862
+#: admin/class-fep-admin-settings.php:826
 msgid "Message Box"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:945
+#: admin/class-fep-admin-settings.php:895
 msgid "Plugin Author"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:961
+#: admin/class-fep-admin-settings.php:909
 msgid "Some Useful Links"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:978
+#: admin/class-fep-admin-settings.php:915
+msgid ""
+"Basic Admin Settings"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:916
+msgid "Walkthrough"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:917
+msgid "Remove minlength"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:918
+msgid "Remove menu"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:919
+msgid "Shortcodes"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:926
 msgid "Front End PM PRO"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:1024
+#: admin/class-fep-admin-settings.php:932
+#: admin/class-fep-pro-info.php:80
+msgid "Email Piping"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:933
+msgid "Multiple Recipient"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:934
+msgid "Only Admin"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:935
+msgid "Group Messaging"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:936
+msgid "Email Beautify"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:937
+#: admin/class-fep-pro-info.php:321
+msgid "Read Receipt"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:938
+#: admin/class-fep-pro-info.php:129
+msgid "Role to Role Block"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:939
+msgid "View More"
+msgstr ""
+
+#: admin/class-fep-admin-settings.php:968
 #, php-format
 msgid ""
 "Like %s plugin? Please "
@@ -597,87 +890,157 @@ msgid ""
 "5&#9733; rating."
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:1026
+#: admin/class-fep-admin-settings.php:970
 msgid "Sure, deserve it"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:1027
+#: admin/class-fep-admin-settings.php:971
 msgid "Maybe later"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:1028
+#: admin/class-fep-admin-settings.php:972
 msgid "Already did"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:34
-#: includes/class-fep-form.php:61
-#: includes/class-fep-form.php:65
-msgid "Subject"
+#: admin/class-fep-attachments-list-table.php:55
+#: admin/class-fep-wp-list-table.php:89
+#, php-format
+msgid "Select %s"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:37
+#: admin/class-fep-attachments-list-table.php:64
+msgid "Thubmnail"
+msgstr ""
+
+#: admin/class-fep-attachments-list-table.php:65
+#: includes/class-fep-directory.php:114
+msgid "Name"
+msgstr ""
+
+#: admin/class-fep-attachments-list-table.php:66
+msgid "Mime"
+msgstr ""
+
+#: admin/class-fep-attachments-list-table.php:67
+#: admin/class-fep-wp-list-table.php:106
+msgid "Status"
+msgstr ""
+
+#: admin/class-fep-attachments-list-table.php:68
+msgid "Message id"
+msgstr ""
+
+#: admin/class-fep-attachments-list-table.php:86
+#: admin/class-fep-attachments-list-table.php:143
+#: admin/class-fep-wp-list-table.php:132
+#: admin/class-fep-wp-list-table.php:185
+#: includes/class-fep-announcements.php:233
+#: includes/class-fep-messages.php:294
+msgid "Delete"
+msgstr ""
+
+#: admin/class-fep-attachments-list-table.php:87
+#: admin/class-fep-wp-list-table.php:133
+msgid ""
+"Status change to pending"
+msgstr ""
+
+#: admin/class-fep-attachments-list-table.php:88
+#: admin/class-fep-wp-list-table.php:134
+msgid ""
+"Status change to publish"
+msgstr ""
+
+#: admin/class-fep-attachments-list-table.php:143
+#: admin/class-fep-wp-list-table.php:185
+msgid ""
+"Are you sure you want to "
+"delete this?"
+msgstr ""
+
+#: admin/class-fep-attachments-list-table.php:145
+msgid "View Attachment"
+msgstr ""
+
+#: admin/class-fep-attachments-list-table.php:145
+#: admin/class-fep-wp-list-table.php:187
+msgid "View"
+msgstr ""
+
+#: admin/class-fep-attachments-list-table.php:146
+msgid "Download Attachment"
+msgstr ""
+
+#: admin/class-fep-attachments-list-table.php:146
+msgid "Download"
+msgstr ""
+
+#: admin/class-fep-attachments-list-table.php:155
+#: admin/class-fep-wp-list-table.php:203
+msgid "Show All"
+msgstr ""
+
+#: admin/class-fep-attachments-list-table.php:161
+#: admin/class-fep-wp-list-table.php:209
+msgid "Filter"
+msgstr ""
+
+#: admin/class-fep-pro-info.php:34
 msgid "Full Message"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:40
+#: admin/class-fep-pro-info.php:37
 msgid "URL of message"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:44
+#: admin/class-fep-pro-info.php:41
 msgid "URL of announcement"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:48
-#: includes/class-fep-cpt.php:205
+#: admin/class-fep-pro-info.php:45
+#: admin/class-fep-wp-list-table.php:103
+#: templates/admin-view-message-announcement.php:15
 msgid "Sender"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:51
+#: admin/class-fep-pro-info.php:48
 msgid "Receiver"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:54
+#: admin/class-fep-pro-info.php:51
 msgid "Website title"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:57
+#: admin/class-fep-pro-info.php:54
 msgid "Website URL"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:86
-msgid "Email Piping"
-msgstr ""
-
-#: admin/class-fep-pro-info.php:93
+#: admin/class-fep-pro-info.php:87
 msgid "New Message email"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:100
+#: admin/class-fep-pro-info.php:94
 msgid "Reply Message email"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:107
+#: admin/class-fep-pro-info.php:101
 msgid "Announcement email"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:114
+#: admin/class-fep-pro-info.php:108
 msgid "Multiple Recipients"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:121
+#: admin/class-fep-pro-info.php:115
 msgid "Only Admins"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:128
-#: admin/class-fep-pro-info.php:384
+#: admin/class-fep-pro-info.php:122
+#: admin/class-fep-pro-info.php:371
 msgid "Groups"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:135
-msgid "Role to Role Block"
-msgstr ""
-
-#: admin/class-fep-pro-info.php:177
+#: admin/class-fep-pro-info.php:167
 #, php-format
 msgid ""
 "Following features only "
@@ -687,303 +1050,358 @@ msgid ""
 "\">Upgrade to PRO</a>"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:191
+#: admin/class-fep-pro-info.php:179
 msgid "Enable"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:192
+#: admin/class-fep-pro-info.php:180
 msgid ""
 "Enable email piping?"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:198
+#: admin/class-fep-pro-info.php:186
 msgid ""
 "Use this email as email "
 "piping."
 msgstr ""
 
-#: admin/class-fep-pro-info.php:199
+#: admin/class-fep-pro-info.php:187
 msgid "Piping Email"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:206
+#: admin/class-fep-pro-info.php:194
 msgid "Clean reply quote"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:207
+#: admin/class-fep-pro-info.php:195
 msgid ""
 "Clean reply quote from "
 "email?"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:210
+#: admin/class-fep-pro-info.php:198
 msgid "Default"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:216
+#: admin/class-fep-pro-info.php:203
 msgid ""
 "New message email "
 "template"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:224
+#: admin/class-fep-pro-info.php:211
 msgid ""
 "New message subject."
 msgstr ""
 
-#: admin/class-fep-pro-info.php:231
+#: admin/class-fep-pro-info.php:218
 msgid ""
 "New message content."
 msgstr ""
 
-#: admin/class-fep-pro-info.php:238
-#: admin/class-fep-pro-info.php:266
-#: admin/class-fep-pro-info.php:308
+#: admin/class-fep-pro-info.php:225
+#: admin/class-fep-pro-info.php:253
+#: admin/class-fep-pro-info.php:295
 msgid "Send Attachments"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:239
+#: admin/class-fep-pro-info.php:226
 msgid ""
 "Send attachments with "
 "new message email?"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:244
+#: admin/class-fep-pro-info.php:231
 msgid ""
 "Reply message email "
 "template"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:252
+#: admin/class-fep-pro-info.php:239
 msgid "Reply subject."
 msgstr ""
 
-#: admin/class-fep-pro-info.php:259
+#: admin/class-fep-pro-info.php:246
 msgid "Reply content."
 msgstr ""
 
-#: admin/class-fep-pro-info.php:267
+#: admin/class-fep-pro-info.php:254
 msgid ""
 "Send attachments with "
 "reply message email?"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:273
+#: admin/class-fep-pro-info.php:260
 msgid "Sending Interval."
 msgstr ""
 
-#: admin/class-fep-pro-info.php:274
+#: admin/class-fep-pro-info.php:261
 msgid ""
 "Announcement sending "
 "Interval in minutes."
 msgstr ""
 
-#: admin/class-fep-pro-info.php:280
+#: admin/class-fep-pro-info.php:267
 msgid ""
 "Emails send per interval."
 msgstr ""
 
-#: admin/class-fep-pro-info.php:281
+#: admin/class-fep-pro-info.php:268
 msgid ""
 "Announcement emails send "
 "per interval."
 msgstr ""
 
-#: admin/class-fep-pro-info.php:286
+#: admin/class-fep-pro-info.php:273
 msgid ""
 "Announcement email "
 "template"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:294
+#: admin/class-fep-pro-info.php:281
 msgid ""
 "Announcement subject."
 msgstr ""
 
-#: admin/class-fep-pro-info.php:301
+#: admin/class-fep-pro-info.php:288
 msgid ""
 "Announcement content."
 msgstr ""
 
-#: admin/class-fep-pro-info.php:309
+#: admin/class-fep-pro-info.php:296
 msgid ""
 "Send attachments with "
 "announcement email?"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:315
+#: admin/class-fep-pro-info.php:302
 msgid ""
 "Maximum recipients per "
 "message."
 msgstr ""
 
-#: admin/class-fep-pro-info.php:316
+#: admin/class-fep-pro-info.php:303
 msgid "Max recipients"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:322
+#: admin/class-fep-pro-info.php:309
 msgid ""
-"How message will be sent "
-"to recipients"
+"How messages will be "
+"sent to recipients?"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:323
+#: admin/class-fep-pro-info.php:310
 msgid "Message type"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:325
+#: admin/class-fep-pro-info.php:312
 msgid "Same Message"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:326
+#: admin/class-fep-pro-info.php:313
 msgid "Separate Message"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:334
-msgid "Read Receipt"
-msgstr ""
-
-#: admin/class-fep-pro-info.php:335
+#: admin/class-fep-pro-info.php:322
 msgid ""
 "Show read receipt bottom "
 "of every message?"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:342
+#: admin/class-fep-pro-info.php:329
 msgid ""
 "Can users send message "
-"to admin."
+"to admin?"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:343
-msgid "Can send to admin"
+#: admin/class-fep-pro-info.php:330
+msgid "Can send to admin?"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:349
-#: admin/class-fep-pro-info.php:383
-#: admin/class-fep-pro-info.php:401
+#: admin/class-fep-pro-info.php:336
+#: admin/class-fep-pro-info.php:370
+#: admin/class-fep-pro-info.php:388
 msgid ""
 "Do not forget to save."
 msgstr ""
 
-#: admin/class-fep-pro-info.php:350
+#: admin/class-fep-pro-info.php:337
 msgid "Admins"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:356
-#: admin/class-fep-pro-info.php:390
+#: admin/class-fep-pro-info.php:343
+#: admin/class-fep-pro-info.php:377
 msgid ""
 "Select how you want to "
 "see in frontend."
 msgstr ""
 
-#: admin/class-fep-pro-info.php:357
-#: admin/class-fep-pro-info.php:391
+#: admin/class-fep-pro-info.php:344
+#: admin/class-fep-pro-info.php:378
 msgid ""
 "Show in front end as"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:359
-#: admin/class-fep-pro-info.php:393
+#: admin/class-fep-pro-info.php:346
+#: admin/class-fep-pro-info.php:380
 msgid "Dropdown"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:360
-#: admin/class-fep-pro-info.php:394
+#: admin/class-fep-pro-info.php:347
+#: admin/class-fep-pro-info.php:381
 msgid "Radio Button"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:368
+#: admin/class-fep-pro-info.php:355
 msgid ""
 "Can users send message "
-"to group."
+"to group?"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:369
-msgid "Can send to group"
+#: admin/class-fep-pro-info.php:356
+msgid "Can send to group?"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:376
+#: admin/class-fep-pro-info.php:363
 msgid ""
 "Can users add themself "
 "to group."
 msgstr ""
 
-#: admin/class-fep-pro-info.php:377
+#: admin/class-fep-pro-info.php:364
 msgid "Can add to group"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:412
+#: admin/class-fep-pro-info.php:396
 msgid "Display as"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:413
+#: admin/class-fep-pro-info.php:397
 msgid "Username"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:414
-#: admin/class-fep-pro-info.php:432
-#: admin/class-fep-pro-info.php:439
-#: functions.php:303
-#: includes/class-fep-form.php:368
+#: admin/class-fep-pro-info.php:398
+#: admin/class-fep-pro-info.php:416
+#: admin/class-fep-pro-info.php:422
+#: functions.php:257
+#: includes/class-fep-form.php:366
 msgid "Remove"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:416
-#: admin/class-fep-pro-info.php:422
-#: admin/class-fep-pro-info.php:441
+#: admin/class-fep-pro-info.php:400
+#: admin/class-fep-pro-info.php:406
+#: admin/class-fep-pro-info.php:424
 msgid "Add More"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:429
+#: admin/class-fep-pro-info.php:413
 msgid "From Role"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:430
+#: admin/class-fep-pro-info.php:414
 msgid "To Role"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:431
+#: admin/class-fep-pro-info.php:415
 msgid "Block For"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:436
-#: admin/class-fep-pro-info.php:437
+#: admin/class-fep-pro-info.php:419
+#: admin/class-fep-pro-info.php:420
 msgid "Select Role"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:438
+#: admin/class-fep-pro-info.php:421
 msgid "Select For"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:447
+#: admin/class-fep-pro-info.php:429
 msgid ""
 "Send Message to admin"
 msgstr ""
 
-#: admin/class-fep-pro-info.php:448
+#: admin/class-fep-pro-info.php:430
 msgid ""
 "Send Message to group"
 msgstr ""
 
-#: admin/class-fep-update.php:84
-#: admin/class-fep-update.php:95
+#: admin/class-fep-update.php:38
 msgid "Update"
 msgstr ""
 
-#: admin/class-fep-update.php:106
-msgid ""
-"DO NOT close this "
-"window. This may take "
-"several minutes, please "
-"be patient."
+#: admin/class-fep-update.php:45
+#, php-format
+msgid "%s update"
 msgstr ""
 
-#: admin/class-fep-update.php:192
+#: admin/class-fep-update.php:46
+msgid ""
+"You must enable "
+"Javascript in order to "
+"proceed!"
+msgstr ""
+
+#: admin/class-fep-update.php:48
+msgid ""
+"DO NOT close this "
+"window. This may take a "
+"while."
+msgstr ""
+
+#: admin/class-fep-update.php:54
+msgid "Start Update"
+msgstr ""
+
+#: admin/class-fep-update.php:67
+#, php-format
+msgid ""
+"You can now safely "
+"delete %s legacy "
+"messages and "
+"announcements."
+msgstr ""
+
+#: admin/class-fep-update.php:69
+#: admin/class-fep-update.php:169
+msgid "Proceed"
+msgstr ""
+
+#: admin/class-fep-update.php:167
+#, php-format
+msgid ""
+"%s needs to database "
+"update."
+msgstr ""
+
+#: admin/class-fep-update.php:179
+msgid ""
+"You do not have "
+"permission to trigger "
+"update."
+msgstr ""
+
+#: admin/class-fep-update.php:188
+msgid ""
+"You cannot update from "
+"your current version."
+msgstr ""
+
+#: admin/class-fep-update.php:203
 msgid "Update completed."
 msgstr ""
 
-#: admin/class-fep-update.php:227
+#: admin/class-fep-update.php:226
+msgid ""
+"Messages meta updated"
+msgstr ""
+
+#: admin/class-fep-update.php:296
+msgid ""
+"Old style user meta "
+"deleted."
+msgstr ""
+
+#: admin/class-fep-update.php:323
 #, php-format
 msgid ""
 "%s announcement updated"
@@ -992,7 +1410,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/class-fep-update.php:244
+#: admin/class-fep-update.php:350
 #, php-format
 msgid "%s message updated"
 msgid_plural ""
@@ -1000,50 +1418,18 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/class-fep-update.php:253
+#: admin/class-fep-update.php:358
 msgid ""
 "All messages updated"
 msgstr ""
 
-#: admin/class-fep-update.php:267
+#: admin/class-fep-update.php:371
 msgid ""
 "All messages and "
 "announcements updated"
 msgstr ""
 
-#: admin/class-fep-update.php:297
-#: admin/class-fep-update.php:312
-#: admin/class-fep-update.php:332
-msgid ""
-"Messages meta updated"
-msgstr ""
-
-#: admin/class-fep-update.php:369
-#: functions.php:1463
-#: functions.php:1496
-#: includes/class-fep-ajax.php:165
-#: includes/class-fep-ajax.php:179
-#: includes/class-fep-announcement.php:318
-#: includes/fep-widgets.php:138
-#: templates/header.php:30
-#, php-format
-msgid "%s announcement"
-msgid_plural ""
-"%s announcements"
-msgstr[0] ""
-msgstr[1] ""
-
-#: admin/class-fep-update.php:369
-msgid "author updated"
-msgstr ""
-
-#: admin/class-fep-update.php:379
-msgid ""
-"Announcement author "
-"updated"
-msgstr ""
-
-#: admin/class-fep-update.php:439
+#: admin/class-fep-update.php:402
 #, php-format
 msgid ""
 "%s message meta updated"
@@ -1052,694 +1438,570 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/extensions.php:9
+#: admin/class-fep-wp-list-table.php:104
+msgid "Recipients"
+msgstr ""
+
+#: admin/class-fep-wp-list-table.php:105
+#: includes/class-fep-messages.php:310
+msgid "Sent"
+msgstr ""
+
+#: admin/class-fep-wp-list-table.php:109
+msgid "Recipients Count"
+msgstr ""
+
+#: admin/class-fep-wp-list-table.php:110
+msgid "Read Count"
+msgstr ""
+
+#: admin/class-fep-wp-list-table.php:111
+msgid "Deleted Count"
+msgstr ""
+
+#: admin/class-fep-wp-list-table.php:113
+msgid "Parent"
+msgstr ""
+
+#: admin/class-fep-wp-list-table.php:194
+msgid "View in Front-end"
+msgstr ""
+
+#: admin/extensions.php:7
 msgid ""
 "Front End PM - Extensions"
 msgstr ""
 
-#: admin/extensions.php:47
+#: admin/extensions.php:13
+#: admin/extensions.php:44
+msgid ""
+"Error loading "
+"extensions. Please "
+"reload the page again!"
+msgstr ""
+
+#: admin/extensions.php:35
 msgid "Installed"
 msgstr ""
 
-#: admin/extensions.php:49
+#: admin/extensions.php:37
 msgid "View Details"
 msgstr ""
 
-#: functions.php:288
-msgid "New Message."
+#: functions.php:245
+msgid "New Message. "
 msgstr ""
 
-#: functions.php:289
+#: functions.php:246
 msgid ""
 "You have received a new "
-"message."
+"message. "
 msgstr ""
 
-#: functions.php:291
-msgid "New Announcement."
+#: functions.php:248
+msgid "New Announcement. "
 msgstr ""
 
-#: functions.php:292
+#: functions.php:249
 msgid ""
 "You have received a new "
-"announcement."
+"announcement. "
 msgstr ""
 
-#: functions.php:305
-#: includes/class-fep-form.php:543
+#: functions.php:259
+#: includes/class-fep-form.php:504
 #, php-format
 msgid "Maximum %s allowed"
 msgstr ""
 
-#: functions.php:305
-#: includes/class-fep-form.php:543
+#: functions.php:259
+#: includes/class-fep-form.php:504
 #, php-format
 msgid "%s file"
 msgid_plural "%s files"
 msgstr[0] ""
 msgstr[1] ""
 
-#: functions.php:314
+#: functions.php:266
 msgid ""
 "Refresh this page and "
-"try again."
+"try again. "
 msgstr ""
 
-#: functions.php:440
-#: functions.php:1685
+#: functions.php:381
+#: functions.php:1232
+#: functions.php:1251
 msgid "Error"
 msgstr ""
 
-#: functions.php:780
+#: functions.php:667
 msgid "Unpublished"
 msgstr ""
 
-#: functions.php:788
+#: functions.php:673
 #, php-format
 msgid "%s from now"
 msgstr ""
 
-#: functions.php:790
+#: functions.php:675
 #, php-format
 msgid "%s ago"
 msgstr ""
 
-#: functions.php:1164
+#: functions.php:933
 msgid "RE:"
 msgstr ""
 
-#: functions.php:1430
-#: includes/class-fep-ajax.php:71
-#: includes/class-fep-user-settings.php:111
-msgid "No matches found"
-msgstr ""
-
-#: functions.php:1458
-#: functions.php:1493
-#: includes/class-fep-ajax.php:160
-#: includes/class-fep-ajax.php:174
-#: includes/class-fep-message.php:369
-#: includes/fep-widgets.php:124
-#: templates/header.php:26
+#: functions.php:1145
+#: includes/class-fep-ajax.php:137
+#: includes/class-fep-ajax.php:151
+#: includes/fep-widgets.php:115
+#: templates/header.php:22
 #, php-format
 msgid "%s message"
 msgid_plural "%s messages"
 msgstr[0] ""
 msgstr[1] ""
 
-#: functions.php:1466
-#: functions.php:1506
-#: includes/fep-widgets.php:117
-#: templates/header.php:25
+#: functions.php:1147
+#: includes/class-fep-ajax.php:142
+#: includes/class-fep-ajax.php:156
+#: includes/fep-widgets.php:125
+#: templates/header.php:24
+#, php-format
+msgid "%s announcement"
+msgid_plural ""
+"%s announcements"
+msgstr[0] ""
+msgstr[1] ""
+
+#: functions.php:1155
+#: includes/fep-widgets.php:111
+#: templates/header.php:21
 msgid "You have"
 msgstr ""
 
-#: functions.php:1472
-#: functions.php:1518
-#: includes/fep-widgets.php:131
-#: templates/header.php:28
+#: functions.php:1165
+#: includes/fep-widgets.php:120
+#: templates/header.php:23
 msgid "and"
 msgstr ""
 
-#: functions.php:1478
-#: functions.php:1527
-#: includes/fep-widgets.php:143
-#: templates/header.php:31
+#: functions.php:1172
+#: includes/fep-widgets.php:129
+#: templates/header.php:25
 msgid "unread"
 msgstr ""
 
-#: functions.php:1758
-#: templates/newmessage_form.php:10
+#: functions.php:1309
+#: templates/form-message.php:8
 msgid ""
 "You do not have "
 "permission to send new "
 "message!"
 msgstr ""
 
-#: functions.php:1768
-#: functions.php:1798
-#: includes/fep-class.php:134
-#: includes/fep-class.php:162
+#: functions.php:1316
+#: functions.php:1340
 msgid ""
 "Message successfully "
 "sent."
 msgstr ""
 
-#: functions.php:1770
-#: functions.php:1800
-#: includes/fep-class.php:136
-#: includes/fep-class.php:164
+#: functions.php:1318
+#: functions.php:1342
 msgid ""
 "Message successfully "
 "sent and waiting for "
 "admin moderation."
 msgstr ""
 
-#: functions.php:1773
-#: functions.php:1803
-#: includes/class-fep-announcement.php:83
-#: includes/fep-class.php:139
-#: includes/fep-class.php:167
+#: functions.php:1321
+#: functions.php:1345
+#: includes/class-fep-announcements.php:68
 msgid ""
 "Something wrong. Please "
 "try again."
 msgstr ""
 
-#: functions.php:1788
-#: templates/reply_form.php:10
+#: functions.php:1333
+#: templates/form-reply.php:7
 msgid ""
 "You do not have "
 "permission to send reply "
 "to this message!"
 msgstr ""
 
-#: functions.php:1818
-#: includes/class-fep-form.php:450
-#: includes/class-fep-form.php:455
-#: includes/fep-class.php:180
-#: includes/fep-class.php:196
+#: functions.php:1358
+#: includes/class-fep-form.php:427
+#: includes/class-fep-form.php:432
 msgid ""
 "Invalid Token. Please "
 "try again!"
 msgstr ""
 
-#: includes/class-fep-ajax.php:127
-#: includes/class-fep-directory.php:99
-#: includes/class-fep-directory.php:128
-#: includes/class-fep-directory.php:161
-#: templates/viewmessage.php:58
+#: functions.php:1614
+msgid "Pending"
+msgstr ""
+
+#: functions.php:1615
+msgid "Publish"
+msgstr ""
+
+#: includes/class-fep-ajax.php:58
+#: includes/class-fep-user-settings.php:95
+msgid "No matches found"
+msgstr ""
+
+#: includes/class-fep-ajax.php:106
+#: includes/class-fep-directory.php:90
+#: includes/class-fep-directory.php:117
+#: includes/class-fep-directory.php:145
+#: templates/view-message.php:54
 msgid "Block"
 msgstr ""
 
-#: includes/class-fep-ajax.php:130
-#: includes/class-fep-directory.php:100
-#: includes/class-fep-directory.php:128
-#: includes/class-fep-directory.php:159
-#: templates/viewmessage.php:58
+#: includes/class-fep-ajax.php:109
+#: includes/class-fep-directory.php:91
+#: includes/class-fep-directory.php:117
+#: includes/class-fep-directory.php:143
+#: templates/view-message.php:54
 msgid "Unblock"
 msgstr ""
 
-#: includes/class-fep-ajax.php:135
+#: includes/class-fep-ajax.php:113
 msgid "Failed"
 msgstr ""
 
-#: includes/class-fep-announcement.php:44
+#: includes/class-fep-announcements.php:34
 #, php-format
 msgid "Announcement%s"
 msgstr ""
 
-#: includes/class-fep-announcement.php:55
-#: includes/class-fep-cpt.php:89
-#: includes/class-fep-cpt.php:90
-#: includes/class-fep-cpt.php:92
-#: includes/class-fep-cpt.php:118
-#: includes/class-fep-emails.php:172
-#: templates/new_announcement_form.php:7
+#: includes/class-fep-announcements.php:43
+#: includes/class-fep-emails.php:110
+#: templates/form-announcement.php:6
 msgid "New Announcement"
 msgstr ""
 
-#: includes/class-fep-announcement.php:74
-#: templates/new_announcement_form.php:10
+#: includes/class-fep-announcements.php:59
+#: templates/form-announcement.php:9
 msgid ""
 "You do not have "
 "permission to create "
 "announcement!"
 msgstr ""
 
-#: includes/class-fep-announcement.php:81
+#: includes/class-fep-announcements.php:66
 msgid ""
 "Announcement "
 "successfully added."
 msgstr ""
 
-#: includes/class-fep-announcement.php:320
-#: includes/class-fep-message.php:373
+#: includes/class-fep-announcements.php:206
+#, php-format
 msgid ""
+"%s announcement "
 "successfully deleted."
-msgstr ""
+msgid_plural ""
+"%s announcements "
+"successfully deleted."
+msgstr[0] ""
+msgstr[1] ""
 
-#: includes/class-fep-announcement.php:359
-#: includes/class-fep-message.php:437
-msgid "Delete"
-msgstr ""
-
-#: includes/class-fep-announcement.php:369
-#: includes/class-fep-directory.php:113
-#: includes/class-fep-message.php:454
+#: includes/class-fep-announcements.php:240
+#: includes/class-fep-directory.php:103
+#: includes/class-fep-messages.php:308
 msgid "Show all"
 msgstr ""
 
-#: includes/class-fep-announcement.php:370
-#: includes/class-fep-message.php:457
+#: includes/class-fep-announcements.php:241
+#: includes/class-fep-messages.php:311
 msgid "Read"
 msgstr ""
 
-#: includes/class-fep-announcement.php:371
-#: includes/class-fep-announcement.php:404
-#: includes/class-fep-message.php:458
-#: includes/class-fep-message.php:514
+#: includes/class-fep-announcements.php:242
+#: includes/class-fep-announcements.php:270
+#: includes/class-fep-messages.php:312
+#: includes/class-fep-messages.php:370
 msgid "Unread"
 msgstr ""
 
-#: includes/class-fep-announcement.php:372
-msgid "After i registered"
-msgstr ""
-
-#: includes/class-fep-announcement.php:380
-#: includes/class-fep-directory.php:123
-#: includes/class-fep-message.php:467
+#: includes/class-fep-announcements.php:250
+#: includes/class-fep-directory.php:112
+#: includes/class-fep-messages.php:320
 msgid "Checkbox"
 msgstr ""
 
-#: includes/class-fep-announcement.php:381
-msgid "Date"
-msgstr ""
+#: includes/class-fep-attachment.php:136
+msgid "Attachment"
+msgid_plural "Attachments"
+msgstr[0] ""
+msgstr[1] ""
 
-#: includes/class-fep-announcement.php:382
-#: includes/class-fep-message.php:470
-msgid "Title"
-msgstr ""
-
-#: includes/class-fep-announcement.php:444
-#: templates/view_announcement.php:30
-msgid ""
-"You do not have "
-"permission to view this "
-"announcement!"
-msgstr ""
-
-#: includes/class-fep-attachment.php:129
-msgid "Attachments"
-msgstr ""
-
-#: includes/class-fep-attachment.php:134
+#: includes/class-fep-attachment.php:147
 #, php-format
 msgid "Download %s"
 msgstr ""
 
-#: includes/class-fep-attachment.php:153
-msgid "Invalid token"
-msgstr ""
-
-#: includes/class-fep-attachment.php:156
-#: includes/class-fep-attachment.php:159
+#: includes/class-fep-attachment.php:179
+#: includes/class-fep-attachment.php:183
+#: includes/class-fep-attachment.php:187
+#: includes/class-fep-attachment.php:192
 msgid ""
 "No attachments found"
 msgstr ""
 
-#: includes/class-fep-attachment.php:169
-#: includes/class-fep-attachment.php:171
-#: includes/class-fep-attachment.php:173
+#: includes/class-fep-attachment.php:198
+#: includes/class-fep-attachment.php:200
 msgid ""
 "You have no permission "
 "to download this "
 "attachment."
 msgstr ""
 
-#: includes/class-fep-attachment.php:184
+#: includes/class-fep-attachment.php:208
 msgid ""
 "Attachment already "
 "deleted"
 msgstr ""
 
-#: includes/class-fep-cpt.php:52
-msgctxt ""
-"post type general name"
-msgid "Messages"
-msgstr ""
-
-#: includes/class-fep-cpt.php:53
-msgctxt ""
-"post type singular name"
-msgid "Message"
-msgstr ""
-
-#: includes/class-fep-cpt.php:54
-#: includes/class-fep-cpt.php:55
-#: includes/class-fep-cpt.php:57
-#: includes/class-fep-emails.php:73
-#: includes/class-fep-menu.php:46
-msgid "New Message"
-msgstr ""
-
-#: includes/class-fep-cpt.php:56
-msgid "Edit Message"
-msgstr ""
-
-#: includes/class-fep-cpt.php:58
-msgid "All Messages"
-msgstr ""
-
-#: includes/class-fep-cpt.php:59
-msgid "View Message"
-msgstr ""
-
-#: includes/class-fep-cpt.php:60
-msgid "Search Message"
-msgstr ""
-
-#: includes/class-fep-cpt.php:61
-msgid "No Messages found"
-msgstr ""
-
-#: includes/class-fep-cpt.php:62
-msgid ""
-"No Messages found in "
-"Trash"
-msgstr ""
-
-#: includes/class-fep-cpt.php:87
-msgctxt ""
-"post type general name"
-msgid "Announcements"
-msgstr ""
-
-#: includes/class-fep-cpt.php:88
-msgctxt ""
-"post type singular name"
-msgid "Announcement"
-msgstr ""
-
-#: includes/class-fep-cpt.php:91
-msgid "Edit Announcement"
-msgstr ""
-
-#: includes/class-fep-cpt.php:93
-msgid "All Announcements"
-msgstr ""
-
-#: includes/class-fep-cpt.php:94
-msgid "View Announcement"
-msgstr ""
-
-#: includes/class-fep-cpt.php:95
-msgid "Search Announcement"
-msgstr ""
-
-#: includes/class-fep-cpt.php:96
-msgid ""
-"No Announcements found"
-msgstr ""
-
-#: includes/class-fep-cpt.php:97
-msgid ""
-"No Announcements found "
-"in Trash"
-msgstr ""
-
-#: includes/class-fep-cpt.php:99
-msgid "Front End PM"
-msgstr ""
-
-#: includes/class-fep-cpt.php:150
-msgid "Message To"
-msgstr ""
-
-#: includes/class-fep-cpt.php:158
-msgid ""
-"Announcement to roles"
-msgstr ""
-
-#: includes/class-fep-cpt.php:172
-msgid ""
-"Changing this will NOT "
-"send email to newly "
-"added users OR prevent "
-"email sending to removed "
-"users if any"
-msgstr ""
-
-#: includes/class-fep-cpt.php:270
-msgid ""
-"Can NOT be edited once "
-"published"
-msgstr ""
-
-#: includes/class-fep-cpt.php:306
-#: includes/class-fep-cpt.php:310
-msgid "View"
-msgstr ""
-
-#: includes/class-fep-cpt.php:307
-#: includes/class-fep-form.php:660
-msgid "Reply"
-msgstr ""
-
-#: includes/class-fep-cpt.php:316
-msgid "From"
-msgstr ""
-
-#: includes/class-fep-cpt.php:317
-#: includes/class-fep-cpt.php:366
-#: includes/class-fep-form.php:38
-msgid "To"
-msgstr ""
-
-#: includes/class-fep-cpt.php:318
-msgid "Parent"
-msgstr ""
-
-#: includes/class-fep-cpt.php:330
-msgid "No Parent"
-msgstr ""
-
-#: includes/class-fep-cpt.php:343
-msgid "No Participants"
-msgstr ""
-
-#: includes/class-fep-cpt.php:367
-msgid "Read Count"
-msgstr ""
-
-#: includes/class-fep-cpt.php:368
-msgid "Deleted Count"
-msgstr ""
-
-#: includes/class-fep-directory.php:31
+#: includes/class-fep-directory.php:26
 msgid "Directory"
 msgstr ""
 
-#: includes/class-fep-directory.php:42
+#: includes/class-fep-directory.php:35
 msgid ""
 "You do not have "
 "permission to access "
 "directory!"
 msgstr ""
 
-#: includes/class-fep-directory.php:114
+#: includes/class-fep-directory.php:104
 msgid "Blocked"
 msgstr ""
 
-#: includes/class-fep-directory.php:115
+#: includes/class-fep-directory.php:105
 msgid "Unblocked"
 msgstr ""
 
-#: includes/class-fep-directory.php:124
-#: includes/class-fep-message.php:468
+#: includes/class-fep-directory.php:113
+#: includes/class-fep-messages.php:321
 msgid "Avatar"
 msgstr ""
 
-#: includes/class-fep-directory.php:125
-msgid "Name"
-msgstr ""
-
-#: includes/class-fep-directory.php:130
-#: includes/class-fep-directory.php:168
-#: includes/class-fep-form.php:662
-#: templates/newmessage_form.php:7
+#: includes/class-fep-directory.php:119
+#: includes/class-fep-directory.php:152
+#: includes/class-fep-form.php:609
+#: templates/form-message.php:5
 msgid "Send Message"
 msgstr ""
 
-#: includes/class-fep-directory.php:183
+#: includes/class-fep-directory.php:166
 msgid ""
 "Please select users."
 msgstr ""
 
-#: includes/class-fep-directory.php:195
+#: includes/class-fep-directory.php:177
 msgid ""
 "You cannot block other "
 "users."
 msgstr ""
 
-#: includes/class-fep-directory.php:199
-#: includes/class-fep-directory.php:206
+#: includes/class-fep-directory.php:181
 #, php-format
-msgid "%s user"
-msgid_plural "%s users"
+msgid ""
+"%s user successfully "
+"blocked."
+msgid_plural ""
+"%s users successfully "
+"blocked."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-fep-directory.php:201
+#: includes/class-fep-directory.php:186
+#, php-format
 msgid ""
-"successfully blocked."
+"%s user successfully "
+"unblocked."
+msgid_plural ""
+"%s users successfully "
+"unblocked."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-fep-emails.php:42
+#: includes/class-fep-menu.php:51
+msgid "New Message"
 msgstr ""
 
-#: includes/class-fep-directory.php:208
-msgid ""
-"successfully unblocked."
-msgstr ""
-
-#: includes/class-fep-emails.php:74
+#: includes/class-fep-emails.php:43
 msgid ""
 "You have received a new "
 "message in"
 msgstr ""
 
-#: includes/class-fep-emails.php:76
+#: includes/class-fep-emails.php:45
 #, php-format
 msgid "From: %s"
 msgstr ""
 
-#: includes/class-fep-emails.php:77
+#: includes/class-fep-emails.php:46
 #, php-format
 msgid "Subject: %s"
 msgstr ""
 
-#: includes/class-fep-emails.php:78
+#: includes/class-fep-emails.php:47
 msgid ""
 "Please Click the "
 "following link to view "
 "full Message."
 msgstr ""
 
-#: includes/class-fep-emails.php:173
+#: includes/class-fep-emails.php:111
 msgid ""
 "A new Announcement is "
 "Published in "
 msgstr ""
 
-#: includes/class-fep-emails.php:175
+#: includes/class-fep-emails.php:113
 #, php-format
 msgid "Title: %s"
 msgstr ""
 
-#: includes/class-fep-emails.php:176
+#: includes/class-fep-emails.php:114
 msgid ""
 "Please Click the "
 "following link to view "
 "full Announcement."
 msgstr ""
 
-#: includes/class-fep-form.php:42
+#: includes/class-fep-form.php:31
+msgid "To"
+msgstr ""
+
+#: includes/class-fep-form.php:35
 msgid ""
 "Name of the recipient."
 msgstr ""
 
-#: includes/class-fep-form.php:43
+#: includes/class-fep-form.php:36
 msgid ""
 "Username of the "
 "recipient."
 msgstr ""
 
-#: includes/class-fep-form.php:52
+#: includes/class-fep-form.php:45
 msgid "To Roles"
 msgstr ""
 
-#: includes/class-fep-form.php:77
+#: includes/class-fep-form.php:70
 msgid "Message"
 msgstr ""
 
-#: includes/class-fep-form.php:122
+#: includes/class-fep-form.php:115
 msgid ""
 "Allow others to send me "
 "messages?"
 msgstr ""
 
-#: includes/class-fep-form.php:129
+#: includes/class-fep-form.php:122
 msgid ""
 "Email me when I get new "
 "messages?"
 msgstr ""
 
-#: includes/class-fep-form.php:136
+#: includes/class-fep-form.php:129
 msgid ""
 "Email me when new "
 "announcement is "
 "published?"
 msgstr ""
 
-#: includes/class-fep-form.php:150
+#: includes/class-fep-form.php:142
 msgid "Blocked Users"
 msgstr ""
 
-#: includes/class-fep-form.php:371
-msgid "Add new field"
+#: includes/class-fep-form.php:369
+msgid "Add more file"
 msgstr ""
 
-#: includes/class-fep-form.php:409
+#: includes/class-fep-form.php:398
 #, php-format
 msgid "%s required."
 msgstr ""
 
-#: includes/class-fep-form.php:413
+#: includes/class-fep-form.php:400
 #, php-format
 msgid ""
 "%s can not be changed."
 msgstr ""
 
-#: includes/class-fep-form.php:417
+#: includes/class-fep-form.php:402
 #, php-format
 msgid "%s minlength %d."
 msgstr ""
 
-#: includes/class-fep-form.php:421
+#: includes/class-fep-form.php:404
 #, php-format
 msgid "%s maxlength %d."
 msgstr ""
 
-#: includes/class-fep-form.php:439
+#: includes/class-fep-form.php:417
 #, php-format
 msgid ""
 "Please provide valid "
 "email address for %s."
 msgstr ""
 
-#: includes/class-fep-form.php:445
+#: includes/class-fep-form.php:422
 #, php-format
 msgid ""
 "%s is not a valid number."
 msgstr ""
 
-#: includes/class-fep-form.php:477
-#: includes/class-fep-form.php:487
+#: includes/class-fep-form.php:455
 #, php-format
 msgid ""
 "%s does not want to "
 "receive messages!"
 msgstr ""
 
-#: includes/class-fep-form.php:480
-#: includes/class-fep-form.php:490
+#: includes/class-fep-form.php:458
 #, php-format
 msgid ""
 "Invalid receiver \"%s\"."
 msgstr ""
 
-#: includes/class-fep-form.php:495
+#: includes/class-fep-form.php:462
 msgid ""
 "You must enter a valid "
 "recipient!"
 msgstr ""
 
-#: includes/class-fep-form.php:501
+#: includes/class-fep-form.php:467
 msgid "Invalid parent ID!"
 msgstr ""
 
-#: includes/class-fep-form.php:503
+#: includes/class-fep-form.php:469
 msgid ""
 "You do not have "
 "permission to send this "
 "message!"
 msgstr ""
 
-#: includes/class-fep-form.php:513
-#: includes/class-fep-form.php:526
+#: includes/class-fep-form.php:477
+#: includes/class-fep-form.php:487
 #, php-format
 msgid ""
 "Invalid value for %s."
 msgstr ""
 
-#: includes/class-fep-form.php:558
+#: includes/class-fep-form.php:499
+msgid "Invalid Attachment"
+msgstr ""
+
+#: includes/class-fep-form.php:516
 #, php-format
 msgid ""
 "Attachment (%1$s) file "
@@ -1747,7 +2009,7 @@ msgid ""
 "size allowed %2$s"
 msgstr ""
 
-#: includes/class-fep-form.php:563
+#: includes/class-fep-form.php:520
 #, php-format
 msgid ""
 "Invalid attachment file "
@@ -1755,277 +2017,350 @@ msgid ""
 "(%s)"
 msgstr ""
 
-#: includes/class-fep-form.php:658
+#: includes/class-fep-form.php:605
 msgid "Save Changes"
 msgstr ""
 
-#: includes/class-fep-menu.php:51
+#: includes/class-fep-form.php:607
+msgid "Reply"
+msgstr ""
+
+#: includes/class-fep-menu.php:44
 #, php-format
 msgid "Message Box%s"
 msgstr ""
 
-#: includes/class-fep-message.php:57
+#: includes/class-fep-message-query.php:372
+msgctxt ""
+"Comma-separated list of "
+"search stopwords in your "
+"language"
+msgid ""
+"about,an,are,as,at,be,by,"
+"com,for,from,how,in,is,"
+"it,of,on,or,that,the,"
+"this,to,was,what,when,"
+"where,who,will,with,www"
+msgstr ""
+
+#: includes/class-fep-messages.php:42
 #, php-format
 msgid ""
 "Please wait at least %s "
 "between messages."
 msgstr ""
 
-#: includes/class-fep-message.php:57
+#: includes/class-fep-messages.php:42
 #, php-format
 msgid "%s minute"
 msgid_plural "%s minutes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-fep-message.php:70
+#: includes/class-fep-messages.php:54
 msgid ""
 "Your message box is "
 "full. Please delete some "
 "messages."
 msgstr ""
 
-#: includes/class-fep-message.php:375
+#: includes/class-fep-messages.php:234
+#, php-format
 msgid ""
-"successfully marked as "
-"read."
-msgstr ""
+"%s message successfully "
+"deleted."
+msgid_plural ""
+"%s messages successfully "
+"deleted."
+msgstr[0] ""
+msgstr[1] ""
 
-#: includes/class-fep-message.php:377
+#: includes/class-fep-messages.php:237
+#, php-format
 msgid ""
-"successfully marked as "
-"unread."
-msgstr ""
+"%s message successfully "
+"marked as read."
+msgid_plural ""
+"%s messages successfully "
+"marked as read."
+msgstr[0] ""
+msgstr[1] ""
 
-#: includes/class-fep-message.php:379
+#: includes/class-fep-messages.php:240
+#, php-format
 msgid ""
-"successfully archived."
-msgstr ""
+"%s message successfully "
+"marked as unread."
+msgid_plural ""
+"%s messages successfully "
+"marked as unread."
+msgstr[0] ""
+msgstr[1] ""
 
-#: includes/class-fep-message.php:381
+#: includes/class-fep-messages.php:243
+#, php-format
 msgid ""
-"successfully restored."
-msgstr ""
+"%s message successfully "
+"archived."
+msgid_plural ""
+"%s messages successfully "
+"archived."
+msgstr[0] ""
+msgstr[1] ""
 
-#: includes/class-fep-message.php:438
+#: includes/class-fep-messages.php:246
+#, php-format
+msgid ""
+"%s message successfully "
+"restored."
+msgid_plural ""
+"%s messages successfully "
+"restored."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-fep-messages.php:295
 msgid "Mark as read"
 msgstr ""
 
-#: includes/class-fep-message.php:439
+#: includes/class-fep-messages.php:296
 msgid "Mark as unread"
 msgstr ""
 
-#: includes/class-fep-message.php:443
+#: includes/class-fep-messages.php:299
 msgid "Restore"
 msgstr ""
 
-#: includes/class-fep-message.php:445
-#: includes/class-fep-message.php:459
+#: includes/class-fep-messages.php:301
+#: includes/class-fep-messages.php:313
 msgid "Archive"
 msgstr ""
 
-#: includes/class-fep-message.php:455
+#: includes/class-fep-messages.php:309
 msgid "Inbox"
 msgstr ""
 
-#: includes/class-fep-message.php:456
-msgid "Sent"
-msgstr ""
-
-#: includes/class-fep-message.php:469
+#: includes/class-fep-messages.php:322
 msgid "Author"
 msgstr ""
 
-#: includes/class-fep-message.php:498
-msgid "More users"
-msgstr ""
-
-#: includes/class-fep-message.php:505
+#: includes/class-fep-messages.php:339
 msgid "Group"
 msgstr ""
 
-#: includes/class-fep-shortcodes.php:56
-#: includes/class-fep-shortcodes.php:94
+#: includes/class-fep-messages.php:352
+msgid "More users"
+msgstr ""
+
+#: includes/class-fep-shortcodes.php:51
+#: includes/class-fep-shortcodes.php:87
 msgid "Contact"
 msgstr ""
 
-#: includes/class-fep-user-settings.php:60
-#: includes/fep-class.php:211
+#: includes/class-fep-shortcodes.php:109
+#, php-format
+msgid ""
+"You must <a href=\"%s"
+"\">login</a> to contact"
+msgstr ""
+
+#: includes/class-fep-shortcodes.php:111
+#, php-format
+msgid ""
+"You cannot send message "
+"to %s"
+msgstr ""
+
+#: includes/class-fep-user-settings.php:47
 msgid ""
 "Settings successfully "
 "saved."
 msgstr ""
 
-#: includes/class-fep-user-settings.php:110
+#: includes/class-fep-user-settings.php:94
 msgid "Type user name"
 msgstr ""
 
-#: includes/class-fep-user-settings.php:112
+#: includes/class-fep-user-settings.php:96
 msgid "Searching..."
 msgstr ""
 
-#: includes/fep-class.php:36
+#: includes/fep-class.php:24
 msgid ""
 "You do not have "
 "permission to access "
 "message system"
 msgstr ""
 
-#: includes/fep-class.php:106
+#: includes/fep-class.php:71
 #, php-format
 msgid ""
-"You must <a "
-"href='%s'>login</a> to "
-"view your message."
+"You must <a href=\"%s"
+"\">login</a> to view "
+"your message."
 msgstr ""
 
-#: includes/fep-class.php:250
+#: includes/fep-class.php:82
 msgid "unlimited"
 msgstr ""
 
-#: includes/fep-class.php:336
-#: templates/viewmessage.php:93
-msgid ""
-"You do not have "
-"permission to view this "
-"message!"
-msgstr ""
-
-#: includes/fep-widgets.php:15
-#: includes/fep-widgets.php:48
+#: includes/fep-widgets.php:13
+#: includes/fep-widgets.php:46
 msgid "FEP Menu Widget"
 msgstr ""
 
-#: includes/fep-widgets.php:16
+#: includes/fep-widgets.php:14
 msgid ""
 "Front End PM Menu Widget"
 msgstr ""
 
-#: includes/fep-widgets.php:51
-#: includes/fep-widgets.php:164
-#: includes/fep-widgets.php:259
+#: includes/fep-widgets.php:49
+#: includes/fep-widgets.php:148
+#: includes/fep-widgets.php:236
 msgid "Title:"
 msgstr ""
 
-#: includes/fep-widgets.php:91
-#: includes/fep-widgets.php:159
+#: includes/fep-widgets.php:87
+#: includes/fep-widgets.php:143
 msgid "FEP Text Widget"
 msgstr ""
 
-#: includes/fep-widgets.php:92
+#: includes/fep-widgets.php:88
 msgid ""
 "Front End PM Text Widget"
 msgstr ""
 
-#: includes/fep-widgets.php:115
-#: templates/header.php:23
+#: includes/fep-widgets.php:110
+#: templates/header.php:19
 msgid "Welcome"
 msgstr ""
 
-#: includes/fep-widgets.php:169
+#: includes/fep-widgets.php:153
 msgid "Show Messagebox?"
 msgstr ""
 
-#: includes/fep-widgets.php:173
+#: includes/fep-widgets.php:157
 msgid "Show Announcement?"
 msgstr ""
 
-#: includes/fep-widgets.php:215
-#: includes/fep-widgets.php:255
+#: includes/fep-widgets.php:196
+#: includes/fep-widgets.php:232
 msgid "FEP Empty Widget"
 msgstr ""
 
-#: includes/fep-widgets.php:216
+#: includes/fep-widgets.php:197
 msgid ""
 "Front End PM Empty Widget"
 msgstr ""
 
-#: includes/fep-widgets.php:265
+#: includes/fep-widgets.php:216
+msgid ""
+"Use "
+"<code>add_action( 'fep_empty_widget_"
+msgstr ""
+
+#: includes/fep-widgets.php:217
+msgid ""
+"<br />Use "
+"<code>add_action('fep_empty_widget', "
+"'your_function' );</"
+"code> to hook to all FEP "
+"Empty widget where "
+"'your_function' is your "
+"callback function"
+msgstr ""
+
+#: includes/fep-widgets.php:241
 msgid ""
 "Display help to "
 "configure this widget in "
 "front end?"
 msgstr ""
 
-#: templates/announcement_box.php:21
-#: templates/directory.php:28
-#: templates/messagebox.php:28
+#: templates/box-announcement.php:18
+msgid ""
+"Search Announcements"
+msgstr ""
+
+#: templates/box-announcement.php:27
+#: templates/box-message.php:25
+#: templates/directory.php:27
 msgid "Bulk action"
 msgstr ""
 
-#: templates/announcement_box.php:29
-#: templates/directory.php:36
-#: templates/messagebox.php:36
+#: templates/box-announcement.php:35
+#: templates/box-message.php:33
+#: templates/directory.php:35
 msgid "Apply"
 msgstr ""
 
-#: templates/announcement_box.php:44
-#: templates/directory.php:51
-#: templates/messagebox.php:51
+#: templates/box-announcement.php:53
+#: templates/box-message.php:47
+#: templates/directory.php:54
 msgid "Check/Uncheck all"
 msgstr ""
 
-#: templates/announcement_box.php:60
+#: templates/box-announcement.php:73
 msgid ""
 "No announcements found."
 msgstr ""
 
-#: templates/announcement_box.php:62
+#: templates/box-announcement.php:75
 msgid ""
 "No announcements found. "
 "Try different filter."
 msgstr ""
 
-#: templates/directory.php:19
-msgid "Search Users"
-msgstr ""
-
-#: templates/directory.php:65
-msgid ""
-"No users found. Try "
-"different filter."
-msgstr ""
-
-#: templates/header.php:34
-msgid "Message box size"
-msgstr ""
-
-#: templates/header.php:35
-#, php-format
-msgid "%1$s of %2$s"
-msgstr ""
-
-#: templates/messagebox.php:10
+#: templates/box-message.php:8
 msgid "No messages found."
 msgstr ""
 
-#: templates/messagebox.php:19
+#: templates/box-message.php:16
 msgid "Search Messages"
 msgstr ""
 
-#: templates/messagebox.php:66
+#: templates/box-message.php:64
 msgid ""
 "No messages found. Try "
 "different filter."
 msgstr ""
 
-#: templates/settings.php:8
+#: templates/directory.php:18
+msgid "Search Users"
+msgstr ""
+
+#: templates/directory.php:70
+msgid ""
+"No users found. Try "
+"different filter."
+msgstr ""
+
+#: templates/form-settings.php:6
 msgid ""
 "Set your preferences "
 "below"
 msgstr ""
 
-#: templates/shortcode_newmessage_form.php:12
+#: templates/form-shortcode-message.php:9
 msgid ""
 "You do not have "
 "permission to send "
 "message to this receiver!"
 msgstr ""
 
-#: templates/viewmessage.php:66
+#: templates/header.php:28
+msgid "Message box size:"
+msgstr ""
+
+#: templates/header.php:29
+#, php-format
+msgid "%1$s of %2$s"
+msgstr ""
+
+#: templates/view-message.php:46
 msgid "Participants"
 msgstr ""
 
-#: templates/viewmessage.php:67
+#: templates/view-message.php:63
 msgid "Toggle Messages"
 msgstr ""
