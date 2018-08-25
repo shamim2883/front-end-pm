@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	if ( false === $extensions ) {
 		$response = wp_remote_get( 'https://www.shamimsplugins.com/wp-json/api/v1/extensions/front-end-pm', array( 'timeout' => 15, 'sslverify' => false, 'decompress' => false ) );
 		if ( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) != 200 ) {
-			echo '<div class="error">' . __( 'Error loading extensions. Please reload the page again!', 'front-end-pm' ) . '</div>';
+			echo '<div class="error"><p>' . __( 'Error loading extensions. Please reload the page again!', 'front-end-pm' ) . '</p></div>';
 			return false;
 		}
 		$extensions = json_decode( wp_remote_retrieve_body( $response ) );
@@ -41,7 +41,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php
 		endforeach;
 	} else {
-		echo '<div class="error">' . __( 'Error loading extensions. Please reload the page again!', 'front-end-pm' ) . '</div>';
+		echo '<div class="error"><p>' . __( 'Error loading extensions. Please reload the page again!', 'front-end-pm' ) . '</p></div>';
 	}
 	?>
 	<style type="text/css">
