@@ -93,7 +93,11 @@ class FEP_Message {
 		$data = get_object_vars( $this );
 		$data = apply_filters( 'fep_filter_message_before_insert', $data );
 		
-		unset( $data['mgs_id'] );
+		if ( empty( $data['mgs_id'] ) ) {
+			unset( $data['mgs_id'] );
+		} elseif ( fep_get_message( $data['mgs_id'] ) ) {
+			unset( $data['mgs_id'] );
+		}
 		
 		// Initialise column format array
 		$column_formats = $this->get_columns();
