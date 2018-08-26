@@ -568,7 +568,7 @@ function fep_user_name( $id ) {
 			$name = fep_get_userdata( $id, 'display_name', 'id' );
 			break;
 	}
-	return apply_filters( 'fep_filter_user_name', $name, $id );
+	return apply_filters( 'fep_filter_user_name', trim( $name ), $id );
 }
 
 function fep_get_user_message_count( $value = 'all', $force = false, $user_id = false ) {
