@@ -411,6 +411,7 @@ class Fep_Update {
 
 	function insert_announcement( $announcement ) {
 		$arr = array(
+			'mgs_id'                => $announcement->ID,
 			'mgs_parent'            => $announcement->post_parent,
 			'mgs_author'            => $announcement->post_author,
 			'mgs_created'           => $announcement->post_date_gmt,
@@ -473,6 +474,7 @@ class Fep_Update {
 	
 	function insert_message( $message ) {
 		$arr = array(
+			'mgs_id'                => $message->ID,
 			'mgs_parent'            => 0,
 			'mgs_author'            => $message->post_author,
 			'mgs_created'           => $message->post_date_gmt,
@@ -518,6 +520,7 @@ class Fep_Update {
 		}
 		foreach ( $replies as $reply ) {
 			$arr = array(
+				'mgs_id'                => $reply->ID,
 				'mgs_parent'            => $mgs_obj->mgs_id,
 				'mgs_author'            => $reply->post_author,
 				'mgs_created'           => $reply->post_date_gmt,
@@ -605,7 +608,7 @@ class Fep_Update {
 		if ( ! $meta || ! is_array( $meta ) ) {
 			return false;
 		}
-		unset( $meta['_fep_read_by'], $meta['_fep_deleted_by'], $meta['_fep_participants'], $meta['_fep_participant_roles'], $meta['_fep_email_sent'], $meta['_fep_new_id'], $meta['_fep_last_reply_by'], $meta['_fep_last_reply_id'] );
+		unset( $meta['_fep_read_by'], $meta['_fep_deleted_by'], $meta['_fep_participants'], $meta['_fep_participant_roles'], $meta['_fep_email_sent'], $meta['_fep_new_id'], $meta['_fep_last_reply_by'], $meta['_fep_last_reply_id'], $meta['_fep_last_reply_time'] );
 		
 		foreach ( $meta as $meta_key => $meta_values ) {
 			if ( 0 === strpos( $meta_key, '_fep_parent_read_by_' ) || 0 === strpos( $meta_key, '_fep_delete_by_' ) || 0 === strpos( $meta_key, '_fep_archived_by_' ) ) {
