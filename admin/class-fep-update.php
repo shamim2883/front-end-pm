@@ -244,62 +244,6 @@ class Fep_Update {
 		$custom_int = isset( $_POST['custom_int'] ) ? absint( $_POST['custom_int'] ) : 0;
 		$custom_str = isset( $_POST['custom_str'] ) ? sanitize_text_field( $_POST['custom_str']) : 'messages';
 
-		if ( ! fep_get_option( 'v1011-part-1', 0, 'fep_updated_versions' ) ) {
-			delete_metadata( 'user', 0, $wpdb->get_blog_prefix() . 'FEP_user_options', '', true );
-			delete_metadata( 'user', 0, $wpdb->get_blog_prefix() . '_fep_user_message_count', '', true );
-			delete_metadata( 'user', 0, $wpdb->get_blog_prefix() . '_fep_user_announcement_count', '', true );
-			delete_metadata( 'user', 0, $wpdb->get_blog_prefix() . '_fep_notification_dismiss', '', true );
-			
-			$wp_roles = wp_roles();
-			$roles = $wp_roles->get_names();
-			$roles = array_keys( $roles );
-			
-			$caps = array(
-				'delete_published_fep_messages'	=> 1,
-				'delete_private_fep_messages'	=> 1,
-				'delete_others_fep_messages'	=> 1,
-				'delete_fep_messages'			=> 1,
-				'publish_fep_messages'			=> 1,
-				'read_private_fep_messages'		=> 1,
-				'edit_private_fep_messages'		=> 1,
-				'edit_others_fep_messages'		=> 1,
-				'edit_fep_messages'				=> 1,
-				'edit_published_fep_messages'	=> 1,
-				'create_fep_messages'			=> 1,
-				
-				'delete_published_fep_announcements'=> 1,
-				'delete_private_fep_announcements'	=> 1,
-				'delete_others_fep_announcements'	=> 1,
-				'delete_fep_announcements'			=> 1,
-				'publish_fep_announcements'			=> 1,
-				'read_private_fep_announcements'	=> 1,
-				'edit_private_fep_announcements'	=> 1,
-				'edit_others_fep_announcements'		=> 1,
-				'edit_fep_announcements'			=> 1,
-				'edit_published_fep_announcements'	=> 1,
-				'create_fep_announcements'			=> 1,
-			);
-			foreach( $roles as $role ) {
-				$role_obj = get_role( $role );
-				if ( ! $role_obj ) {
-					continue;
-				}
-				foreach( $caps as $cap => $val ) {
-					$role_obj->remove_cap( $cap );
-				}
-			}
-
-			fep_update_option( 'v1011-part-1', 1, 'fep_updated_versions' );
-
-			$response = array(
-				'update'	=> 'continue',
-				'message'	=> __( 'Old style user meta deleted.', 'front-end-pm' ),
-				'custom_int'=> $custom_int,
-				'custom_str'=> $custom_str,
-			);
-			wp_send_json( $response );
-		}
-
 		if ( 'announcements' == $custom_str ) {
 			$args = array(
 				'post_type'		=> 'fep_announcement',
@@ -364,6 +308,54 @@ class Fep_Update {
 		}
 		
 		update_option( '_fep_can_delete_all', 1 );
+		// multisite add prefix_blogid_ to meta, so delete those as well.
+		$wpdb->query(
+			$wpdb->prepare( "DELETE FROM $wpdb->usermeta WHERE meta_key LIKE %s OR meta_key LIKE %s OR meta_key LIKE %s OR meta_key LIKE %s",
+				'%' . $wpdb->esc_like( '_FEP_user_options' ), // Not delete main site meta which is without leading underscore.
+				'%' . $wpdb->esc_like( '_fep_user_message_count' ),
+				'%' . $wpdb->esc_like( '_fep_user_announcement_count' ),
+				'%' . $wpdb->esc_like( '_fep_notification_dismiss' )
+			)
+		);
+		
+		$wp_roles = wp_roles();
+		$roles = $wp_roles->get_names();
+		$roles = array_keys( $roles );
+		
+		$caps = array(
+			'delete_published_fep_messages'	=> 1,
+			'delete_private_fep_messages'	=> 1,
+			'delete_others_fep_messages'	=> 1,
+			'delete_fep_messages'			=> 1,
+			'publish_fep_messages'			=> 1,
+			'read_private_fep_messages'		=> 1,
+			'edit_private_fep_messages'		=> 1,
+			'edit_others_fep_messages'		=> 1,
+			'edit_fep_messages'				=> 1,
+			'edit_published_fep_messages'	=> 1,
+			'create_fep_messages'			=> 1,
+			
+			'delete_published_fep_announcements'=> 1,
+			'delete_private_fep_announcements'	=> 1,
+			'delete_others_fep_announcements'	=> 1,
+			'delete_fep_announcements'			=> 1,
+			'publish_fep_announcements'			=> 1,
+			'read_private_fep_announcements'	=> 1,
+			'edit_private_fep_announcements'	=> 1,
+			'edit_others_fep_announcements'		=> 1,
+			'edit_fep_announcements'			=> 1,
+			'edit_published_fep_announcements'	=> 1,
+			'create_fep_announcements'			=> 1,
+		);
+		foreach( $roles as $role ) {
+			$role_obj = get_role( $role );
+			if ( ! $role_obj ) {
+				continue;
+			}
+			foreach( $caps as $cap => $val ) {
+				$role_obj->remove_cap( $cap );
+			}
+		}
 
 		fep_update_option( 'v1011', 1, 'fep_updated_versions' );
 		$response = array(
