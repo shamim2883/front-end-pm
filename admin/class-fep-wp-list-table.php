@@ -149,7 +149,7 @@ class FEP_WP_List_Table extends WP_List_Table {
 			'paged'        => $this->get_pagenum(),
 			'per_page'     => $per_page,
 			'mgs_status'   => isset( $_REQUEST['mgs_status'] ) ? trim( $_REQUEST['mgs_status'] ) : 'any',
-			'orderby'      => isset( $_REQUEST['orderby'] ) ? trim( $_REQUEST['orderby'] ) : '',
+			'orderby'      => isset( $_REQUEST['orderby'] ) ? trim( $_REQUEST['orderby'] ) : 'mgs_created',
 			'order'        => isset( $_REQUEST['order'] ) ? trim( $_REQUEST['order'] ) : '',
 			's'            => isset( $_REQUEST['s'] ) ? trim( $_REQUEST['s'] ) : '',
 		);
