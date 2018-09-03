@@ -34,10 +34,11 @@ class FEP_Attachments_List_Table extends WP_List_Table {
 				break;
 			case 'att_thumbnail':
 				if( 0 === stripos( $item->att_mime, 'image/') ){
-					$value = '<img src="' . fep_query_url( 'view-download', [ 'fep_id' => $item->att_id, 'fep_parent_id' => $item->mgs_id ] ) . '" width="200px" height="150px" />';
+					$src = fep_query_url( 'view-download', [ 'fep_id' => $item->att_id, 'fep_parent_id' => $item->mgs_id ] );
 				} else {
-					$value = '<img src="' . wp_mime_type_icon( $item->att_mime ) . '" width="200px" height="150px" />';
+					$src = wp_mime_type_icon( $item->att_mime );
 				}
+				$value = '<img src="' . $src . '" width="200px" height="150px" />';
 				break;
 			case 'mgs_id':
 				$value = '<a class="thickbox" href="' . esc_url( admin_url( "admin.php?page=fep-all-messages&action=view&fep_id=$item->mgs_id&TB_iframe=true&width=700&height=550" ) ) . '">' . $item->mgs_id . '</a>';
