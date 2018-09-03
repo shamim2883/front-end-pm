@@ -37,9 +37,9 @@ class Fep_Admin_Settings {
 	function admin_enqueue_scripts() {
 		if ( isset( $_GET['tab'] ) && 'appearance' == $_GET['tab'] ) {
 			wp_enqueue_style( 'wp-color-picker' );
-			//wp_enqueue_script( 'wp-color-picker' );
+			wp_enqueue_script( 'wp-color-picker' );
 		}
-		wp_enqueue_script( 'fep-admin', FEP_PLUGIN_URL . 'assets/js/admin.js', array( 'jquery', 'wp-color-picker' ), '6.4', true );
+		wp_enqueue_script( 'fep-admin', FEP_PLUGIN_URL . 'assets/js/admin.js', array( 'jquery' ), FEP_PLUGIN_VERSION, true );
 	}
 
 	function recalculate_user_message_count( $old_value, $tab ) {
