@@ -17,6 +17,7 @@ class Fep_Admin_Pages {
 	function actions_filters() {
 		add_action( 'admin_menu', array( $this, 'addAdminPage' ) );
 		add_action( 'admin_init', array( $this, 'admin_actions' ) );
+		add_action( 'admin_post_fep-edit', array( $this, 'edit_action' ) );
 		add_filter( 'wp_privacy_personal_data_exporters', array( $this, 'register_data_exporter' ) );
 		add_filter( 'wp_privacy_personal_data_erasers', array( $this, 'register_data_eraser' ) );
 	}
@@ -32,6 +33,9 @@ class Fep_Admin_Pages {
 		add_submenu_page( 'fep-all-messages', "$label - " . __( 'All Announcements', 'front-end-pm' ), __( 'All Announcements', 'front-end-pm' ), $admin_cap, 'fep-all-announcements', array( $this, 'all_announcements' ) );
 		
 		add_submenu_page( 'fep-all-messages', "$label - " . __( 'All Attachments', 'front-end-pm' ), __( 'All Attachments', 'front-end-pm' ), $admin_cap, 'fep-all-attachments', array( $this, 'all_attachments' ) );
+		
+		add_submenu_page( 'fep-non-exist-menu', "$label - " . __( 'Edit', 'front-end-pm' ), __( 'Edit', 'front-end-pm' ), $admin_cap, 'fep-edit', array( $this, 'edit' ) );
+		
 	}
 	
 	function all_messages(){
@@ -113,6 +117,61 @@ class Fep_Admin_Pages {
 			<br class="clear" />
 		</div>
 		<?php
+	}
+	
+	function edit() {
+		$fep_id = isset( $_REQUEST['fep_id'] ) ? (int) $_REQUEST['fep_id'] : 0;
+		if( ! $fep_id || ! fep_is_user_admin() || ! ( $message = fep_get_message( $fep_id ) ) ) {
+			wp_die( __( 'Invalid Request', 'front-end-pm' ) );
+		}
+		wp_enqueue_media();
+		
+		require fep_locate_template( 'admin-edit-message-announcement.php' );
+	}
+	
+	function edit_action() {
+		$fep_id = isset( $_POST['fep_id'] ) ? (int) $_POST['fep_id'] : 0;
+		if ( ! $fep_id || ! fep_is_user_admin() || ! ( $message = fep_get_message( $fep_id ) ) ) {
+			wp_die( __( 'Invalid Request', 'front-end-pm' ) );
+		}
+		if ( ! wp_verify_nonce( $_POST['_wpnonce'], "fep-edit-{$fep_id}" ) ) {
+			wp_die( __( 'Invalid nonce', 'front-end-pm' ) );
+		}
+		$args = [
+			'mgs_title' => isset( $_POST['mgs_title'] ) ? $_POST['mgs_title'] : '',
+			'mgs_content' => isset( $_POST['mgs_content'] ) ? $_POST['mgs_content'] : '',
+			'mgs_status' => isset( $_POST['mgs_status'] ) ? $_POST['mgs_status'] : '',
+		];
+		$args = wp_unslash( $args );
+
+		$att_ids = isset( $_POST['att_id'] ) ? $_POST['att_id'] : '';
+		$attchments = [];
+		
+		if ( is_array( $att_ids ) ) {
+			foreach ( $att_ids as $att_id ) {
+				if ( 'attachment' === get_post_type( $att_id ) ) {
+					$attchments[] = [
+						'att_mime'   => get_post_mime_type( $att_id ),
+						'att_file'   => get_attached_file( $att_id ),
+						'att_status' => 'publish',
+					];
+				}
+			}
+		}
+		$message->update( $args );
+		$message->insert_attachments( $attchments );
+		if ( 'announcement' === $message->mgs_type ) {
+			$redirect_url = add_query_arg( [
+				'page'    => 'fep-all-announcements',
+				'updated' => 1,
+			], admin_url( 'admin.php' ) );
+		} else {
+			$redirect_url = add_query_arg( [
+				'page'    => 'fep-all-messages',
+				'updated' => 1,
+			], admin_url( 'admin.php' ) );
+		}
+		wp_safe_redirect( $redirect_url );
 	}
 	
 	function admin_actions(){

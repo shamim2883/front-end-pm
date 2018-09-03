@@ -184,6 +184,8 @@ class FEP_WP_List_Table extends WP_List_Table {
 
 		$actions['delete'] = '<a href="' . wp_nonce_url( add_query_arg( array( 'page' => $_REQUEST['page'], 'action' => 'delete', 'fep_id' => fep_get_the_id() ), admin_url( 'admin.php' ) ), 'delete-fep-message-' . fep_get_the_id() ) . '" class="fep_delete_a" >' . __( 'Delete', 'front-end-pm' ) . '</a>';
 		
+		$actions['edit'] = '<a href="' . esc_url( add_query_arg( array( 'page' => 'fep-edit', 'fep_id' => fep_get_the_id() ), admin_url( 'admin.php' ) ) ) . '" >' . __( 'Edit', 'front-end-pm' ) . '</a>';
+		
 		$actions['view'] = '<a class="thickbox" href="' . esc_url( add_query_arg( array( 'page' => $_REQUEST['page'], 'action' => 'view', 'fep_id' => fep_get_the_id() ), admin_url( 'admin.php' ) ) . '&TB_iframe=true&width=700&height=550' ) . '">' . __( 'View', 'front-end-pm' ) . '</a>';
 		
 		if( 'announcement' == $this->message_type ){

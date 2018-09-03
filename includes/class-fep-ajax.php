@@ -20,6 +20,7 @@ class Fep_Ajax {
 		add_action( 'wp_ajax_nopriv_fep_notification_ajax', array( $this, 'fep_notification_ajax' ) );
 		add_action( 'wp_ajax_fep_notification_dismiss', array( $this, 'fep_notification_dismiss' ) );
 		add_action( 'wp_ajax_fep_review_notice_dismiss', array( $this, 'fep_review_notice_dismiss' ) );
+		add_action( 'wp_ajax_fep_ajax_att_delete', array( $this, 'att_delete' ) );
 		if ( fep_get_option( 'block_other_users', 1 ) ) {
 			add_action( 'wp_ajax_fep_block_unblock_users_ajax', array( $this, 'fep_block_unblock_users_ajax' ) );
 		}
@@ -182,6 +183,21 @@ class Fep_Ajax {
 			}
 		}
 		die;
+	}
+	
+	function att_delete() {
+		$id     = isset( $_GET['fep_id'] ) ? absint( $_GET['fep_id'] ) : 0;
+		$mgs_id = isset( $_GET['fep_parent_id'] ) ? absint( $_GET['fep_parent_id'] ) : 0;
+
+		check_ajax_referer( "delete-att-{$id}", 'nonce' );
+
+		if ( ! $id || ! $mgs_id || ! fep_is_user_admin() ) {
+			wp_send_json_error();
+		}
+		if ( FEP_Attachments::init()->delete( $mgs_id, $id ) ) {
+			wp_send_json_success();
+		}
+		wp_send_json_error();
 	}
 } //END CLASS
 
