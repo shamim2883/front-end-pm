@@ -384,7 +384,10 @@ class FEP_Message_Query {
 	}
 	
 	public function parse_order(){
-		if( isset( $this->args['orderby'] ) && in_array( $this->args['orderby'], array_keys( FEP_Message::get_columns() ) ) ){
+		if ( empty( $this->args['orderby'] ) ) {
+			return;
+		}
+		if( in_array( $this->args['orderby'], array_keys( FEP_Message::get_columns() ) ) ){
 			$orderby = $this->message_table .'.'. $this->args['orderby'];
 		} else {
 			$orderby = "{$this->message_table}.mgs_created";
