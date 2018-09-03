@@ -140,7 +140,7 @@ class FEP_Attachments_List_Table extends WP_List_Table {
 		}
 		$actions = [];
 
-		$actions['delete'] = '<a href="' . wp_nonce_url( add_query_arg( array( 'page' => $_REQUEST['page'], 'action' => 'delete', 'fep_id' => $item->att_id, 'fep_parent_id' => $item->mgs_id ), admin_url( 'admin.php' ) ), 'delete-fep-attachment-' . $item->att_id ) . '" onclick="javascript:if( ! confirm( \'' . __( 'Are you sure you want to delete this?', 'front-end-pm' ) . '\' ) ) return false;">' . __( 'Delete', 'front-end-pm' ) . '</a>';
+		$actions['delete'] = '<a href="' . wp_nonce_url( add_query_arg( array( 'page' => $_REQUEST['page'], 'action' => 'delete', 'fep_id' => $item->att_id, 'fep_parent_id' => $item->mgs_id ), admin_url( 'admin.php' ) ), 'delete-fep-attachment-' . $item->att_id ) . '" class="fep_delete_a" >' . __( 'Delete', 'front-end-pm' ) . '</a>';
 		
 		$actions['view'] = '<a class="thickbox" title="' . __( 'View Attachment', 'front-end-pm' ) . '" href="' . fep_query_url( 'view-download', [ 'fep_id' => $item->att_id, 'fep_parent_id' => $item->mgs_id ] ) . '&TB_iframe=true&width=700&height=550' . '">' . __( 'View', 'front-end-pm' ) . '</a>';	
 		$actions['download'] = '<a title="' . __( 'Download Attachment', 'front-end-pm' ) . '" href="' . fep_query_url( 'download', [ 'fep_id' => $item->att_id, 'fep_parent_id' => $item->mgs_id ] ) . '">' . __( 'Download', 'front-end-pm' ) . '</a>';	

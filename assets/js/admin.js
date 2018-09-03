@@ -13,4 +13,9 @@ jQuery( document ).ready( function( $ ) {
 		};
 		$.post( ajaxurl, data );
 	});
+	$('.fep_delete_a').on('click', function( e ){
+		if ( ! confirm( fep_admin.del_confirm ) ) {
+			return false;
+		}
+	});
 });
