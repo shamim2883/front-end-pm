@@ -40,6 +40,13 @@ class Fep_Admin_Settings {
 			wp_enqueue_script( 'wp-color-picker' );
 		}
 		wp_enqueue_script( 'fep-admin', FEP_PLUGIN_URL . 'assets/js/admin.js', array( 'jquery' ), FEP_PLUGIN_VERSION, true );
+		wp_localize_script( 'fep-admin', 'fep_admin',
+			array(
+				'token'       => wp_create_nonce( 'fep-admin' ),
+				'delete'      => __( 'Delete', 'front-end-pm' ),
+				'del_confirm' => __( 'Are you sure you want to delete this?', 'front-end-pm' ),
+			)
+		);
 	}
 
 	function recalculate_user_message_count( $old_value, $tab ) {
