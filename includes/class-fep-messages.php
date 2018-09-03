@@ -75,7 +75,8 @@ class Fep_Messages {
 				'mgs_type'		=> 'message',
 				'mgs_status'	=> 'publish',
 				'per_page'		=> 0,
-				'fields'		=> ['mgs_id'],
+				'fields'		=> 'COUNT(*)',
+				'orderby'       => false,
 			);
 			if ( 'threaded' == fep_get_message_view() ) {
 				$args['mgs_parent'] = 0;
@@ -88,9 +89,6 @@ class Fep_Messages {
 				'mgs_deleted' => false,
 			);
 			
-			$messages = fep_get_messages( $total_args );
-			$total_count = count( $messages );
-			
 			$unread_args = $args;
 			$unread_args['participant_query'][] = array(
 				'mgs_participant' => $user_id,
@@ -98,11 +96,9 @@ class Fep_Messages {
 				'mgs_deleted' => false,
 			);
 			
-			$messages = fep_get_messages( $unread_args );
-			$unread_count 	= count( $messages );
 			$user_meta = array(
-				'total'		=> $total_count,
-				'unread'	=> $unread_count,
+				'total'		=> fep_get_messages( $total_args ),
+				'unread'	=> fep_get_messages( $unread_args ),
 			);
 			update_user_meta( $user_id, '_fep_user_message_count', $user_meta );
 		}

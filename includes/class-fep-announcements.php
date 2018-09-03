@@ -159,8 +159,9 @@ class FEP_Announcements {
 				'mgs_type'		=> 'announcement',
 				'mgs_status'	=> 'publish',
 				'per_page'		=> 0,
-				'fields'		=> ['mgs_id'],
+				'fields'		=> 'COUNT(*)',
 				'mgs_parent' 	=> 0,
+				'orderby'       => false,
 				'participant_query' => array(
 					array(
 						'mgs_participant' => $user_id,
@@ -170,9 +171,9 @@ class FEP_Announcements {
 				),
 			);
 			$args = apply_filters( 'fep_announcement_count_query_args', $args );
-			$announcements = fep_get_messages( $args );
+
 			$user_meta = array(
-				'unread' => count( $announcements ),
+				'unread' => fep_get_messages( $args ),
 			);
 			update_user_meta( $user_id, '_fep_user_announcement_count', $user_meta );
 		}
