@@ -1323,12 +1323,7 @@ function fep_form_posted() {
 			}
 			break;
 		case 'reply':
-			if ( isset( $_GET['fep_id'] ) ) {
-				$pID = absint( $_GET['fep_id'] );
-			} else {
-				$pID = ! empty( $_GET['id'] ) ? absint( $_GET['id'] ) : 0;
-			}
-			$parent_id = fep_get_parent_id( $pID );
+			$parent_id = isset( $_POST['fep_parent_id'] ) ? absint( $_POST['fep_parent_id'] ) : 0;
 			if ( ! fep_current_user_can( 'send_reply', $parent_id ) ) {
 				fep_errors()->add( 'permission', __( 'You do not have permission to send reply to this message!', 'front-end-pm' ) );
 				break;
