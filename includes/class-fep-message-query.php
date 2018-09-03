@@ -1,4 +1,10 @@
 <?php
+/**
+ * Messages and Announcements Query
+ *
+ * @package Front End PM
+ * @since 10.1.1
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -78,6 +84,10 @@ class FEP_Message_Query {
 	}
 	
 	public function parse_fields(){
+		if ( 'COUNT(*)' === $this->args['fields'] ) {
+			$this->query_fields .= 'COUNT(*)';
+			return;
+		}
 		
 		if( ! empty( $this->args['count_total'] ) && $this->limit ){
 			$this->query_fields .= 'SQL_CALC_FOUND_ROWS ';
@@ -413,6 +423,13 @@ class FEP_Message_Query {
 		global $wpdb;
 		
 		$query = "SELECT $this->query_fields FROM {$this->message_table}{$this->join} WHERE {$this->query_where}{$this->groupby}{$this->order}{$this->limit}";
+		
+		if ( 'COUNT(*)' === $this->args['fields'] ) {
+			$this->messages       = (int) $wpdb->get_var( $query );
+			$this->found_messages = $this->messages;
+			$this->total_messages = $this->messages;
+			return $this->messages;
+		}
 		
 		if( is_array( $this->args['fields'] ) && $this->args['fields'] ){
 			if( count( $this->args['fields'] ) === 1 ){
