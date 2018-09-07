@@ -67,9 +67,9 @@ class Fep_Shortcodes {
 			$atts['to'] = esc_html( $atts['to'] );
 		}
 		if ( '{current-post-title}' == $atts['subject'] ) {
-			$atts['subject'] = urlencode( get_the_title() );
+			$atts['subject'] = rawurlencode( get_the_title() );
 		} elseif ( ! empty( $atts['subject'] ) ) {
-			$atts['subject'] = urlencode( $atts['subject'] );
+			$atts['subject'] = rawurlencode( $atts['subject'] );
 		} else {
 			$atts['subject'] = false;
 		}
