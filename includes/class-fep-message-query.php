@@ -423,6 +423,7 @@ class FEP_Message_Query {
 		global $wpdb;
 		
 		$query = "SELECT $this->query_fields FROM {$this->message_table}{$this->join} WHERE {$this->query_where}{$this->groupby}{$this->order}{$this->limit}";
+		$query = apply_filters( 'fep_filter_message_query_sql', $query, $this );
 		
 		if ( 'COUNT(*)' === $this->args['fields'] ) {
 			$this->messages       = (int) $wpdb->get_var( $query );
