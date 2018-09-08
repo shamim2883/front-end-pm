@@ -5,7 +5,7 @@ Donate link: https://www.shamimsplugins.com/products/front-end-pm-pro/?utm_campa
 Requires at least: 4.4
 Tested up to: 4.9.8
 Requires PHP: 5.4
-Stable tag: 10.1.1
+Stable tag: 10.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,16 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 
 == Changelog ==
 
+= 10.1.2 =
+
+* Admin can edit Messages and Announcements.
+* mgs_id can be passed when insert message.
+* fep_filter_message_query_sql added
+* message query orderby can be empty to remove orderby.
+* we can now get only count from FEP_Message_Query
+* FIX: if first_last_name or last_first_name used for name then empty name also returned true.
+* FIX: Memory leaks
+
 = 10.1.1 =
 
 * Breaking changes, If you have custom code or template changes for this plugin, make sure they are compatible with current version.
@@ -115,9 +125,14 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 * no more WP_Post object inside template. Now FEP_Message object
 * privacy tab added in settings page.
 
-To view any previous version changelog see https://www.shamimsplugins.com/docs/category/front-end-pm/changelog/
+To view any previous version changelog see [https://www.shamimsplugins.com/docs/category/front-end-pm/changelog/](https://www.shamimsplugins.com/docs/category/front-end-pm/changelog/)
 
 == Upgrade Notice ==
+
+= 10.1.2 =
+
+* Admin can edit Messages and Announcements.
+* FIX: Memory leaks
 
 = 10.1.1 =
 
