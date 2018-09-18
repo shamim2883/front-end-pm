@@ -1435,7 +1435,7 @@ function fep_block_users_for_user( $user_ids, $userid = '' ) {
 	if ( ! $user_ids || ! is_array( $user_ids ) ) {
 		return 0;
 	}
-	$blocked_users = fep_get_blocked_users_for_user( $userid = '' );
+	$blocked_users = fep_get_blocked_users_for_user( $userid );
 	$need_block = array_diff( $user_ids, $blocked_users );
 	if ( $need_block ) {
 		$blocked_users = array_unique( array_merge( $blocked_users, $need_block ) );
