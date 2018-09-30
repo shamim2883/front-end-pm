@@ -21,7 +21,7 @@ class Fep_Messages {
 	}
 
 	function time_delay_check( $where, $errors ) {
-		if ( 'newmessage' != $where ) {
+		if ( ! in_array( $where, [ 'newmessage', 'shortcode-newmessage' ] ) ) {
 			return;
 		}
 		$delay = absint( fep_get_option( 'time_delay', 5 ) );
@@ -44,7 +44,7 @@ class Fep_Messages {
 	}
 
 	function box_full_check( $where, $errors ) {
-		if ( 'newmessage' != $where ) {
+		if ( ! in_array( $where, [ 'newmessage', 'shortcode-newmessage' ] ) ) {
 			return;
 		}
 		if ( ! $max = fep_get_current_user_max_message_number() ) {
