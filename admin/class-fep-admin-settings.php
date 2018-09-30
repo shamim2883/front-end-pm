@@ -178,7 +178,7 @@ class Fep_Admin_Settings {
 				'type'		=> 'checkbox',
 				'value'		=> fep_get_option( 'allow_attachment', 1 ),
 				'priority'	=> 18,
-				'class'		=> '',
+				'class'		=> 'fep_toggle_next_tr fep_toggle_next_tr-2',
 				'label'		=> __( 'Allow Attachment', 'front-end-pm' ),
 				'cb_label'	=> __( 'Allow to attach attachment with message?', 'front-end-pm' ),
 			),

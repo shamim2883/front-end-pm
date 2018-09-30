@@ -3,6 +3,30 @@ jQuery( document ).ready( function( $ ) {
 	if( !!$.prototype.wpColorPicker ) {
 		$( '.fep-color-picker' ).wpColorPicker();
 	}
+	$("input.fep_toggle_next_tr").each(function(){
+		if( ! $(this).prop("checked")) {
+			var trs = 1;
+			if( $(this).hasClass('fep_toggle_next_tr-2') ){
+				trs = 2;
+			} else if( $(this).hasClass('fep_toggle_next_tr-3') ){
+				trs = 3;
+			}
+			$(this).closest('tr').nextAll(':lt(' + trs + ')').hide('slow');
+		}
+	});
+	$("input.fep_toggle_next_tr").change(function(){
+		var trs = 1;
+		if( $(this).hasClass('fep_toggle_next_tr-2') ){
+			trs = 2;
+		} else if( $(this).hasClass('fep_toggle_next_tr-3') ){
+			trs = 3;
+		}
+		if($(this).prop("checked")) {
+			$(this).closest('tr').nextAll(':lt(' + trs + ')').show('slow');
+		} else {
+			$(this).closest('tr').nextAll(':lt(' + trs + ')').hide('slow');
+		}
+	});
 
 	$( document ).on( 'click', '.fep-review-notice .fep-review-notice-dismiss', function( e ) {
 		var fep_click = $( this ).data( 'fep_click' );
