@@ -475,6 +475,20 @@
 .fep-attachment-icon.fep-attachment-icon-icon {
 	background-position: 0 -272px;
 }
+#fep-menu {
+	display: block;
+}
+#fep-menu-toggle-button {
+	display: none;
+}
+#fep-menu-toggle-button:after {
+	content: '\2795'; /* Unicode character for "plus" sign (+) */
+	float: right;
+	margin-left: 5px;
+}
+#fep-menu-toggle-button.fep-menu-toggle-expanded:after {
+	content: '\2796'; /* Unicode character for "minus" sign (-) */
+}
 
 @media screen and (max-width: 480px) {
 	.fep-table .fep-column-avatar {
@@ -499,6 +513,12 @@
 
 	#fep-content input[type="text"] {
 		width: 100%;
+	}
+	#fep-menu {
+		display: none;
+	}
+	#fep-menu-toggle-button {
+		display: block;
 	}
 }
 @media screen and (max-width: 768px) {
