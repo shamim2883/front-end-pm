@@ -56,7 +56,7 @@ jQuery( document ).ready( function( $ ) {
 		// Finally, open the modal
 		file_frame.open();
 	});
-	$( document ).on('click', '.fep_att_delete', function( e ){
+	$( '.fep_edit_attachments_table' ).on('click', '.fep_att_delete', function( e ){
 		if ( ! confirm( fep_admin.del_confirm ) ) {
 			return false;
 		}
