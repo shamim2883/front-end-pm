@@ -476,9 +476,7 @@
 .fep-attachment-icon.fep-attachment-icon-icon {
 	background-position: 0 -272px;
 }
-#fep-menu {
-	display: block;
-}
+
 #fep-menu-toggle-button {
 	display: none;
 }
@@ -515,7 +513,7 @@
 	#fep-content input[type="text"] {
 		width: 100%;
 	}
-	#fep-menu {
+	.fep-menu-toggle {
 		display: none;
 	}
 	#fep-menu-toggle-button {
