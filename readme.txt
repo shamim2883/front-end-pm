@@ -5,7 +5,7 @@ Donate link: https://www.shamimsplugins.com/products/front-end-pm-pro/?utm_campa
 Requires at least: 4.4
 Tested up to: 4.9.8
 Requires PHP: 5.4
-Stable tag: 10.1.2
+Stable tag: 10.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -104,6 +104,14 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 8. Appearance settings.
 
 == Changelog ==
+
+= 10.1.3 =
+
+* Menu collapse when using mobile device.
+* Message/Announcement date font size decrease.
+* FIX: Attachment could not be deleted when Message/Announcement edit.
+* FIX: Some CSS was not applied for screen width less then 480px
+* FIX: Time delay check was not applied when message sent using shortcode form.
 
 = 10.1.2 =
 
