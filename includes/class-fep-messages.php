@@ -369,7 +369,7 @@ class Fep_Messages {
 					$span = '';
 					$class = '';
 				} 
-				?><span class="<?php echo $class; ?>"><a href="<?php echo fep_query_url( 'viewmessage', array( 'fep_id' => fep_get_the_id() ) ); ?>"><?php echo fep_get_the_title(); ?></a></span><?php echo $span; ?>
+				?><span class="<?php echo $class; ?>"><a href="<?php echo esc_url( add_query_arg( [ 'fepaction' => 'viewmessage', 'fep_id' => fep_get_the_id() ] ) ); ?>"><?php echo fep_get_the_title(); ?></a></span><?php echo $span; ?>
 				<div class="fep-message-excerpt">
 					<?php echo fep_get_the_excerpt(); ?>
 				</div><?php
