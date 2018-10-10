@@ -489,6 +489,47 @@
 	content: '\2796'; /* Unicode character for "minus" sign (-) */
 }
 
+.fep-content-single-sidebar-loader,
+.fep-content-single-main-loader {
+	cursor: wait;
+	background:#ffffff url('../images/loading.gif') no-repeat center center;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
+	filter: alpha(opacity=75);
+	opacity: 0.75;
+	position: absolute;
+	z-index: 9;
+	display: none;
+}
+
+#fep-content-single {
+	display: flex;
+}
+#fep-content-single #fep-content-single-sidebar {
+	padding: 5px;
+	flex: 20%;
+	min-width: 150px;
+}
+#fep-content-single #fep-content-single-main {
+	width: 100%;
+}
+.fep-message-head {
+	cursor: pointer;
+}
+.fep-filter-heads-div {
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+
+#fep-content-single-heads .fep-message-head-active {
+	border-radius: 0px 30px 30px 0px;
+}
+
+#fep-content-single-heads .fep-error {
+	background-color: #ffebe8;
+	border-color: #c00;
+}
+
+
 @media screen and (max-width: 480px) {
 	.fep-table .fep-column-avatar {
 		display: none;
@@ -518,6 +559,9 @@
 	}
 	#fep-menu-toggle-button {
 		display: block;
+	}
+	#fep-content-single #fep-content-single-sidebar {
+		display: none;
 	}
 }
 @media screen and (max-width: 768px) {

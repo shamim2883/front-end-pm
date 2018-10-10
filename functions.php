@@ -100,6 +100,7 @@ function fep_include_require_files() {
 		'user-settings' => FEP_PLUGIN_DIR . 'includes/class-fep-user-settings.php',
 		'main' 			=> FEP_PLUGIN_DIR . 'includes/fep-class.php',
 		'widgets' 		=> FEP_PLUGIN_DIR . 'includes/fep-widgets.php',
+		'rest' 		=> FEP_PLUGIN_DIR . 'includes/class-fep-rest-api.php',
 	);
 	if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 		$fep_files['ajax'] 	= FEP_PLUGIN_DIR . 'includes/class-fep-ajax.php';
@@ -215,6 +216,10 @@ function fep_enqueue_scripts() {
 	$custom_css .= ' .fep-odd-even > div:nth-child(odd) {background-color:' . fep_get_option( 'odd_color', '#F2F7FC' ) . ';}';
 	$custom_css .= ' .fep-odd-even > div:nth-child(even) {background-color:' . fep_get_option( 'even_color', '#FAFAFA' ) . ';}';
 	$custom_css .= ' .fep-message .fep-message-title-heading, .fep-per-message .fep-message-title{background-color:' . fep_get_option( 'mgs_heading_color', '#F2F7FC' ) . ';}';
+	$custom_css .= ' #fep-content-single-heads .fep-message-head:hover,#fep-content-single-heads .fep-message-head-active{';
+	$custom_css .= 'background-color:' . fep_get_option( 'active_btn_bg_color', '#D3EEF5' ) . ';';
+	$custom_css .= 'color:' . fep_get_option( 'active_btn_text_color', '#000000' ) . ';';
+	$custom_css .= '}';
 	$custom_css .= trim( stripslashes( fep_get_option( 'custom_css' ) ) );
 	if ( $custom_css ) {
 		wp_add_inline_style( 'fep-common-style', $custom_css );
@@ -272,6 +277,13 @@ function fep_enqueue_scripts() {
 			'ajaxurl'	=> admin_url( 'admin-ajax.php' ),
 			'token'		=> wp_create_nonce( 'fep-block-unblock-script' ),
 			'confirm'   => __( 'Do you really want to block %s? If you click "OK" then this user will not be able to send you any more messages.' ),
+		)
+	);
+	wp_register_script( 'fep-view-message', FEP_PLUGIN_URL . 'assets/js/view-message.js', array( 'jquery' ), FEP_PLUGIN_VERSION, true );
+	wp_localize_script( 'fep-view-message', 'fep_view_message', array(
+			'root'    => esc_url_raw( rest_url( 'front-end-pm/v1' ) ),
+			'nonce'   => wp_create_nonce( 'wp_rest' ),
+			'feppage' => ! empty( $_GET['feppage'] ) ? absint( $_GET['feppage'] ) : 1,
 		)
 	);
 	wp_register_script( 'fep-cb-check-uncheck-all', FEP_PLUGIN_URL . 'assets/js/check-uncheck-all.js', array( 'jquery' ), FEP_PLUGIN_VERSION, true );
