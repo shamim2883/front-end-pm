@@ -138,13 +138,11 @@ class Fep_Directory {
 			case 'block_unblock':
 				wp_enqueue_script( 'fep-block-unblock-script' );
 				if ( get_current_user_id() != $user->ID ) {
-					echo '<a href="#" class="fep_block_unblock_user" data-user_id="' . $user->ID . '">';
 					if ( fep_is_user_blocked_for_user( get_current_user_id(), $user->ID ) ) {
-						_e( 'Unblock', 'front-end-pm' );
+						echo '<a href="#" class="fep_block_unblock_user fep_user_blocked" data-user_id="' . $user->ID . '" data-user_name="' . esc_attr( fep_user_name( $user->ID ) ) . '">' . esc_html__( 'Unblock', 'front-end-pm' ) . '</a>';
 					} else {
-						_e( 'Block', 'front-end-pm' );
+						echo '<a href="#" class="fep_block_unblock_user" data-user_id="' . $user->ID . '" data-user_name="' . esc_attr( fep_user_name( $user->ID ) ) . '">' . esc_html__( 'Block', 'front-end-pm' ) . '</a>';
 					}
-					echo '</a>';
 				}
 				break;
 			case 'send_message' :
