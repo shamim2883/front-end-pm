@@ -18,7 +18,7 @@ if ( is_array( $fep_options ) && ! empty( $fep_options['delete_data_on_uninstall
 	/** Delete all the Plugin Options */
 	delete_option( 'FEP_admin_options' );
 	delete_option( 'fep_updated_versions' );
-	delete_option( 'fep_db_version' );
+	delete_site_option( 'fep_db_version' );
 	
 	delete_metadata( 'user', 0, 'FEP_user_options', '', true );
 	delete_metadata( 'user', 0, '_fep_user_message_count', '', true );
