@@ -70,7 +70,7 @@ class Fep_Admin_Settings {
 		$tab = 'general';
 		$is_settings_page = false;
 		if ( ! empty( $_POST['_wp_http_referer'] ) ) {
-			wp_parse_str( $_POST['_wp_http_referer'], $referrer );
+			wp_parse_str( parse_url( $_POST['_wp_http_referer'], PHP_URL_QUERY ), $referrer );
 			$tab = ! empty( $referrer['tab'] ) ? $referrer['tab'] : 'general';
 			if ( isset( $referrer['page'] ) && 'fep_settings' == $referrer['page'] && ! empty( $wp_settings_sections['fep_settings_' . $tab ] ) ) {
 				$is_settings_page = true;
