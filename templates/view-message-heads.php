@@ -9,7 +9,7 @@ if ( $messages_heads->have_messages() ) {
 	while ( $messages_heads->have_messages() ) {
 		$messages_heads->the_message();
 		?>
-		<div id="fep-message-head-<?php echo fep_get_the_id(); ?>" class="fep-message-head <?php echo ( isset( $_GET['fep_id'] ) && absint( $_GET['fep_id'] ) === fep_get_the_id() ) ? 'fep-message-head-active' : ''; ?>" data-fep_id="<?php echo fep_get_the_id(); ?>">
+		<div id="fep-message-head-<?php echo fep_get_the_id(); ?>" class="fep-message-head<?php echo ( isset( $_GET['fep_id'] ) && absint( $_GET['fep_id'] ) === fep_get_the_id() ) ? ' fep-message-head-active' : ''; ?>" data-fep_id="<?php echo fep_get_the_id(); ?>">
 		<?php
 		if ( apply_filters( 'fep_is_group_message', false, fep_get_the_id() ) ) {
 			?>
