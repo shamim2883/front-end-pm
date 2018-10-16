@@ -294,6 +294,7 @@
 	cursor: not-allowed;
 }
 
+#fep-message-top.fep-loading-gif,
 .fep-loading-gif {
 	background: url('../images/loading.gif') no-repeat right center;
 	padding-right: 16px;
