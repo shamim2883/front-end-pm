@@ -42,7 +42,7 @@ function fep_create_database(){
 			mgs_parent_read bigint(20) unsigned NOT NULL default '0',
 			mgs_deleted bigint(20) unsigned NOT NULL default '0',
 			mgs_archived bigint(20) unsigned NOT NULL default '0',
-			PRIMARY KEY (per_id),
+			PRIMARY KEY  (per_id),
 			UNIQUE KEY mgs_id_participant (mgs_id,mgs_participant),
 			KEY mgs_parent_read (mgs_parent_read),
 			KEY mgs_deleted (mgs_deleted),
