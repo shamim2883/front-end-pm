@@ -5,7 +5,7 @@ Donate link: https://www.shamimsplugins.com/products/front-end-pm-pro/?utm_campa
 Requires at least: 4.4
 Tested up to: 4.9.8
 Requires PHP: 5.4
-Stable tag: 10.1.3
+Stable tag: 10.1.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -104,6 +104,14 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 8. Appearance settings.
 
 == Changelog ==
+
+= 10.1.4 =
+
+* User can navigate to other messages from a view message page
+* Block user now show confirmation dialog
+* Drop previous version table if exists
+* Message to loading gif target more accurately in css
+* FIX: is_settings_page was wrong as first param was not set
 
 = 10.1.3 =
 
