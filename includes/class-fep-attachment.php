@@ -142,9 +142,9 @@ class Fep_Attachment {
 				echo '<div class="fep-attachment fep-attachment-' . $attachment->att_id . '">';
 				$name = basename( $attachment->att_file );
 				
-				echo apply_filters( 'fep_filter_attachment_icon', '<span class="fep-attachment-icon fep-attachment-icon-' . $this->icon( $attachment->att_file ) . '"></span>', $attachment->att_id );
+				echo apply_filters( 'fep_filter_attachment_icon', '<span class="fep-attachment-icon fep-attachment-icon-' . $this->icon( $attachment->att_file ) . '"></span>', $attachment->att_id, $attachment );
 				
-				echo apply_filters( 'fep_filter_attachment_download_link', '<a href="' . fep_query_url( 'download', array( 'fep_id' => $attachment->att_id, 'fep_parent_id' => $attachment->mgs_id ) ) . '" title="' . sprintf( __( 'Download %s', 'front-end-pm' ), esc_attr( $name ) ) . '">' . esc_html( $name ) . '</a>', $attachment->att_id );
+				echo apply_filters( 'fep_filter_attachment_download_link', '<a href="' . fep_query_url( 'download', array( 'fep_id' => $attachment->att_id, 'fep_parent_id' => $attachment->mgs_id ) ) . '" title="' . sprintf( __( 'Download %s', 'front-end-pm' ), esc_attr( $name ) ) . '">' . esc_html( $name ) . '</a>', $attachment->att_id, $attachment );
 				
 				echo '</div>';
 			}
