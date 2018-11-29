@@ -154,7 +154,7 @@ class Fep_Form {
 				'where'    => array( 'newmessage', 'reply', 'new_announcement' )
 			);
 		}
-		$fields = apply_filters( 'fep_form_fields', $fields );
+		$fields = apply_filters( 'fep_form_fields', $fields, $where );
 		foreach ( $fields as $key => $field ){
 			if ( empty( $field['where'] ) ){
 				$field['where'] = array( 'newmessage' );
@@ -184,7 +184,7 @@ class Fep_Form {
 			);
 			$fields[ $key ] = wp_parse_args( $field, $defaults );
 		}
-		$fields = apply_filters( 'fep_form_fields_after_process', $fields );
+		$fields = apply_filters( 'fep_form_fields_after_process', $fields, $where );
 		uasort( $fields, 'fep_sort_by_priority' );
 		return $fields;
 	}
