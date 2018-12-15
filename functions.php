@@ -797,7 +797,7 @@ function fep_current_user_can( $cap, $id = false ) {
 						$can = false;
 						break;
 					}
-					if ( fep_is_user_blocked_for_user( $participant->mgs_participant ) ) {
+					if ( ! fep_is_user_whitelisted() && fep_is_user_blocked_for_user( $participant->mgs_participant ) ) {
 						$can = false;
 						break;
 					}
