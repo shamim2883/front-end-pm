@@ -19,7 +19,7 @@ function fep_create_database(){
 			$wpdb->query( sprintf( 'ALTER TABLE %1$s RENAME %1$s_old', FEP_MESSAGE_TABLE ) );
 		}
 	}
-	if ( $installed_ver != FEP_DB_VERSION ) {
+	if ( version_compare( $installed_ver, FEP_DB_VERSION, '!=' ) ) {
 		$charset_collate = $wpdb->get_charset_collate();
 
 		$sql_message = "CREATE TABLE " . FEP_MESSAGE_TABLE . " (
