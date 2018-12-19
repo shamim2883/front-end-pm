@@ -11,7 +11,7 @@ function fep_register_metadata_table(){
 function fep_create_database(){
 	global $wpdb;
 	$installed_ver = get_site_option( 'fep_db_version' );
-	if ( ! $installed_ver && $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', FEP_MESSAGE_TABLE ) ) && $wpdb->get_var( $wpdb->prepare( 'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s', DB_NAME, FEP_MESSAGE_TABLE, 'id' ) ) ) {
+	if ( version_compare( $installed_ver, '1011', '<' ) && $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', FEP_MESSAGE_TABLE ) ) && $wpdb->get_var( $wpdb->prepare( 'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s', DB_NAME, FEP_MESSAGE_TABLE, 'id' ) ) ) {
 		if ( ! $wpdb->get_var( 'SELECT COUNT(*) FROM ' . FEP_MESSAGE_TABLE . ' WHERE id IS NOT NULL LIMIT 1' ) ) {
 			$wpdb->query( 'DROP TABLE IF EXISTS ' . FEP_MESSAGE_TABLE );
 			$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'fep_meta' );
