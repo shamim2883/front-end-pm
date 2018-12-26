@@ -330,9 +330,9 @@ class Fep_Messages {
 				?><input type="checkbox" class="fep-cb" name="fep-message-cb[]" value="<?php echo fep_get_the_id(); ?>" /><?php
 				break;
 			case 'avatar':
-				if( apply_filters( 'fep_is_group_message', false, fep_get_the_id() ) ){
+				if( $group = apply_filters( 'fep_is_group_message', false, fep_get_the_id() ) ){
 					?><div class="fep-avatar-p fep-avatar-p-90"><?php
-					echo '<div class="fep-avatar-group-60" title="' . __( 'Group', 'front-end-pm' ) . '"></div>';
+					echo '<div class="fep-avatar-group-60" title="' . esc_attr( $group ) . '"></div>';
 					echo '</div>';
 				} else {
 					$participants = fep_get_participants( fep_get_the_id() );
