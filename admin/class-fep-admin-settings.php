@@ -433,7 +433,7 @@ class Fep_Admin_Settings {
 				'class'		=> '',
 				'section'	=> 'emails',
 				'label'		=> __( 'Send email?', 'front-end-pm' ),
-				'cb_label'	=> __( 'Send email to all users when a new announcement is published?', 'front-end-pm' ),
+				'cb_label'	=> __( 'Send email to all users of selected role(s) when a new announcement is published?', 'front-end-pm' ),
 			),
 			'ann_to' => array(
 				'type'		 => 'email',
