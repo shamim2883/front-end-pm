@@ -235,6 +235,7 @@ class FEP_Message_Query {
 		$relation = 'AND';
 		$add_relation = false;
 		$where = '';
+		$i = 0;
 		
 		foreach ( $value as $k => $v ) {
 			if( 'relation' === $k ){
@@ -245,12 +246,13 @@ class FEP_Message_Query {
 			}
 			$and = '';
 			$where2 = '';
+			$alias = $i ? "pt{$i}" : $this->participant_table;
 			
 			if( is_array( $v ) ){
 				foreach( $v as $x => $y ){
 					switch ( $x ) {
 						case 'mgs_participant':
-							$where2 .= sprintf("{$and}{$this->participant_table}.{$x} = %d", absint( $y ) );
+							$where2 .= sprintf("{$and}{$alias}.{$x} = %d", absint( $y ) );
 							$and = ' AND ';
 							break;
 						case 'mgs_read':
@@ -258,9 +260,9 @@ class FEP_Message_Query {
 						case 'mgs_deleted':
 						case 'mgs_archived':
 							if( $y ){
-								$where2 .= "{$and}{$this->participant_table}.{$x} != 0";
+								$where2 .= "{$and}{$alias}.{$x} != 0";
 							} else {
-								$where2 .= "{$and}{$this->participant_table}.{$x} = 0";
+								$where2 .= "{$and}{$alias}.{$x} = 0";
 							}
 							$and = ' AND ';
 							break;
@@ -270,15 +272,22 @@ class FEP_Message_Query {
 				}
 			}
 			if( $where2 ){
+				$this->join .= " INNER JOIN $this->participant_table";
+				$this->join .= $i ? " AS {$alias}" : '';
+				$this->join .= " ON ( {$this->message_table}.mgs_id = {$alias}.mgs_id )";
+				
 				$where .= sprintf("%s({$where2})", $add_relation ? " {$relation} " : '' );
 				$where2 = '';
 				
 				$add_relation = true;
 			}
+			$i++;
 		}
 		if( $where ){
-			$this->join .= " INNER JOIN $this->participant_table ON ( {$this->message_table}.mgs_id = {$this->participant_table}.mgs_id )";
-			
+
+			if ( $i > 1 ) {
+				$this->groupby = " GROUP BY {$this->message_table}.mgs_id";
+			}
 			$this->query_where .= " AND ({$where})";
 		}
 	}
