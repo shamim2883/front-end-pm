@@ -806,7 +806,7 @@ function fep_current_user_can( $cap, $id = false ) {
 			break;
 		case 'view_message':
 		case 'view_announcement':
-			if ( $id && ( ( in_array( get_current_user_id(), fep_get_participants( $id ) ) && fep_get_message_status( $id ) == 'publish' ) || fep_is_user_admin() ) ) {
+			if ( $id && ( ( in_array( get_current_user_id(), fep_get_participants( $id ) ) && fep_get_message_status( $id ) == 'publish' ) || fep_is_user_admin() || fep_is_user_whitelisted() ) ) {
 				$can = true;
 			}
 			break;
