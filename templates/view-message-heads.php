@@ -11,10 +11,10 @@ if ( $messages_heads->have_messages() ) {
 		?>
 		<div id="fep-message-head-<?php echo fep_get_the_id(); ?>" class="fep-message-head<?php echo ( isset( $_GET['fep_id'] ) && absint( $_GET['fep_id'] ) === fep_get_the_id() ) ? ' fep-message-head-active' : ''; ?>" data-fep_id="<?php echo fep_get_the_id(); ?>">
 		<?php
-		if ( apply_filters( 'fep_is_group_message', false, fep_get_the_id() ) ) {
+		if ( $group = apply_filters( 'fep_is_group_message', false, fep_get_the_id() ) ) {
 			?>
 			<div class="fep-avatar-p fep-avatar-p-90">
-				<div class="fep-avatar-group-60" title="<?php esc_attr_e( 'Group', 'front-end-pm' ); ?>"></div>
+				<div class="fep-avatar-group-60" title="<?php echo esc_attr( $group ); ?>"></div>
 			</div>
 			<?php
 		} else {
