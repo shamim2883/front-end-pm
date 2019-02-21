@@ -1107,6 +1107,9 @@ function fep_add_announcement( $announcement = null, $override = array() ) {
 	if ( ! empty( $announcement['announcement_roles'] ) && is_array( $announcement['announcement_roles'] ) ) {
 		$user_ids = get_users( [ 'fields' => 'ids', 'role__in' => $announcement['announcement_roles'] ] );
 		$user_ids[] = $new_message->mgs_author;
+		
+		$user_ids = apply_filters( 'fep_filter_announcement_participant_ids', $user_ids, $announcement_id, $announcement, $new_message );
+		
 		$new_message->insert_participants( $user_ids );
 		
 		foreach( $announcement['announcement_roles'] as $role ){
