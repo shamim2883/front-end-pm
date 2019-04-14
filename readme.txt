@@ -3,9 +3,9 @@ Contributors: shamim51
 Tags: front end pm,front-end-pm,pm,private message,personal message,front end,frontend pm,frontend,message,widget,plugin,sidebar,shortcode,page,email,mail,contact form, secure contact form, simple contact form
 Donate link: https://www.shamimsplugins.com/products/front-end-pm-pro/?utm_campaign=wordpress&utm_source=readme_pro&utm_medium=donate
 Requires at least: 4.4
-Tested up to: 5.0.2
+Tested up to: 5.1.1
 Requires PHP: 5.4
-Stable tag: 10.1.5
+Stable tag: 10.1.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -104,6 +104,13 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 8. Appearance settings.
 
 == Changelog ==
+
+= 10.1.6 =
+
+* Message can be queried by multiple recipients
+* Whitelisted user can view all messages and announcements
+* fep_filter_announcement_participant_ids added
+* add filter to add !important to inline css
 
 = 10.1.5 =
 
