@@ -207,26 +207,32 @@ function fep_enqueue_scripts() {
 		wp_enqueue_style( 'fep-style' );
 	}
 	wp_enqueue_style( 'fep-common-style' );
+	
+	$important = '';
+	
+	if ( apply_filters( 'fep_add_important_to_inline_css', false ) ) {
+		$important = ' !important';
+	}
 
 	$custom_css = '#fep-wrapper{';
-	$custom_css .= 'background-color:' . fep_get_option( 'bg_color' ) . ';';
-	$custom_css .= 'color:' . fep_get_option( 'text_color', '#000000' ) . ';';
+	$custom_css .= 'background-color:' . fep_get_option( 'bg_color' ) . $important . ';';
+	$custom_css .= 'color:' . fep_get_option( 'text_color', '#000000' ) . $important . ';';
 	$custom_css .= '}';
-	$custom_css .= '#fep-wrapper a:not(.fep-button,.fep-button-active) {color:' . fep_get_option( 'link_color', '#000080' ) . ';}';
+	$custom_css .= ' #fep-wrapper a:not(.fep-button,.fep-button-active) {color:' . fep_get_option( 'link_color', '#000080' ) . $important . ';}';
 	$custom_css .= ' .fep-button{';
-	$custom_css .= 'background-color:' . fep_get_option( 'btn_bg_color', '#F0FCFF' ) . ';';
-	$custom_css .= 'color:' . fep_get_option( 'btn_text_color', '#000000' ) . ';';
+	$custom_css .= 'background-color:' . fep_get_option( 'btn_bg_color', '#F0FCFF' ) . $important . ';';
+	$custom_css .= 'color:' . fep_get_option( 'btn_text_color', '#000000' ) . $important . ';';
 	$custom_css .= '}';
 	$custom_css .= ' .fep-button:hover,.fep-button-active{';
-	$custom_css .= 'background-color:' . fep_get_option( 'active_btn_bg_color', '#D3EEF5' ) . ';';
-	$custom_css .= 'color:' . fep_get_option( 'active_btn_text_color', '#000000' ) . ';';
+	$custom_css .= 'background-color:' . fep_get_option( 'active_btn_bg_color', '#D3EEF5' ) . $important . ';';
+	$custom_css .= 'color:' . fep_get_option( 'active_btn_text_color', '#000000' ) . $important . ';';
 	$custom_css .= '}';
-	$custom_css .= ' .fep-odd-even > div:nth-child(odd) {background-color:' . fep_get_option( 'odd_color', '#F2F7FC' ) . ';}';
-	$custom_css .= ' .fep-odd-even > div:nth-child(even) {background-color:' . fep_get_option( 'even_color', '#FAFAFA' ) . ';}';
-	$custom_css .= ' .fep-message .fep-message-title-heading, .fep-per-message .fep-message-title{background-color:' . fep_get_option( 'mgs_heading_color', '#F2F7FC' ) . ';}';
+	$custom_css .= ' .fep-odd-even > div:nth-child(odd) {background-color:' . fep_get_option( 'odd_color', '#F2F7FC' ) . $important . ';}';
+	$custom_css .= ' .fep-odd-even > div:nth-child(even) {background-color:' . fep_get_option( 'even_color', '#FAFAFA' ) . $important . ';}';
+	$custom_css .= ' .fep-message .fep-message-title-heading, .fep-per-message .fep-message-title{background-color:' . fep_get_option( 'mgs_heading_color', '#F2F7FC' ) . $important . ';}';
 	$custom_css .= ' #fep-content-single-heads .fep-message-head:hover,#fep-content-single-heads .fep-message-head-active{';
-	$custom_css .= 'background-color:' . fep_get_option( 'active_btn_bg_color', '#D3EEF5' ) . ';';
-	$custom_css .= 'color:' . fep_get_option( 'active_btn_text_color', '#000000' ) . ';';
+	$custom_css .= 'background-color:' . fep_get_option( 'active_btn_bg_color', '#D3EEF5' ) . $important . ';';
+	$custom_css .= 'color:' . fep_get_option( 'active_btn_text_color', '#000000' ) . $important . ';';
 	$custom_css .= '}';
 	$custom_css .= trim( stripslashes( fep_get_option( 'custom_css' ) ) );
 	if ( $custom_css ) {
