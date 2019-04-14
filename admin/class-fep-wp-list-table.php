@@ -76,6 +76,14 @@ class FEP_WP_List_Table extends WP_List_Table {
 			case 'mgs_status':
 				$value = fep_get_message_status();
 				break;
+			case 'mgs_parent':
+				if ( fep_get_message_field( $column_name ) ) {
+					$value = '<a class="thickbox" href="' . esc_url( add_query_arg( array( 'page' => $_REQUEST['page'], 'action' => 'view', 'fep_id' => fep_get_message_field( $column_name ) ), admin_url( 'admin.php' ) ) . '&TB_iframe=true&width=700&height=550' ) . '">' . fep_get_message_field( $column_name ) . '</a>';
+				} else {
+					$value = 0;
+				}
+				
+				break;
 	
 			default:
 				$value = fep_get_message_field( $column_name );
