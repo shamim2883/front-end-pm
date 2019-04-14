@@ -5,9 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Front End PM "
-"10.1.5\n"
-"POT-Creation-Date: 2018-12-27 "
-"03:14+0600\n"
+"10.1.6\n"
+"POT-Creation-Date: 2019-04-14 "
+"12:46+0600\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Your Name "
 "<you@example.com>\n"
@@ -33,7 +33,7 @@ msgstr ""
 "__ngettext_noop:1,2;_c,_nc:4c,1,2\n"
 "X-Poedit-Basepath: ..\n"
 "Language: en_US\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.1.1\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: admin/class-fep-admin-pages.php:31
@@ -49,7 +49,7 @@ msgid "All Attachments"
 msgstr ""
 
 #: admin/class-fep-admin-pages.php:37
-#: admin/class-fep-wp-list-table.php:187
+#: admin/class-fep-wp-list-table.php:195
 msgid "Edit"
 msgstr ""
 
@@ -187,7 +187,7 @@ msgstr ""
 
 #: admin/class-fep-admin-pages.php:472
 #: admin/class-fep-pro-info.php:31
-#: admin/class-fep-wp-list-table.php:102
+#: admin/class-fep-wp-list-table.php:110
 #: includes/class-fep-form.php:54
 #: includes/class-fep-form.php:58
 #: templates/admin-view-message-announcement.php:12
@@ -223,8 +223,8 @@ msgstr ""
 #: admin/class-fep-admin-settings.php:46
 #: admin/class-fep-attachments-list-table.php:87
 #: admin/class-fep-attachments-list-table.php:144
-#: admin/class-fep-wp-list-table.php:132
-#: admin/class-fep-wp-list-table.php:185
+#: admin/class-fep-wp-list-table.php:140
+#: admin/class-fep-wp-list-table.php:193
 #: includes/class-fep-announcements.php:234
 #: includes/class-fep-messages.php:290
 #: templates/admin-edit-message-announcement.php:84
@@ -859,7 +859,7 @@ msgid "Already did"
 msgstr ""
 
 #: admin/class-fep-attachments-list-table.php:56
-#: admin/class-fep-wp-list-table.php:89
+#: admin/class-fep-wp-list-table.php:97
 #, php-format
 msgid "Select %s"
 msgstr ""
@@ -878,7 +878,7 @@ msgid "Mime"
 msgstr ""
 
 #: admin/class-fep-attachments-list-table.php:68
-#: admin/class-fep-wp-list-table.php:106
+#: admin/class-fep-wp-list-table.php:114
 #: templates/admin-edit-message-announcement.php:58
 msgid "Status"
 msgstr ""
@@ -888,12 +888,12 @@ msgid "Message id"
 msgstr ""
 
 #: admin/class-fep-attachments-list-table.php:88
-#: admin/class-fep-wp-list-table.php:133
+#: admin/class-fep-wp-list-table.php:141
 msgid "Status change to pending"
 msgstr ""
 
 #: admin/class-fep-attachments-list-table.php:89
-#: admin/class-fep-wp-list-table.php:134
+#: admin/class-fep-wp-list-table.php:142
 msgid "Status change to publish"
 msgstr ""
 
@@ -902,7 +902,7 @@ msgid "View Attachment"
 msgstr ""
 
 #: admin/class-fep-attachments-list-table.php:146
-#: admin/class-fep-wp-list-table.php:189
+#: admin/class-fep-wp-list-table.php:197
 msgid "View"
 msgstr ""
 
@@ -915,12 +915,12 @@ msgid "Download"
 msgstr ""
 
 #: admin/class-fep-attachments-list-table.php:156
-#: admin/class-fep-wp-list-table.php:205
+#: admin/class-fep-wp-list-table.php:213
 msgid "Show All"
 msgstr ""
 
 #: admin/class-fep-attachments-list-table.php:162
-#: admin/class-fep-wp-list-table.php:211
+#: admin/class-fep-wp-list-table.php:219
 msgid "Filter"
 msgstr ""
 
@@ -937,7 +937,7 @@ msgid "URL of announcement"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:45
-#: admin/class-fep-wp-list-table.php:103
+#: admin/class-fep-wp-list-table.php:111
 #: templates/admin-view-message-announcement.php:15
 msgid "Sender"
 msgstr ""
@@ -1197,7 +1197,7 @@ msgstr ""
 #: admin/class-fep-pro-info.php:398
 #: admin/class-fep-pro-info.php:416
 #: admin/class-fep-pro-info.php:422
-#: functions.php:270
+#: functions.php:276
 #: includes/class-fep-form.php:366
 msgid "Remove"
 msgstr ""
@@ -1331,32 +1331,32 @@ msgid_plural "%s messages meta updated"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/class-fep-wp-list-table.php:104
+#: admin/class-fep-wp-list-table.php:112
 msgid "Recipients"
 msgstr ""
 
-#: admin/class-fep-wp-list-table.php:105
+#: admin/class-fep-wp-list-table.php:113
 #: includes/class-fep-messages.php:306
 msgid "Sent"
 msgstr ""
 
-#: admin/class-fep-wp-list-table.php:109
+#: admin/class-fep-wp-list-table.php:117
 msgid "Recipients Count"
 msgstr ""
 
-#: admin/class-fep-wp-list-table.php:110
+#: admin/class-fep-wp-list-table.php:118
 msgid "Read Count"
 msgstr ""
 
-#: admin/class-fep-wp-list-table.php:111
+#: admin/class-fep-wp-list-table.php:119
 msgid "Deleted Count"
 msgstr ""
 
-#: admin/class-fep-wp-list-table.php:113
+#: admin/class-fep-wp-list-table.php:121
 msgid "Parent"
 msgstr ""
 
-#: admin/class-fep-wp-list-table.php:196
+#: admin/class-fep-wp-list-table.php:204
 msgid "View in Front-end"
 msgstr ""
 
@@ -1379,32 +1379,32 @@ msgstr ""
 msgid "View Details"
 msgstr ""
 
-#: functions.php:258
+#: functions.php:264
 msgid "New Message. "
 msgstr ""
 
-#: functions.php:259
+#: functions.php:265
 msgid ""
 "You have received a new message. "
 msgstr ""
 
-#: functions.php:261
+#: functions.php:267
 msgid "New Announcement. "
 msgstr ""
 
-#: functions.php:262
+#: functions.php:268
 msgid ""
 "You have received a new "
 "announcement. "
 msgstr ""
 
-#: functions.php:272
+#: functions.php:278
 #: includes/class-fep-form.php:504
 #, php-format
 msgid "Maximum %s allowed"
 msgstr ""
 
-#: functions.php:272
+#: functions.php:278
 #: includes/class-fep-form.php:504
 #, php-format
 msgid "%s file"
@@ -1412,12 +1412,12 @@ msgid_plural "%s files"
 msgstr[0] ""
 msgstr[1] ""
 
-#: functions.php:279
+#: functions.php:285
 msgid ""
 "Refresh this page and try again. "
 msgstr ""
 
-#: functions.php:287
+#: functions.php:293
 #, php-format
 msgid ""
 "Do you really want to block %s? If "
@@ -1426,30 +1426,30 @@ msgid ""
 "messages."
 msgstr ""
 
-#: functions.php:402 functions.php:1255
-#: functions.php:1274
+#: functions.php:408 functions.php:1264
+#: functions.php:1283
 msgid "Error"
 msgstr ""
 
-#: functions.php:688
+#: functions.php:694
 msgid "Unpublished"
 msgstr ""
 
-#: functions.php:694
+#: functions.php:700
 #, php-format
 msgid "%s from now"
 msgstr ""
 
-#: functions.php:696
+#: functions.php:702
 #, php-format
 msgid "%s ago"
 msgstr ""
 
-#: functions.php:956
+#: functions.php:962
 msgid "RE:"
 msgstr ""
 
-#: functions.php:1168
+#: functions.php:1177
 #: includes/class-fep-ajax.php:138
 #: includes/class-fep-ajax.php:152
 #: includes/fep-widgets.php:115
@@ -1460,7 +1460,7 @@ msgid_plural "%s messages"
 msgstr[0] ""
 msgstr[1] ""
 
-#: functions.php:1170
+#: functions.php:1179
 #: includes/class-fep-ajax.php:143
 #: includes/class-fep-ajax.php:157
 #: includes/fep-widgets.php:125
@@ -1471,51 +1471,51 @@ msgid_plural "%s announcements"
 msgstr[0] ""
 msgstr[1] ""
 
-#: functions.php:1178
+#: functions.php:1187
 #: includes/fep-widgets.php:111
 #: templates/header.php:21
 msgid "You have"
 msgstr ""
 
-#: functions.php:1188
+#: functions.php:1197
 #: includes/fep-widgets.php:120
 #: templates/header.php:23
 msgid "and"
 msgstr ""
 
-#: functions.php:1195
+#: functions.php:1204
 #: includes/fep-widgets.php:129
 #: templates/header.php:25
 msgid "unread"
 msgstr ""
 
-#: functions.php:1332
+#: functions.php:1341
 #: templates/form-message.php:8
 msgid ""
 "You do not have permission to send "
 "new message!"
 msgstr ""
 
-#: functions.php:1339
-#: functions.php:1358
+#: functions.php:1348
+#: functions.php:1367
 msgid "Message successfully sent."
 msgstr ""
 
-#: functions.php:1341
-#: functions.php:1360
+#: functions.php:1350
+#: functions.php:1369
 msgid ""
 "Message successfully sent and "
 "waiting for admin moderation."
 msgstr ""
 
-#: functions.php:1344
-#: functions.php:1363
+#: functions.php:1353
+#: functions.php:1372
 #: includes/class-fep-announcements.php:68
 msgid ""
 "Something wrong. Please try again."
 msgstr ""
 
-#: functions.php:1351
+#: functions.php:1360
 #: includes/class-fep-rest-api.php:77
 #: templates/form-reply.php:7
 #: templates/view-message.php:32
@@ -1524,18 +1524,18 @@ msgid ""
 "reply to this message!"
 msgstr ""
 
-#: functions.php:1376
+#: functions.php:1385
 #: includes/class-fep-form.php:427
 #: includes/class-fep-form.php:432
 msgid ""
 "Invalid Token. Please try again!"
 msgstr ""
 
-#: functions.php:1632
+#: functions.php:1641
 msgid "Pending"
 msgstr ""
 
-#: functions.php:1633
+#: functions.php:1642
 #: templates/admin-edit-message-announcement.php:49
 msgid "Publish"
 msgstr ""
@@ -1573,7 +1573,7 @@ msgid "Announcement%s"
 msgstr ""
 
 #: includes/class-fep-announcements.php:43
-#: includes/class-fep-emails.php:110
+#: includes/class-fep-emails.php:111
 #: templates/form-announcement.php:6
 msgid "New Announcement"
 msgstr ""
@@ -1707,43 +1707,43 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-fep-emails.php:42
+#: includes/class-fep-emails.php:43
 #: includes/class-fep-menu.php:51
 msgid "New Message"
 msgstr ""
 
-#: includes/class-fep-emails.php:43
+#: includes/class-fep-emails.php:44
 msgid ""
 "You have received a new message in"
 msgstr ""
 
-#: includes/class-fep-emails.php:45
+#: includes/class-fep-emails.php:46
 #, php-format
 msgid "From: %s"
 msgstr ""
 
-#: includes/class-fep-emails.php:46
+#: includes/class-fep-emails.php:47
 #, php-format
 msgid "Subject: %s"
 msgstr ""
 
-#: includes/class-fep-emails.php:47
+#: includes/class-fep-emails.php:48
 msgid ""
 "Please Click the following link to "
 "view full Message."
 msgstr ""
 
-#: includes/class-fep-emails.php:111
+#: includes/class-fep-emails.php:112
 msgid ""
 "A new Announcement is Published in "
 msgstr ""
 
-#: includes/class-fep-emails.php:113
+#: includes/class-fep-emails.php:114
 #, php-format
 msgid "Title: %s"
 msgstr ""
 
-#: includes/class-fep-emails.php:114
+#: includes/class-fep-emails.php:115
 msgid ""
 "Please Click the following link to "
 "view full Announcement."
@@ -1888,7 +1888,7 @@ msgstr ""
 msgid "Message Box%s"
 msgstr ""
 
-#: includes/class-fep-message-query.php:382
+#: includes/class-fep-message-query.php:391
 msgctxt ""
 "Comma-separated list of search "
 "stopwords in your language"
@@ -2220,10 +2220,6 @@ msgstr ""
 #: templates/view-message-content.php:62
 #: templates/view-message-legacy.php:66
 msgid "Toggle Messages"
-msgstr ""
-
-#: templates/view-message-heads.php:17
-msgid "Group"
 msgstr ""
 
 #: templates/view-message-heads.php:51
