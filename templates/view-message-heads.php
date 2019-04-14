@@ -33,7 +33,7 @@ if ( $messages_heads->have_messages() ) {
 					break;
 				}
 				?>
-				<div class="fep-avatar-<?php echo $count; ?>"><?php echo get_avatar( $p, 60, '', '', array( 'extra_attr' => 'title="' . fep_user_name( $p ) . '"' ) ); ?></div>
+				<div class="fep-avatar-<?php echo $count; ?>"><?php echo get_avatar( $p, 60, '', fep_user_name( $p ), array( 'extra_attr' => 'title="' . fep_user_name( $p ) . '"' ) ); ?></div>
 				<?php
 				$count++;
 			}

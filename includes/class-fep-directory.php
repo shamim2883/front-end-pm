@@ -130,7 +130,7 @@ class Fep_Directory {
 				?><input type="checkbox" class="fep-cb" name="fep-directory-cb[]" value="<?php echo $user->ID; ?>" /><?php
 				break;
 			case 'avatar':
-				echo get_avatar( $user->ID, 55 );
+				echo get_avatar( $user->ID, 55, '', fep_user_name( $user->ID ) );
 				break;
 			case 'name':
 				echo fep_user_name( $user->ID );
