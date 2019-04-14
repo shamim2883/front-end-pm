@@ -59,7 +59,7 @@ if ( $messages->have_messages() ) {
 						echo apply_filters( 'fep_filter_display_participants', implode( ', ', $par ), $par, $participants );
 					}
 					?></div>
-					<div class="fep-message-toggle-all fep-align-right"><?php esc_html_e( 'Toggle Messages', 'front-end-pm' ); ?></div>
+					<div class="fep-align-right"><button class="fep-button fep-message-toggle-all"><?php esc_html_e( 'Toggle Messages', 'front-end-pm' ); ?></button></div>
 				</div>
 				<?php
 			} ?>
