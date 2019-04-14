@@ -39,6 +39,7 @@ class Fep_Emails {
 		$participants = fep_get_participants( $mgs->mgs_id );
 		$participants = apply_filters( 'fep_filter_send_email_participants', $participants, $mgs->mgs_id );
 		if ( $participants && is_array( $participants ) ) {
+			$participants = array_unique( array_filter( $participants ) );
 			$subject  = get_bloginfo( 'name' ) . ': ' . __( 'New Message', 'front-end-pm' );
 			$message  = __( 'You have received a new message in', 'front-end-pm' ) . "\r\n";
 			$message .= get_bloginfo( 'name' ) . "\r\n";
