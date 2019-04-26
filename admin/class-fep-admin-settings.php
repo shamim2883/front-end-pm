@@ -669,6 +669,9 @@ class Fep_Admin_Settings {
 					?><label><input type="radio" class="<?php echo $field['class']; ?>" name="<?php esc_attr_e( $field['name'] ); ?>" value="<?php esc_attr_e( $key ); ?>" <?php checked( $field['posted-value' ], $key ); ?> /> <?php esc_attr_e( $name ); ?></label><br /><?php
 				}
 				break;
+			case 'html':
+				echo wp_kses_post( $field['value'] );
+				break;
 			default:
 				printf( __( 'No Function or Hook defined for %s field type', 'front-end-pm' ), $field['type'] );
 				break;
