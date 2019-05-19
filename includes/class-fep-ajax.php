@@ -43,6 +43,7 @@ class Fep_Ajax {
 				'orderby'		=> 'display_name',
 				'order'			=> 'ASC',
 				'fields'		=> array( 'ID', 'display_name', 'user_nicename' ),
+				'role__in'       => fep_get_option( 'userrole_access', array() ),
 			);
 			if ( strlen( $searchq ) > 0 ) {
 				$args = apply_filters ( 'fep_autosuggestion_arguments', $args );
@@ -79,6 +80,7 @@ class Fep_Ajax {
 				'orderby'		=> 'display_name',
 				'order'			=> 'ASC',
 				'fields'		=> array( 'ID', 'display_name' ),
+				'role__in'       => fep_get_option( 'userrole_access', array() ),
 			);
 			$ret = array();
 			if ( strlen( $searchq) > 0 ) {

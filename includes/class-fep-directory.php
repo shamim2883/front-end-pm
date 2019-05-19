@@ -57,6 +57,7 @@ class Fep_Directory {
 			'orderby'	=> 'display_name',
 			'order'		=> 'ASC',
 			'fields'	=> 'all_with_meta',
+			'role__in' => fep_get_option( 'userrole_access', array() ),
 		);
 		if ( ! empty( $_GET['fep-search'] ) ) {
 			$args['search'] = '*' . $_GET['fep-search'] . '*';
