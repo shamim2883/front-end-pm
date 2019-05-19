@@ -509,6 +509,15 @@ class Fep_Admin_Settings {
 				'label'		=> __( 'Add Announcement', 'front-end-pm' ),
 				'cb_label'	=> __( 'Can permitted users add Announcement from front end?', 'front-end-pm' ),
 			),
+			'reply_deleted_mgs' => array(
+				'type'		=> 'checkbox',
+				'value'		=> fep_get_option( 'reply_deleted_mgs', '' ),
+				'priority'	=> 40,
+				'section'	=> 'security',
+				'class'		=> '',
+				'label'		=> __( 'Reply Deleted Message', 'front-end-pm' ),
+				'cb_label'	=> __( 'Can user reply messages deleted by other user?', 'front-end-pm' ),
+			),
 			//Notification Settings
 			'show_notification' => array(
 				'type'		=> 'checkbox',

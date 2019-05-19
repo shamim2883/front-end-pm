@@ -793,13 +793,13 @@ function fep_current_user_can( $cap, $id = false ) {
 			if ( ! $id || fep_get_message_status( $id ) !== 'publish' ) {
 			} elseif ( fep_is_user_whitelisted() || fep_is_user_admin() ) {
 				$can = true;
-			} elseif ( in_array( get_current_user_id(), fep_get_participants( $id ) ) && ( array_intersect( fep_get_option( 'userrole_reply', array() ), $roles ) || ( ! $roles && $no_role_access ) ) ) {
+			} elseif ( in_array( get_current_user_id(), fep_get_participants( $id, true ) ) && ( array_intersect( fep_get_option( 'userrole_reply', array() ), $roles ) || ( ! $roles && $no_role_access ) ) ) {
 				$can = true;
 			}
 			if ( $can ) {
 				$participants = FEP_Participants::init()->get( $id );
 				foreach ( $participants as $participant ) {
-					if ( $participant->mgs_deleted ) {
+					if ( $participant->mgs_deleted && ! fep_get_option( 'reply_deleted_mgs' ) ) {
 						$can = false;
 						break;
 					}
@@ -812,13 +812,13 @@ function fep_current_user_can( $cap, $id = false ) {
 			break;
 		case 'view_message':
 		case 'view_announcement':
-			if ( $id && ( ( in_array( get_current_user_id(), fep_get_participants( $id ) ) && fep_get_message_status( $id ) == 'publish' ) || fep_is_user_admin() || fep_is_user_whitelisted() ) ) {
+			if ( $id && ( ( in_array( get_current_user_id(), fep_get_participants( $id, true ) ) && fep_get_message_status( $id ) == 'publish' ) || fep_is_user_admin() || fep_is_user_whitelisted() ) ) {
 				$can = true;
 			}
 			break;
 		case 'delete_message': // only for himself
 		case 'delete_announcement': // only for himself
-			if ( $id && in_array( get_current_user_id(), fep_get_participants( $id ) ) && fep_get_message_status( $id ) == 'publish' ) {
+			if ( $id && in_array( get_current_user_id(), fep_get_participants( $id, true ) ) && fep_get_message_status( $id ) == 'publish' ) {
 				$can = true;
 			}
 			break;
@@ -960,7 +960,7 @@ function fep_send_message( $message = null, $override = array() ) {
 		$message['post_parent'] = absint( $message['fep_parent_id'] );
 		$message['post_status'] = fep_get_option( 'reply_post_status', 'publish' );
 		$message['message_title'] = __( 'RE:', 'front-end-pm' ). ' ' . wp_slash( fep_get_message_field( 'mgs_title', $message['post_parent'] ) );
-		$message['message_to_id'] = fep_get_participants( $message['post_parent'], true );
+		$message['message_to_id'] = fep_get_participants( $message['post_parent'], ! fep_get_option( 'reply_deleted_mgs' ) );
 	} else {
 		$message['post_status'] = fep_get_option( 'parent_post_status','publish' );
 		$message['post_parent'] = 0;
@@ -1046,7 +1046,13 @@ function fep_send_message_transition_post_status( $new_status, $old_status, $mes
 
 	if ( 'new' === $old_status ) {
 		if ( 'threaded' === fep_get_message_view() && $message->mgs_parent ) {
-			FEP_Participants::init()->unmark( $message->mgs_parent, false, [ 'parent_read' => true ] );
+			$unmark = [
+				'parent_read' => true,
+			];
+			if ( fep_get_option( 'reply_deleted_mgs' ) ) {
+				$unmark['delete'] = true;
+			}
+			FEP_Participants::init()->unmark( $message->mgs_parent, false, $unmark );
 			FEP_Participants::init()->mark( $message->mgs_parent, $message->mgs_author, [ 'parent_read' => true ] );
 		}
 		FEP_Participants::init()->mark( $message->mgs_id, $message->mgs_author, ['read' => true, 'parent_read' => true ] );
@@ -1055,7 +1061,7 @@ function fep_send_message_transition_post_status( $new_status, $old_status, $mes
 		if( 'threaded' === fep_get_message_view() && $message->mgs_parent ) {
 			fep_update_reply_info( $message->mgs_parent );
 		}
-		$participants = fep_get_participants( $message->mgs_id );
+		$participants = fep_get_participants( $message->mgs_id, true );
 		foreach ( $participants as $participant ) {
 			delete_user_meta( $participant, '_fep_user_message_count' );
 			if ( $participant != $message->mgs_author && 'publish' == $new_status ) {
