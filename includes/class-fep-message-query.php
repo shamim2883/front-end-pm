@@ -473,8 +473,9 @@ class FEP_Message_Query {
 			$this->messages = $wpdb->get_results( $query );
 			//$this->messages = array_map( '', $this->messages);
 			foreach ( $this->messages as $key => &$message) {
+				$message_raw = $message;
 				$message = new FEP_Message( $message );
-				wp_cache_add( $message->mgs_id, $message, 'fep-message' );
+				wp_cache_add( $message->mgs_id, $message_raw, 'fep-message' );
 				if( ! empty( $this->args['queue_participants_cache'] ) ){
 					FEP_Cache::init()->add_to_queue( $message->mgs_id, 'participants' );
 				}

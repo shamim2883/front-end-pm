@@ -66,7 +66,7 @@ class FEP_Cache {
 			if( false === $cached ){
 				$need_query[] = $message_id;
 			} elseif( in_array( $message_id, $provided_ids ) ) {
-				$return[ $message_id ] = $cached;
+				$return[ $message_id ] = new FEP_Message( $cached );
 			}
 		}
 		
@@ -74,10 +74,10 @@ class FEP_Cache {
 			$messages = $wpdb->get_results( 'SELECT * FROM ' . FEP_MESSAGE_TABLE . ' WHERE mgs_id IN (' . implode( ', ', $need_query ) . ')' );
 			
 			foreach ( $messages as $key => $message ) {
-				$message = new FEP_Message( $message );
-				wp_cache_add( $message->mgs_id, $message, 'fep-message' );
-				if( in_array( $message->mgs_id, $provided_ids ) ) {
-					$return[ $message->mgs_id ] = $message;
+				$message_id = (int) $message->mgs_id;
+				wp_cache_add( $message_id, $message, 'fep-message' );
+				if( in_array( $message_id, $provided_ids ) ) {
+					$return[ $message_id ] = new FEP_Message( $message );
 				}
 			}
 		}
