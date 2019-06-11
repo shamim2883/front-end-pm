@@ -83,7 +83,6 @@ class Fep_Shortcodes {
 		$atts = shortcode_atts( array(
 			'to'		=> '{current-post-author}',
 			'subject'	=> '',
-			'ajax'		=> '1',
 			'heading'	=> __( 'Contact','front-end-pm' ),
 		), $atts, $tag );
 		if ( '{current-post-author}' == $atts['to'] ) {
@@ -110,29 +109,10 @@ class Fep_Shortcodes {
 		} elseif ( ! fep_current_user_can( 'send_new_message_to', $to_id ) ) {
 			return apply_filters( 'fep_filter_shortcode_new_message_form', '<div class="fep-error">' . sprintf( __( 'You cannot send message to %s', 'front-end-pm' ), fep_user_name( $to_id ) ) . '</div>', $atts );
 		}
-		if ( ! empty( $ajax ) ) {
-			wp_enqueue_script( 'fep-shortcode-newmessage' );
-			add_filter( 'fep_form_attribute', array( $this, 'fep_form_attribute' ), 10, 2 );
-			add_filter( 'fep_form_submit_button', array( $this, 'show_ajax_img' ), 10, 2 );
-		}
 		$template = fep_locate_template( 'form-shortcode-message.php' );
 		ob_start();
 		include( $template );
 		return apply_filters( 'fep_filter_shortcode_new_message_form', ob_get_clean(), $atts );
-	}
-
-	function fep_form_attribute( $form_attr, $where ) {
-		if ( 'shortcode-newmessage' == $where ) {
-			$form_attr['class'] = $form_attr['class'] . ' shortcode-newmessage-ajax';
-		}
-		return $form_attr;
-	}
-
-	function show_ajax_img( $button, $where ) {
-		if ( 'shortcode-newmessage' == $where ) {
-			$button = $button . '<img src="' . FEP_PLUGIN_URL . 'assets/images/loading.gif" class="fep-ajax-img" style="display:none;"/>';
-		}
-		return $button;
 	}
 } //END CLASS
 add_action( 'init', array( Fep_Shortcodes::init(), 'actions_filters' ) );

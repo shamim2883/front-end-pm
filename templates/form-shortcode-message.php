@@ -16,6 +16,3 @@ if ( ! fep_current_user_can( 'send_new_message_to', $to_id ) ) {
 } else {
 	echo Fep_Form::init()->form_field_output( 'shortcode-newmessage', '', array( 'message_to' => $to, 'message_title' => $subject ) );
 }
-if ( ! empty( $ajax ) ) {
-	echo '<div class="fep-ajax-response"></div>';
-}

@@ -125,3 +125,19 @@
 	font-style: italic;
 	font-weight: normal;
 }
+
+.fep-progress-bar {
+	width: 100%;
+	background-color: #ddd;
+	display: none;
+	margin: 10px 0;
+}
+
+.fep-progress-bar .fep-progress-bar-inner {
+	width: 0%;
+	height: 30px;
+	background-color: #4CAF50;
+	text-align: center;
+	line-height: 30px;
+	color: white;
+}

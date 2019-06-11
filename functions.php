@@ -278,11 +278,12 @@ function fep_enqueue_scripts() {
 			'max_text'	=> esc_js( sprintf( __( 'Maximum %s allowed', 'front-end-pm' ), sprintf( _n( '%s file', '%s files', fep_get_option( 'attachment_no', 4 ), 'front-end-pm' ), number_format_i18n( fep_get_option( 'attachment_no', 4 ) ) ) ) )
 		)
 	);
-	wp_register_script( 'fep-shortcode-newmessage', FEP_PLUGIN_URL . 'assets/js/shortcode-newmessage.js', array( 'jquery' ), FEP_PLUGIN_VERSION, true );
-	wp_localize_script( 'fep-shortcode-newmessage', 'fep_shortcode_newmessage', array(
-			'ajaxurl'		=> admin_url( 'admin-ajax.php' ),
-			'token'			=> wp_create_nonce( 'fep_message' ),
-			'refresh_text'	=> __( 'Refresh this page and try again. ', 'front-end-pm' ),
+	wp_register_script( 'fep-form-submit', FEP_PLUGIN_URL . 'assets/js/form-submit.js', array( 'jquery' ), FEP_PLUGIN_VERSION, true );
+	wp_localize_script( 'fep-form-submit', 'fep_form_submit',
+		array(
+			'ajaxurl'      => admin_url( 'admin-ajax.php' ),
+			'token'        => wp_create_nonce( 'fep-form' ),
+			'refresh_text' => __( 'Refresh this page and try again. ', 'front-end-pm' ),
 		)
 	);
 	wp_register_script( 'fep-tokeninput-script', FEP_PLUGIN_URL . 'assets/js/jquery.tokeninput.js', array( 'jquery' ), FEP_PLUGIN_VERSION, true );
@@ -1055,7 +1056,7 @@ function fep_send_message_transition_post_status( $new_status, $old_status, $mes
 			FEP_Participants::init()->unmark( $message->mgs_parent, false, $unmark );
 			FEP_Participants::init()->mark( $message->mgs_parent, $message->mgs_author, [ 'parent_read' => true ] );
 		}
-		FEP_Participants::init()->mark( $message->mgs_id, $message->mgs_author, ['read' => true, 'parent_read' => true ] );
+		FEP_Participants::init()->mark( $message->mgs_id, $message->mgs_author, [ 'parent_read' => true ] );
 	}
 	if ( 'publish' == $new_status || 'publish' == $old_status ) {
 		if( 'threaded' === fep_get_message_view() && $message->mgs_parent ) {
@@ -1407,6 +1408,9 @@ function fep_form_posted() {
 			$response['fep_return'] = '';
 		}
 		$response['info'] = fep_info_output();
+		if( ! empty( $_POST['fep_redirect'] ) ) {
+			$response['fep_redirect'] = wp_validate_redirect( $_POST['fep_redirect'] );
+		}
 		wp_send_json( $response );
 	} elseif ( ! empty( $_POST['fep_redirect'] ) ) {
 		wp_safe_redirect( $_POST['fep_redirect'] );

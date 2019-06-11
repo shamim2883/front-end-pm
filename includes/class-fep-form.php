@@ -84,24 +84,11 @@ class Fep_Form {
 				'value'					=> '',
 				'where'					=> 'shortcode-newmessage',
 			),
-			'wp_token' => array(
-				'type'					=> 'wp_token',
-				'name'					=> 'token',
-				'value'					=> wp_create_nonce( 'fep_message' ),
-				'token-action'			=> 'fep_message',
-				'where'					=> 'shortcode-newmessage',
-			),
 			'token' => array(
-				'type'			=> 'token',
-				'value'			=> fep_create_nonce( 'fep_message' ),
-				'token-action'	=> 'fep_message',
-				'where'			=> array( 'newmessage', 'reply', 'new_announcement' ),
-			),
-			'new_announcement_token' => array(
-				'type'			=> 'token',
-				'value'			=> fep_create_nonce( 'new_announcement' ),
-				'token-action'	=> 'new_announcement',
-				'where'			=> 'new_announcement',
+				'type'			=> 'wp_token',
+				'value'			=> wp_create_nonce( 'fep-form' ),
+				'token-action'	=> 'fep-form',
+				'where'			=> array( 'newmessage', 'reply', 'shortcode-newmessage', 'new_announcement', 'settings' ),
 			),
 			'fep_parent_id' => array(
 				'type'			=> 'fep_parent_id',
@@ -130,12 +117,11 @@ class Fep_Form {
 				'priority'		=> 30,
 				'where'			=> 'settings'
 			),
-			'settings_token' => array(
-				'type'			=> 'token',
-				'value'			=> fep_create_nonce( 'settings' ),
-				'token-action'	=> 'settings',
-				'where'			=> 'settings'
-			),	
+			'fep_action' => array(
+				'type'  => 'hidden',
+				'value' => $where,
+				'where' => array( 'newmessage', 'reply', 'shortcode-newmessage', 'new_announcement', 'settings' ),
+			),
 		);
 		if ( fep_get_option( 'block_other_users', 1 ) ) {
 			$fields['blocked_users'] = array(
@@ -151,7 +137,7 @@ class Fep_Form {
 				'type'        => 'file',
 				'value'    => '',
 				'priority'    => 20,
-				'where'    => array( 'newmessage', 'reply', 'new_announcement' )
+				'where'    => array( 'newmessage', 'reply', 'shortcode-newmessage', 'new_announcement' )
 			);
 		}
 		$fields = apply_filters( 'fep_form_fields', $fields, $where );
@@ -363,7 +349,7 @@ class Fep_Form {
 					?>
 						<div id="fep_upload">
 							<div id="p-0">
-								<input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" type="file" name="<?php esc_attr_e( $field['name'] ); ?>[]" /><a href="#" onclick="fep_remove_element( 'p-0' ); return false;" class="fep-attachment-field"><?php echo __( 'Remove', 'front-end-pm' ) ; ?></a>
+								<input class="<?php echo $field['class']; ?>" type="file" name="<?php esc_attr_e( $field['name'] ); ?>[]" /><a href="#" onclick="fep_remove_element( 'p-0' ); return false;" class="fep-attachment-field"><?php echo __( 'Remove', 'front-end-pm' ) ; ?></a>
 							</div>
 						</div>
 						<a id="fep-attachment-field-add" href="#" onclick="fep_add_new_file_field(); return false;"><?php echo __( 'Add more file', 'front-end-pm' ) ; ?></a>
@@ -608,7 +594,13 @@ class Fep_Form {
 		} else {
 			$button_val = __( 'Send Message', 'front-end-pm' );
 		}
-		echo apply_filters( 'fep_form_submit_button', '<button type="submit" class="fep-button" name="fep_action" value="'. esc_attr( $where ) .'">'. esc_html( $button_val ).'</button>', $where );
+		echo apply_filters( 'fep_form_submit_button', '<button type="submit" class="fep-button">' . esc_html( $button_val ) . '</button>', $where );
+		
+		if ( apply_filters( 'fep_filter_ajax_form_submit', true, $where ) ) {
+			wp_enqueue_script( 'fep-form-submit' );
+			echo '<div class="fep-progress-bar"><div class="fep-progress-bar-inner"></div></div>';
+			echo '<div class="fep-ajax-response"></div>';
+		}
 		
 		echo '</form>';
 		echo '</div>';
