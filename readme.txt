@@ -5,7 +5,7 @@ Donate link: https://www.shamimsplugins.com/products/front-end-pm-pro/?utm_campa
 Requires at least: 4.4
 Tested up to: 5.2.1
 Requires PHP: 5.4
-Stable tag: 10.1.7
+Stable tag: 10.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -104,6 +104,12 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 8. Appearance settings.
 
 == Changelog ==
+
+= 10.2.1 =
+
+* All form now submit via ajax
+* Show progress bar when submitting form
+* Fix: Compatibility with Memcached
 
 = 10.1.7 =
 
