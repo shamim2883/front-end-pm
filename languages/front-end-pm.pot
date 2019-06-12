@@ -5,9 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Front End PM "
-"10.1.7\n"
-"POT-Creation-Date: 2019-05-25 "
-"15:21+0600\n"
+"10.2.1\n"
+"POT-Creation-Date: 2019-06-12 "
+"16:09+0600\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Your Name "
 "<you@example.com>\n"
@@ -716,7 +716,7 @@ msgid "Create Page"
 msgstr ""
 
 #: admin/class-fep-admin-settings.php:685
-#: includes/class-fep-form.php:384
+#: includes/class-fep-form.php:370
 #, php-format
 msgid ""
 "No Function or Hook defined for %s "
@@ -1208,7 +1208,7 @@ msgstr ""
 #: admin/class-fep-pro-info.php:416
 #: admin/class-fep-pro-info.php:422
 #: functions.php:276
-#: includes/class-fep-form.php:366
+#: includes/class-fep-form.php:352
 msgid "Remove"
 msgstr ""
 
@@ -1409,25 +1409,25 @@ msgid ""
 msgstr ""
 
 #: functions.php:278
-#: includes/class-fep-form.php:504
+#: includes/class-fep-form.php:490
 #, php-format
 msgid "Maximum %s allowed"
 msgstr ""
 
 #: functions.php:278
-#: includes/class-fep-form.php:504
+#: includes/class-fep-form.php:490
 #, php-format
 msgid "%s file"
 msgid_plural "%s files"
 msgstr[0] ""
 msgstr[1] ""
 
-#: functions.php:285
+#: functions.php:286
 msgid ""
 "Refresh this page and try again. "
 msgstr ""
 
-#: functions.php:293
+#: functions.php:294
 #, php-format
 msgid ""
 "Do you really want to block %s? If "
@@ -1436,30 +1436,30 @@ msgid ""
 "messages."
 msgstr ""
 
-#: functions.php:408 functions.php:1270
-#: functions.php:1289
+#: functions.php:409 functions.php:1271
+#: functions.php:1290
 msgid "Error"
 msgstr ""
 
-#: functions.php:694
+#: functions.php:695
 msgid "Unpublished"
 msgstr ""
 
-#: functions.php:700
+#: functions.php:701
 #, php-format
 msgid "%s from now"
 msgstr ""
 
-#: functions.php:702
+#: functions.php:703
 #, php-format
 msgid "%s ago"
 msgstr ""
 
-#: functions.php:962
+#: functions.php:963
 msgid "RE:"
 msgstr ""
 
-#: functions.php:1183
+#: functions.php:1184
 #: includes/class-fep-ajax.php:140
 #: includes/class-fep-ajax.php:154
 #: includes/fep-widgets.php:115
@@ -1470,7 +1470,7 @@ msgid_plural "%s messages"
 msgstr[0] ""
 msgstr[1] ""
 
-#: functions.php:1185
+#: functions.php:1186
 #: includes/class-fep-ajax.php:145
 #: includes/class-fep-ajax.php:159
 #: includes/fep-widgets.php:125
@@ -1481,51 +1481,51 @@ msgid_plural "%s announcements"
 msgstr[0] ""
 msgstr[1] ""
 
-#: functions.php:1193
+#: functions.php:1194
 #: includes/fep-widgets.php:111
 #: templates/header.php:21
 msgid "You have"
 msgstr ""
 
-#: functions.php:1203
+#: functions.php:1204
 #: includes/fep-widgets.php:120
 #: templates/header.php:23
 msgid "and"
 msgstr ""
 
-#: functions.php:1210
+#: functions.php:1211
 #: includes/fep-widgets.php:129
 #: templates/header.php:25
 msgid "unread"
 msgstr ""
 
-#: functions.php:1347
+#: functions.php:1348
 #: templates/form-message.php:8
 msgid ""
 "You do not have permission to send "
 "new message!"
 msgstr ""
 
-#: functions.php:1354
-#: functions.php:1373
+#: functions.php:1355
+#: functions.php:1374
 msgid "Message successfully sent."
 msgstr ""
 
-#: functions.php:1356
-#: functions.php:1375
+#: functions.php:1357
+#: functions.php:1376
 msgid ""
 "Message successfully sent and "
 "waiting for admin moderation."
 msgstr ""
 
-#: functions.php:1359
-#: functions.php:1378
+#: functions.php:1360
+#: functions.php:1379
 #: includes/class-fep-announcements.php:68
 msgid ""
 "Something wrong. Please try again."
 msgstr ""
 
-#: functions.php:1366
+#: functions.php:1367
 #: includes/class-fep-rest-api.php:77
 #: templates/form-reply.php:7
 #: templates/view-message.php:32
@@ -1534,18 +1534,18 @@ msgid ""
 "reply to this message!"
 msgstr ""
 
-#: functions.php:1391
-#: includes/class-fep-form.php:427
-#: includes/class-fep-form.php:432
+#: functions.php:1392
+#: includes/class-fep-form.php:413
+#: includes/class-fep-form.php:418
 msgid ""
 "Invalid Token. Please try again!"
 msgstr ""
 
-#: functions.php:1647
+#: functions.php:1651
 msgid "Pending"
 msgstr ""
 
-#: functions.php:1648
+#: functions.php:1652
 #: templates/admin-edit-message-announcement.php:49
 msgid "Publish"
 msgstr ""
@@ -1688,7 +1688,7 @@ msgstr ""
 
 #: includes/class-fep-directory.php:120
 #: includes/class-fep-directory.php:151
-#: includes/class-fep-form.php:609
+#: includes/class-fep-form.php:595
 #: templates/form-message.php:5
 msgid "Send Message"
 msgstr ""
@@ -1779,117 +1779,117 @@ msgstr ""
 msgid "Message"
 msgstr ""
 
-#: includes/class-fep-form.php:115
+#: includes/class-fep-form.php:102
 msgid ""
 "Allow others to send me messages?"
 msgstr ""
 
-#: includes/class-fep-form.php:122
+#: includes/class-fep-form.php:109
 msgid ""
 "Email me when I get new messages?"
 msgstr ""
 
-#: includes/class-fep-form.php:129
+#: includes/class-fep-form.php:116
 msgid ""
 "Email me when new announcement is "
 "published?"
 msgstr ""
 
-#: includes/class-fep-form.php:142
+#: includes/class-fep-form.php:128
 msgid "Blocked Users"
 msgstr ""
 
-#: includes/class-fep-form.php:369
+#: includes/class-fep-form.php:355
 msgid "Add more file"
 msgstr ""
 
-#: includes/class-fep-form.php:398
+#: includes/class-fep-form.php:384
 #, php-format
 msgid "%s required."
 msgstr ""
 
-#: includes/class-fep-form.php:400
+#: includes/class-fep-form.php:386
 #, php-format
 msgid "%s can not be changed."
 msgstr ""
 
-#: includes/class-fep-form.php:402
+#: includes/class-fep-form.php:388
 #, php-format
 msgid "%s minlength %d."
 msgstr ""
 
-#: includes/class-fep-form.php:404
+#: includes/class-fep-form.php:390
 #, php-format
 msgid "%s maxlength %d."
 msgstr ""
 
-#: includes/class-fep-form.php:417
+#: includes/class-fep-form.php:403
 #, php-format
 msgid ""
 "Please provide valid email address "
 "for %s."
 msgstr ""
 
-#: includes/class-fep-form.php:422
+#: includes/class-fep-form.php:408
 #, php-format
 msgid "%s is not a valid number."
 msgstr ""
 
-#: includes/class-fep-form.php:455
+#: includes/class-fep-form.php:441
 #, php-format
 msgid ""
 "%s does not want to receive messages!"
 msgstr ""
 
-#: includes/class-fep-form.php:458
+#: includes/class-fep-form.php:444
 #, php-format
 msgid "Invalid receiver \"%s\"."
 msgstr ""
 
-#: includes/class-fep-form.php:462
+#: includes/class-fep-form.php:448
 msgid ""
 "You must enter a valid recipient!"
 msgstr ""
 
-#: includes/class-fep-form.php:467
+#: includes/class-fep-form.php:453
 msgid "Invalid parent ID!"
 msgstr ""
 
-#: includes/class-fep-form.php:469
+#: includes/class-fep-form.php:455
 msgid ""
 "You do not have permission to send "
 "this message!"
 msgstr ""
 
-#: includes/class-fep-form.php:477
-#: includes/class-fep-form.php:487
+#: includes/class-fep-form.php:463
+#: includes/class-fep-form.php:473
 #, php-format
 msgid "Invalid value for %s."
 msgstr ""
 
-#: includes/class-fep-form.php:499
+#: includes/class-fep-form.php:485
 msgid "Invalid Attachment"
 msgstr ""
 
-#: includes/class-fep-form.php:516
+#: includes/class-fep-form.php:502
 #, php-format
 msgid ""
 "Attachment (%1$s) file is too big. "
 "Maximum file size allowed %2$s"
 msgstr ""
 
-#: includes/class-fep-form.php:520
+#: includes/class-fep-form.php:506
 #, php-format
 msgid ""
 "Invalid attachment file type. "
 "Allowed Types are (%s)"
 msgstr ""
 
-#: includes/class-fep-form.php:605
+#: includes/class-fep-form.php:591
 msgid "Save Changes"
 msgstr ""
 
-#: includes/class-fep-form.php:607
+#: includes/class-fep-form.php:593
 msgid "Reply"
 msgstr ""
 
@@ -2013,18 +2013,18 @@ msgid "You cannot view this message."
 msgstr ""
 
 #: includes/class-fep-shortcodes.php:51
-#: includes/class-fep-shortcodes.php:87
+#: includes/class-fep-shortcodes.php:86
 msgid "Contact"
 msgstr ""
 
-#: includes/class-fep-shortcodes.php:109
+#: includes/class-fep-shortcodes.php:108
 #, php-format
 msgid ""
 "You must <a href=\"%s\">login</a> to "
 "contact"
 msgstr ""
 
-#: includes/class-fep-shortcodes.php:111
+#: includes/class-fep-shortcodes.php:110
 #, php-format
 msgid "You cannot send message to %s"
 msgstr ""
