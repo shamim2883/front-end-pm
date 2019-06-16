@@ -348,11 +348,11 @@ class Fep_Form {
 					wp_enqueue_script( 'fep-attachment-script' );
 					?>
 						<div id="fep_upload">
-							<div id="p-0">
-								<input class="<?php echo $field['class']; ?>" type="file" name="<?php esc_attr_e( $field['name'] ); ?>[]" /><a href="#" onclick="fep_remove_element( 'p-0' ); return false;" class="fep-attachment-field"><?php echo __( 'Remove', 'front-end-pm' ) ; ?></a>
+							<div class="fep-attachment-field-div">
+								<input class="fep-attachment-field-input" type="file" name="<?php esc_attr_e( $field['name'] ); ?>[]" /><a href="#" class="fep-attachment-field-a"><?php echo __( 'Remove', 'front-end-pm' ); ?></a>
 							</div>
 						</div>
-						<a id="fep-attachment-field-add" href="#" onclick="fep_add_new_file_field(); return false;"><?php echo __( 'Add more file', 'front-end-pm' ) ; ?></a>
+						<a id="fep-attachment-field-add" href="#"><?php echo __( 'Add more file', 'front-end-pm' ) ; ?></a>
 						<div id="fep-attachment-note"></div>
 					<?php
 					break;

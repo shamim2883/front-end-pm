@@ -52,6 +52,8 @@ jQuery( document ).ready( function($) {
 					$('textarea[name="message_content"]', thisForm).val( '' );
 				}
 				$('div#fep_upload', thisForm).empty();
+				$( '#fep-attachment-field-add', thisForm ).show();
+				$( '#fep-attachment-note', thisForm ).empty();
 				
 				if( 'reply' == $('input[name="fep_action"]', thisForm).val() ) {
 					$( '#fep-content-single-sidebar .fep-message-head.fep-message-head-active' ).trigger('click');
