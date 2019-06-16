@@ -14,7 +14,6 @@ class Fep_Ajax {
 	}
 
 	function actions_filters() {
-		add_action( 'wp_ajax_fep_autosuggestion_ajax', array( $this, 'fep_autosuggestion_ajax' ) );
 		add_action( 'wp_ajax_fep_users_ajax', array( $this, 'fep_users_ajax' ) );
 		add_action( 'wp_ajax_fep_notification_ajax', array( $this, 'fep_notification_ajax' ) );
 		add_action( 'wp_ajax_nopriv_fep_notification_ajax', array( $this, 'fep_notification_ajax' ) );
@@ -24,45 +23,6 @@ class Fep_Ajax {
 		if ( fep_get_option( 'block_other_users', 1 ) ) {
 			add_action( 'wp_ajax_fep_block_unblock_users_ajax', array( $this, 'fep_block_unblock_users_ajax' ) );
 		}
-	}
-
-	function fep_autosuggestion_ajax() {
-		global $user_ID;
-
-		if ( ! fep_get_option( 'show_autosuggest', 1 ) && ! fep_is_user_admin() ) {
-			die();
-		}
-		if ( check_ajax_referer( 'fep-autosuggestion', 'token', false ) ) {
-
-			$searchq = $_POST['searchBy'];
-			$args = array(
-				'search'		=> "*{$searchq}*",
-				'search_columns'=> array( 'user_login', 'display_name' ),
-				'exclude'		=> array( $user_ID ),
-				'number'		=> 5,
-				'orderby'		=> 'display_name',
-				'order'			=> 'ASC',
-				'fields'		=> array( 'ID', 'display_name', 'user_nicename' ),
-				'role__in'       => fep_get_option( 'userrole_access', array() ),
-			);
-			if ( strlen( $searchq ) > 0 ) {
-				$args = apply_filters ( 'fep_autosuggestion_arguments', $args );
-
-				// The Query
-				$users = get_users( $args );
-				echo '<ul>';
-				if ( ! empty( $users ) ) {
-					foreach ( $users as $user ) {
-						$display = fep_user_name( $user->ID );
-						?><li><a href="#" onClick="fep_fill_autosuggestion( '<?php echo $user->user_nicename; ?>','<?php echo $display; ?>' );return false;"><?php echo $display; ?></a></li><?php
-					}
-				} else {
-					echo '<li>' . __( 'No matches found', 'front-end-pm' ) . '</li>';
-				}
-				echo '</ul>';
-			}
-		}
-		die();
 	}
 
 	function fep_users_ajax() {

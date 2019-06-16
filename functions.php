@@ -241,8 +241,9 @@ function fep_enqueue_scripts() {
 	wp_register_script( 'fep-script', FEP_PLUGIN_URL . 'assets/js/script.js', array( 'jquery' ), FEP_PLUGIN_VERSION, true );
 	wp_localize_script( 'fep-script', 'fep_script',
 		array(
-			'ajaxurl'	=> admin_url( 'admin-ajax.php' ),
-			'nonce'		=> wp_create_nonce( 'fep-autosuggestion' ),
+			'root'    => esc_url_raw( rest_url( 'front-end-pm/v1' ) ),
+			'nonce'   => wp_create_nonce( 'wp_rest' ),
+			'no_match'   => __( 'No matches found', 'front-end-pm' ),
 		)
 	);
 	wp_register_script( 'fep-notification-script', FEP_PLUGIN_URL . 'assets/js/notification.js', array( 'jquery' ), FEP_PLUGIN_VERSION, true );
