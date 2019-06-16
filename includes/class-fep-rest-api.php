@@ -56,6 +56,32 @@ class FEP_REST_API {
 				),
 			)
 		);
+		register_rest_route(
+			$namespace, '/users/(?P<for>[a-zA-Z0-9_-]+)/', array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'users' ),
+				'permission_callback' => function ( $request ) {
+					return fep_current_user_can( 'access_message' );
+				},
+				'args'                => array(
+					'for' => array(
+						'type'              => 'string',
+						'default'           => '',
+						'sanitize_callback' => 'sanitize_text_field',
+					),
+					'q'   => array(
+						'type'              => 'string',
+						'default'           => '',
+						'sanitize_callback' => 'sanitize_text_field',
+					),
+					'x'   => array(
+						'type'              => 'string',
+						'default'           => '',
+						'sanitize_callback' => 'sanitize_text_field',
+					),
+				),
+			)
+		);
 	}
 
 	function message_content( $request ) {
@@ -93,6 +119,60 @@ class FEP_REST_API {
 		ob_start();
 		require fep_locate_template( 'view-message-heads.php' );
 		$response['data_formated'] = ob_get_clean();
+
+		return rest_ensure_response( $response );
+	}
+
+	function users( $request ) {
+		$response = [];
+		$for      = $request->get_param( 'for' );
+		$q        = $request->get_param( 'q' );
+		$x        = $request->get_param( 'x' );
+		$exclude  = ! $x ? array() : explode( ',', $x );
+		// $exclude[] = get_current_user_id();
+		$args = array(
+			'search'         => "*{$q}*",
+			'search_columns' => array( 'user_login', 'display_name' ),
+			'exclude'        => $exclude,
+			'number'         => 10,
+			'orderby'        => 'display_name',
+			'order'          => 'ASC',
+			'role__in'       => fep_get_option( 'userrole_access', array() ),
+		);
+
+		if ( strlen( $q ) > 0 ) {
+			if ( 'autosuggestion' === $for ) {
+				if ( ! fep_get_option( 'show_autosuggest', 1 ) && ! fep_is_user_admin() ) {
+					return rest_ensure_response( $response );
+				}
+				$args['exclude'][] = get_current_user_id();
+				$args = apply_filters( 'fep_autosuggestion_arguments', $args );
+			} elseif ( 'multiple_recipients' === $for ) {
+				$args['exclude'][] = get_current_user_id();
+				$args = apply_filters( 'fep_users_ajax_arguments', $args );
+			} elseif ( 'blocked' === $for ) {
+				$args['exclude'][] = get_current_user_id();
+				$args = apply_filters( 'fep_users_ajax_arguments', $args );
+			}
+			
+			$args = apply_filters( 'fep_filter_rest_users_args', $args, $for, $q, $x );
+			
+			if ( has_filter( "fep_filter_rest_users_response_{$for}" ) ) {
+				$response = apply_filters( "fep_filter_rest_users_response_{$for}", $response, $args, $q, $x );
+			} elseif ( has_filter( 'fep_filter_rest_users_response' ) ) {
+				$response = apply_filters( 'fep_filter_rest_users_response', $response, $args, $for, $q, $x );
+			} else {
+				// The Query
+				$users = get_users( $args );
+				foreach ( $users as $user ) {
+					$response[] = array(
+						'id'       => $user->ID,
+						'nicename' => $user->user_nicename,
+						'name'     => fep_user_name( $user->ID ),
+					);
+				}
+			}
+		}
 
 		return rest_ensure_response( $response );
 	}
