@@ -287,6 +287,7 @@ function fep_enqueue_scripts() {
 		)
 	);
 	wp_register_script( 'fep-tokeninput-script', FEP_PLUGIN_URL . 'assets/js/jquery.tokeninput.js', array( 'jquery' ), FEP_PLUGIN_VERSION, true );
+	wp_register_script( 'fep-tokeninput', FEP_PLUGIN_URL . 'assets/js/fep-tokeninput.js', array( 'fep-tokeninput-script' ), FEP_PLUGIN_VERSION, true );
 	wp_register_script( 'fep-block-unblock-script', FEP_PLUGIN_URL . 'assets/js/block-unblock.js', array( 'jquery' ), FEP_PLUGIN_VERSION, true );
 	wp_localize_script( 'fep-block-unblock-script', 'fep_block_unblock_script', array(
 			'ajaxurl'	=> admin_url( 'admin-ajax.php' ),
@@ -302,6 +303,31 @@ function fep_enqueue_scripts() {
 		)
 	);
 	wp_register_script( 'fep-cb-check-uncheck-all', FEP_PLUGIN_URL . 'assets/js/check-uncheck-all.js', array( 'jquery' ), FEP_PLUGIN_VERSION, true );
+}
+
+function fep_tokeninput_localize( $args ) {
+	static $count = 1;
+	
+	$args = wp_parse_args( $args,
+		array(
+			'ajaxurl'       => esc_url_raw( rest_url( 'front-end-pm/v1/users/' . $args['for'] . '/' ) ),
+			'nonce'         => wp_create_nonce( 'wp_rest' ),
+			'method'        => 'GET',
+			'theme'         => 'facebook',
+			'hintText'      => __( 'Type user name', 'front-end-pm'),
+			'noResultsText' => __( 'No matches found', 'front-end-pm' ),
+			'searchingText' => __( 'Searching...', 'front-end-pm' ),
+			'width'         => '250px',
+			'tokenLimit'    => 5,
+			// Following have to be overwritten.
+			'selector'      => '', // Field id
+			'for'           => '',
+			'prePopulate'   => [],
+		)
+	);
+	$args = apply_filters( 'fep_filter_tokeninput_localize', $args );
+	wp_localize_script( 'fep-tokeninput', "fep_tokeninput_{$count}", $args );
+	$count++;
 }
 
 function fep_page_id() {
