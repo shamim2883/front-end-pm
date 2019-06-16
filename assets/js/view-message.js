@@ -62,7 +62,7 @@ jQuery( document ).ready( function( $ ) {
 		}
 		fep_load_heads();
 	});
-	// Trigger upgrades
+
 	$( '#fep-content-single-sidebar' ).on( 'click', '.fep-message-head', function(e) {
 		$('.fep-message-head').removeClass('fep-message-head-active');
 		$(this).addClass('fep-message-head-active');
@@ -90,6 +90,7 @@ jQuery( document ).ready( function( $ ) {
 			}
 		}).done( function( response ) {
 			$('.fep-content-single-main-loader').hide();
+			$( '.fep-ajax-response' ).empty();
 			$( '#fep-content-single-content' ).html( response.data_formated );
 			$( '.fep-hide-if-js' ).hide();
 			if( response.show_reply_form ){

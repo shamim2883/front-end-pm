@@ -8,7 +8,7 @@ jQuery( document ).ready( function($) {
 		var submit_button = $(thisForm).find('button[type="submit"]');
 		
 		submit_button.prop('disabled',true);
-		$( '.fep-ajax-response', thisForm ).html( '' );
+		$( '.fep-ajax-response', thisForm ).empty();
 		$( '.fep-progress-bar', thisForm ).show();
 		
 		var formData = new FormData(thisForm);
@@ -56,7 +56,9 @@ jQuery( document ).ready( function($) {
 				$( '#fep-attachment-note', thisForm ).empty();
 				
 				if( 'reply' == $('input[name="fep_action"]', thisForm).val() ) {
-					$( '#fep-content-single-sidebar .fep-message-head.fep-message-head-active' ).trigger('click');
+					setTimeout( function(){
+						$( '#fep-content-single-sidebar .fep-message-head.fep-message-head-active' ).trigger('click');
+					}, 2000 );
 				}
 			}
 			if( 'location_reload' ==  response['fep_redirect'] ){
