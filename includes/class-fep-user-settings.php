@@ -70,7 +70,7 @@ class Fep_User_Settings {
 		if ( empty( $fields['blocked_users'] ) ) {
 			return;
 		}
-		wp_enqueue_script( 'fep-tokeninput-script' );
+		wp_enqueue_script( 'fep-tokeninput' );
 		wp_enqueue_style( 'fep-tokeninput-style' );
 
 		$users = array();
@@ -82,26 +82,13 @@ class Fep_User_Settings {
 				);
 			}
 		}
-		?>
-		<script type="text/javascript">
-		jQuery( document ).ready( function() {
-			//comment previous line and uncomment next line if you have any issue with multiple receipant field ( eg. for CloudFlare rocketscript tech )
-			//jQuery( window ).load( function() {	
-			jQuery( '#blocked_users' ).tokenInput( '<?php echo admin_url( 'admin-ajax.php' ); ?>?action=fep_users_ajax&token=<?php echo wp_create_nonce( 'fep_users_ajax' ); ?>', {
-				method: 'POST',
-				theme: 'facebook',
-				excludeCurrent: true,
-				hintText: '<?php _e( 'Type user name', 'front-end-pm' ); ?>',
-				noResultsText: '<?php _e( 'No matches found', 'front-end-pm' ); ?>',
-				searchingText: '<?php _e( 'Searching...', 'front-end-pm' ); ?>',
-				prePopulate: <?php echo wp_json_encode( $users ); ?>,
-				width: '250px',
-				preventDuplicates: true,
-				zindex: 99999,
-				resultsLimit: 5
-			});
-		});
-		</script><?php
+		fep_tokeninput_localize(
+			[
+				'selector'    => '#blocked_users',
+				'for'         => 'blocked',
+				'prePopulate' => $users,
+			]
+		);
 	}
 
 } //END CLASS

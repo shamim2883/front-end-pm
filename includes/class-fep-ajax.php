@@ -14,7 +14,6 @@ class Fep_Ajax {
 	}
 
 	function actions_filters() {
-		add_action( 'wp_ajax_fep_users_ajax', array( $this, 'fep_users_ajax' ) );
 		add_action( 'wp_ajax_fep_notification_ajax', array( $this, 'fep_notification_ajax' ) );
 		add_action( 'wp_ajax_nopriv_fep_notification_ajax', array( $this, 'fep_notification_ajax' ) );
 		add_action( 'wp_ajax_fep_notification_dismiss', array( $this, 'fep_notification_dismiss' ) );
@@ -23,41 +22,6 @@ class Fep_Ajax {
 		if ( fep_get_option( 'block_other_users', 1 ) ) {
 			add_action( 'wp_ajax_fep_block_unblock_users_ajax', array( $this, 'fep_block_unblock_users_ajax' ) );
 		}
-	}
-
-	function fep_users_ajax() {
-		global $user_ID;
-
-		if ( check_ajax_referer( 'fep_users_ajax', 'token', false ) ) {
-			$searchq = $_POST['q'];
-			$exclude = empty( $_POST['x'] ) ? array() : explode( ',', $_POST['x'] );
-			$exclude[] = $user_ID;
-			$args = array(
-				'search'		=> "*{$searchq}*",
-				'search_columns'=> array( 'user_login', 'display_name' ),
-				'exclude'		=> $exclude,
-				'number'		=> 10,
-				'orderby'		=> 'display_name',
-				'order'			=> 'ASC',
-				'fields'		=> array( 'ID', 'display_name' ),
-				'role__in'       => fep_get_option( 'userrole_access', array() ),
-			);
-			$ret = array();
-			if ( strlen( $searchq) > 0 ) {
-				$args = apply_filters ( 'fep_users_ajax_arguments', $args );
-
-				// The Query
-				$users = get_users( $args );
-				foreach( $users as $user ) {
-					$ret[] = array(
-						'id'	=> $user->ID,
-						'name'	=> fep_user_name( $user->ID ),
-					);
-				}
-			}
-			wp_send_json( $ret );
-		}
-		die;
 	}
 
 	function fep_block_unblock_users_ajax() {
