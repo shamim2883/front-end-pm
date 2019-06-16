@@ -587,6 +587,12 @@ class Fep_Form {
 		
 		echo fep_error( $errors );
 		
+		if ( apply_filters( 'fep_filter_ajax_form_submit', true, $where ) ) {
+			wp_enqueue_script( 'fep-form-submit' );
+			echo '<div class="fep-progress-bar"><div class="fep-progress-bar-inner"></div></div>';
+			echo '<div class="fep-ajax-response"></div>';
+		}
+		
 		if( 'settings' == $where ) {
 			$button_val = __( 'Save Changes', 'front-end-pm' );
 		} elseif( 'reply' == $where ) {
@@ -595,12 +601,6 @@ class Fep_Form {
 			$button_val = __( 'Send Message', 'front-end-pm' );
 		}
 		echo apply_filters( 'fep_form_submit_button', '<button type="submit" class="fep-button">' . esc_html( $button_val ) . '</button>', $where );
-		
-		if ( apply_filters( 'fep_filter_ajax_form_submit', true, $where ) ) {
-			wp_enqueue_script( 'fep-form-submit' );
-			echo '<div class="fep-progress-bar"><div class="fep-progress-bar-inner"></div></div>';
-			echo '<div class="fep-ajax-response"></div>';
-		}
 		
 		echo '</form>';
 		echo '</div>';
