@@ -1065,6 +1065,12 @@ function fep_status_change( $old_status, $message ){
 	do_action( "fep_status_{$old_status}_to_{$new_status}", $message );
 	
 	do_action( "fep_status_to_{$new_status}", $message, $old_status );
+	
+	do_action( "fep_transition_{$message->mgs_type}_status", $new_status, $old_status, $message );
+	
+	do_action( "fep_{$message->mgs_type}_status_{$old_status}_to_{$new_status}", $message );
+	
+	do_action( "fep_{$message->mgs_type}_status_to_{$new_status}", $message, $old_status );
 }
 
 function fep_send_message_transition_post_status( $new_status, $old_status, $message ) {
