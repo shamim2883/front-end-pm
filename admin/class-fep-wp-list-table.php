@@ -150,7 +150,7 @@ class FEP_WP_List_Table extends WP_List_Table {
 		$sortable              = $this->get_sortable_columns();
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 		//$this->get_column_info();
-		$per_page = 20;
+		$per_page = isset( $_REQUEST['per_page'] ) ? (int) $_REQUEST['per_page'] : 20;
 		
 		$args = array(
 			'mgs_type'     => $this->message_type,

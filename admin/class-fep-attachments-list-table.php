@@ -99,7 +99,7 @@ class FEP_Attachments_List_Table extends WP_List_Table {
 		$sortable              = $this->get_sortable_columns();
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 		//$this->get_column_info();
-		$per_page = 20;
+		$per_page = isset( $_REQUEST['per_page'] ) ? (int) $_REQUEST['per_page'] : 20;
 		
 		$value = [];
 		$query = 'SELECT SQL_CALC_FOUND_ROWS * FROM ' . FEP_ATTACHMENT_TABLE . ' WHERE 1=1';
