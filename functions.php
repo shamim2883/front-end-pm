@@ -1414,6 +1414,8 @@ function fep_form_posted() {
 			do_action( 'fep_posted_action' );
 			break;
 	}
+	do_action( 'fep_posted_action_after', $action );
+	
 	if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 		$response = array();
 		if ( count( fep_errors()->get_error_messages() ) > 0 ) {
