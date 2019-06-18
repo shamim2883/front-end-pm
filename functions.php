@@ -1308,24 +1308,6 @@ function fep_info_output() {
 	return $html;
 }
 
-function fep_info_output_admin() {
-	$html = '';
-	if ( fep_success()->get_error_messages() ) {
-		$html .= '<div class="fep-success">';
-		foreach ( fep_success()->get_error_messages() as $s ) {
-			$html .= esc_html( $s ). '<br />';
-		}
-		$html .= '</div>';
-	}
-	if ( fep_errors()->get_error_messages() ) {
-		$html .= '<div class="fep-wp-error">';
-		foreach ( fep_errors()->get_error_messages() as $e ) {
-			$html .= '<strong>' . __( 'Error', 'front-end-pm' ) . ': </strong>' . esc_html( $e ) . '<br />';
-		}
-		$html .= '</div>';
-	}
-	return $html;
-}
 
 function fep_locate_template( $template_names, $load = false, $require_once = true ) {
 	$locations = array();
