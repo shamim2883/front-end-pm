@@ -1290,6 +1290,8 @@ function fep_success() {
 }
 
 function fep_info_output() {
+	do_action( 'fep_action_info_output' );
+	
 	$html = '';
 	if ( fep_success()->get_error_messages() ) {
 		$html .= '<div class="fep-success">';
@@ -1307,7 +1309,6 @@ function fep_info_output() {
 	}
 	return $html;
 }
-
 
 function fep_locate_template( $template_names, $load = false, $require_once = true ) {
 	$locations = array();
