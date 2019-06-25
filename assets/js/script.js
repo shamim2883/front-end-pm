@@ -10,11 +10,14 @@ jQuery( document ).ready( function( $ ) {
 	$( document ).on( 'keyup', '#fep-message-top', function() {
 		fep_delay( function() {
 			$( '#fep-result' ).hide();
-			$( '#fep-message-top' ).addClass( 'fep-loading-gif' );
 			var display_name = $( '#fep-message-top' ).val();
 			var data = {
 				q: display_name
 			};
+			if ( ! display_name ) {
+				return;
+			}
+			$( '#fep-message-top' ).addClass( 'fep-loading-gif' );
 			$.ajax({
 				url: fep_script.root +'/users/autosuggestion/',
 				method: 'get',
@@ -24,7 +27,6 @@ jQuery( document ).ready( function( $ ) {
 					xhr.setRequestHeader( 'X-WP-Nonce', fep_script.nonce );
 				}
 			}).done( function( response ) {
-				$( '#fep-message-top' ).removeClass( 'fep-loading-gif' );
 				$( '#fep-result' ).html('<ul></ul>');
 				if ( $.isEmptyObject( response ) ) {
 					$( '#fep-result ul' ).append('<li>' + fep_script.no_match + '</li>');
@@ -34,7 +36,7 @@ jQuery( document ).ready( function( $ ) {
 					});
 				}
 				$( '#fep-result' ).show();
-			}).fail( function() {
+			}).always( function() {
 				$( '#fep-message-top' ).removeClass( 'fep-loading-gif' );
 			});
 		}, 300 );
