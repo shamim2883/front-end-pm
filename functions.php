@@ -249,11 +249,11 @@ function fep_enqueue_scripts() {
 	wp_register_script( 'fep-notification-script', FEP_PLUGIN_URL . 'assets/js/notification.js', array( 'jquery' ), FEP_PLUGIN_VERSION, true );
 	$call_on_ready = ( isset( $_GET['fepaction'] ) &&
 		( ( 'viewmessage' == $_GET['fepaction'] && fep_get_new_message_number() ) || ( 'view_announcement' == $_GET['fepaction'] && fep_get_new_announcement_number() ) )
-	) ? '1' : '0';
+	) ? true : false;
 	wp_localize_script( 'fep-notification-script', 'fep_notification_script',
 		apply_filters( 'fep_filter_notification_script_localize', array(
-				'ajaxurl'	=> admin_url( 'admin-ajax.php' ),
-				'nonce'		=> wp_create_nonce( 'fep-notification' ),
+				'root'    => esc_url_raw( rest_url( 'front-end-pm/v1' ) ),
+				'nonce'   => wp_create_nonce( 'wp_rest' ),
 				'interval'	=> apply_filters( 'fep_filter_ajax_notification_interval', MINUTE_IN_SECONDS * 1000 ),
 				'skip'		=> apply_filters( 'fep_filter_skip_notification_call', 2 ), // How many times notification ajax call will be skipped if browser tab not opened
 				'show_in_title'		=> fep_get_option( 'show_unread_count_in_title', '1' ),

@@ -57,7 +57,7 @@ class FEP_REST_API {
 			)
 		);
 		register_rest_route(
-			$namespace, '/users/(?P<for>[a-zA-Z0-9_-]+)/', array(
+			$namespace, '/users/(?P<for>[a-zA-Z0-9_-]+)', array(
 				'methods'             => 'GET',
 				'callback'            => array( $this, 'users' ),
 				'permission_callback' => function ( $request ) {
@@ -80,6 +80,24 @@ class FEP_REST_API {
 						'sanitize_callback' => 'sanitize_text_field',
 					),
 				),
+			)
+		);
+		register_rest_route(
+			$namespace, '/notification', array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'notification' ),
+				'permission_callback' => function ( $request ) {
+					return fep_current_user_can( 'access_message' );
+				},
+			)
+		);
+		register_rest_route(
+			$namespace, '/notification/dismiss', array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'notification_dismiss' ),
+				'permission_callback' => function ( $request ) {
+					return fep_current_user_can( 'access_message' );
+				},
 			)
 		);
 	}
@@ -146,17 +164,17 @@ class FEP_REST_API {
 					return rest_ensure_response( $response );
 				}
 				$args['exclude'][] = get_current_user_id();
-				$args = apply_filters( 'fep_autosuggestion_arguments', $args );
+				$args              = apply_filters( 'fep_autosuggestion_arguments', $args );
 			} elseif ( 'multiple_recipients' === $for ) {
 				$args['exclude'][] = get_current_user_id();
-				$args = apply_filters( 'fep_users_ajax_arguments', $args );
+				$args              = apply_filters( 'fep_users_ajax_arguments', $args );
 			} elseif ( 'blocked' === $for ) {
 				$args['exclude'][] = get_current_user_id();
-				$args = apply_filters( 'fep_users_ajax_arguments', $args );
+				$args              = apply_filters( 'fep_users_ajax_arguments', $args );
 			}
-			
+
 			$args = apply_filters( 'fep_filter_rest_users_args', $args, $for, $q, $x );
-			
+
 			if ( has_filter( "fep_filter_rest_users_response_{$for}" ) ) {
 				$response = apply_filters( "fep_filter_rest_users_response_{$for}", $response, $args, $q, $x );
 			} elseif ( has_filter( 'fep_filter_rest_users_response' ) ) {
@@ -175,6 +193,48 @@ class FEP_REST_API {
 		}
 
 		return rest_ensure_response( $response );
+	}
+
+	public function notification( $request ) {
+		$response = [];
+
+		$mgs_unread_count = fep_get_new_message_number();
+		$mgs_total_count  = fep_get_user_message_count( 'total' );
+		$ann_unread_count = fep_get_new_announcement_number();
+		$dismiss          = get_user_meta( get_current_user_id(), '_fep_notification_dismiss', true );
+		$prev             = get_user_meta( get_current_user_id(), '_fep_notification_prev', true );
+
+		$new = array(
+			'message'      => $mgs_unread_count,
+			'announcement' => $ann_unread_count,
+		);
+		update_user_meta( get_current_user_id(), '_fep_notification_prev', $new );
+
+		if ( ! is_array( $prev ) ) {
+			$prev = array();
+		}
+		$response = array(
+			'message_unread_count'           => $mgs_unread_count,
+			'message_unread_count_i18n'      => number_format_i18n( $mgs_unread_count ),
+			'message_unread_count_text'      => sprintf( _n( '%s message', '%s messages', $mgs_unread_count, 'front-end-pm' ), number_format_i18n( $mgs_unread_count ) ),
+			'message_total_count'            => $mgs_total_count,
+			'message_total_count_i18n'       => number_format_i18n( $mgs_total_count ),
+			'announcement_unread_count'      => $ann_unread_count,
+			'announcement_unread_count_i18n' => number_format_i18n( $ann_unread_count ),
+			'announcement_unread_count_text' => sprintf( _n( '%s announcement', '%s announcements', $ann_unread_count, 'front-end-pm' ), number_format_i18n( $ann_unread_count ) ),
+			'notification_bar'               => ( ( ! $mgs_unread_count && ! $ann_unread_count ) || $dismiss ) ? 0 : 1,
+			'message_unread_count_prev'      => empty( $prev['message'] ) ? 0 : absint( $prev['message'] ),
+			'announcement_unread_count_prev' => empty( $prev['announcement'] ) ? 0 : absint( $prev['announcement'] ),
+		);
+		$response = apply_filters( 'fep_filter_notification_response', $response );
+
+		return rest_ensure_response( $response );
+	}
+	public function notification_dismiss( $request ) {
+
+		update_user_meta( get_current_user_id(), '_fep_notification_dismiss', 1 );
+
+		return rest_ensure_response( [ 'success' => true ] );
 	}
 } //END CLASS
 
