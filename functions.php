@@ -6,6 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function fep_register_metadata_table(){
 	global $wpdb;
 	$wpdb->fep_messagemeta = FEP_META_TABLE;
+	$wpdb->fep_messages    = FEP_MESSAGE_TABLE;
 }
 
 function fep_create_database(){
