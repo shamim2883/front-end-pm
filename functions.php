@@ -285,6 +285,7 @@ function fep_enqueue_scripts() {
 			'ajaxurl'      => admin_url( 'admin-ajax.php' ),
 			'token'        => wp_create_nonce( 'fep-form' ),
 			'refresh_text' => __( 'Refresh this page and try again. ', 'front-end-pm' ),
+			'processing_text' => __( 'Processing... ', 'front-end-pm' ),
 		)
 	);
 	wp_register_script( 'fep-tokeninput-script', FEP_PLUGIN_URL . 'assets/js/jquery.tokeninput.js', array( 'jquery' ), FEP_PLUGIN_VERSION, true );

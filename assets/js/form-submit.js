@@ -30,11 +30,12 @@ jQuery( document ).ready( function($) {
 					myXhr.upload.addEventListener('progress', function (e) {
 						if (e.lengthComputable) {
 							var percentage = Math.round( ( e.loaded / e.total ) * 100 );
-							if( percentage <= 100 ){
+							if( percentage < 100 ){
 								$( '.fep-progress-bar-inner', thisForm ).width( percentage + '%' );
 								$( '.fep-progress-bar-inner', thisForm ).text( percentage + '%' );
 							} else {
 								$( '.fep-progress-bar-inner', thisForm ).width( '100%' );
+								$( '.fep-progress-bar-inner', thisForm ).text( fep_form_submit.processing_text );
 							}
 						}
 					}, false);
