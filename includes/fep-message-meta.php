@@ -18,6 +18,20 @@ function fep_update_meta( $message_id, $meta_key = '', $meta_value = '', $prev_v
 	return update_metadata( 'fep_message', $message_id, $meta_key, $meta_value, $prev_value );
 }
 
-function fep_delete_meta( $message_id, $meta_key = '', $meta_value = '' ) {
-	return delete_metadata( 'fep_message', $message_id, $meta_key, $meta_value );
+function fep_delete_meta( $message_id, $meta_key = '', $meta_value = '', $delete_all = false ) {
+	global $wpdb;
+	
+	if ( ! $message_id ) {
+		return false;
+	}
+	if ( $meta_key ) {
+		return delete_metadata( 'fep_message', $message_id, $meta_key, $meta_value, $delete_all );
+	} elseif ( $delete_all ) {
+		if ( $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->fep_messagemeta WHERE fep_message_id = %d", $message_id ) ) ) {
+			wp_cache_delete( $message_id, 'fep_message_meta' );
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

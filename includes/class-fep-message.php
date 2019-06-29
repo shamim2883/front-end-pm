@@ -188,6 +188,7 @@ class FEP_Message {
 		}
 		FEP_Attachments::init()->delete( $this->mgs_id );
 		FEP_Participants::init()->delete( $this->mgs_id );
+		fep_delete_meta( $this->mgs_id, '', '', true );
 		
 		if( $wpdb->delete( FEP_MESSAGE_TABLE, array( 'mgs_id' => $this->mgs_id ), array( '%d' ) ) ){
 			wp_cache_delete( $this->mgs_id, 'fep-message' );

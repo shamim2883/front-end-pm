@@ -109,6 +109,7 @@ class Fep_Update {
 	}
 
 	function update( $prev_ver ) {
+		global $wpdb;
 		if ( version_compare( $prev_ver, '5.3', '<' ) ) {
 			$this->create_htaccess();
 		}
@@ -119,6 +120,9 @@ class Fep_Update {
 			$options['show_branding'] = fep_get_option( 'hide_branding', 0 ) ? 0 : 1;
 			$options['show_autosuggest'] = fep_get_option( 'hide_autosuggest', 0 ) ? 0 : 1;
 			fep_update_option( $options );
+		}
+		if ( version_compare( $prev_ver, '11.1.1', '<' ) ) {
+			$wpdb->query( "DELETE mm FROM $wpdb->fep_messagemeta mm LEFT JOIN $wpdb->fep_messages m ON mm.fep_message_id = m.mgs_id WHERE m.mgs_id IS NULL" );
 		}
 	}
 
