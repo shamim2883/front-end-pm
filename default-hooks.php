@@ -9,6 +9,8 @@ add_action( 'plugins_loaded', 'fep_create_database', 20 );
 add_action( 'after_setup_theme', 'fep_include_require_files' );
 add_action( 'after_setup_theme', 'fep_translation' );
 add_action( 'wp_enqueue_scripts', 'fep_enqueue_scripts' );
+add_action( 'wp_enqueue_scripts', 'fep_common_scripts' );
+add_action( 'admin_enqueue_scripts', 'fep_common_scripts' );
 
 add_action( 'wp_head', 'fep_notification_div', 99 );
 add_action( 'fep_footer_note', 'fep_footer_credit' );

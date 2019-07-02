@@ -209,7 +209,6 @@ function fep_translation() {
 function fep_enqueue_scripts() {
 	wp_register_style( 'fep-common-style', FEP_PLUGIN_URL . 'assets/css/common-style.css', array(), FEP_PLUGIN_VERSION );
 	wp_register_style( 'fep-style', FEP_PLUGIN_URL . 'assets/css/style.css', array(), FEP_PLUGIN_VERSION );
-	wp_register_style( 'fep-tokeninput-style', FEP_PLUGIN_URL . 'assets/css/token-input-facebook.css', array(), FEP_PLUGIN_VERSION );
 	if ( 'always' == fep_get_option( 'load_css','only_in_message_page' ) ) {
 		wp_enqueue_style( 'fep-style' );
 	} elseif ( 'only_in_message_page' == fep_get_option( 'load_css','only_in_message_page' ) &&
@@ -298,8 +297,6 @@ function fep_enqueue_scripts() {
 			'processing_text' => __( 'Processing... ', 'front-end-pm' ),
 		)
 	);
-	wp_register_script( 'fep-tokeninput-script', FEP_PLUGIN_URL . 'assets/js/jquery.tokeninput.js', array( 'jquery' ), FEP_PLUGIN_VERSION, true );
-	wp_register_script( 'fep-tokeninput', FEP_PLUGIN_URL . 'assets/js/fep-tokeninput.js', array( 'fep-tokeninput-script' ), FEP_PLUGIN_VERSION, true );
 	wp_register_script( 'fep-block-unblock-script', FEP_PLUGIN_URL . 'assets/js/block-unblock.js', array( 'jquery' ), FEP_PLUGIN_VERSION, true );
 	wp_localize_script( 'fep-block-unblock-script', 'fep_block_unblock_script', array(
 			'ajaxurl'	=> admin_url( 'admin-ajax.php' ),
@@ -315,6 +312,12 @@ function fep_enqueue_scripts() {
 		)
 	);
 	wp_register_script( 'fep-cb-check-uncheck-all', FEP_PLUGIN_URL . 'assets/js/check-uncheck-all.js', array( 'jquery' ), FEP_PLUGIN_VERSION, true );
+}
+
+function fep_common_scripts() {
+	wp_register_style( 'fep-tokeninput-style', FEP_PLUGIN_URL . 'assets/css/token-input-facebook.css' );
+	wp_register_script( 'fep-tokeninput-script', FEP_PLUGIN_URL . 'assets/js/jquery.tokeninput.js', array( 'jquery' ), '6.1', true );
+	wp_register_script( 'fep-tokeninput', FEP_PLUGIN_URL . 'assets/js/fep-tokeninput.js', array( 'fep-tokeninput-script' ), FEP_PLUGIN_VERSION, true );
 }
 
 function fep_tokeninput_localize( $args ) {
