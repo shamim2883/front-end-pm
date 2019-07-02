@@ -809,6 +809,9 @@ function fep_current_user_can( $cap, $id = false ) {
 	$no_role_access = apply_filters( 'fep_no_role_access', false, $cap, $id );
 	$roles = wp_get_current_user()->roles;
 	switch ( $cap ) {
+		case has_filter( "fep_current_user_can_{$cap}" ):
+			$can = apply_filters( "fep_current_user_can_{$cap}", $can, $cap, $id );
+			break;
 		case 'access_message':
 			if ( fep_is_user_whitelisted() || array_intersect( fep_get_option( 'userrole_access', array() ), $roles ) || ( ! $roles && $no_role_access ) ) {
 				$can = true;
@@ -875,7 +878,6 @@ function fep_current_user_can( $cap, $id = false ) {
 			}
 			break;
 		default :
-			$can = apply_filters( 'fep_current_user_can_' . $cap, $can, $cap, $id );
 			break;
 	}
 	return apply_filters( 'fep_current_user_can', $can, $cap, $id );
