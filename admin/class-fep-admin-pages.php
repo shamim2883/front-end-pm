@@ -175,9 +175,21 @@ class Fep_Admin_Pages {
 	}
 	
 	function admin_actions(){
-		if( ! isset( $_REQUEST['page'] ) || ! in_array( $_REQUEST['page'], [ 'fep-all-messages', 'fep-all-announcements', 'fep-all-attachments' ] ) ){
+		if( ! isset( $_REQUEST['page'] ) ){
 			return false;
 		}
+		$type = '';
+		if ( 'fep-all-messages' === $_REQUEST['page'] ) {
+			$type = 'message';
+		} elseif ( 'fep-all-announcements' === $_REQUEST['page'] ) {
+			$type = 'announcement';
+		} elseif ( 'fep-all-attachments' === $_REQUEST['page'] ) {
+			$type = 'attachment';
+		}
+		if ( ! $type ) {
+			return false;
+		}
+		
 		if ( ! empty( $_REQUEST['filter_action'] ) ){
 			return false;
 		}
@@ -210,7 +222,7 @@ class Fep_Admin_Pages {
 				case 'bulk_delete':
 					$ids = isset( $_GET['fep_id'] ) ? $_GET['fep_id'] : [];
 					if( ! $ids || ! is_array( $ids ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'bulk-fep-attachments' ) || ! fep_is_user_admin() ){
-						wp_die( __( 'Invalid nonce!', 'front-end-pm' ) );
+						wp_die( __( 'Invalid request!', 'front-end-pm' ) );
 					}
 					$deleted = 0;
 					foreach( $ids as $mgs_id => $att_ids ){
@@ -229,10 +241,11 @@ class Fep_Admin_Pages {
 					
 					$sendback = add_query_arg( 'deleted', $deleted, $sendback );
 					break;
-				case 'bulk_status-change-to-pending':
+				case ( 0 === strpos( $action, 'bulk_status-change-to-' ) ):
+					$status = str_replace( 'bulk_status-change-to-', '', $action );
 					$ids = isset( $_GET['fep_id'] ) ? $_GET['fep_id'] : [];
-					if( ! $ids || ! is_array( $ids ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'bulk-fep-attachments' ) || ! fep_is_user_admin() ){
-						wp_die( __( 'Invalid nonce!', 'front-end-pm' ) );
+					if( ! array_key_exists( $status, fep_get_statuses( $type ) ) || ! $ids || ! is_array( $ids ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'bulk-fep-attachments' ) || ! fep_is_user_admin() ){
+						wp_die( __( 'Invalid request!', 'front-end-pm' ) );
 					}
 					$changed = 0;
 					foreach( $ids as $mgs_id => $att_ids ){
@@ -243,7 +256,7 @@ class Fep_Admin_Pages {
 							if( ! $att_id || ! is_numeric( $att_id ) ){
 								continue;
 							}
-							if( FEP_Attachments::init()->update( $mgs_id, [ 'att_status' => 'pending' ], $att_id ) ){
+							if( FEP_Attachments::init()->update( $mgs_id, [ 'att_status' => $status ], $att_id ) ){
 								$changed++;
 							}
 						}					
@@ -251,29 +264,6 @@ class Fep_Admin_Pages {
 					
 					$sendback = add_query_arg( 'changed', $changed, $sendback );
 					break;
-				case 'bulk_status-change-to-publish':
-					$ids = isset( $_GET['fep_id'] ) ? $_GET['fep_id'] : [];
-					if( ! $ids || ! is_array( $ids ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'bulk-fep-attachments' ) || ! fep_is_user_admin() ){
-						wp_die( __( 'Invalid nonce!', 'front-end-pm' ) );
-					}
-					$changed = 0;
-					foreach( $ids as $mgs_id => $att_ids ){
-						if( ! is_array( $att_ids ) ){
-							continue;
-						}
-						foreach( $att_ids as $att_id ){
-							if( ! $att_id || ! is_numeric( $att_id ) ){
-								continue;
-							}
-							if( FEP_Attachments::init()->update( $mgs_id, [ 'att_status' => 'publish' ], $att_id ) ){
-								$changed++;
-							}
-						}					
-					}
-					
-					$sendback = add_query_arg( 'changed', $changed, $sendback );
-					break;
-				
 				default:
 					// code...
 					break;
@@ -309,7 +299,7 @@ class Fep_Admin_Pages {
 				case 'bulk_delete':
 					$ids = isset( $_GET['fep_id'] ) ? $_GET['fep_id'] : [];
 					if( ! $ids || ! is_array( $ids ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'bulk-fep-messages' ) || ! fep_is_user_admin() ){
-						wp_die( __( 'Invalid nonce!', 'front-end-pm' ) );
+						wp_die( __( 'Invalid request!', 'front-end-pm' ) );
 					}
 					$args = [
 						'mgs_id_in' => $ids,
@@ -329,39 +319,23 @@ class Fep_Admin_Pages {
 					}
 					$sendback = add_query_arg( 'deleted', $deleted, $sendback );
 					break;
-				case 'bulk_status-change-to-pending':
+				case ( 0 === strpos( $action, 'bulk_status-change-to-' ) ):
+					$status = str_replace( 'bulk_status-change-to-', '', $action );
 					$ids = isset( $_GET['fep_id'] ) ? $_GET['fep_id'] : [];
-					if( ! $ids || ! is_array( $ids ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'bulk-fep-messages' ) || ! fep_is_user_admin() ){
-						wp_die( __( 'Invalid nonce!', 'front-end-pm' ) );
+					if( ! array_key_exists( $status, fep_get_statuses( $type ) ) || ! $ids || ! is_array( $ids ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'bulk-fep-messages' ) || ! fep_is_user_admin() ){
+						wp_die( __( 'Invalid request!', 'front-end-pm' ) );
 					}
 					$changed = 0;
 					foreach( $ids as $id ){
 						$message = fep_get_message( $id );
 						
-						if( $message && $message->update( [ 'mgs_status' => 'pending' ] ) ){
+						if( $message && $message->update( [ 'mgs_status' => $status ] ) ){
 							$changed++;
 						}
 					}
 					
 					$sendback = add_query_arg( 'changed', $changed, $sendback );
 					break;
-				case 'bulk_status-change-to-publish':
-					$ids = isset( $_GET['fep_id'] ) ? $_GET['fep_id'] : [];
-					if( ! $ids || ! is_array( $ids ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'bulk-fep-messages' ) || ! fep_is_user_admin() ){
-						wp_die( __( 'Invalid nonce!', 'front-end-pm' ) );
-					}
-					$changed = 0;
-					foreach( $ids as $id ){
-						$message = fep_get_message( $id );
-						
-						if( $message && $message->update( [ 'mgs_status' => 'publish' ] ) ){
-							$changed++;
-						}
-					}
-					
-					$sendback = add_query_arg( 'changed', $changed, $sendback );
-					break;
-				
 				default:
 					// code...
 					break;

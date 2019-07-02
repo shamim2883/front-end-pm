@@ -138,9 +138,10 @@ class FEP_WP_List_Table extends WP_List_Table {
 	public function get_bulk_actions( $which = '' ) {
 		$actions = array(
 			'bulk_delete' => __( 'Delete', 'front-end-pm' ),
-			'bulk_status-change-to-pending' => __( 'Status change to pending', 'front-end-pm' ),
-			'bulk_status-change-to-publish' => __( 'Status change to publish', 'front-end-pm' ),
 		);
+		foreach ( fep_get_statuses( $this->message_type ) as $status => $label ) {
+			$actions[ "bulk_status-change-to-{$status}" ] = sprintf( __( 'Status change to %s', 'front-end-pm' ), $label );
+		}
 		return $actions;
 	}
 
