@@ -35,7 +35,7 @@ class Fep_Update {
 	}
 	
 	function admin_menu(){
-		add_submenu_page( null, 'Front End PM - ' . __( 'Update', 'front-end-pm' ), __( 'Update', 'front-end-pm' ), apply_filters( 'fep_admin_cap', 'manage_options' ), 'fep_update', array( $this, 'update_page' ) );
+		add_submenu_page( 'fep-non-exist-menu', 'Front End PM - ' . __( 'Update', 'front-end-pm' ), __( 'Update', 'front-end-pm' ), apply_filters( 'fep_admin_cap', 'manage_options' ), 'fep_update', array( $this, 'update_page' ) );
 	}
 	
 	function update_page() {
