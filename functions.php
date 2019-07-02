@@ -333,7 +333,7 @@ function fep_tokeninput_localize( $args ) {
 			'noResultsText' => __( 'No matches found', 'front-end-pm' ),
 			'searchingText' => __( 'Searching...', 'front-end-pm' ),
 			'width'         => '250px',
-			'tokenLimit'    => 5,
+			'tokenLimit'    => null,
 			// Following have to be overwritten.
 			'selector'      => '', // Field id
 			'for'           => '',
