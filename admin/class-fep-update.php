@@ -193,6 +193,11 @@ class Fep_Update {
 			);
 			wp_send_json( $response );
 		}
+		ignore_user_abort( true );
+		if ( ! fep_is_func_disabled( 'set_time_limit' ) ) {
+			set_time_limit( 3600 );
+		}
+		
 		if ( version_compare( $prev_ver, '5.1', '<' ) ) {
 			$this->update_version_51();
 		}
@@ -215,10 +220,7 @@ class Fep_Update {
 			return;
 		}
 		$custom_int = isset( $_POST['custom_int'] ) ? absint( $_POST['custom_int'] ) : 0;
-		ignore_user_abort( true );
-		if ( ! fep_is_func_disabled( 'set_time_limit' ) ) {
-			set_time_limit( 0 );
-		}
+
 		global $wpdb;
 		$wpdb->query( "UPDATE $wpdb->postmeta SET meta_key = REPLACE( meta_key, '_message_key', '_fep_message_key' ) WHERE meta_key = '_message_key'" );
 		$wpdb->query( "UPDATE $wpdb->postmeta SET meta_key = REPLACE( meta_key, '_participant_roles', '_fep_participant_roles' ) WHERE meta_key = '_participant_roles'" );
@@ -241,10 +243,7 @@ class Fep_Update {
 		if ( $updated ) {
 			return;
 		}
-		ignore_user_abort( true );
-		if ( ! fep_is_func_disabled( 'set_time_limit' ) ) {
-			set_time_limit( 0 );
-		}
+
 		$custom_int = isset( $_POST['custom_int'] ) ? absint( $_POST['custom_int'] ) : 0;
 		$custom_str = isset( $_POST['custom_str'] ) ? sanitize_text_field( $_POST['custom_str']) : 'messages';
 
@@ -374,10 +373,7 @@ class Fep_Update {
 	function individual_to_threaded() {
 		global $wpdb;
 		$custom_int = isset( $_POST['custom_int'] ) ? absint( $_POST['custom_int'] ) : 0;
-		ignore_user_abort( true );
-		if ( ! fep_is_func_disabled( 'set_time_limit' ) ) {
-			set_time_limit( 0 );
-		}
+
 		$args = array(
 			'mgs_type'		=> 'message',
 			'mgs_parent'	=> 0,
