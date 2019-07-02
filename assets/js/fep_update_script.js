@@ -18,7 +18,7 @@ jQuery( document ).ready( function( $ ) {
 				if ( response.message.length ) {
 					$( '#fep-ajax-response' ).append( response.message + '<br />' );
 				}
-				setTimeout( fep_update( response.custom_str, response.custom_int ) );
+				setTimeout( function(){ fep_update( response.custom_str, response.custom_int ); } );
 			}
 		}).fail( function() {
 			$( '.fep-ajax-img' ).hide();
