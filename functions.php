@@ -1054,6 +1054,9 @@ function fep_send_message( $message = null, $override = array() ) {
 		$message['message_to_id'][] = $new_message->mgs_author;
 		$new_message->insert_participants( $message['message_to_id'] );
 	}
+	if ( is_multisite() ) {
+		fep_add_meta( $message_id, '_fep_blog_id', get_current_blog_id() );
+	}
 	do_action( 'fep_action_message_after_send', $message_id, $message, $new_message );
 	
 	fep_status_change( 'new', $new_message );
@@ -1164,6 +1167,9 @@ function fep_add_announcement( $announcement = null, $override = array() ) {
 		foreach( $announcement['announcement_roles'] as $role ){
 			fep_add_meta( $announcement_id, '_fep_participant_roles', $role );
 		}
+	}
+	if ( is_multisite() ) {
+		fep_add_meta( $announcement_id, '_fep_blog_id', get_current_blog_id() );
 	}
 	
 	FEP_Participants::init()->mark( $new_message->mgs_id, $new_message->mgs_author, ['read' => true, 'parent_read' => true ] );
