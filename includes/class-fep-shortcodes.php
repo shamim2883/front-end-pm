@@ -66,8 +66,8 @@ class Fep_Shortcodes {
 		} else {
 			$atts['to'] = esc_html( $atts['to'] );
 		}
-		if ( '{current-post-title}' == $atts['subject'] ) {
-			$atts['subject'] = rawurlencode( get_the_title() );
+		if ( false !== strpos( $atts['subject'], '{current-post-title}' ) ) {
+			$atts['subject'] = rawurlencode( str_replace( '{current-post-title}', get_the_title(), $atts['subject'] ) );
 		} elseif ( ! empty( $atts['subject'] ) ) {
 			$atts['subject'] = rawurlencode( $atts['subject'] );
 		} else {
@@ -99,8 +99,8 @@ class Fep_Shortcodes {
 		} else {
 			$atts['to'] = esc_html( $atts['to'] );
 		}
-		if ( '{current-post-title}' == $atts['subject'] ) {
-			$atts['subject'] = get_the_title();
+		if ( false !== strpos( $atts['subject'], '{current-post-title}' ) ) {
+			$atts['subject'] = str_replace( '{current-post-title}', get_the_title(), $atts['subject'] );
 		}
 		extract( $atts );
 		$to_id = fep_get_userdata( $to );
