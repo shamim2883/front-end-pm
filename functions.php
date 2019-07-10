@@ -1437,7 +1437,7 @@ function fep_form_posted() {
 		}
 		$response['info'] = fep_info_output();
 		if( ! empty( $_POST['fep_redirect'] ) ) {
-			$response['fep_redirect'] = wp_validate_redirect( $_POST['fep_redirect'] );
+			$response['fep_redirect'] = wp_validate_redirect( wp_sanitize_redirect( $_POST['fep_redirect'] ) );
 		}
 		wp_send_json( $response );
 	} elseif ( ! empty( $_POST['fep_redirect'] ) ) {
