@@ -84,15 +84,19 @@ class Fep_Admin_Settings {
 		foreach ( get_editable_roles() as $key => $role ) {
 			$user_role[ $key ] = $role['name'];
 		}
-		$pages = array( '' => __( 'Use Current Page', 'front-end-pm' ) );
-		foreach ( get_pages( array( 'hierarchical' => 0 ) ) as $page ) {
+		$pages = array( '' => __( 'Select Page', 'front-end-pm' ) );
+		foreach ( get_pages( array( 'hierarchical' => 0, 'number' => 100 ) ) as $page ) {
 			$pages[ $page->ID ] = $page->post_title;
+		}
+		$page_id = fep_get_option( 'page_id', 0 );
+		if ( $page_id && ! isset( $pages[ $page_id ] ) && get_post( $page_id ) ) {
+			$pages[ $page_id ] = get_the_title( $page_id );
 		}
 		$fields = array(
 			//General Settings
 			'page_id' => array(
 				'type'		 => 'select',
-				'value'		 => fep_get_option( 'page_id', 0 ),
+				'value'		 => $page_id,
 				'priority'	 => 2,
 				'label'		 => __( 'Front End PM Page', 'front-end-pm' ),
 				'options'	 => $pages,
