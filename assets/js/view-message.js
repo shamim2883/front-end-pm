@@ -38,14 +38,16 @@ jQuery( document ).ready( function( $ ) {
 	}
 	$( '.fep-hide-if-js' ).hide();
 	$( '.fep-form-reply').attr('action', window.location.href );
-	$( '#fep-content-single-content' ).on( 'click', '.fep-message-title', function () {
-		//open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
-		$( this ).next( '.fep-message-content' ).slideToggle( 500 );
-	});
-	$( '#fep-content-single-content' ).on( 'click', '.fep-message-toggle-all', function () {
-		//open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
-		$( '.fep-message-content' ).slideToggle( 500 );
-	});
+	if ( fep_view_message.toggle ) {
+		$( '#fep-content-single-content' ).on( 'click', '.fep-message-title', function () {
+			//open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
+			$( this ).next( '.fep-message-content' ).slideToggle( 500 );
+		});
+		$( '#fep-content-single-content' ).on( 'click', '.fep-message-toggle-all', function () {
+			//open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
+			$( '.fep-message-content' ).slideToggle( 500 );
+		});
+	}
 	$( '#fep-content-single-sidebar' ).on( 'change', '.fep-filter-heads', function(e) {
 		fep_view_message.feppage = 1;
 		fep_load_heads();

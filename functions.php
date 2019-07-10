@@ -309,6 +309,7 @@ function fep_enqueue_scripts() {
 			'root'    => esc_url_raw( rest_url( 'front-end-pm/v1' ) ),
 			'nonce'   => wp_create_nonce( 'wp_rest' ),
 			'feppage' => ! empty( $_GET['feppage'] ) ? absint( $_GET['feppage'] ) : 1,
+			'toggle'  => apply_filters( 'fep_filter_message_toggle_feature', true ),
 		)
 	);
 	wp_register_script( 'fep-cb-check-uncheck-all', FEP_PLUGIN_URL . 'assets/js/check-uncheck-all.js', array( 'jquery' ), FEP_PLUGIN_VERSION, true );

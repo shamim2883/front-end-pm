@@ -4,13 +4,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 $i = 0;
 if ( $messages->have_messages() ) {
-	$hide_read = apply_filters( 'fep_filter_hide_message_initially_if_read', true );
+	$hide_read      = apply_filters( 'fep_filter_hide_message_initially_if_read', true );
+	$toggle_feature = apply_filters( 'fep_filter_message_toggle_feature', true );
 	?>
 	<div class="fep-message"><?php
 		while( $messages->have_messages() ) {
 			$messages->the_message();
 			$i++;
-			$read_class = ( $hide_read && fep_is_read() ) ? ' fep-hide-if-js' : '';
 			$content_class = array();
 			$content_class[] = 'fep-message-content';
 			$content_class[] = 'fep-message-content-' . fep_get_the_id();
@@ -27,7 +27,7 @@ if ( $messages->have_messages() ) {
 				$content_class[] = 'fep-message-content-admin';
 				$per_mgs_class[] = 'fep-per-message-admin';
 			}
-			if ( $hide_read && fep_is_read() ) {
+			if ( $hide_read && $toggle_feature && fep_is_read() ) {
 				$content_class[] = 'fep-hide-if-js';
 				//$per_mgs_class[] = 'fep-hide-if-js';
 			}
@@ -59,7 +59,11 @@ if ( $messages->have_messages() ) {
 						echo apply_filters( 'fep_filter_display_participants', implode( ', ', $par ), $par, $participants );
 					}
 					?></div>
-					<div class="fep-align-right"><button class="fep-button fep-message-toggle-all"><?php esc_html_e( 'Toggle Messages', 'front-end-pm' ); ?></button></div>
+					<?php if ( $toggle_feature ) { ?>
+					<div class="fep-align-right">
+						<button class="fep-button fep-message-toggle-all"><?php esc_html_e( 'Toggle Messages', 'front-end-pm' ); ?></button>
+					</div>
+					<?php } ?>
 				</div>
 				<?php
 			} ?>
