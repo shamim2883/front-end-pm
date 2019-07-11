@@ -156,7 +156,7 @@ class FEP_Attachments_List_Table extends WP_List_Table {
 			<select name="att_status">
 				<option value=""><?php _e( 'Show All', 'front-end-pm' ); ?></option>
 				<?php foreach ( fep_get_statuses( 'attachment' ) as $key => $value ): ?>
-					<option value="<?php esc_attr_e( $key ); ?>"<?php selected( $key, isset( $_REQUEST['att_status'] ) ? $_REQUEST['att_status'] : '' );?>><?php esc_html_e( $value ); ?></option>
+					<option value="<?php echo esc_attr( $key ); ?>"<?php selected( $key, isset( $_REQUEST['att_status'] ) ? $_REQUEST['att_status'] : '' );?>><?php echo esc_html( $value ); ?></option>
 				<?php endforeach; ?>
 			</select>
 			<?php

@@ -15,7 +15,7 @@ do_action( 'fep_display_before_announcementbox' );
 <div class="fep-announcementbox-search-form-div">
 	<form id="fep-announcementbox-search-form" action="">
 		<input type="hidden" name="fepaction" value="announcements" />
-		<input type="search" name="fep-search" class="fep-announcementbox-search-form-field" value="<?php echo isset( $_GET['fep-search'] ) ? esc_attr( $_GET['fep-search'] ) : ''; ?>" placeholder="<?php esc_html_e( 'Search Announcements', 'front-end-pm'); ?>" />
+		<input type="search" name="fep-search" class="fep-announcementbox-search-form-field" value="<?php echo isset( $_GET['fep-search'] ) ? esc_attr( stripslashes( $_GET['fep-search'] ) ) : ''; ?>" placeholder="<?php esc_html_e( 'Search Announcements', 'front-end-pm'); ?>" />
 		<input type="hidden" name="feppage" value="1" />
 	</form>
 </div>

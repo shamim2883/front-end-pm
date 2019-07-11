@@ -13,7 +13,7 @@ do_action( 'fep_display_before_messagebox', $action ); ?>
 <div class="fep-messagebox-search-form-div">
 	<form id="fep-messagebox-search-form" action="">
 		<input type="hidden" name="fepaction" value="messagebox" />
-		<input type="search" name="fep-search" class="fep-messagebox-search-form-field" value="<?php echo isset( $_GET['fep-search'] ) ? esc_attr( $_GET['fep-search'] ): ""; ?>" placeholder="<?php _e( 'Search Messages', 'front-end-pm'); ?>" />
+		<input type="search" name="fep-search" class="fep-messagebox-search-form-field" value="<?php echo isset( $_GET['fep-search'] ) ? esc_attr( stripslashes( $_GET['fep-search'] ) ) : ''; ?>" placeholder="<?php _e( 'Search Messages', 'front-end-pm'); ?>" />
 		<input type="hidden" name="feppage" value="1" />
 	</form>
 </div>

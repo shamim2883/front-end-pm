@@ -192,7 +192,7 @@ class Fep_Form {
 		}
 		
 		?>
-		<div class="fep-form-field fep-form-field-<?php esc_attr_e( $field['id'] ); ?>"><?php if ( ! empty( $field['label'] ) ) { ?>
+		<div class="fep-form-field fep-form-field-<?php echo esc_attr( $field['id'] ); ?>"><?php if ( ! empty( $field['label'] ) ) { ?>
 			<div class="fep-label"><label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['label'] ) ; ?>: <?php if ( ! empty( $field['required'] ) ) : ?><span class="required">*</span><?php endif; ?></label></div>
 			<?php } ?>
 			<div class="fep-field"><?php
@@ -310,16 +310,16 @@ class Fep_Form {
 					break;
 				case "select" :
 					?>
-					<select id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" name="<?php esc_attr_e( $field['name'] ); ?>"<?php echo $attrib; ?>>
+					<select id="<?php echo esc_attr( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" name="<?php echo esc_attr( $field['name'] ); ?>"<?php echo $attrib; ?>>
 						<?php foreach( $field['options'] as $key => $name ) { ?>
-							<option value="<?php esc_attr_e( $key ); ?>" <?php selected( $field['posted-value' ], $key ); ?>><?php esc_attr_e( $name ); ?></option>
+							<option value="<?php echo esc_attr( $key ); ?>" <?php selected( $field['posted-value' ], $key ); ?>><?php echo esc_attr( $name ); ?></option>
 						<?php } ?>
 					</select>
 					<?php
 					break;
 				case "radio" :
 					foreach( $field['options'] as $key => $name ) { ?>
-						<label><input type="radio" class="<?php echo $field['class']; ?>" name="<?php esc_attr_e( $field['name'] ); ?>" value="<?php esc_attr_e( $key ); ?>" <?php checked( $field['posted-value' ], $key ); ?> /> <?php esc_attr_e( $name ); ?></label><br />
+						<label><input type="radio" class="<?php echo $field['class']; ?>" name="<?php echo esc_attr( $field['name'] ); ?>" value="<?php echo esc_attr( $key ); ?>" <?php checked( $field['posted-value' ], $key ); ?> /> <?php echo esc_attr( $name ); ?></label><br />
 					<?php }
 					break;
 				case 'token' :
@@ -349,7 +349,7 @@ class Fep_Form {
 					?>
 						<div id="fep_upload">
 							<div class="fep-attachment-field-div">
-								<input class="fep-attachment-field-input" type="file" name="<?php esc_attr_e( $field['name'] ); ?>[]" /><a href="#" class="fep-attachment-field-a"><?php echo __( 'Remove', 'front-end-pm' ); ?></a>
+								<input class="fep-attachment-field-input" type="file" name="<?php echo esc_attr( $field['name'] ); ?>[]" /><a href="#" class="fep-attachment-field-a"><?php echo __( 'Remove', 'front-end-pm' ); ?></a>
 							</div>
 						</div>
 						<a id="fep-attachment-field-add" href="#"><?php echo __( 'Add more file', 'front-end-pm' ) ; ?></a>

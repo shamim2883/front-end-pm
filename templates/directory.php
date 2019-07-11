@@ -15,7 +15,7 @@ do_action( 'fep_display_before_directory' );
 <div class="fep-directory-search-form-div">
 	<form id="fep-directory-search-form" action="">
 		<input type="hidden" name="fepaction" value="directory" />
-		<input type="search" name="fep-search" class="fep-directory-search-form-field" value="<?php isset( $_GET["fep-search"] ) ? esc_attr_e( $_GET["fep-search"] ): ""; ?>" placeholder="<?php _e( 'Search Users', 'front-end-pm' ); ?>" />
+		<input type="search" name="fep-search" class="fep-directory-search-form-field" value="<?php echo isset( $_GET['fep-search'] ) ? esc_attr( stripslashes( $_GET['fep-search'] ) ) : ''; ?>" placeholder="<?php _e( 'Search Users', 'front-end-pm' ); ?>" />
 		<input type="hidden" name="feppage" value="1" />
 	</form>
 </div>

@@ -648,13 +648,13 @@ class Fep_Admin_Settings {
 			case 'email':
 			case 'url':
 			case 'number':
-				?><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" type="<?php esc_attr_e( $field['type'] ); ?>" name="<?php esc_attr_e( $field['name'] ); ?>" placeholder="<?php esc_attr_e( $field['placeholder'] ); ?>" value="<?php esc_attr_e( stripslashes( $field['value' ] ) ); ?>" <?php echo $attrib; ?> /><?php
+				?><input id="<?php echo esc_attr( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" type="<?php echo esc_attr( $field['type'] ); ?>" name="<?php echo esc_attr( $field['name'] ); ?>" placeholder="<?php echo esc_attr( $field['placeholder'] ); ?>" value="<?php echo esc_attr( stripslashes( $field['value' ] ) ); ?>" <?php echo $attrib; ?> /><?php
 				break;
 			case 'color_picker':
-				?><input type="text" name="<?php esc_attr_e( $field['name'] ); ?>" value="<?php esc_attr_e( stripslashes( $field['value' ] ) ); ?>" class="fep-color-picker" data-default-color="<?php esc_attr_e( $field['default_value'] ); ?>" ><?php
+				?><input type="text" name="<?php echo esc_attr( $field['name'] ); ?>" value="<?php echo esc_attr( stripslashes( $field['value' ] ) ); ?>" class="fep-color-picker" data-default-color="<?php echo esc_attr( $field['default_value'] ); ?>" ><?php
 				break;
 			case 'textarea':
-				?><textarea id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" cols="50" name="<?php esc_attr_e( $field['name'] ); ?>" placeholder="<?php esc_attr_e( $field['placeholder'] ); ?>" <?php echo $attrib; ?>><?php echo wp_kses_post( stripslashes( $field['value' ] ) ); ?></textarea><?php
+				?><textarea id="<?php echo esc_attr( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" cols="50" name="<?php echo esc_attr( $field['name'] ); ?>" placeholder="<?php echo esc_attr( $field['placeholder'] ); ?>" <?php echo $attrib; ?>><?php echo wp_kses_post( stripslashes( $field['value' ] ) ); ?></textarea><?php
 				break;
 			case 'wp_editor':
 				wp_editor( wp_kses_post( stripslashes( $field['value' ] ) ), $field['id'], array( 'textarea_name' => $field['name'], 'editor_class' => $field['class'], 'media_buttons' => false) );
@@ -665,21 +665,21 @@ class Fep_Admin_Settings {
 			case 'checkbox':
 				if ( ! empty( $field['multiple' ] ) ) {
 					foreach( $field['options' ] as $key => $name ) {
-						?><label><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" name="<?php esc_attr_e( $field['name'] ); ?>[]" type="checkbox" value="<?php esc_attr_e( $key ); ?>" <?php if ( in_array( $key, $field['value' ] ) ) { echo 'checked="checked"';} ?> /> <?php esc_attr_e( $name ); ?></label><br /><?php
+						?><label><input id="<?php echo esc_attr( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" name="<?php echo esc_attr( $field['name'] ); ?>[]" type="checkbox" value="<?php echo esc_attr( $key ); ?>" <?php if ( in_array( $key, $field['value' ] ) ) { echo 'checked="checked"';} ?> /> <?php echo esc_attr( $name ); ?></label><br /><?php
 					}
 				} else {
-					?><label><input id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" name="<?php esc_attr_e( $field['name'] ); ?>" type="checkbox" value="1" <?php checked( '1', $field['value' ] ); ?> /> <?php esc_attr_e( $field['cb_label'] ); ?></label><?php
+					?><label><input id="<?php echo esc_attr( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" name="<?php echo esc_attr( $field['name'] ); ?>" type="checkbox" value="1" <?php checked( '1', $field['value' ] ); ?> /> <?php echo esc_attr( $field['cb_label'] ); ?></label><?php
 				}
 				break;
 			case 'select':
-				?><select id="<?php esc_attr_e( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" name="<?php esc_attr_e( $field['name'] ); ?>"><?php
+				?><select id="<?php echo esc_attr( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" name="<?php echo esc_attr( $field['name'] ); ?>"><?php
 				foreach( $field['options'] as $key => $name ) {
-				?><option value="<?php esc_attr_e( $key ); ?>" <?php selected( $field['value' ], $key ); ?>><?php esc_attr_e( $name ); ?></option><?php }
+				?><option value="<?php echo esc_attr( $key ); ?>" <?php selected( $field['value' ], $key ); ?>><?php echo esc_attr( $name ); ?></option><?php }
 				?></select><?php
 				break;
 			case 'radio':
 				foreach( $field['options'] as $key => $name ) {
-					?><label><input type="radio" class="<?php echo $field['class']; ?>" name="<?php esc_attr_e( $field['name'] ); ?>" value="<?php esc_attr_e( $key ); ?>" <?php checked( $field['posted-value' ], $key ); ?> /> <?php esc_attr_e( $name ); ?></label><br /><?php
+					?><label><input type="radio" class="<?php echo $field['class']; ?>" name="<?php echo esc_attr( $field['name'] ); ?>" value="<?php echo esc_attr( $key ); ?>" <?php checked( $field['posted-value' ], $key ); ?> /> <?php echo esc_attr( $name ); ?></label><br /><?php
 				}
 				break;
 			case 'html':

@@ -54,7 +54,7 @@ class Fep_Admin_Pages {
 				<?php $this->notifications( __('message', 'front-end-pm') ); ?>
 				<?php $table->views(); ?>
 				<form id="fep-admin-messages-table-form" method="get">
-					<input type="hidden" name="page" value="<?php esc_attr_e( $_REQUEST['page'] ); ?>" />
+					<input type="hidden" name="page" value="<?php echo esc_attr( $_REQUEST['page'] ); ?>" />
 					<?php $table->search_box( __( 'Search', 'front-end-pm' ), 'fep-message' ); ?>
 					<?php $table->display(); ?>
 					<?php add_thickbox(); ?>
@@ -81,7 +81,7 @@ class Fep_Admin_Pages {
 				<?php $this->notifications( __('announcement', 'front-end-pm') ); ?>
 				<?php $table->views(); ?>
 				<form id="fep-admin-announcements-table-form" method="get">
-					<input type="hidden" name="page" value="<?php esc_attr_e( $_REQUEST['page'] ); ?>" />
+					<input type="hidden" name="page" value="<?php echo esc_attr( $_REQUEST['page'] ); ?>" />
 					<?php $table->search_box( __( 'Search', 'front-end-pm' ), 'fep-announcement' ); ?>
 					<?php $table->display(); ?>
 					<?php add_thickbox(); ?>
@@ -108,7 +108,7 @@ class Fep_Admin_Pages {
 				<?php $this->notifications( __('attachment', 'front-end-pm') ); ?>
 				<?php $table->views(); ?>
 				<form id="fep-admin-attachments-table-form" method="get">
-					<input type="hidden" name="page" value="<?php esc_attr_e( $_REQUEST['page'] ); ?>" />
+					<input type="hidden" name="page" value="<?php echo esc_attr( $_REQUEST['page'] ); ?>" />
 					<?php $table->search_box( __( 'Search', 'front-end-pm' ), 'fep-attachments' ); ?>
 					<?php $table->display(); ?>
 					<?php add_thickbox(); ?>
