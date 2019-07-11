@@ -3,9 +3,9 @@ Contributors: shamim51
 Tags: front end pm,front-end-pm,pm,private message,personal message,front end,frontend pm,frontend,message,widget,plugin,sidebar,shortcode,page,email,mail,contact form, secure contact form, simple contact form
 Donate link: https://www.shamimsplugins.com/products/front-end-pm-pro/?utm_campaign=wordpress&utm_source=readme_pro&utm_medium=donate
 Requires at least: 4.4
-Tested up to: 5.2.1
+Tested up to: 5.2.2
 Requires PHP: 5.4
-Stable tag: 10.2.1
+Stable tag: 11.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -104,6 +104,26 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 8. Appearance settings.
 
 == Changelog ==
+
+= 11.1.1 =
+
+* remove backward compatible key of post_, use mgs_ for fep_send_message and fep_add_announcement
+* show ajax response above submit button
+* show processing text when form submit reach 100%
+* set delay to reload replies when submit form
+* improve notification call. use rest api and localStorage
+* Improve attachment script
+* new rest route added to get users
+* new tokeninput script added
+* autosuggestion/user block script improved. Now use rest api
+* New filter fep_filter_delete_from_db added
+* 3 new actions added when transition status
+* ability to pass per_page value for admin pages page
+* fep_action_info_output and fep_posted_action_after hook added
+* delete message meta when message deleted
+* use fep_get_statuses instead of hard coding statuses
+* fep_filter_message_toggle_feature added to remove toggle completely
+* now {current-post-title} can be used with other text for shortcode subject
 
 = 10.2.1 =
 
