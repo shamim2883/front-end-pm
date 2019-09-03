@@ -33,6 +33,7 @@ class FEP_Message_Query {
 	public $in_the_loop = false;
 	
 	private $has_id_column = false;
+	public  $has_more_row  = false;
 	
 	public function __construct( $args = array() ) {
 		$this->args = wp_parse_args( $args, array(
@@ -64,6 +65,7 @@ class FEP_Message_Query {
 			'last_reply_time_between' => array(),
 			'fields' => 'all', //all, ids, array of field(s)
 			'count_total' => true,
+			'check_more_row' => false,
 			'queue_participants_cache' => true,
 			'queue_attachments_cache' => true,
 			'queue_meta_cache' => true,
@@ -423,8 +425,12 @@ class FEP_Message_Query {
 		if( ! empty( $this->args['per_page'] ) && is_numeric( $this->args['per_page'] ) && -1 !== $this->args['per_page'] ){
 			$per_page = absint( $this->args['per_page'] );
 			$paged = empty( $this->args['paged'] ) ? 1 : absint( $this->args['paged'] );
+			$limit = $per_page;
+			if ( ! empty( $this->args['check_more_row'] ) ) {
+				$limit += 1;
+			}
 			
-			$this->limit = sprintf(' LIMIT %d, %d', (($paged - 1) * $per_page), $per_page );
+			$this->limit = sprintf(' LIMIT %d, %d', (($paged - 1) * $per_page), $limit );
 		}
 	}
 	
@@ -487,6 +493,12 @@ class FEP_Message_Query {
 				}
 			}
 			unset( $message );
+		}
+		if ( ! empty( $this->args['check_more_row'] ) ) {
+			if ( ! empty( $this->args['per_page'] ) && is_numeric( $this->args['per_page'] ) && -1 !== $this->args['per_page'] && count( $this->messages ) > absint( $this->args['per_page'] ) ) {
+				array_pop( $this->messages );
+				$this->has_more_row = true;
+			}
 		}
 		$this->found_messages = count( $this->messages );
 		if( ! empty( $this->args['count_total'] ) ){
