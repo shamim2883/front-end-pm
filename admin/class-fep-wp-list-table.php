@@ -152,12 +152,14 @@ class FEP_WP_List_Table extends WP_List_Table {
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 		//$this->get_column_info();
 		$per_page = isset( $_REQUEST['per_page'] ) ? (int) $_REQUEST['per_page'] : 20;
+		$status   = isset( $_REQUEST['mgs_status'] ) ? trim( $_REQUEST['mgs_status'] ) : 'any';
 		
 		$args = array(
 			'mgs_type'     => $this->message_type,
 			'paged'        => $this->get_pagenum(),
 			'per_page'     => $per_page,
-			'mgs_status'   => isset( $_REQUEST['mgs_status'] ) ? trim( $_REQUEST['mgs_status'] ) : 'any',
+			'count_total'  => false,
+			'mgs_status'   => $status,
 			'orderby'      => isset( $_REQUEST['orderby'] ) ? trim( $_REQUEST['orderby'] ) : 'mgs_created',
 			'order'        => isset( $_REQUEST['order'] ) ? trim( $_REQUEST['order'] ) : '',
 			's'            => isset( $_REQUEST['s'] ) ? trim( $_REQUEST['s'] ) : '',
@@ -167,9 +169,80 @@ class FEP_WP_List_Table extends WP_List_Table {
 		$this->items       = new FEP_Message_Query( $args );
 		
 		$this->set_pagination_args( array(
-			'total_items' => $this->items->total_messages,
+			'total_items' => $this->get_total_count( $this->message_type, $status ),
 			'per_page' => $per_page,
 		) );
+	}
+	
+	protected function get_edit_link( $args, $label, $class = '' ) {
+		$args['page'] = $_REQUEST['page'];
+		$url          = add_query_arg( $args, 'admin.php' );
+
+		$class_html = $aria_current = '';
+		if ( ! empty( $class ) ) {
+			$class_html = sprintf(
+				' class="%s"',
+				esc_attr( $class )
+			);
+
+			if ( 'current' === $class ) {
+				$aria_current = ' aria-current="page"';
+			}
+		}
+
+		return sprintf(
+			'<a href="%s"%s%s>%s</a>',
+			esc_url( $url ),
+			$class_html,
+			$aria_current,
+			$label
+		);
+	}
+	
+	protected function get_views() {
+		$status_links = [];
+		$class        = '';
+		if( empty( $_REQUEST['mgs_status'] ) ) {
+			$class = 'current';
+		}
+		
+		$status_links['all'] = $this->get_edit_link( [], sprintf( 'All <span class="count">(%s)</span>', number_format_i18n( $this->get_total_count( $this->message_type, 'any' ) ) ), $class );
+		
+		foreach ( fep_get_statuses( $this->message_type ) as $slug => $name ) {
+			if ( ! $this->get_total_count( $this->message_type, $slug ) ) {
+				continue;
+			}
+			if( isset( $_REQUEST['mgs_status'] ) && $slug === $_REQUEST['mgs_status'] ) {
+				$class = 'current';
+			} else {
+				$class = '';
+			}
+			$status_links[ $slug ] = $this->get_edit_link( [ 'mgs_status' => $slug ], sprintf( '%s <span class="count">(%s)</span>', $name, number_format_i18n( $this->get_total_count( $this->message_type, $slug ) ) ), $class );
+		}
+		
+		return $status_links;
+	}
+	
+	private function get_total_count( $type, $status ) {
+		global $wpdb;
+		$counts = wp_cache_get( $type, 'fep_counts' );
+		
+		if ( ! is_array( $counts ) ) {
+			$counts = [];
+			$results = $wpdb->get_results( $wpdb->prepare( "SELECT mgs_status, COUNT(*) AS num_mgs FROM {$wpdb->fep_messages} WHERE mgs_type = %s GROUP BY mgs_status", $type ) );
+			foreach ( $results as $row ) {
+				$counts[ $row->mgs_status ] = $row->num_mgs;
+			}
+			$counts['any'] = array_sum( $counts );
+			
+			wp_cache_set( $type, $counts, 'fep_counts' );
+		}
+		$return = 0;
+		if( isset( $counts[ $status ] ) ) {
+			$return = absint( $counts[ $status ] );
+		}
+		
+		return apply_filters( 'fep_count_mgs_admin', $return, $type, $status );
 	}
 	
 	public function has_items() {
@@ -205,20 +278,5 @@ class FEP_WP_List_Table extends WP_List_Table {
 		$actions['view-frontend'] = '<a href="' . fep_query_url( $view, array( 'fep_id' => fep_get_the_id() ) ) . '">' . __( 'View in Front-end', 'front-end-pm' ) . '</a>';
 
 		return $this->row_actions( $actions );
-	}
-	
-	protected function extra_tablenav( $which ) { ?>
-		<div class="alignleft actions"><?php
-		if ( 'top' === $which ) { ?>
-			<select name="mgs_status">
-				<option value=""><?php _e( 'Show All', 'front-end-pm' ); ?></option>
-				<?php foreach ( fep_get_statuses( $this->message_type ) as $key => $value ): ?>
-					<option value="<?php echo $key; ?>"<?php selected( $key, isset( $_REQUEST['mgs_status'] ) ? $_REQUEST['mgs_status'] : '' );?>><?php echo $value; ?></option>
-				<?php endforeach; ?>
-			</select>
-			<?php
-			submit_button( __( 'Filter' ), '', 'filter_action', false, array( 'id' => 'mgs-query-submit' ) );
-		} ?>
-		</div><?php
 	}
 }

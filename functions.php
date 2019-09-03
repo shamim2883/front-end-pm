@@ -1087,6 +1087,10 @@ function fep_status_change( $old_status, $message ){
 	do_action( "fep_{$message->mgs_type}_status_to_{$new_status}", $message, $old_status );
 }
 
+function fep_delete_counts_cache( $new_status, $old_status, $message ) {
+	wp_cache_delete( $message->mgs_type, 'fep_counts' );
+}
+
 function fep_send_message_transition_post_status( $new_status, $old_status, $message ) {
 	if ( 'message' != $message->mgs_type ) {
 		return;

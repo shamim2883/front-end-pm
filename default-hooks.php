@@ -38,6 +38,7 @@ add_filter( 'fep_pre_save_mgs_status', 'sanitize_key' );
 
 add_filter( 'fep_filter_message_before_send', 'fep_backticker_code_input_filter', 5 );
 add_action( 'wp_loaded', 'fep_form_posted', 20 ); //After Email hook
+add_action( 'fep_transition_post_status', 'fep_delete_counts_cache', 10, 3);
 add_action( 'fep_transition_post_status', 'fep_send_message_transition_post_status', 10, 3);
 
 // Display filters
