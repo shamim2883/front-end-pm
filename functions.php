@@ -28,7 +28,7 @@ function fep_create_database(){
 	if ( version_compare( $installed_ver, FEP_DB_VERSION, '!=' ) ) {
 		$charset_collate = $wpdb->get_charset_collate();
 
-		$sql_message = "CREATE TABLE " . FEP_MESSAGE_TABLE . " (
+		$sql_message = "CREATE TABLE $wpdb->fep_messages (
 			mgs_id bigint(20) unsigned NOT NULL auto_increment,
 			mgs_parent bigint(20) unsigned NOT NULL default '0',
 			mgs_author bigint(20) unsigned NOT NULL default '0',
@@ -41,11 +41,8 @@ function fep_create_database(){
 			mgs_last_reply_time datetime NOT NULL default '0000-00-00 00:00:00',
 			mgs_last_reply_excerpt varchar(255) NOT NULL DEFAULT '',
 			PRIMARY KEY  (mgs_id),
-			KEY mgs_parent (mgs_parent),
-			KEY mgs_author (mgs_author),
-			KEY mgs_created (mgs_created),
-			KEY type_status (mgs_type,mgs_status),
-			KEY mgs_last_reply_time (mgs_last_reply_time)
+			KEY mgs_parent_last_time (mgs_parent,mgs_last_reply_time),
+			KEY mgs_type_created (mgs_type,mgs_created)
 		) $charset_collate;";
 		
 		$sql_perticipiants = "CREATE TABLE " . FEP_PARTICIPANT_TABLE . " (
@@ -57,10 +54,7 @@ function fep_create_database(){
 			mgs_deleted bigint(20) unsigned NOT NULL default '0',
 			mgs_archived bigint(20) unsigned NOT NULL default '0',
 			PRIMARY KEY  (per_id),
-			UNIQUE KEY mgs_id_participant (mgs_id,mgs_participant),
-			KEY mgs_parent_read (mgs_parent_read),
-			KEY mgs_deleted (mgs_deleted),
-			KEY mgs_archived (mgs_archived)
+			UNIQUE KEY mgs_id_participant (mgs_id,mgs_participant)
 		) $charset_collate;";
 		
 		$sql_meta = "CREATE TABLE $wpdb->fep_messagemeta (
@@ -80,8 +74,7 @@ function fep_create_database(){
 			att_file varchar(255) NOT NULL default '',
 			att_status varchar(20) NOT NULL default '',
 			PRIMARY KEY  (att_id),
-			KEY mgs_id (mgs_id),
-			KEY att_status (att_status)
+			KEY mgs_id (mgs_id)
 		) $charset_collate;";
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );

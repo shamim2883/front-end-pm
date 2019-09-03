@@ -124,6 +124,20 @@ class Fep_Update {
 		if ( version_compare( $prev_ver, '11.1.1', '<' ) ) {
 			$wpdb->query( "DELETE mm FROM $wpdb->fep_messagemeta mm LEFT JOIN $wpdb->fep_messages m ON mm.fep_message_id = m.mgs_id WHERE m.mgs_id IS NULL" );
 		}
+		if ( version_compare( $prev_ver, '11.2.1', '<' ) ) {
+			// Drop the old index. dbDelta() doesn't do the drop.
+			$wpdb->query( "ALTER TABLE $wpdb->fep_messages DROP INDEX mgs_parent" );
+			$wpdb->query( "ALTER TABLE $wpdb->fep_messages DROP INDEX mgs_author" );
+			$wpdb->query( "ALTER TABLE $wpdb->fep_messages DROP INDEX mgs_created" );
+			$wpdb->query( "ALTER TABLE $wpdb->fep_messages DROP INDEX type_status" );
+			$wpdb->query( "ALTER TABLE $wpdb->fep_messages DROP INDEX mgs_last_reply_time" );
+
+			$wpdb->query( "ALTER TABLE " . FEP_PARTICIPANT_TABLE . " DROP INDEX mgs_parent_read" );
+			$wpdb->query( "ALTER TABLE " . FEP_PARTICIPANT_TABLE . " DROP INDEX mgs_deleted" );
+			$wpdb->query( "ALTER TABLE " . FEP_PARTICIPANT_TABLE . " DROP INDEX mgs_archived" );
+
+			$wpdb->query( "ALTER TABLE " . FEP_ATTACHMENT_TABLE . " DROP INDEX att_status" );
+		}
 	}
 
 	function message_view_changed() {
