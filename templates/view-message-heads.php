@@ -41,25 +41,7 @@ if ( $messages_heads->have_messages() ) {
 		}
 		?></div><?php
 	}
-	$feppage = ! empty( $_GET['feppage'] ) ? absint( $_GET['feppage'] ) : 1;
-	$heads_last_page = ceil( $messages_heads->total_messages / fep_get_option( 'messages_page', 15 ) );
-	if ( $heads_last_page > 1 ) :
-	?>
-	<div class="fep-align-centre">
-		<ul class="fep-pagination fep-pagination-heads">
-			<li class="<?php echo ( 1 === $feppage ) ? 'disabled' : ''; ?>">
-				<a class="fep-heads-pagination" data-fep_action="<?php echo ( 1 === $feppage ) ? '' : 'prev'; ?>" href="#" title="<?php esc_attr_e( 'Previous', 'front-end-pm' ); ?>">&laquo;</a>
-			</li>
-			<li>
-				<li class="active"><a class="fep-heads-pagination" data-fep_action="current" href="#"><?php echo number_format_i18n( $feppage ); ?></a></li>
-			</li>
-			<li class="<?php echo ( $heads_last_page <= $feppage ) ? 'disabled' : ''; ?>">
-				<a class="fep-heads-pagination" data-fep_action="<?php echo ( $heads_last_page <= $feppage ) ? '' : 'next'; ?>" href="#" title="<?php esc_attr_e( 'Next', 'front-end-pm' ); ?>">&raquo;</a>
-			</li>
-		</ul>
-	</div>
-	<?php
-	endif;
+	echo fep_pagination_prev_next( $messages_heads->has_more_row );
 } else {
 	echo '<div class="fep-error">' . esc_html__( 'No messages found. Try different filter.', 'front-end-pm' ) . '</div>';
 }

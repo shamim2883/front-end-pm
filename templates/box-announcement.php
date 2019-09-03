@@ -3,6 +3,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+wp_enqueue_script( 'fep-view-message' );
+
 echo fep_info_output();
 /*
 if( ! $total_announcements ) {
@@ -36,46 +38,20 @@ do_action( 'fep_display_before_announcementbox' );
 			</div>
 			<div class="fep-loading-gif-div"></div>
 			<div class="fep-filter">
-				<select onchange="if ( this.value ) window.location.href=this.value">
+				<select class="fep-filter fep-ajax-load">
 				<?php foreach( FEP_Announcements::init()->get_table_filters() as $filter => $filter_display ) : ?>
-					<option value="<?php echo esc_url( add_query_arg( array('fep-filter' => $filter, 'feppage' => false ) ) ); ?>" <?php selected( $g_filter, $filter );?>><?php echo esc_html( $filter_display ); ?></option>
+					<option value="<?php echo esc_attr( $filter ); ?>" <?php selected( isset( $_GET['fep-filter'] ) ? $_GET['fep-filter'] : '', $filter );?>><?php echo esc_html( $filter_display ); ?></option>
 				<?php endforeach; ?>
 				</select>
 			</div>
 		</div>
 	</div>
-	<?php if( $announcements->have_messages() ) {
-		wp_enqueue_script( 'fep-cb-check-uncheck-all' );
-		?>
-		<div class="fep-cb-check-uncheck-all-div">
-			<label>
-				<input type="checkbox" class="fep-cb-check-uncheck-all" />
-				<?php esc_html_e( 'Check/Uncheck all', 'front-end-pm' ); ?>
-			</label>
+	<div id="fep-box-content-main">
+		<div class="fep-loader"></div>
+		<div id="fep-box-content-content">
+			<?php require fep_locate_template( 'box-content.php' ); ?>
 		</div>
-		<div id="fep-table" class="fep-table fep-odd-even">
-			<?php
-			while( $announcements->have_messages() ) {
-				$announcements->the_message(); ?>
-				<div id="fep-announcement-<?php echo fep_get_the_id(); ?>" class="fep-table-row">
-					<?php foreach ( FEP_Announcements::init()->get_table_columns() as $column => $display ) : ?>
-						<div class="fep-column fep-column-<?php echo esc_attr( $column ); ?>"><?php FEP_Announcements::init()->get_column_content( $column ); ?></div>
-					<?php endforeach; ?>
-				</div>
-				<?php
-			} //endwhile
-			?>
-		</div>
-		<?php
-		echo fep_pagination( $total_announcements, fep_get_option('announcements_page', 15 ) );
-	} else {
-		if ( ! $g_filter || 'show-all' == $g_filter ) {
-			?><div class="fep-error"><?php esc_html_e( 'No announcements found.', 'front-end-pm' ); ?></div><?php	
-		} else {
-			?><div class="fep-error"><?php esc_html_e( 'No announcements found. Try different filter.', 'front-end-pm' ); ?></div><?php
-		}
-	}
-	?>
+	</div>
 </form>
 <?php 
 

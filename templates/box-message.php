@@ -5,11 +5,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 echo fep_info_output();
 if( ! fep_get_user_message_count( 'total' ) ) {
-	echo '<div class="fep-error">' . apply_filters( 'fep_filter_messagebox_empty', esc_html__( 'No messages found.', 'front-end-pm' ), $action ) . '</div>';
+	echo '<div class="fep-error">' . apply_filters( 'fep_filter_messagebox_empty', esc_html__( 'No messages found.', 'front-end-pm' ) ) . '</div>';
 	return;
 }
 
-do_action( 'fep_display_before_messagebox', $action ); ?>
+wp_enqueue_script( 'fep-view-message' );
+
+do_action( 'fep_display_before_messagebox' ); ?>
 <div class="fep-messagebox-search-form-div">
 	<form id="fep-messagebox-search-form" action="">
 		<input type="hidden" name="fepaction" value="messagebox" />
@@ -34,34 +36,19 @@ do_action( 'fep_display_before_messagebox', $action ); ?>
 			</div>
 			<div class="fep-loading-gif-div"></div>
 			<div class="fep-filter">
-				<select onchange="if (this.value) window.location.href=this.value">
+				<select class="fep-filter fep-ajax-load">
 					<?php foreach ( Fep_Messages::init()->get_table_filters() as $filter => $filter_display ) : ?>
-						<option value="<?php echo esc_url( add_query_arg( array( 'fep-filter' => $filter, 'feppage' => false ) ) ); ?>" <?php selected($g_filter, $filter);?>><?php echo esc_html( $filter_display ); ?></option>
+						<option value="<?php echo esc_attr( $filter ); ?>" <?php selected( isset( $_GET['fep-filter'] ) ? $_GET['fep-filter'] : '', $filter );?>><?php echo esc_html( $filter_display ); ?></option>
 					<?php endforeach; ?>
 				</select>
 			</div>
 		</div>
 	</div>
-	<?php if ( $messages->have_messages() ) {
-		wp_enqueue_script( 'fep-cb-check-uncheck-all' ); ?>
-		<div class="fep-cb-check-uncheck-all-div"><label><input type="checkbox" class="fep-cb-check-uncheck-all" /><?php esc_html_e( 'Check/Uncheck all', 'front-end-pm' ); ?></label></div>
-		<div id="fep-table" class="fep-table fep-odd-even">
-			<?php
-			while( $messages->have_messages() ) {
-				$messages->the_message(); ?>
-				<div id="fep-message-<?php echo fep_get_the_id(); ?>" class="fep-table-row">
-					<?php foreach ( Fep_Messages::init()->get_table_columns() as $column => $display ) : ?>
-						<div class="fep-column fep-column-<?php echo esc_attr( $column ); ?>"><?php Fep_Messages::init()->get_column_content( $column ); ?></div>
-					<?php endforeach; ?>
-				</div>
-				<?php
-			} //endwhile
-			?>
+	<div id="fep-box-content-main">
+		<div class="fep-loader"></div>
+		<div id="fep-box-content-content">
+			<?php require fep_locate_template( 'box-content.php' ); ?>
 		</div>
-		<?php
-		echo fep_pagination( $total_message );
-	} else {
-		?><div class="fep-error"><?php esc_html_e( 'No messages found. Try different filter.', 'front-end-pm' ); ?></div><?php 
-	}
-?></form><?php
+	</div>
+</form><?php
 

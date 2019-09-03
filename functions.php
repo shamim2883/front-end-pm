@@ -787,6 +787,27 @@ function fep_pagination( $total = null, $per_page = null, $list_class = 'fep-pag
 	return $html;
 }
 
+function fep_pagination_prev_next( $has_more_row ) {
+	$feppage = ! empty( $_GET['feppage'] ) ? absint( $_GET['feppage'] ) : 1;
+	
+	if ( $feppage > 1 || $has_more_row ) :
+	?>
+	<div class="fep_pagination_prev_next fep-align-centre">
+		<ul class="fep-pagination fep-pagination-ul">
+			<li class="fep-pagination-li<?php echo ( 1 === $feppage ) ? ' disabled' : ''; ?>">
+				<a class="fep-pagination-a" data-fep_action="<?php echo ( 1 === $feppage ) ? '' : 'prev'; ?>" href="<?php echo esc_url( add_query_arg( 'feppage', $feppage - 1 ) ); ?>" title="<?php esc_attr_e( 'Previous', 'front-end-pm' ); ?>">&laquo;</a>
+			</li>
+			<li class="fep-pagination-li active"><span class="fep-pagination-span"><?php echo number_format_i18n( $feppage ); ?></span>
+			</li>
+			<li class="fep-pagination-li<?php echo ( ! $has_more_row ) ? ' disabled' : ''; ?>">
+				<a class="fep-pagination-a" data-fep_action="<?php echo ( ! $has_more_row ) ? '' : 'next'; ?>" href="<?php echo esc_url( add_query_arg( 'feppage', $feppage + 1 ) ); ?>" title="<?php esc_attr_e( 'Next', 'front-end-pm' ); ?>">&raquo;</a>
+			</li>
+		</ul>
+	</div>
+	<?php
+	endif;
+}
+
 function fep_is_user_admin( $user_id = 0 ) {
 	$admin_cap = apply_filters( 'fep_admin_cap', 'manage_options' );
 	if ( $user_id ) {

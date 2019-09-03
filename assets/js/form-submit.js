@@ -46,22 +46,16 @@ jQuery( document ).ready( function($) {
 		.done( function(response) { // on success..
 			$( '.fep-ajax-response', thisForm ).html( response['info'] );
 			if( 'success' == response['fep_return'] ) {
-				$('input[name="message_title"]', thisForm).val( '' );
-				if( typeof tinyMCE !== 'undefined' && tinyMCE.get('message_content') !== null ){
-					tinyMCE.get('message_content').setContent( '' );
-				} else {
-					$('textarea[name="message_content"]', thisForm).val( '' );
-				}
-				$('div#fep_upload', thisForm).empty();
-				$( '#fep-attachment-field-add', thisForm ).show();
-				$( '#fep-attachment-note', thisForm ).empty();
+				thisForm.reset();
 				
 				if( 'reply' == $('input[name="fep_action"]', thisForm).val() ) {
 					setTimeout( function(){
-						$( '#fep-content-single-sidebar .fep-message-head.fep-message-head-active' ).trigger('click');
+						$( '#fep-content-single-sidebar .fep-message-head-active' ).trigger('click');
 					}, 2000 );
 				}
 			}
+			$( document ).trigger( 'fep_form_submit_done', [ response, thisForm ] );
+			
 			if( 'location_reload' ==  response['fep_redirect'] ){
 				window.location.reload();
 			} else if( response['fep_redirect'] ) {

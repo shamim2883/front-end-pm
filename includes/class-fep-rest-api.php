@@ -57,6 +57,32 @@ class FEP_REST_API {
 			)
 		);
 		register_rest_route(
+			$namespace, '/pagination/(?P<fepaction>[a-zA-Z0-9_-]+)/(?P<feppage>\d+)/(?P<fep_filter>[a-zA-Z0-9_-]+)', array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'paginated_content' ),
+				'permission_callback' => function ( $request ) {
+					return fep_current_user_can( 'access_message' );
+				},
+				'args'                => array(
+					'fepaction'  => array(
+						'type'              => 'string',
+						'default'           => 'messagebox',
+						'sanitize_callback' => 'sanitize_text_field',
+					),
+					'feppage'    => array(
+						'type'              => 'integer',
+						'default'           => 1,
+						'sanitize_callback' => 'absint',
+					),
+					'fep_filter' => array(
+						'type'              => 'string',
+						'default'           => '',
+						'sanitize_callback' => 'sanitize_text_field',
+					),
+				),
+			)
+		);
+		register_rest_route(
 			$namespace, '/users/(?P<for>[a-zA-Z0-9_-]+)', array(
 				'methods'             => 'GET',
 				'callback'            => array( $this, 'users' ),
@@ -137,6 +163,39 @@ class FEP_REST_API {
 		ob_start();
 		require fep_locate_template( 'view-message-heads.php' );
 		$response['data_formated'] = ob_get_clean();
+
+		return rest_ensure_response( $response );
+	}
+	
+	function paginated_content( $request ) {
+		$response           = [];
+		$_GET['fepaction']  = $request->get_param( 'fepaction' );
+		$_GET['feppage']    = $request->get_param( 'feppage' );
+		$_GET['fep-filter'] = $request->get_param( 'fep_filter' ); // fep-filter not working with hyphen so use fep_filter (without hyphen).
+		
+		switch ( $request->get_param( 'fepaction' ) ) {
+			case 'viewmessage':
+				ob_start();
+				require fep_locate_template( 'view-message-heads.php' );
+				$response['data_formated'] = ob_get_clean();
+				break;
+			case 'messagebox':
+				$box_content = Fep_Messages::init()->user_messages();
+				ob_start();
+				require fep_locate_template( 'box-content.php' );
+				$response['data_formated'] = ob_get_clean();
+				break;
+			case 'announcements':
+				$box_content = FEP_Announcements::init()->get_user_announcements();
+				ob_start();
+				require fep_locate_template( 'box-content.php' );
+				$response['data_formated'] = ob_get_clean();
+				break;
+			
+			default:
+				return new WP_Error( 'no_conetnt', sprintf( __( 'No %s found.', 'front-end-pm' ), __('messages', 'front-end-pm') ), array( 'status' => 404 ) );
+				break;
+		}
 
 		return rest_ensure_response( $response );
 	}

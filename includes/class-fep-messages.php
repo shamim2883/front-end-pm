@@ -122,6 +122,8 @@ class Fep_Messages {
 			'mgs_status'	=> 'publish',
 			'per_page'		=> fep_get_option( 'messages_page', 15 ),
 			'paged'			=> ! empty( $_GET['feppage'] ) ? absint( $_GET['feppage'] ): 1,
+			'check_more_row' => true,
+			'count_total'    => false,
 		);
 		if ( 'threaded' == fep_get_message_view() ) {
 			$args['mgs_parent'] = 0;

@@ -100,22 +100,12 @@ if ( ! class_exists( 'fep_main_class' ) ) {
 			return ob_get_clean();
 		}
 
-		function fep_message_box( $action = '', $total_message = false, $messages = false ) {
-			if ( ! $action ) {
-				$action = ( ! empty( $_GET['fepaction'] ) ) ? $_GET['fepaction']: 'messagebox';
-			}
-			$g_filter = ! empty( $_GET['fep-filter'] ) ? $_GET['fep-filter'] : '';
-			if ( false === $total_message ) {
-				// $total_message = fep_get_user_message_count( 'total' );
-			}
-			if ( false === $messages ) {
-				$messages = Fep_Messages::init()->user_messages( $action );
-				$total_message = $messages->total_messages;
-			}
+		function fep_message_box() {
+			$box_content = Fep_Messages::init()->user_messages();
 			$template = fep_locate_template( 'box-message.php' );
 			ob_start();
 			include( $template );
-			return apply_filters( 'fep_messagebox', ob_get_clean(), $action);
+			return apply_filters( 'fep_messagebox', ob_get_clean() );
 		}
 
 		function new_message() {

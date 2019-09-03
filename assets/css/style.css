@@ -1,6 +1,5 @@
 /*The main wrapper*/
 #fep-wrapper {
-	/*background-color: #ffffff;*/ /*Uncomment this if you have dark background and can't see the text*/
 	margin: 5px;
 	position: relative;
 }
@@ -44,18 +43,6 @@
 #fep-content hr {
 	margin-bottom: 5px;
 	margin-top: 5px;
-}
-
-#fep-content textarea {
-	/* border: 1px solid #e7e7e7; */
-	height: 200px;
-	width: 100%;
-}
-
-#fep-content input[type="text"] {
-	/* border: 1px solid #e7e7e7; */
-	/* min-width: 250px; */
-	/* width: 90%; */
 }
 
 #fep-content a {
@@ -171,15 +158,6 @@
 	opacity:0.3;
 }
 
-/*
-.fep-odd-even > div:nth-child(odd) {
-	background-color: #f2f7fc;
-}
-
-.fep-odd-even > div:nth-child(even) {
-	background-color: #fafafa;
-}
-*/
 .fep-unread-classp {
 	position:relative; 
 }
@@ -490,15 +468,14 @@
 	content: '\2796'; /* Unicode character for "minus" sign (-) */
 }
 
-.fep-content-single-sidebar-loader,
-.fep-content-single-main-loader {
+.fep-loader {
 	cursor: wait;
 	background:#ffffff url('../images/loading.gif') no-repeat center center;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
 	filter: alpha(opacity=75);
 	opacity: 0.75;
 	position: absolute;
-	z-index: 9;
+	z-index: 9999;
 	display: none;
 }
 
@@ -549,10 +526,6 @@
 	#fep-menu .fep-button,
 	.fep-button,
 	.fep-button-active {
-		width: 100%;
-	}
-
-	#fep-content input[type="text"] {
 		width: 100%;
 	}
 	.fep-menu-toggle {

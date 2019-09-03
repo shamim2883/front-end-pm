@@ -107,6 +107,8 @@ class FEP_Announcements {
 			'mgs_parent'	=> 0,
 			'per_page'=> fep_get_option( 'announcements_page', 15 ),
 			'paged'			=> ! empty( $_GET['feppage'] ) ? absint( $_GET['feppage'] ): 1,
+			'check_more_row' => true,
+			'count_total'    => false,
 		);
 
 		if ( ! empty( $_GET['fep-search'] ) ) {
@@ -285,14 +287,12 @@ class FEP_Announcements {
 		}
 	}
 
-	function announcement_box() {		
-		$g_filter = ! empty( $_GET['fep-filter'] ) ? $_GET['fep-filter'] : '';
-		$announcements = $this->get_user_announcements();
-		$total_announcements = $announcements->total_messages;
+	function announcement_box() {
+		$box_content = $this->get_user_announcements();
 		$template = fep_locate_template( 'box-announcement.php' );
 		ob_start();
 		include( $template );
-		return ob_get_clean();
+		return apply_filters( 'fep_announcementbox', ob_get_clean() );
 	}
 
 	function view_announcement() {
