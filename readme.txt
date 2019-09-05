@@ -5,7 +5,7 @@ Donate link: https://www.shamimsplugins.com/products/front-end-pm-pro/?utm_campa
 Requires at least: 4.4
 Tested up to: 5.2.2
 Requires PHP: 5.4
-Stable tag: 11.1.1
+Stable tag: 11.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -104,6 +104,14 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 8. Appearance settings.
 
 == Changelog ==
+
+= 11.2.1 =
+
+* Load Messagebox and announcements pagination using ajax
+* reset form after message sent.
+* message query class modified. Now we can check if more rows are there from query.
+* remove SQL_CALC_FOUND_ROWS by default which was slow for large number of messages.
+* Database index modified. Highly performance improved for large number of messages. 
 
 = 11.1.1 =
 
