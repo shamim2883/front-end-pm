@@ -1559,7 +1559,7 @@ function fep_sanitize_html_class( $class ) {
 	if ( ! is_string( $class ) ) {
 		$class = '';
 	}
-	return $class;
+	return apply_filters( 'fep_sanitize_html_class', $class );
 }
 
 function fep_show_unread_count_in_title( $title ) {
