@@ -399,12 +399,12 @@ class Fep_Form {
 				do_action( 'fep_form_field_validate_' . $field['type'], $field, $errors );
 				break;
 			case 'email' :
-				if( ! is_email( $field['posted-value'] ) ){
+				if( $field['posted-value'] && ! is_email( $field['posted-value'] ) ){
 					$errors->add( $field['id'], ! empty( $field['error-message'] ) ? $field['error-message'] : sprintf(__("Please provide valid email address for %s.", 'front-end-pm' ), esc_html( $field['label'] ) ) );
 				}
 				break;
 			case 'number' :
-				if( ! is_numeric( $field['posted-value'] ) ){
+				if( $field['posted-value'] && ! is_numeric( $field['posted-value'] ) ){
 					$errors->add( $field['id'], ! empty( $field['error-message'] ) ? $field['error-message'] : sprintf(__("%s is not a valid number.", 'front-end-pm' ), esc_html( $field['label'] ) ) );
 				}
 				break;
@@ -469,7 +469,7 @@ class Fep_Form {
 				break;
 			case "radio" :
 			case "select" :
-				if( ! array_key_exists( $field['posted-value'], $field['options'] ) ) {
+				if( $field['posted-value'] && ! array_key_exists( $field['posted-value'], $field['options'] ) ) {
 					$errors->add( $field['id'], ! empty( $field['error-message'] ) ? $field['error-message'] : sprintf(__("Invalid value for %s.", 'front-end-pm' ), esc_html( $field['label'] ) ) );
 				}
 				break;
