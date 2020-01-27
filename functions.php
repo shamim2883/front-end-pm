@@ -994,7 +994,7 @@ function fep_delete_message( $mgs_id, $user_id = 0 ) {
 			break;
 		}
 	}
-	if ( $should_delete_from_db && apply_filters( 'fep_filter_delete_from_db', true, $mgs_id ) ) {
+	if ( apply_filters( 'fep_filter_delete_from_db', $should_delete_from_db, $mgs_id ) ) {
 		$args = [
 			'mgs_id' => $mgs_id,
 			'per_page' => 0, //unlimited
