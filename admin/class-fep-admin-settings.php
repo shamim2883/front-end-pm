@@ -30,8 +30,6 @@ class Fep_Admin_Settings {
 		$admin_cap = apply_filters( 'fep_admin_cap', 'manage_options' );
 		
 		add_submenu_page( 'fep-all-messages', 'Front End PM - ' . __( 'Settings', 'front-end-pm' ), __( 'Settings', 'front-end-pm' ), $admin_cap, 'fep_settings', array( $this, 'settings_page' ) );
-		
-		add_submenu_page( 'fep-all-messages', 'Front End PM - ' . __( 'Extensions', 'front-end-pm' ), __( 'Extensions', 'front-end-pm' ), $admin_cap, 'fep_extensions', array( $this, 'extensions_page' ) );
 	}
 
 	function admin_enqueue_scripts() {
@@ -1003,10 +1001,6 @@ class Fep_Admin_Settings {
 		$settings_link = '<a href="' . admin_url( 'admin.php?page=fep_settings' ) . '">' . __( 'Settings', 'front-end-pm' ) . '</a>';
 		array_unshift( $links, $settings_link );
 		return $links;
-	}
-
-	function extensions_page() {
-		include( FEP_PLUGIN_DIR . 'admin/extensions.php' );
 	}
 
 	function set_page_id( $id, $post ) {
