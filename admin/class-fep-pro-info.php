@@ -77,7 +77,7 @@ class Fep_Pro_Info {
 
 	function admin_settings_tabs( $tabs ) {
 		$tabs['email_piping'] = array(
-			'section_title'		=> __( 'Email Piping', 'front-end-pm' ),
+			'section_title'		=> __( 'Email Piping/POP3', 'front-end-pm' ),
 			'section_page'		=> 'fep_settings_emails',
 			'section_callback'	=> array( $this, 'section_callback' ),
 			'priority'			=> 53,
@@ -164,8 +164,8 @@ class Fep_Pro_Info {
 			<?php
 			$added = true;
 		endif;
-		echo '<div class="notice notice-warning inline"><p>' . sprintf( __( 'Following features only available in PRO version. <a href="%s" target="_blank">Upgrade to PRO</a>' ), esc_url( 'https://www.shamimsplugins.com/products/front-end-pm-pro/?utm_campaign=admin&utm_source=pro_features&utm_medium=links' ) ) . '</p></div>';
-		?><div class="fep_admin_div_need_pro" onclick="window.open( 'https://www.shamimsplugins.com/products/front-end-pm-pro/?utm_campaign=admin&utm_source=pro_features&utm_medium=image' );"></div>
+		echo '<div class="notice notice-warning inline"><p>' . sprintf( __( 'Following features only available in PRO version. <a href="%s">Upgrade to PRO</a>' ),  function_exists( 'fep_fs' ) ? fep_fs()->get_upgrade_url() : esc_url( 'https://www.shamimsplugins.com/products/front-end-pm-pro/?utm_campaign=admin&utm_source=pro_features&utm_medium=links' ) ) . '</p></div>';
+		?><div class="fep_admin_div_need_pro" onclick="window.location.href = '<?php echo function_exists( 'fep_fs' ) ? fep_fs()->get_upgrade_url() : 'https://www.shamimsplugins.com/products/front-end-pm-pro/?utm_campaign=admin&utm_source=pro_features&utm_medium=image' ?>'"></div>
 		<?php
 	}
 
