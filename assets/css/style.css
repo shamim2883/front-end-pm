@@ -460,12 +460,14 @@
 	display: none;
 }
 #fep-menu-toggle-button:after {
-	content: '\2795'; /* Unicode character for "plus" sign (+) */
+	content: '+';
 	float: right;
 	margin-left: 5px;
+	font-size: 24px;
+	font-weight: bold;
 }
 #fep-menu-toggle-button.fep-menu-toggle-expanded:after {
-	content: '\2796'; /* Unicode character for "minus" sign (-) */
+	content: '-';
 }
 
 .fep-loader {
