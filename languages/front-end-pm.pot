@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Front End PM "
 "11.2.2\n"
-"POT-Creation-Date: 2020-05-22 "
-"14:17+0600\n"
+"POT-Creation-Date: 2020-09-09 "
+"22:17+0600\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Your Name "
 "<you@example.com>\n"
@@ -205,7 +205,7 @@ msgid "%s Replies"
 msgstr ""
 
 #: admin/class-fep-admin-settings.php:32
-#: admin/class-fep-admin-settings.php:1001
+#: admin/class-fep-admin-settings.php:1005
 #: includes/class-fep-user-settings.php:29
 msgid "Settings"
 msgstr ""
@@ -837,7 +837,7 @@ msgstr ""
 msgid "View More"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:989
+#: admin/class-fep-admin-settings.php:993
 #, php-format
 msgid ""
 "Like %s plugin? Please consider "
@@ -845,15 +845,15 @@ msgid ""
 "5&#9733; rating."
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:991
+#: admin/class-fep-admin-settings.php:995
 msgid "Sure, deserve it"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:992
+#: admin/class-fep-admin-settings.php:996
 msgid "Maybe later"
 msgstr ""
 
-#: admin/class-fep-admin-settings.php:993
+#: admin/class-fep-admin-settings.php:997
 msgid "Already did"
 msgstr ""
 
@@ -1194,7 +1194,7 @@ msgstr ""
 #: admin/class-fep-pro-info.php:398
 #: admin/class-fep-pro-info.php:416
 #: admin/class-fep-pro-info.php:422
-#: functions.php:279
+#: functions.php:281
 #: includes/class-fep-form.php:352
 msgid "Remove"
 msgstr ""
@@ -1361,36 +1361,36 @@ msgstr ""
 msgid "View in Front-end"
 msgstr ""
 
-#: functions.php:248 functions.php:327
+#: functions.php:250 functions.php:329
 msgid "No matches found"
 msgstr ""
 
-#: functions.php:267
+#: functions.php:269
 msgid "New Message. "
 msgstr ""
 
-#: functions.php:268
+#: functions.php:270
 msgid ""
 "You have received a new message. "
 msgstr ""
 
-#: functions.php:270
+#: functions.php:272
 msgid "New Announcement. "
 msgstr ""
 
-#: functions.php:271
+#: functions.php:273
 msgid ""
 "You have received a new "
 "announcement. "
 msgstr ""
 
-#: functions.php:281
+#: functions.php:283
 #: includes/class-fep-form.php:490
 #, php-format
 msgid "Maximum %s allowed"
 msgstr ""
 
-#: functions.php:281
+#: functions.php:283
 #: includes/class-fep-form.php:490
 #, php-format
 msgid "%s file"
@@ -1398,16 +1398,16 @@ msgid_plural "%s files"
 msgstr[0] ""
 msgstr[1] ""
 
-#: functions.php:289
+#: functions.php:291
 msgid ""
 "Refresh this page and try again. "
 msgstr ""
 
-#: functions.php:290
+#: functions.php:292
 msgid "Processing... "
 msgstr ""
 
-#: functions.php:297
+#: functions.php:299
 #, php-format
 msgid ""
 "Do you really want to block %s? If "
@@ -1416,45 +1416,45 @@ msgid ""
 "messages."
 msgstr ""
 
-#: functions.php:326
+#: functions.php:328
 msgid "Type user name"
 msgstr ""
 
-#: functions.php:328
+#: functions.php:330
 msgid "Searching..."
 msgstr ""
 
-#: functions.php:444 functions.php:1334
+#: functions.php:446 functions.php:1337
 msgid "Error"
 msgstr ""
 
-#: functions.php:730
+#: functions.php:732
 msgid "Unpublished"
-msgstr ""
-
-#: functions.php:736
-#, php-format
-msgid "%s from now"
 msgstr ""
 
 #: functions.php:738
 #, php-format
+msgid "%s from now"
+msgstr ""
+
+#: functions.php:740
+#, php-format
 msgid "%s ago"
 msgstr ""
 
-#: functions.php:798
+#: functions.php:800
 msgid "Previous"
 msgstr ""
 
-#: functions.php:803
+#: functions.php:805
 msgid "Next"
 msgstr ""
 
-#: functions.php:1021
+#: functions.php:1023
 msgid "RE:"
 msgstr ""
 
-#: functions.php:1245
+#: functions.php:1248
 #: includes/class-fep-rest-api.php:278
 #: includes/fep-widgets.php:115
 #: templates/header.php:22
@@ -1464,7 +1464,7 @@ msgid_plural "%s messages"
 msgstr[0] ""
 msgstr[1] ""
 
-#: functions.php:1247
+#: functions.php:1250
 #: includes/class-fep-rest-api.php:283
 #: includes/fep-widgets.php:125
 #: templates/header.php:22
@@ -1474,48 +1474,48 @@ msgid_plural "%s announcements"
 msgstr[0] ""
 msgstr[1] ""
 
-#: functions.php:1255
+#: functions.php:1258
 #: includes/fep-widgets.php:111
 msgid "You have"
 msgstr ""
 
-#: functions.php:1265
+#: functions.php:1268
 #: includes/fep-widgets.php:120
 msgid "and"
 msgstr ""
 
-#: functions.php:1272
+#: functions.php:1275
 #: includes/fep-widgets.php:129
 msgid "unread"
 msgstr ""
 
-#: functions.php:1392
+#: functions.php:1395
 #: templates/form-message.php:8
 msgid ""
 "You do not have permission to send "
 "new message!"
 msgstr ""
 
-#: functions.php:1399
-#: functions.php:1418
+#: functions.php:1402
+#: functions.php:1421
 msgid "Message successfully sent."
 msgstr ""
 
-#: functions.php:1401
-#: functions.php:1420
+#: functions.php:1404
+#: functions.php:1423
 msgid ""
 "Message successfully sent and "
 "waiting for admin moderation."
 msgstr ""
 
-#: functions.php:1404
-#: functions.php:1423
+#: functions.php:1407
+#: functions.php:1426
 #: includes/class-fep-announcements.php:68
 msgid ""
 "Something wrong. Please try again."
 msgstr ""
 
-#: functions.php:1411
+#: functions.php:1414
 #: includes/class-fep-rest-api.php:147
 #: templates/form-reply.php:7
 #: templates/view-message.php:32
@@ -1524,18 +1524,18 @@ msgid ""
 "reply to this message!"
 msgstr ""
 
-#: functions.php:1436
+#: functions.php:1439
 #: includes/class-fep-form.php:413
 #: includes/class-fep-form.php:418
 msgid ""
 "Invalid Token. Please try again!"
 msgstr ""
 
-#: functions.php:1697
+#: functions.php:1700
 msgid "Pending"
 msgstr ""
 
-#: functions.php:1698
+#: functions.php:1701
 #: templates/admin-edit-message-announcement.php:49
 msgid "Publish"
 msgstr ""
@@ -2014,14 +2014,14 @@ msgstr ""
 msgid "Contact"
 msgstr ""
 
-#: includes/class-fep-shortcodes.php:108
+#: includes/class-fep-shortcodes.php:112
 #, php-format
 msgid ""
 "You must <a href=\"%s\">login</a> to "
 "contact"
 msgstr ""
 
-#: includes/class-fep-shortcodes.php:110
+#: includes/class-fep-shortcodes.php:114
 #, php-format
 msgid "You cannot send message to %s"
 msgstr ""
