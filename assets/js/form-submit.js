@@ -46,7 +46,9 @@ jQuery( document ).ready( function($) {
 		.done( function(response) { // on success..
 			$( '.fep-ajax-response', thisForm ).html( response['info'] );
 			if( 'success' == response['fep_return'] ) {
-				thisForm.reset();
+				if( 'settings' !== $('input[name="fep_action"]', thisForm).val() ) {
+					thisForm.reset();
+				}
 				
 				if( 'reply' == $('input[name="fep_action"]', thisForm).val() ) {
 					setTimeout( function(){
