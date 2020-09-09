@@ -96,11 +96,15 @@ class Fep_Shortcodes {
 			unset( $nicename );
 		} elseif ( '{um-current-author}' == $atts['to'] && function_exists( 'um_profile_id' ) ) {
 			$atts['to'] = fep_get_userdata( um_profile_id(), 'user_nicename', 'id' );
+		} elseif ( '{fep_to}' == $atts['to'] ) {
+			$atts['to'] = isset( $_REQUEST['fep_to'] ) ? $_REQUEST['fep_to'] : '';
 		} else {
 			$atts['to'] = esc_html( $atts['to'] );
 		}
 		if ( false !== strpos( $atts['subject'], '{current-post-title}' ) ) {
 			$atts['subject'] = str_replace( '{current-post-title}', get_the_title(), $atts['subject'] );
+		} elseif ( '{message_title}' == $atts['subject'] ) {
+			$atts['subject'] = isset( $_REQUEST['message_title'] ) ? $_REQUEST['message_title'] : '';
 		}
 		extract( $atts );
 		$to_id = fep_get_userdata( $to );
