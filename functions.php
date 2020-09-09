@@ -1075,6 +1075,7 @@ function fep_send_message( $message = null, $override = array() ) {
 		fep_add_meta( $message_id, '_fep_blog_id', get_current_blog_id() );
 	}
 	do_action( 'fep_action_message_after_send', $message_id, $message, $new_message );
+	do_action( 'fep_action_message_after_sent', $message_id, $message, $new_message );
 	
 	fep_status_change( 'new', $new_message );
 	
