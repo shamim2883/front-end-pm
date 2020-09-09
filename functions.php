@@ -84,13 +84,13 @@ function fep_create_database(){
 		dbDelta( $sql_attachments );
 
 		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', FEP_MESSAGE_TABLE ) ) ){
-		if ( is_multisite() ) {
-			update_site_option( 'fep_db_version', FEP_DB_VERSION );
-		} else {
-			update_option( 'fep_db_version', FEP_DB_VERSION, true );
+			if ( is_multisite() ) {
+				update_site_option( 'fep_db_version', FEP_DB_VERSION );
+			} else {
+				update_option( 'fep_db_version', FEP_DB_VERSION, true );
+			}
 		}
 	}
-}
 }
 
 function fep_include_require_files() {
