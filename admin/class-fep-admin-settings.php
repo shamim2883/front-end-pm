@@ -981,6 +981,10 @@ class Fep_Admin_Settings {
 			return;
 		}
 		$dismissed_time = get_user_meta( get_current_user_id(), 'fep_review_notice_dismiss', true );
+		if( ! $dismissed_time || ! is_numeric( $dismissed_time ) ){
+			update_user_meta( get_current_user_id(), 'fep_review_notice_dismiss', time() );
+			return;
+		}
 		if ( $dismissed_time && time() < ( $dismissed_time + WEEK_IN_SECONDS ) ) {
 			return;
 		}
