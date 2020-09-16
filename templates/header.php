@@ -12,7 +12,7 @@ if ( $max_total && ( ( $max_total * 90 ) / 100 ) <= $total_count ) {
 	<div id="fep-header" class="fep-table">
 		<div>
 			<div class="fep-header-avatar">
-				<?php echo get_avatar( $user_ID, 64, '', fep_user_name( $user_ID ) ); ?>
+				<?php echo get_avatar( $user_ID, 64, '', strip_tags( fep_user_name( $user_ID ) ) ); ?>
 			</div>
 			<div>
 				<div class="fep-header-welcome">
