@@ -186,6 +186,10 @@ class Fep_Form {
 		if ( ! empty( $field['disabled'] ) ) $attrib .= ' disabled = "disabled"';
 		if ( ! empty( $field['minlength'] ) ) $attrib .= ' minlength = "' . absint( $field['minlength'] ) . '"';
 		if ( ! empty( $field['maxlength'] ) ) $attrib .= ' maxlength = "' . absint( $field['maxlength'] ) . '"';
+
+		if ( ! empty( $field['multiple'] ) && 'select' == $field['type'] ) $attrib .= ' multiple = "multiple"';
+
+		$attrib = apply_filters( 'fep_filter_form_field_attrib', $attrib, $field, $errors );
 		 
 		if ( ! empty( $field['class'] ) ){
 			$field['class'] = fep_sanitize_html_class( $field['class'] );
@@ -309,13 +313,23 @@ class Fep_Form {
 					}
 					break;
 				case "select" :
-					?>
-					<select id="<?php echo esc_attr( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" name="<?php echo esc_attr( $field['name'] ); ?>"<?php echo $attrib; ?>>
-						<?php foreach( $field['options'] as $key => $name ) { ?>
-							<option value="<?php echo esc_attr( $key ); ?>" <?php selected( $field['posted-value' ], $key ); ?>><?php echo esc_attr( $name ); ?></option>
-						<?php } ?>
-					</select>
-					<?php
+					if( ! empty( $field['multiple' ] ) ) {
+						?>
+						<select id="<?php echo esc_attr( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" name="<?php echo esc_attr( $field['name'] ); ?>[]"<?php echo $attrib; ?>>
+							<?php foreach( $field['options'] as $key => $name ) { ?>
+								<option value="<?php echo esc_attr( $key ); ?>" <?php selected( in_array( $key, (array) $field['posted-value' ] ), true ); ?>><?php echo esc_attr( $name ); ?></option>
+							<?php } ?>
+						</select>
+						<?php
+					} else {
+						?>
+						<select id="<?php echo esc_attr( $field['id'] ); ?>" class="<?php echo $field['class']; ?>" name="<?php echo esc_attr( $field['name'] ); ?>"<?php echo $attrib; ?>>
+							<?php foreach( $field['options'] as $key => $name ) { ?>
+								<option value="<?php echo esc_attr( $key ); ?>" <?php selected( $field['posted-value' ], $key ); ?>><?php echo esc_attr( $name ); ?></option>
+							<?php } ?>
+						</select>
+						<?php
+					}
 					break;
 				case "radio" :
 					foreach( $field['options'] as $key => $name ) { ?>
@@ -468,9 +482,22 @@ class Fep_Form {
 				}
 				break;
 			case "radio" :
-			case "select" :
 				if( $field['posted-value'] && ! array_key_exists( $field['posted-value'], $field['options'] ) ) {
 					$errors->add( $field['id'], ! empty( $field['error-message'] ) ? $field['error-message'] : sprintf(__("Invalid value for %s.", 'front-end-pm' ), esc_html( $field['label'] ) ) );
+				}
+				break;
+			case "select" :
+				if( ! empty( $field['multiple' ] ) ) {
+					$value = $_POST[ $field['name'] ] = is_array( $field['posted-value'] ) ? $field['posted-value'] : array();
+					foreach( $value as $p_value ) {
+						if( ! array_key_exists( $p_value, $field['options'] ) ) {
+							$errors->add( $field['id'], ! empty( $field['error-message'] ) ? $field['error-message'] : sprintf(__("Invalid value for %s.", 'front-end-pm' ), esc_html( $field['label'] ) ) );
+						}
+					}
+				} else {
+					if( $field['posted-value'] && ! array_key_exists( $field['posted-value'], $field['options'] ) ) {
+						$errors->add( $field['id'], ! empty( $field['error-message'] ) ? $field['error-message'] : sprintf(__("Invalid value for %s.", 'front-end-pm' ), esc_html( $field['label'] ) ) );
+					}
 				}
 				break;
 			case "file" :
