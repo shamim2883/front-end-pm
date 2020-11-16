@@ -186,7 +186,6 @@ class Fep_Form {
 		if ( ! empty( $field['disabled'] ) ) $attrib .= ' disabled = "disabled"';
 		if ( ! empty( $field['minlength'] ) ) $attrib .= ' minlength = "' . absint( $field['minlength'] ) . '"';
 		if ( ! empty( $field['maxlength'] ) ) $attrib .= ' maxlength = "' . absint( $field['maxlength'] ) . '"';
-
 		if ( ! empty( $field['multiple'] ) && 'select' == $field['type'] ) $attrib .= ' multiple = "multiple"';
 
 		$attrib = apply_filters( 'fep_filter_form_field_attrib', $attrib, $field, $errors );
