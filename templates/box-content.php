@@ -14,15 +14,24 @@ if ( $box_content->found_messages ) {
 		<?php
 		while ( $box_content->have_messages() ) {
 			$box_content->the_message();
+			$row_class = array();
+			$row_class[] = 'fep-table-row';
+			$row_class[] = 'fep-table-row-' . fep_get_message_field( 'mgs_type' );
+			if( fep_is_read( true ) ){
+				$row_class[] = 'fep-table-row-read';
+			} else {
+				$row_class[] = 'fep-table-row-unread';
+			}
+
 			if ( 'announcement' === fep_get_message_field( 'mgs_type' ) ) :
 				?>
-				<div id="fep-announcement-<?php echo fep_get_the_id(); ?>" class="fep-table-row">
+				<div id="fep-announcement-<?php echo fep_get_the_id(); ?>" class="<?php echo fep_sanitize_html_class( $row_class ); ?>">
 				<?php foreach ( FEP_Announcements::init()->get_table_columns() as $column => $display ) : ?>
 				<div class="fep-column fep-column-<?php echo esc_attr( $column ); ?>"><?php FEP_Announcements::init()->get_column_content( $column ); ?></div>
 			<?php endforeach; ?>
 			</div>
 		<?php elseif ( 'message' === fep_get_message_field( 'mgs_type' ) ) : ?>
-			<div id="fep-message-<?php echo fep_get_the_id(); ?>" class="fep-table-row">
+			<div id="fep-message-<?php echo fep_get_the_id(); ?>" class="<?php echo fep_sanitize_html_class( $row_class ); ?>">
 				<?php foreach ( Fep_Messages::init()->get_table_columns() as $column => $display ) : ?>
 					<div class="fep-column fep-column-<?php echo esc_attr( $column ); ?>"><?php Fep_Messages::init()->get_column_content( $column ); ?></div>
 				<?php endforeach; ?>
