@@ -350,7 +350,7 @@ class Fep_Messages {
 							echo '<div class="fep-avatar-more-60" title="' . __( 'More users', 'front-end-pm' ) . '"></div>';
 							break;
 						} 
-						?><div class="fep-avatar-<?php echo $count; ?>"><?php echo get_avatar( $p, 60, '', strip_tags( fep_user_name( $p ) ), array( 'extra_attr'=> 'title="' . esc_attr( strip_tags( fep_user_name( $p ) ) ) . '"' ) ); ?></div><?php
+						?><div class="fep-avatar-<?php echo $count; ?>"><?php echo get_avatar( $p, 60, '', fep_user_name( $p ), array( 'extra_attr'=> 'title="' . esc_attr( fep_user_name( $p ) ) . '"' ) ); ?></div><?php
 						$count++;
 					}
 					echo '</div>';

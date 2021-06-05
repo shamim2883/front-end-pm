@@ -365,7 +365,7 @@ class Fep_Form {
 								<input class="fep-attachment-field-input" type="file" name="<?php echo esc_attr( $field['name'] ); ?>[]" /><a href="#" class="fep-attachment-field-a"><?php echo __( 'Remove', 'front-end-pm' ); ?></a>
 							</div>
 						</div>
-						<a id="fep-attachment-field-add" href="#"><?php echo __( 'Add more file', 'front-end-pm' ) ; ?></a>
+						<a id="fep-attachment-field-add" href="#"><?php echo __( 'Add more files', 'front-end-pm' ) ; ?></a>
 						<div id="fep-attachment-note"></div>
 					<?php
 					break;

@@ -48,9 +48,9 @@ if ( $messages->have_messages() ) {
 						foreach ( $participants as $participant ) {
 							if ( get_current_user_id() != $participant && fep_get_option( 'block_other_users', 1 ) ) {
 								if ( fep_is_user_blocked_for_user( get_current_user_id(), $participant ) ) {
-									$par[] = fep_user_name( $participant ) . '(<a href="#" class="fep_block_unblock_user fep_user_blocked" data-user_id="' . $participant . '" data-user_name="' . esc_attr( fep_user_name( $participant ) ) . '">' . esc_html__( 'Unblock', 'front-end-pm' ) . '</a>)';
+									$par[] = fep_user_name( $participant ) . ' (<a href="#" class="fep_block_unblock_user fep_user_blocked" data-user_id="' . $participant . '" data-user_name="' . esc_attr( fep_user_name( $participant ) ) . '">' . esc_html__( 'Unblock', 'front-end-pm' ) . '</a>)';
 								} else {
-									$par[] = fep_user_name( $participant ) . '(<a href="#" class="fep_block_unblock_user" data-user_id="' . $participant . '" data-user_name="' . esc_attr( fep_user_name( $participant ) ) . '">' . esc_html__( 'Block', 'front-end-pm' ) . '</a>)';
+									$par[] = fep_user_name( $participant ) . ' (<a href="#" class="fep_block_unblock_user" data-user_id="' . $participant . '" data-user_name="' . esc_attr( fep_user_name( $participant ) ) . '">' . esc_html__( 'Block', 'front-end-pm' ) . '</a>)';
 								}
 							} else {
 								$par[] = fep_user_name( $participant );

@@ -131,7 +131,7 @@ class Fep_Directory {
 				?><input type="checkbox" class="fep-cb" name="fep-directory-cb[]" value="<?php echo $user->ID; ?>" /><?php
 				break;
 			case 'avatar':
-				echo get_avatar( $user->ID, 55, '', strip_tags( fep_user_name( $user->ID ) ) );
+				echo get_avatar( $user->ID, 55, '', fep_user_name( $user->ID ) );
 				break;
 			case 'name':
 				echo fep_user_name( $user->ID );
@@ -140,9 +140,9 @@ class Fep_Directory {
 				wp_enqueue_script( 'fep-block-unblock-script' );
 				if ( get_current_user_id() != $user->ID ) {
 					if ( fep_is_user_blocked_for_user( get_current_user_id(), $user->ID ) ) {
-						echo '<a href="#" class="fep_block_unblock_user fep_user_blocked" data-user_id="' . $user->ID . '" data-user_name="' . esc_attr( strip_tags( fep_user_name( $user->ID ) ) ) . '">' . esc_html__( 'Unblock', 'front-end-pm' ) . '</a>';
+						echo '<a href="#" class="fep_block_unblock_user fep_user_blocked" data-user_id="' . $user->ID . '" data-user_name="' . esc_attr( fep_user_name( $user->ID ) ) . '">' . esc_html__( 'Unblock', 'front-end-pm' ) . '</a>';
 					} else {
-						echo '<a href="#" class="fep_block_unblock_user" data-user_id="' . $user->ID . '" data-user_name="' . esc_attr( strip_tags( fep_user_name( $user->ID ) ) ) . '">' . esc_html__( 'Block', 'front-end-pm' ) . '</a>';
+						echo '<a href="#" class="fep_block_unblock_user" data-user_id="' . $user->ID . '" data-user_name="' . esc_attr( fep_user_name( $user->ID ) ) . '">' . esc_html__( 'Block', 'front-end-pm' ) . '</a>';
 					}
 				}
 				break;
