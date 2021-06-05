@@ -4,10 +4,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Front End PM "
-"11.2.2\n"
-"POT-Creation-Date: 2020-09-09 "
-"22:17+0600\n"
+"Project-Id-Version: Front End PM\n"
+"POT-Creation-Date: 2021-06-05 "
+"22:20+0600\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Your Name "
 "<you@example.com>\n"
@@ -33,7 +32,7 @@ msgstr ""
 "__ngettext_noop:1,2;_c,_nc:4c,1,2\n"
 "X-Poedit-Basepath: ..\n"
 "Language: en_US\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 3.0\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: admin/class-fep-admin-pages.php:31
@@ -706,7 +705,7 @@ msgid "Create Page"
 msgstr ""
 
 #: admin/class-fep-admin-settings.php:687
-#: includes/class-fep-form.php:370
+#: includes/class-fep-form.php:383
 #, php-format
 msgid ""
 "No Function or Hook defined for %s "
@@ -1195,7 +1194,7 @@ msgstr ""
 #: admin/class-fep-pro-info.php:416
 #: admin/class-fep-pro-info.php:422
 #: functions.php:281
-#: includes/class-fep-form.php:352
+#: includes/class-fep-form.php:365
 msgid "Remove"
 msgstr ""
 
@@ -1385,13 +1384,13 @@ msgid ""
 msgstr ""
 
 #: functions.php:283
-#: includes/class-fep-form.php:490
+#: includes/class-fep-form.php:516
 #, php-format
 msgid "Maximum %s allowed"
 msgstr ""
 
 #: functions.php:283
-#: includes/class-fep-form.php:490
+#: includes/class-fep-form.php:516
 #, php-format
 msgid "%s file"
 msgid_plural "%s files"
@@ -1525,8 +1524,8 @@ msgid ""
 msgstr ""
 
 #: functions.php:1439
-#: includes/class-fep-form.php:413
-#: includes/class-fep-form.php:418
+#: includes/class-fep-form.php:426
+#: includes/class-fep-form.php:431
 msgid ""
 "Invalid Token. Please try again!"
 msgstr ""
@@ -1673,7 +1672,7 @@ msgstr ""
 
 #: includes/class-fep-directory.php:120
 #: includes/class-fep-directory.php:151
-#: includes/class-fep-form.php:601
+#: includes/class-fep-form.php:627
 #: templates/form-message.php:5
 msgid "Send Message"
 msgstr ""
@@ -1784,97 +1783,99 @@ msgstr ""
 msgid "Blocked Users"
 msgstr ""
 
-#: includes/class-fep-form.php:355
-msgid "Add more file"
+#: includes/class-fep-form.php:368
+msgid "Add more files"
 msgstr ""
 
-#: includes/class-fep-form.php:384
+#: includes/class-fep-form.php:397
 #, php-format
 msgid "%s required."
 msgstr ""
 
-#: includes/class-fep-form.php:386
+#: includes/class-fep-form.php:399
 #, php-format
 msgid "%s can not be changed."
 msgstr ""
 
-#: includes/class-fep-form.php:388
+#: includes/class-fep-form.php:401
 #, php-format
 msgid "%s minlength %d."
 msgstr ""
 
-#: includes/class-fep-form.php:390
+#: includes/class-fep-form.php:403
 #, php-format
 msgid "%s maxlength %d."
 msgstr ""
 
-#: includes/class-fep-form.php:403
+#: includes/class-fep-form.php:416
 #, php-format
 msgid ""
 "Please provide valid email address "
 "for %s."
 msgstr ""
 
-#: includes/class-fep-form.php:408
+#: includes/class-fep-form.php:421
 #, php-format
 msgid "%s is not a valid number."
 msgstr ""
 
-#: includes/class-fep-form.php:441
+#: includes/class-fep-form.php:454
 #, php-format
 msgid ""
 "%s does not want to receive messages!"
 msgstr ""
 
-#: includes/class-fep-form.php:444
+#: includes/class-fep-form.php:457
 #, php-format
 msgid "Invalid receiver \"%s\"."
 msgstr ""
 
-#: includes/class-fep-form.php:448
+#: includes/class-fep-form.php:461
 msgid ""
 "You must enter a valid recipient!"
 msgstr ""
 
-#: includes/class-fep-form.php:453
+#: includes/class-fep-form.php:466
 msgid "Invalid parent ID!"
 msgstr ""
 
-#: includes/class-fep-form.php:455
+#: includes/class-fep-form.php:468
 msgid ""
 "You do not have permission to send "
 "this message!"
 msgstr ""
 
-#: includes/class-fep-form.php:463
-#: includes/class-fep-form.php:473
+#: includes/class-fep-form.php:476
+#: includes/class-fep-form.php:485
+#: includes/class-fep-form.php:493
+#: includes/class-fep-form.php:498
 #, php-format
 msgid "Invalid value for %s."
 msgstr ""
 
-#: includes/class-fep-form.php:485
+#: includes/class-fep-form.php:511
 msgid "Invalid Attachment"
 msgstr ""
 
-#: includes/class-fep-form.php:502
+#: includes/class-fep-form.php:528
 #, php-format
 msgid ""
 "Attachment (%1$s) file is too big. "
 "Maximum file size allowed %2$s"
 msgstr ""
 
-#: includes/class-fep-form.php:506
+#: includes/class-fep-form.php:532
 #, php-format
 msgid ""
 "Invalid attachment file type. "
 "Allowed Types are (%s)"
 msgstr ""
 
-#: includes/class-fep-form.php:597
+#: includes/class-fep-form.php:623
 msgid "Save Changes"
 msgstr ""
 
-#: includes/class-fep-form.php:599
+#: includes/class-fep-form.php:625
 msgid "Reply"
 msgstr ""
 
@@ -1998,14 +1999,14 @@ msgid "You cannot view this message."
 msgstr ""
 
 #: includes/class-fep-rest-api.php:196
-#: templates/box-content.php:40
+#: templates/box-content.php:49
 #, php-format
 msgid "No %s found."
 msgstr ""
 
 #: includes/class-fep-rest-api.php:196
-#: templates/box-content.php:40
-#: templates/box-content.php:44
+#: templates/box-content.php:49
+#: templates/box-content.php:53
 msgid "messages"
 msgstr ""
 
@@ -2153,12 +2154,12 @@ msgstr ""
 msgid "Check/Uncheck all"
 msgstr ""
 
-#: templates/box-content.php:40
-#: templates/box-content.php:44
+#: templates/box-content.php:49
+#: templates/box-content.php:53
 msgid "announcements"
 msgstr ""
 
-#: templates/box-content.php:44
+#: templates/box-content.php:53
 #, php-format
 msgid ""
 "No %s found. Try different filter."
