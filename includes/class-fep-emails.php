@@ -60,7 +60,7 @@ class Fep_Emails {
 			fep_add_email_filters();
 
 			foreach ( $participants as $participant ) {
-				if ( $participant == $mgs->mgs_author ) {
+				if ( $participant == $mgs->mgs_author && !apply_filters( 'fep_filter_email_to_sender', false, $mgs ) ) {
 					continue;
 				}
 
