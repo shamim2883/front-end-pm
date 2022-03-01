@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Front End PM\n"
-"POT-Creation-Date: 2021-06-05 "
-"22:20+0600\n"
+"POT-Creation-Date: 2021-07-04 "
+"10:14+0600\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Your Name "
 "<you@example.com>\n"
@@ -183,6 +183,7 @@ msgstr ""
 #: admin/class-fep-wp-list-table.php:110
 #: includes/class-fep-form.php:54
 #: includes/class-fep-form.php:58
+#: pro/includes/class-fep-email-beautify.php:109
 #: templates/admin-view-message-announcement.php:12
 msgid "Subject"
 msgstr ""
@@ -824,11 +825,13 @@ msgstr ""
 
 #: admin/class-fep-admin-settings.php:958
 #: admin/class-fep-pro-info.php:321
+#: pro/includes/class-fep-read-receipt.php:34
 msgid "Read Receipt"
 msgstr ""
 
 #: admin/class-fep-admin-settings.php:959
 #: admin/class-fep-pro-info.php:129
+#: pro/includes/class-fep-role-to-role-block.php:41
 msgid "Role to Role Block"
 msgstr ""
 
@@ -917,14 +920,17 @@ msgid "Filter"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:34
+#: pro/includes/class-fep-email-beautify.php:114
 msgid "Full Message"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:37
+#: pro/includes/class-fep-email-beautify.php:119
 msgid "URL of message"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:41
+#: pro/includes/class-fep-email-beautify.php:124
 msgid "URL of announcement"
 msgstr ""
 
@@ -939,30 +945,37 @@ msgid "Receiver"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:51
+#: pro/includes/class-fep-email-beautify.php:139
 msgid "Website title"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:54
+#: pro/includes/class-fep-email-beautify.php:144
 msgid "Website URL"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:80
+#: pro/includes/class-fep-email-piping.php:35
 msgid "Email Piping/POP3"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:87
+#: pro/includes/class-fep-email-beautify.php:178
 msgid "New Message email"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:94
+#: pro/includes/class-fep-email-beautify.php:184
 msgid "Reply Message email"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:101
+#: pro/includes/class-fep-email-beautify.php:190
 msgid "Announcement email"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:108
+#: pro/includes/class-fep-pro-to.php:48
 msgid "Multiple Recipients"
 msgstr ""
 
@@ -972,6 +985,9 @@ msgstr ""
 
 #: admin/class-fep-pro-info.php:122
 #: admin/class-fep-pro-info.php:371
+#: pro/includes/class-fep-group-message.php:264
+#: pro/includes/class-fep-group-message.php:544
+#: pro/includes/class-fep-group-message.php:575
 msgid "Groups"
 msgstr ""
 
@@ -984,6 +1000,7 @@ msgid ""
 msgstr ""
 
 #: admin/class-fep-pro-info.php:179
+#: pro/includes/class-fep-email-piping.php:52
 msgid "Enable"
 msgstr ""
 
@@ -1000,54 +1017,68 @@ msgid "Piping Email"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:194
+#: pro/includes/class-fep-email-piping.php:71
 msgid "Clean reply quote"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:195
+#: pro/includes/class-fep-email-piping.php:72
 msgid "Clean reply quote from email?"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:198
+#: pro/includes/class-fep-email-beautify.php:202
 msgid "Default"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:203
+#: pro/includes/class-fep-email-beautify.php:225
 msgid "New message email template"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:211
+#: pro/includes/class-fep-email-beautify.php:233
 msgid "New message subject."
 msgstr ""
 
 #: admin/class-fep-pro-info.php:218
+#: pro/includes/class-fep-email-beautify.php:240
 msgid "New message content."
 msgstr ""
 
 #: admin/class-fep-pro-info.php:225
 #: admin/class-fep-pro-info.php:253
 #: admin/class-fep-pro-info.php:295
+#: pro/includes/class-fep-email-beautify.php:247
+#: pro/includes/class-fep-email-beautify.php:275
+#: pro/includes/class-fep-email-beautify.php:303
 msgid "Send Attachments"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:226
+#: pro/includes/class-fep-email-beautify.php:248
 msgid ""
 "Send attachments with new message "
 "email?"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:231
+#: pro/includes/class-fep-email-beautify.php:253
 msgid "Reply message email template"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:239
+#: pro/includes/class-fep-email-beautify.php:261
 msgid "Reply subject."
 msgstr ""
 
 #: admin/class-fep-pro-info.php:246
+#: pro/includes/class-fep-email-beautify.php:268
 msgid "Reply content."
 msgstr ""
 
 #: admin/class-fep-pro-info.php:254
+#: pro/includes/class-fep-email-beautify.php:276
 msgid ""
 "Send attachments with reply message "
 "email?"
@@ -1064,6 +1095,8 @@ msgid ""
 msgstr ""
 
 #: admin/class-fep-pro-info.php:267
+#: pro/includes/class-fep-email-beautify.php:219
+#: pro/includes/class-fep-email-beautify.php:220
 msgid "Emails send per interval."
 msgstr ""
 
@@ -1074,28 +1107,34 @@ msgid ""
 msgstr ""
 
 #: admin/class-fep-pro-info.php:273
+#: pro/includes/class-fep-email-beautify.php:281
 msgid "Announcement email template"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:281
+#: pro/includes/class-fep-email-beautify.php:289
 msgid "Announcement subject."
 msgstr ""
 
 #: admin/class-fep-pro-info.php:288
+#: pro/includes/class-fep-email-beautify.php:296
 msgid "Announcement content."
 msgstr ""
 
 #: admin/class-fep-pro-info.php:296
+#: pro/includes/class-fep-email-beautify.php:304
 msgid ""
 "Send attachments with announcement "
 "email?"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:302
+#: pro/includes/class-fep-pro-to.php:70
 msgid "Maximum recipients per message."
 msgstr ""
 
 #: admin/class-fep-pro-info.php:303
+#: pro/includes/class-fep-pro-to.php:71
 msgid "Max recipients"
 msgstr ""
 
@@ -1106,18 +1145,22 @@ msgid ""
 msgstr ""
 
 #: admin/class-fep-pro-info.php:310
+#: pro/includes/class-fep-pro-to.php:78
 msgid "Message type"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:312
+#: pro/includes/class-fep-pro-to.php:80
 msgid "Same Message"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:313
+#: pro/includes/class-fep-pro-to.php:81
 msgid "Separate Message"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:322
+#: pro/includes/class-fep-read-receipt.php:35
 msgid ""
 "Show read receipt bottom of every "
 "message?"
@@ -1135,15 +1178,20 @@ msgstr ""
 #: admin/class-fep-pro-info.php:336
 #: admin/class-fep-pro-info.php:370
 #: admin/class-fep-pro-info.php:388
+#: pro/includes/class-fep-pro-to.php:96
+#: pro/includes/class-fep-role-to-role-block.php:57
 msgid "Do not forget to save."
 msgstr ""
 
 #: admin/class-fep-pro-info.php:337
+#: pro/includes/class-fep-pro-to.php:97
 msgid "Admins"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:343
 #: admin/class-fep-pro-info.php:377
+#: pro/includes/class-fep-group-message.php:295
+#: pro/includes/class-fep-pro-to.php:103
 msgid ""
 "Select how you want to see in "
 "frontend."
@@ -1151,16 +1199,22 @@ msgstr ""
 
 #: admin/class-fep-pro-info.php:344
 #: admin/class-fep-pro-info.php:378
+#: pro/includes/class-fep-group-message.php:296
+#: pro/includes/class-fep-pro-to.php:104
 msgid "Show in front end as"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:346
 #: admin/class-fep-pro-info.php:380
+#: pro/includes/class-fep-group-message.php:298
+#: pro/includes/class-fep-pro-to.php:106
 msgid "Dropdown"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:347
 #: admin/class-fep-pro-info.php:381
+#: pro/includes/class-fep-group-message.php:299
+#: pro/includes/class-fep-pro-to.php:107
 msgid "Radio Button"
 msgstr ""
 
@@ -1174,19 +1228,23 @@ msgid "Can send to group?"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:363
+#: pro/includes/class-fep-group-message.php:288
 msgid ""
 "Can users add themself to group."
 msgstr ""
 
 #: admin/class-fep-pro-info.php:364
+#: pro/includes/class-fep-group-message.php:289
 msgid "Can add to group"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:396
+#: pro/includes/class-fep-pro-to.php:139
 msgid "Display as"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:397
+#: pro/includes/class-fep-pro-to.php:140
 msgid "Username"
 msgstr ""
 
@@ -1195,42 +1253,56 @@ msgstr ""
 #: admin/class-fep-pro-info.php:422
 #: functions.php:281
 #: includes/class-fep-form.php:365
+#: pro/includes/class-fep-pro-to.php:126
+#: pro/includes/class-fep-pro-to.php:138
+#: pro/includes/class-fep-role-to-role-block.php:93
+#: pro/includes/class-fep-role-to-role-block.php:114
+#: pro/includes/class-fep-role-to-role-block.php:130
 msgid "Remove"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:400
 #: admin/class-fep-pro-info.php:406
 #: admin/class-fep-pro-info.php:424
+#: pro/includes/class-fep-pro-to.php:132
+#: pro/includes/class-fep-role-to-role-block.php:120
 #: templates/admin-edit-message-announcement.php:136
 msgid "Add More"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:413
+#: pro/includes/class-fep-role-to-role-block.php:90
 msgid "From Role"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:414
+#: pro/includes/class-fep-role-to-role-block.php:91
 msgid "To Role"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:415
+#: pro/includes/class-fep-role-to-role-block.php:92
 msgid "Block For"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:419
 #: admin/class-fep-pro-info.php:420
+#: pro/includes/class-fep-role-to-role-block.php:85
 msgid "Select Role"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:421
+#: pro/includes/class-fep-role-to-role-block.php:80
 msgid "Select For"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:429
+#: pro/includes/class-fep-pro-to.php:325
 msgid "Send Message to admin"
 msgstr ""
 
 #: admin/class-fep-pro-info.php:430
+#: pro/includes/class-fep-pro-to.php:354
 msgid "Send Message to group"
 msgstr ""
 
@@ -1360,6 +1432,12 @@ msgstr ""
 msgid "View in Front-end"
 msgstr ""
 
+#: front-end-pm-pro.php:87
+msgid ""
+"Deactivate Front End PM to activate "
+"Front End PM PRO."
+msgstr ""
+
 #: functions.php:250 functions.php:329
 msgid "No matches found"
 msgstr ""
@@ -1385,6 +1463,7 @@ msgstr ""
 
 #: functions.php:283
 #: includes/class-fep-form.php:516
+#: pro/includes/class-fep-pro-to.php:519
 #, php-format
 msgid "Maximum %s allowed"
 msgstr ""
@@ -1497,11 +1576,13 @@ msgstr ""
 
 #: functions.php:1402
 #: functions.php:1421
+#: pro/includes/class-fep-pro-to.php:553
 msgid "Message successfully sent."
 msgstr ""
 
 #: functions.php:1404
 #: functions.php:1423
+#: pro/includes/class-fep-pro-to.php:555
 msgid ""
 "Message successfully sent and "
 "waiting for admin moderation."
@@ -1673,6 +1754,7 @@ msgstr ""
 #: includes/class-fep-directory.php:120
 #: includes/class-fep-directory.php:151
 #: includes/class-fep-form.php:627
+#: pro/includes/class-fep-pro-to.php:585
 #: templates/form-message.php:5
 msgid "Send Message"
 msgstr ""
@@ -1703,6 +1785,7 @@ msgstr[1] ""
 
 #: includes/class-fep-emails.php:43
 #: includes/class-fep-menu.php:51
+#: pro/includes/class-fep-role-to-role-block.php:69
 msgid "New Message"
 msgstr ""
 
@@ -1744,14 +1827,17 @@ msgid ""
 msgstr ""
 
 #: includes/class-fep-form.php:31
+#: pro/includes/class-fep-pro-to.php:183
 msgid "To"
 msgstr ""
 
 #: includes/class-fep-form.php:35
+#: pro/includes/class-fep-pro-to.php:187
 msgid "Name of the recipient."
 msgstr ""
 
 #: includes/class-fep-form.php:36
+#: pro/includes/class-fep-pro-to.php:188
 msgid "Username of the recipient."
 msgstr ""
 
@@ -1820,12 +1906,16 @@ msgid "%s is not a valid number."
 msgstr ""
 
 #: includes/class-fep-form.php:454
+#: pro/includes/class-fep-pro-to.php:491
 #, php-format
 msgid ""
 "%s does not want to receive messages!"
 msgstr ""
 
 #: includes/class-fep-form.php:457
+#: pro/includes/class-fep-pro-to.php:462
+#: pro/includes/class-fep-pro-to.php:469
+#: pro/includes/class-fep-pro-to.php:483
 #, php-format
 msgid "Invalid receiver \"%s\"."
 msgstr ""
@@ -1876,6 +1966,7 @@ msgid "Save Changes"
 msgstr ""
 
 #: includes/class-fep-form.php:625
+#: pro/includes/class-fep-role-to-role-block.php:71
 msgid "Reply"
 msgstr ""
 
@@ -1910,6 +2001,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/class-fep-messages.php:54
+#: pro/includes/class-fep-pro-to.php:526
 msgid ""
 "Your message box is full. Please "
 "delete some messages."
@@ -2114,6 +2206,314 @@ msgstr ""
 msgid ""
 "Display help to configure this "
 "widget in front end?"
+msgstr ""
+
+#: pro/includes/class-fep-email-beautify.php:83
+msgid "Announcement queue updated."
+msgstr ""
+
+#: pro/includes/class-fep-email-beautify.php:129
+msgid "Sender Name"
+msgstr ""
+
+#: pro/includes/class-fep-email-beautify.php:134
+msgid "Receiver Name"
+msgstr ""
+
+#: pro/includes/class-fep-email-beautify.php:210
+msgid "Email Sending Interval."
+msgstr ""
+
+#: pro/includes/class-fep-email-beautify.php:211
+msgid "Email sending Interval."
+msgstr ""
+
+#: pro/includes/class-fep-email-beautify.php:637
+msgid "Email Pending"
+msgstr ""
+
+#: pro/includes/class-fep-email-piping.php:54
+#: pro/includes/class-fep-email-pop3.php:60
+msgid "None"
+msgstr ""
+
+#: pro/includes/class-fep-email-piping.php:55
+msgid "Piping"
+msgstr ""
+
+#: pro/includes/class-fep-email-piping.php:63
+msgid "Email"
+msgstr ""
+
+#: pro/includes/class-fep-email-pop3.php:26
+msgid "POP3"
+msgstr ""
+
+#: pro/includes/class-fep-email-pop3.php:34
+msgid "POP3 Host"
+msgstr ""
+
+#: pro/includes/class-fep-email-pop3.php:42
+msgid "POP3 Port"
+msgstr ""
+
+#: pro/includes/class-fep-email-pop3.php:50
+msgid "POP3 Password"
+msgstr ""
+
+#: pro/includes/class-fep-email-pop3.php:58
+msgid "Encryption"
+msgstr ""
+
+#: pro/includes/class-fep-email-pop3.php:61
+msgid "SSL"
+msgstr ""
+
+#: pro/includes/class-fep-email-pop3.php:62
+msgid "TLS"
+msgstr ""
+
+#: pro/includes/class-fep-email-pop3.php:71
+msgid "No validate certificates"
+msgstr ""
+
+#: pro/includes/class-fep-email-pop3.php:72
+msgid ""
+"If server has certificate problem or "
+"uses self-signed certificates check "
+"this"
+msgstr ""
+
+#: pro/includes/class-fep-email-pop3.php:76
+msgid ""
+"Password is defined as "
+"FEP_POP3_PASSWORD constant"
+msgstr ""
+
+#: pro/includes/class-fep-email-pop3.php:79
+msgid ""
+"You can define your password in wp-"
+"config.php"
+msgstr ""
+
+#: pro/includes/class-fep-email-pop3.php:88
+msgid ""
+"POP3 is not available in this "
+"server. Contact your host and tell "
+"them to enable imap extension if you "
+"want to use this feature."
+msgstr ""
+
+#: pro/includes/class-fep-group-message.php:58
+msgctxt "post type general name"
+msgid "Front End PM Groups"
+msgstr ""
+
+#: pro/includes/class-fep-group-message.php:59
+msgctxt "post type singular name"
+msgid "Group"
+msgstr ""
+
+#: pro/includes/class-fep-group-message.php:60
+msgctxt "admin menu"
+msgid "Groups"
+msgstr ""
+
+#: pro/includes/class-fep-group-message.php:61
+msgid "Add New Group"
+msgstr ""
+
+#: pro/includes/class-fep-group-message.php:62
+msgid "New Group"
+msgstr ""
+
+#: pro/includes/class-fep-group-message.php:63
+msgid "Edit Group"
+msgstr ""
+
+#: pro/includes/class-fep-group-message.php:64
+msgid "View Group"
+msgstr ""
+
+#: pro/includes/class-fep-group-message.php:65
+msgid "All Groups"
+msgstr ""
+
+#: pro/includes/class-fep-group-message.php:66
+msgid "Search Groups"
+msgstr ""
+
+#: pro/includes/class-fep-group-message.php:67
+msgid "No Groups found."
+msgstr ""
+
+#: pro/includes/class-fep-group-message.php:68
+msgid "No Groups found in Trash."
+msgstr ""
+
+#: pro/includes/class-fep-group-message.php:69
+msgid "Group Attributes"
+msgstr ""
+
+#: pro/includes/class-fep-group-message.php:74
+msgid "Description."
+msgstr ""
+
+#: pro/includes/class-fep-group-message.php:90
+msgid "Group Members"
+msgstr ""
+
+#: pro/includes/class-fep-group-message.php:155
+msgid "Members"
+msgstr ""
+
+#: pro/includes/class-fep-group-message.php:156
+msgid "Order"
+msgstr ""
+
+#: pro/includes/class-fep-group-message.php:253
+msgid "Groups updated."
+msgstr ""
+
+#: pro/includes/class-fep-group-message.php:280
+msgid ""
+"Can users send message to group."
+msgstr ""
+
+#: pro/includes/class-fep-group-message.php:281
+msgid "Can send to group"
+msgstr ""
+
+#: pro/includes/class-fep-group-message.php:326
+msgid ""
+"You do not have permission send "
+"message to group."
+msgstr ""
+
+#: pro/includes/class-fep-group-message.php:332
+msgid "You must select group."
+msgstr ""
+
+#: pro/includes/class-fep-group-message.php:528
+msgid "Group"
+msgstr ""
+
+#: pro/includes/class-fep-group-message.php:539
+msgid "FEP Group"
+msgstr ""
+
+#: pro/includes/class-fep-group-message.php:551
+#: pro/includes/class-fep-group-message.php:581
+msgid ""
+"Please select groups which you want "
+"to join."
+msgstr ""
+
+#: pro/includes/class-fep-pro-cron.php:26
+msgid "Every 15 minutes"
+msgstr ""
+
+#: pro/includes/class-fep-pro-to.php:54
+msgid "FEP Admins"
+msgstr ""
+
+#: pro/includes/class-fep-pro-to.php:77
+msgid ""
+"How message will be sent to "
+"recipients"
+msgstr ""
+
+#: pro/includes/class-fep-pro-to.php:89
+msgid ""
+"Can users send message to admin."
+msgstr ""
+
+#: pro/includes/class-fep-pro-to.php:90
+msgid "Can send to admin"
+msgstr ""
+
+#: pro/includes/class-fep-pro-to.php:155
+#, php-format
+msgid "Invalid username %s"
+msgstr ""
+
+#: pro/includes/class-fep-pro-to.php:159
+msgid "Name can not be empty."
+msgstr ""
+
+#: pro/includes/class-fep-pro-to.php:330
+msgid "No admins found"
+msgstr ""
+
+#: pro/includes/class-fep-pro-to.php:360
+msgid "You are not member to any group"
+msgstr ""
+
+#: pro/includes/class-fep-pro-to.php:417
+msgid ""
+"You do not have permission send "
+"message to admin."
+msgstr ""
+
+#: pro/includes/class-fep-pro-to.php:424
+msgid ""
+"Please add admins in back-end "
+"settings page of Front End PM"
+msgstr ""
+
+#: pro/includes/class-fep-pro-to.php:429
+msgid ""
+"Please add valid admins in back-end "
+"settings page of Front End PM"
+msgstr ""
+
+#: pro/includes/class-fep-pro-to.php:436
+#: pro/includes/class-fep-pro-to.php:444
+msgid "You must select admin."
+msgstr ""
+
+#: pro/includes/class-fep-pro-to.php:487
+msgid "You can not message yourself."
+msgstr ""
+
+#: pro/includes/class-fep-pro-to.php:508
+msgid "You must enter valid recipient!"
+msgstr ""
+
+#: pro/includes/class-fep-pro-to.php:519
+#, php-format
+msgid "%s recipient"
+msgid_plural "%s recipients"
+msgstr[0] ""
+msgstr[1] ""
+
+#: pro/includes/class-fep-read-receipt.php:57
+#, php-format
+msgid "Read by %1$s &#x40; %2$s"
+msgstr ""
+
+#: pro/includes/class-fep-role-to-role-block.php:70
+msgid "Shortcode New Message"
+msgstr ""
+
+#: pro/includes/class-fep-role-to-role-block.php:74
+msgid "All Roles"
+msgstr ""
+
+#: pro/includes/class-fep-role-to-role-block.php:148
+#: pro/includes/class-fep-role-to-role-block.php:152
+#, php-format
+msgid "Invalid role %s"
+msgstr ""
+
+#: pro/includes/class-fep-role-to-role-block.php:156
+msgid "Invalid Block For"
+msgstr ""
+
+#: pro/includes/class-fep-role-to-role-block.php:201
+#: pro/includes/class-fep-role-to-role-block.php:207
+#, php-format
+msgid "You cannot message to %s"
 msgstr ""
 
 #: templates/admin-edit-message-announcement.php:15

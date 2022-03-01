@@ -3,9 +3,9 @@ Contributors: shamim51
 Tags: message,messaging,contact form,chat,private message,contact,pm,plugin,shortcode,email,mail,secure contact form
 Donate link: https://www.shamimsplugins.com/products/front-end-pm-pro/?utm_campaign=wordpress&utm_source=readme_pro&utm_medium=donate
 Requires at least: 4.4
-Tested up to: 5.7
+Tested up to: 5.9
 Requires PHP: 5.4
-Stable tag: 11.3.3
+Stable tag: 11.3.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -104,6 +104,11 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 8. Appearance settings.
 
 == Changelog ==
+
+= 11.3.4 =
+
+* Security update
+* Fix: strip tags for avatar name.
 
 = 11.3.3 =
 
@@ -225,6 +230,11 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 To view any previous version changelog see [https://www.shamimsplugins.com/docs/category/front-end-pm/changelog/](https://www.shamimsplugins.com/docs/category/front-end-pm/changelog/)
 
 == Upgrade Notice ==
+
+= 11.3.4 =
+
+* Security update
+* Fix: strip tags for avatar name.
 
 = 10.1.2 =
 
