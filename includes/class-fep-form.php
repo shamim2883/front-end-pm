@@ -209,6 +209,7 @@ class Fep_Form {
 				case 'email' :
 				case 'url' :
 				case 'number' :
+				case 'date' :
 				case 'hidden' :
 				case 'submit' :
 					printf( '<input type="%1$s" id="%2$s" class="%3$s" name="%4$s" placeholder="%5$s" value="%6$s" %7$s />',
