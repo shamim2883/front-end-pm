@@ -635,9 +635,11 @@ class Fep_Update {
 
 		fep_create_htaccess_index( $upload_path );
 
-		$objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($upload_path), RecursiveIteratorIterator::SELF_FIRST);
+		$objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($upload_path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
 		foreach( $objects as $name => $object ){
-			fep_create_htaccess_index( $name );
+			if($object->isDir()){
+                fep_create_htaccess_index( $name );
+            }
 		}
 	}
 } //END CLASS
