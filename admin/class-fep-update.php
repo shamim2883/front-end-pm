@@ -110,7 +110,7 @@ class Fep_Update {
 
 	function update( $prev_ver ) {
 		global $wpdb;
-		if ( version_compare( $prev_ver, '5.3', '<' ) ) {
+		if ( version_compare( $prev_ver, '11.4.1', '<' ) ) {
 			$this->create_htaccess();
 		}
 		if ( version_compare( $prev_ver, '6.1', '<' ) ) {
@@ -632,16 +632,12 @@ class Fep_Update {
 		remove_filter( 'upload_dir', array( Fep_Attachment::init(), 'upload_dir' ), 99 );
 		
 		$upload_path = $wp_upload_dir['basedir'] . '/front-end-pm';
-		$htaccess_path = $upload_path . '/.htaccess';
 
-		// Make sure the /front-end-pm folder is created
-		wp_mkdir_p( $upload_path );
+		fep_create_htaccess_index( $upload_path );
 
-		//.htaccess file content
-		$htaccess = "Options -Indexes\ndeny from all\n";
-		if ( ! file_exists( $htaccess_path ) && wp_is_writable( $upload_path ) ) {
-			// Create the file if it doesn't exist
-			@file_put_contents( $htaccess_path, $htaccess );
+		$objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($upload_path), RecursiveIteratorIterator::SELF_FIRST);
+		foreach( $objects as $name => $object ){
+			fep_create_htaccess_index( $name );
 		}
 	}
 } //END CLASS

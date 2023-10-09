@@ -1760,3 +1760,19 @@ function fep_fs_support_forum_url( $wp_org_support_forum_url ) {
 	return 'https://www.shamimsplugins.com/support/forum/front-end-pm-pro/';
 }
 
+function fep_create_htaccess_index( $path ) {
+	if ( wp_is_writable( $path ) ) {
+		wp_mkdir_p( $path );
+
+		if( ! file_exists( $path . '/.htaccess' ) ){
+			// Create the file if it doesn't exist
+			file_put_contents(  $path . '/.htaccess', "Options -Indexes\ndeny from all\n" );
+		}
+		if( ! file_exists( $path . '/index.php' ) ){
+			// Create the file if it doesn't exist
+			file_put_contents(  $path . '/index.php', "<?php\n// Silence is golden." );
+		}
+		
+	}
+}
+

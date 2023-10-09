@@ -275,7 +275,8 @@ class FEP_WP_List_Table extends WP_List_Table {
 		} else {
 			$view = 'viewmessage';
 		}
-		$actions['view-frontend'] = '<a href="' . fep_query_url( $view, array( 'fep_id' => fep_get_the_id() ) ) . '">' . __( 'View in Front-end', 'front-end-pm' ) . '</a>';
+		$actions['view-frontend'] = '<a target="_blank" href="' . fep_query_url( $view, array( 'fep_id' => fep_get_the_id() ) ) . '">' . __( 'View in Front-end', 'front-end-pm' ) . '</a>';
+		$actions['view-thread'] = '<a target="_blank" href="' . fep_query_url( $view, array( 'fep_id' => fep_get_message_field( 'mgs_parent' ) ?: fep_get_the_id() ) ) . '">' . __( 'Thread', 'front-end-pm' ) . '</a>';
 
 		return $this->row_actions( $actions );
 	}

@@ -121,6 +121,8 @@ class Fep_Attachment {
 		$upload['subdir']	= '/front-end-pm' . $upload['subdir'];
 		$upload['path']		= $upload['basedir'] . $upload['subdir'];
 		$upload['url']		= $upload['baseurl'] . $upload['subdir'];
+
+		fep_create_htaccess_index( $upload['path'] );
 		
 		return $upload;
 	}
