@@ -113,6 +113,9 @@ class Fep_Update {
 		if ( version_compare( $prev_ver, '11.4.1', '<' ) ) {
 			$this->create_htaccess();
 		}
+		if ( version_compare( $prev_ver, '11.4.1', '=' ) || version_compare( $prev_ver, '11.4.2', '=' ) ) {
+			$this->remove_htaccess();
+		}
 		if ( version_compare( $prev_ver, '6.1', '<' ) ) {
 			$options = array();
 			$options['show_directory'] = fep_get_option( 'hide_directory', 0 ) ? 0 : 1;
@@ -640,6 +643,21 @@ class Fep_Update {
 			if($object->isDir()){
                 fep_create_htaccess_index( $name );
             }
+		}
+	}
+
+	function remove_htaccess(){
+		//Created htaccess files outside front-end-pm folder
+		add_filter( 'upload_dir', array( Fep_Attachment::init(), 'upload_dir' ), 99 );
+		$wp_upload_dir = wp_upload_dir();
+		remove_filter( 'upload_dir', array( Fep_Attachment::init(), 'upload_dir' ), 99 );
+		
+		$upload_path = $wp_upload_dir['basedir'];
+		if( file_exists( $upload_path . '/.htaccess' ) ){
+			$content = file_get_contents( $upload_path . '/.htaccess' );
+			if( "Options -Indexes\ndeny from all\n" == $content ){
+				unlink( $upload_path . '/.htaccess' );
+			}
 		}
 	}
 } //END CLASS
