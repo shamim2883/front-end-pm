@@ -5,7 +5,7 @@ Donate link: https://www.shamimsplugins.com/products/front-end-pm-pro/?utm_campa
 Requires at least: 4.4
 Tested up to: 6.3
 Requires PHP: 5.4
-Stable tag: 11.4.2
+Stable tag: 11.4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,7 +105,7 @@ You can visit [Front End PM](https://www.shamimsplugins.com/contact-us/?utm_camp
 
 == Changelog ==
 
-= 11.4.2 =
+= 11.4.3 =
 
 * Important update
 * Tested up to updated
