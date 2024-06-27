@@ -206,7 +206,7 @@ class FEP_WP_List_Table extends WP_List_Table {
 			$class = 'current';
 		}
 		
-		$status_links['all'] = $this->get_edit_link( [], sprintf( 'All <span class="count">(%s)</span>', number_format_i18n( $this->get_total_count( $this->message_type, 'any' ) ) ), $class );
+		$status_links['all'] = $this->get_edit_link( [], sprintf( __( 'All <span class="count">(%s)</span>', 'front-end-pm' ), number_format_i18n( $this->get_total_count( $this->message_type, 'any' ) ) ), $class );
 		
 		foreach ( fep_get_statuses( $this->message_type ) as $slug => $name ) {
 			if ( ! $this->get_total_count( $this->message_type, $slug ) ) {
