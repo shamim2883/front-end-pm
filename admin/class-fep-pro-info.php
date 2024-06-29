@@ -164,7 +164,7 @@ class Fep_Pro_Info {
 			<?php
 			$added = true;
 		endif;
-		echo '<div class="notice notice-warning inline"><p>' . sprintf( __( 'Following features only available in PRO version. <a href="%s">Upgrade to PRO</a>' ),  function_exists( 'fep_fs' ) ? fep_fs()->get_upgrade_url() : esc_url( 'https://www.shamimsplugins.com/products/front-end-pm-pro/?utm_campaign=admin&utm_source=pro_features&utm_medium=links' ) ) . '</p></div>';
+		echo '<div class="notice notice-warning inline"><p>' . sprintf( __( 'Following features only available in PRO version. <a href="%s">Upgrade to PRO</a>', 'front-end-pm' ),  function_exists( 'fep_fs' ) ? fep_fs()->get_upgrade_url() : esc_url( 'https://www.shamimsplugins.com/products/front-end-pm-pro/?utm_campaign=admin&utm_source=pro_features&utm_medium=links' ) ) . '</p></div>';
 		?><div class="fep_admin_div_need_pro" onclick="window.location.href = '<?php echo function_exists( 'fep_fs' ) ? fep_fs()->get_upgrade_url() : 'https://www.shamimsplugins.com/products/front-end-pm-pro/?utm_campaign=admin&utm_source=pro_features&utm_medium=image' ?>'"></div>
 		<?php
 	}
