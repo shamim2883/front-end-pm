@@ -211,7 +211,7 @@ class FEP_REST_API {
 			'search'         => "*{$q}*",
 			'search_columns' => array( 'user_login', 'display_name' ),
 			'exclude'        => $exclude,
-			'number'         => 10,
+			'number'         => 100,
 			'orderby'        => 'display_name',
 			'order'          => 'ASC',
 			'role__in'       => fep_get_option( 'userrole_access', array() ),
