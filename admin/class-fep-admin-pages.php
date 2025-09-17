@@ -43,7 +43,7 @@ class Fep_Admin_Pages {
 		$table->prepare_items(); ?>
 		<div class="wrap">
 			<h1 class="wp-heading-inline"><?php
-			esc_html_e( __( 'Messages', 'front-end-pm') );
+			esc_html_e( 'Messages', 'front-end-pm' );
 			?></h1>
 			<?php if ( isset( $_REQUEST['s'] ) && strlen( $_REQUEST['s'] ) ) {
 				/* translators: %s: search keywords */
@@ -70,7 +70,7 @@ class Fep_Admin_Pages {
 		$table->prepare_items(); ?>
 		<div class="wrap">
 			<h1 class="wp-heading-inline"><?php
-			esc_html_e( __( 'Announcements', 'front-end-pm') );
+			esc_html_e( 'Announcements', 'front-end-pm' );
 			?></h1>
 			<?php if ( isset( $_REQUEST['s'] ) && strlen( $_REQUEST['s'] ) ) {
 				/* translators: %s: search keywords */
@@ -97,7 +97,7 @@ class Fep_Admin_Pages {
 		$table->prepare_items(); ?>
 		<div class="wrap">
 			<h1 class="wp-heading-inline"><?php
-			esc_html_e( __( 'Attachments', 'front-end-pm') );
+			esc_html_e( 'Attachments', 'front-end-pm' );
 			?></h1>
 			<?php if ( isset( $_REQUEST['s'] ) && strlen( $_REQUEST['s'] ) ) {
 				/* translators: %s: search keywords */
