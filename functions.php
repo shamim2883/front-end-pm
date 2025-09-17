@@ -296,7 +296,7 @@ function fep_enqueue_scripts() {
 	wp_localize_script( 'fep-block-unblock-script', 'fep_block_unblock_script', array(
 			'ajaxurl'	=> admin_url( 'admin-ajax.php' ),
 			'token'		=> wp_create_nonce( 'fep-block-unblock-script' ),
-			'confirm'   => __( 'Do you really want to block %s? If you click "OK" then this user will not be able to send you any more messages.' ),
+			'confirm'   => __( 'Do you really want to block %s? If you click "OK" then this user will not be able to send you any more messages.', 'front-end-pm' ),
 		)
 	);
 	wp_register_script( 'fep-view-message', FEP_PLUGIN_URL . 'assets/js/view-message.js', array( 'jquery' ), FEP_PLUGIN_VERSION, true );
