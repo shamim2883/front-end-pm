@@ -20,6 +20,7 @@
      * @property bool|null   $is_extensions_tracking_allowed
      * @property bool|null   $is_diagnostic_tracking_allowed
      * @property object      $sync_cron
+     * @property bool|int    $install_timestamp
      */
     class FS_Storage {
         /**
@@ -359,6 +360,7 @@
                 'is_network_activated'         => self::OPTION_LEVEL_NETWORK,
                 'is_on'                        => self::OPTION_LEVEL_NETWORK,
                 'is_plugin_new_install'        => self::OPTION_LEVEL_NETWORK,
+                'last_load_timestamp'          => self::OPTION_LEVEL_NETWORK,
                 'network_install_blog_id'      => self::OPTION_LEVEL_NETWORK,
                 'pending_sites_info'           => self::OPTION_LEVEL_NETWORK,
                 'plugin_last_version'          => self::OPTION_LEVEL_NETWORK,
