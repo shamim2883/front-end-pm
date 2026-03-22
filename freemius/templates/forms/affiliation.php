@@ -69,10 +69,13 @@
             $promotion_method_mobile_apps  = in_array( 'mobile_apps', $promotion_methods );
         }
     } else {
-        $current_user  = Freemius::_get_current_wp_user();
-        $full_name     = trim( $current_user->user_firstname . ' ' . $current_user->user_lastname );
-        $email_address = $current_user->user_email;
-        $domain        = Freemius::get_unfiltered_site_url( null, true );
+        if ( ! is_object( $user ) ) {
+            $current_user  = Freemius::_get_current_wp_user();
+            $full_name     = trim( $current_user->user_firstname . ' ' . $current_user->user_lastname );
+            $email_address = $current_user->user_email;
+        }
+
+        $domain = Freemius::get_unfiltered_site_url( null, true );
     }
 
     $affiliate_tracking = 30;
@@ -505,11 +508,3 @@
     if ( $has_tabs ) {
         $fs->_add_tabs_after_content();
     }
-
-    $params = array(
-        'page'           => 'affiliation',
-        'module_id'      => $module_id,
-        'module_slug'    => $slug,
-        'module_version' => $fs->get_plugin_version(),
-    );
-    fs_require_template( 'powered-by.php', $params );
