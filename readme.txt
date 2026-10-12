@@ -1,10 +1,10 @@
 === Front End PM ===
 Contributors: shamim51
-Tags: message,messaging,contact form,chat,private message,contact,pm,shortcode,email,mail,secure contact form
+Tags: message,contact,chat,private message,pm
 Donate link: https://www.shamimsplugins.com/products/front-end-pm-pro/?utm_campaign=wordpress&utm_source=readme_pro&utm_medium=donate
 Requires at least: 4.4
-Tested up to: 6.7
-Requires PHP: 5.6
+Tested up to: 7.1
+Requires PHP: 7.1
 Stable tag: 11.4.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
