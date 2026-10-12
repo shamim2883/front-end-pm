@@ -358,9 +358,9 @@ class Fep_Messages {
 				break;
 			case 'author':
 				if( 'threaded' === fep_get_message_view() ){
-					?><span class="fep-message-author"><?php echo fep_user_name( fep_get_message_field( 'mgs_last_reply_by' ) ); ?></span><span class="fep-message-date"><?php echo fep_get_the_date( 'mgs_last_reply_time' ); ?></span><?php
+					?><span class="fep-message-author"><?php echo esc_html( fep_user_name( fep_get_message_field( 'mgs_last_reply_by' ) ) ); ?></span><span class="fep-message-date"><?php echo fep_get_the_date( 'mgs_last_reply_time' ); ?></span><?php
 				} else {
-					?><span class="fep-message-author"><?php echo fep_user_name( fep_get_message_field( 'mgs_author' ) ); ?></span><span class="fep-message-date"><?php echo fep_get_the_date( 'created' ); ?></span><?php
+					?><span class="fep-message-author"><?php echo esc_html( fep_user_name( fep_get_message_field( 'mgs_author' ) ) ); ?></span><span class="fep-message-date"><?php echo fep_get_the_date( 'created' ); ?></span><?php
 				}
 				break;
 			case 'title':
@@ -375,9 +375,9 @@ class Fep_Messages {
 					'fep_id' => fep_get_the_id(),
 					'feppage' => isset( $_GET['feppage'] ) ? $_GET['feppage'] : 1,
 					'fep-filter' => isset( $_GET['fep-filter'] ) ? $_GET['fep-filter'] : '',
-					] ); ?>"><?php echo fep_get_the_title(); ?></a></span><?php echo $span; ?>
+					] ); ?>"><?php echo esc_html( fep_get_the_title() ); ?></a></span><?php echo $span; ?>
 				<div class="fep-message-excerpt">
-					<?php echo fep_get_the_excerpt(); ?>
+					<?php echo esc_html( fep_get_the_excerpt() ); ?>
 				</div><?php
 				break;
 			default:

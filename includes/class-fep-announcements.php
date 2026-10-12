@@ -276,9 +276,9 @@ class FEP_Announcements {
 					$span = '';
 					$class = '';
 				} 
-				?><span class="<?php echo $class; ?>"><a href="<?php echo fep_query_url( 'view_announcement', array( 'fep_id'=> fep_get_the_id() ) ); ?>"><?php echo fep_get_the_title(); ?></a></span><?php echo $span; ?>
+				?><span class="<?php echo $class; ?>"><a href="<?php echo fep_query_url( 'view_announcement', array( 'fep_id'=> fep_get_the_id() ) ); ?>"><?php echo esc_html( fep_get_the_title() ); ?></a></span><?php echo $span; ?>
 				<div class="fep-message-excerpt">
-					<?php echo fep_get_the_excerpt(); ?>
+					<?php echo esc_html( fep_get_the_excerpt() ); ?>
 				</div><?php
 				break;
 			default:

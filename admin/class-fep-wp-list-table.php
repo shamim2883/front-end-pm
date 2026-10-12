@@ -56,16 +56,16 @@ class FEP_WP_List_Table extends WP_List_Table {
 				}
 				break;
 			case 'mgs_author':
-				$value = fep_user_name( fep_get_message_field( $column_name ) );
+				$value = esc_html( fep_user_name( fep_get_message_field( $column_name ) ) );
 				break;
 			case 'mgs_title':
-				$value = fep_get_the_title();
+				$value = esc_html( fep_get_the_title() );
 				break;
 			case 'mgs_content':
 				$value = fep_get_the_content();
 				break;
 			case 'mgs_last_reply_excerpt':
-				$value = fep_get_the_excerpt();
+				$value = esc_html( fep_get_the_excerpt() );
 				break;
 			case 'mgs_created':
 				$value = fep_get_the_date();

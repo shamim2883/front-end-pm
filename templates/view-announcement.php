@@ -14,7 +14,7 @@ if ( $announcements->have_messages() ) { ?>
 			} ?>
 			<div id="fep-announcement-<?php echo fep_get_the_id(); ?>" class="fep-per-message">
 				<div class="fep-message-title fep-announcement-title fep-announcement-title-<?php echo fep_get_the_id(); ?>">
-					<?php echo fep_get_the_title(); ?>
+					<?php echo esc_html( fep_get_the_title() ); ?>
 					<div class="date"><?php echo fep_get_the_date(); ?></div>
 				</div>
 				<div class="fep-announcement-content">

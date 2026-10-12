@@ -29,10 +29,15 @@ jQuery( document ).ready( function( $ ) {
 			}).done( function( response ) {
 				$( '#fep-result' ).html('<ul></ul>');
 				if ( $.isEmptyObject( response ) ) {
-					$( '#fep-result ul' ).append('<li>' + fep_script.no_match + '</li>');
+					$( '#fep-result ul' ).append( $( '<li></li>' ).text( fep_script.no_match ) );
 				} else {
 					$.each( response.slice(0,5), function(i, v) {
-						$( '#fep-result ul' ).append('<li><a href="#" data-user_nicename="' + v.nicename + '" data-user_name="' + v.name + '">' + v.name + '</a></li>');
+						// Build nodes with .text()/.attr() so names are never parsed as HTML.
+						var link = $( '<a href="#"></a>' )
+							.attr( 'data-user_nicename', String( v.nicename ) )
+							.attr( 'data-user_name', String( v.name ) )
+							.text( String( v.name ) );
+						$( '#fep-result ul' ).append( $( '<li></li>' ).append( link ) );
 					});
 				}
 				$( '#fep-result' ).show();
@@ -44,8 +49,8 @@ jQuery( document ).ready( function( $ ) {
 	
 	$( document ).on( 'click', '#fep-result a', function(e) {
 		e.preventDefault();
-		$( '#fep-message-to' ).val( $(this).data('user_nicename') );
-		$( '#fep-message-top' ).val( $(this).data('user_name') );
+		$( '#fep-message-to' ).val( $(this).attr('data-user_nicename') );
+		$( '#fep-message-top' ).val( $(this).attr('data-user_name') );
 		$( '#fep-result' ).hide();
 	});
 });

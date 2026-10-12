@@ -111,7 +111,7 @@ class Fep_Shortcodes {
 		if ( ! is_user_logged_in() ) {
 			return apply_filters( 'fep_filter_shortcode_new_message_form', '<div class="fep-error">' . sprintf( __( 'You must <a href="%s">login</a> to contact', 'front-end-pm' ), wp_login_url( get_permalink() ) ) . '</div>', $atts );
 		} elseif ( ! fep_current_user_can( 'send_new_message_to', $to_id ) ) {
-			return apply_filters( 'fep_filter_shortcode_new_message_form', '<div class="fep-error">' . sprintf( __( 'You cannot send message to %s', 'front-end-pm' ), fep_user_name( $to_id ) ) . '</div>', $atts );
+			return apply_filters( 'fep_filter_shortcode_new_message_form', '<div class="fep-error">' . sprintf( esc_html__( 'You cannot send message to %s', 'front-end-pm' ), esc_html( fep_user_name( $to_id ) ) ) . '</div>', $atts );
 		}
 		$template = fep_locate_template( 'form-shortcode-message.php' );
 		ob_start();

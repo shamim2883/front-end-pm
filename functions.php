@@ -1689,7 +1689,7 @@ function fep_participants_view( $mgs_id = 0 ) {
 		} elseif( $recipients = fep_get_participants( fep_get_the_id( $mgs_id ) ) ){
 			foreach ( $recipients as $recipient ) {
 				if( fep_get_message_field( 'mgs_author', $mgs_id ) != $recipient )
-				echo fep_user_name( $recipient ) . '<br />';
+				echo esc_html( fep_user_name( $recipient ) ) . '<br />';
 			}
 		}
 	}
